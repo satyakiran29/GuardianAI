@@ -10,6 +10,7 @@ GuardianAI is an intelligent safety prediction and route risk estimation system 
 GuardianAI/
 ├── Analysis/
 │   ├── README.md                              # Deep Dataset Analysis & Regression Derivations
+│   ├── report.md                              # Exhaustive Analytical Markdown Report
 │   ├── report.ipynb                           # Jupyter Notebook for Safety Data Analysis
 │   └── Woman_Safety_Dataset_Management.csv    # Women Safety Dataset (20,000 records)
 └── README.md                                  # Root Project Documentation
@@ -56,3 +57,14 @@ $$\text{Safety}_{\text{Score}} \approx 0.9593 + 0.0436 \times \text{Lighting}_{\
 - **Weather & Seasonality:** Incidents span 5 weather states evenly (~20% each); May registered the highest cumulative crime volume (59,012).
 
 For the complete statistical breakdown, city comparison matrices, cross-tabulations, weather distributions, and ML deployment recommendations, see **[Analysis/README.md](file:///h:/Github/GuardianAI/Analysis/README.md)**.
+
+---
+
+## 👥 Project Team & Contributors
+
+- 👤 [Pampana Satya Kiran](http://psatyakiran.in/)
+- 👤 **Amarthaluri Harshavardhan**
+- 👤 **Madeli Narasimha**
+- 👤 **Mammula Sneha**
+- 👤 **Kadagala Meghana**
+

@@ -8,6 +8,7 @@ This directory contains the deep exploratory data analysis (EDA), statistical re
 
 - **[`Woman_Safety_Dataset_Management.csv`](file:///h:/Github/GuardianAI/Analysis/Woman_Safety_Dataset_Management.csv)**: Primary dataset comprising 20,000 incident logs across 10 major Indian metropolitan areas with spatial, temporal, and environmental features.
 - **🌐 Kaggle Dataset Source:** [Indian Women Safety Geospatial Dataset](https://www.kaggle.com/datasets/soumyodipthanadar/indian-women-safety-geospatial-dataset)
+- **[`report.md`](file:///h:/Github/GuardianAI/Analysis/report.md)**: Exhaustive Markdown analytical report covering all statistical models, city comparative matrices, risk stratifications, and cross-tabulations.
 - **[`report.ipynb`](file:///h:/Github/GuardianAI/Analysis/report.ipynb)**: Primary Jupyter Notebook executing data cleaning, statistical modeling, visualizations, and safety score distributions.
 
 ---
@@ -209,3 +210,14 @@ Derived by extracting month names from `incident_timestamp`:
    - Computed $\text{Safety}_{\text{Score}} \le 0.50$ (High/Critical risk thresholds).
 3. **IOT & Street Illumination Integration:**
    Since lighting score provides a direct $+0.0436$ safety boost per unit, integrate municipal IoT street light status feeds into GuardianAI to provide dynamic night routing.
+
+---
+
+## 👥 Project Team & Contributors
+
+- 👤 [Pampana Satya Kiran](http://psatyakiran.in/)
+- 👤 **Amarthaluri Harshavardhan**
+- 👤 **Madeli Narasimha**
+- 👤 **Mammula Sneha**
+- 👤 **Kadagala Meghana**
+
