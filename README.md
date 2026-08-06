@@ -10,10 +10,17 @@ GuardianAI is an intelligent safety prediction and route risk estimation system 
 GuardianAI/
 ├── Analysis/
 │   ├── README.md                              # Deep Dataset Analysis & Regression Derivations
-│   ├── Untitled.ipynb                         # Jupyter Notebook for Safety Data Analysis
+│   ├── report.ipynb                           # Jupyter Notebook for Safety Data Analysis
 │   └── Woman_Safety_Dataset_Management.csv    # Women Safety Dataset (20,000 records)
 └── README.md                                  # Root Project Documentation
 ```
+
+---
+
+## 🌐 Dataset Source
+
+The underlying geospatial dataset used for training, modeling, and analysis is available on Kaggle:
+- 📊 **Kaggle Dataset:** [Indian Women Safety Geospatial Dataset](https://www.kaggle.com/datasets/soumyodipthanadar/indian-women-safety-geospatial-dataset)
 
 ---
 
@@ -22,7 +29,7 @@ GuardianAI/
 ```mermaid
 flowchart TD
     A["Dataset: 20,000 Safety Incident Logs"] --> B["Data Processing & Validation"]
-    B --> C["Exploratory Analysis (Untitled.ipynb)"]
+    B --> C["Exploratory Analysis (report.ipynb)"]
     
     C --> D1["Police Distance (Weight: -0.0587/km)"]
     C --> D2["Historical Crime Count (Weight: -0.0074/unit)"]
