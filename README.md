@@ -74,6 +74,29 @@ $$\text{Safety}_{\text{Score}} \approx 0.9593 + 0.0436 \times \text{Lighting}_{\
 | **High Risk** | **3.69** | Poor street lighting with low visibility |
 | **Critical Risk** | **2.47** | Pitch dark / severe illumination deficiencies |
 
+---
+
+### ⚖️ Feature Importance Breakdown (Important vs. Non-Important Features)
+
+Statistical regression modeling ($R^2 = 0.9629$) stratifies dataset attributes into **High-Impact (Important)** predictors and **Low-Impact / Irrelevant (Non-Important)** features:
+
+#### 🚨 Important Features (Primary Safety Drivers)
+
+| Feature Name | Model Weight ($\beta$) | Impact Classification | Operational & Mathematical Meaning |
+| :--- | :---: | :---: | :--- |
+| **`police_station_distance_km`** | $\mathbf{-0.05866}$ | **Primary Hazard (High)** | Distance to nearest police station is the single largest hazard factor. Every additional km reduces safety score by $\approx 0.0587$ points. |
+| **`lighting_score`** | $\mathbf{+0.04362}$ | **Primary Protective (High)** | Street illumination is the primary infrastructure protective factor. Every 1-unit increase in lighting boosts safety score by $\approx 0.0436$ points. |
+| **`crime_count`** | $\mathbf{-0.00735}$ | **Secondary Hazard (Moderate)** | Historical crime volume logged in spatial radius. Every 10 additional crimes reduce safety score by $\approx 0.0735$ points. |
+
+#### ℹ️ Non-Important / Low-Impact Features (Negligible Direct Effect)
+
+| Feature Name | Model Weight / Correlation | Operational Status | Operational & Mathematical Reason |
+| :--- | :---: | :---: | :--- |
+| **`crowd_density`** | $\beta \approx 0.0000$ ($r \approx 0.003$) | **Non-Predictive** | Pedestrian density per $\text{km}^2$ has virtually zero direct linear impact on the computed base safety score formula. |
+| **`weather_condition`** | $\beta \approx 0.0000$ | **Non-Predictive** | Weather states (`Clear`, `Stormy`, `Rainy`, `Humid`, `Foggy`) are uniformly distributed (~20% each) and do not alter base safety calculations. |
+| **`time_of_day`** | Categorical Window | **Contextual Only** | Time window (`Morning` to `Late Night`) provides contextual categorization but does not directly modify linear safety math. |
+| **`incident_id` / Coordinates** | Metadata (UUID / WGS84) | **Non-Predictive** | `incident_id`, `latitude`, and `longitude` serve as primary key & spatial indexing metadata rather than predictive features. |
+
 For the complete statistical breakdown, city comparison matrices, cross-tabulations, weather distributions, and ML deployment recommendations, see **[Analysis/README.md](file:///h:/Github/GuardianAI/Analysis/README.md)**.
 
 ---
