@@ -72,7 +72,7 @@ flowchart TD
 
 Through Ordinary Least Squares (OLS) regression modeling, the dataset's `safety_score` exhibits a near-deterministic linear relationship ($R^2 = 0.9629$, $\text{MAE} = 0.0275$) with three primary environmental variables:
 
-$$\text{safety\_score} \approx 0.95934 + 0.04362 \times \text{lighting\_score} - 0.05866 \times \text{police\_station\_distance\_km} - 0.00735 \times \text{crime\_count}$$
+$$\text{Safety}_{\text{Score}} \approx 0.95934 + 0.04362 \times \text{Lighting}_{\text{Score}} - 0.05866 \times \text{PoliceDist}_{\text{km}} - 0.00735 \times \text{Crime}_{\text{Count}}$$
 
 ### Feature Influence Breakdown
 1. **Police Station Distance ($\beta = -0.05866$):** Every additional kilometer from a police station reduces the safety score by $\approx 0.0587$ points (strongest negative factor).
@@ -86,7 +86,7 @@ $$\text{safety\_score} \approx 0.95934 + 0.04362 \times \text{lighting\_score} -
 
 Risk levels are strictly bucketed based on the computed `safety_score`:
 
-$$\text{Risk Level} = \begin{cases} \mathbf{Low} & \text{if } \text{safety\_score} > 0.75 \\ \mathbf{Medium} & \text{if } 0.50 < \text{safety\_score} \le 0.75 \\ \mathbf{High} & \text{if } 0.25 < \text{safety\_score} \le 0.50 \\ \mathbf{Critical} & \text{if } \text{safety\_score} \le 0.25 \end{cases}$$
+$$\text{Risk Level} = \begin{cases} \mathbf{Low} & \text{if } \text{Safety}_{\text{Score}} > 0.75 \\ \mathbf{Medium} & \text{if } 0.50 < \text{Safety}_{\text{Score}} \le 0.75 \\ \mathbf{High} & \text{if } 0.25 < \text{Safety}_{\text{Score}} \le 0.50 \\ \mathbf{Critical} & \text{if } \text{Safety}_{\text{Score}} \le 0.25 \end{cases}$$
 
 ### Stratified Metrics by Risk Level
 
@@ -170,10 +170,10 @@ The top 10 lowest average safety score areas across the dataset:
 
 1. **Real-Time Safety Score Calculation:**
    Implement the exact regression formula in GuardianAI's backend algorithm:
-   $$\text{Safety Score} = 0.9593 + 0.0436 \cdot \text{Lighting} - 0.0587 \cdot \text{PoliceDist\_KM} - 0.0074 \cdot \text{CrimeCount}$$
+   $$\text{Safety}_{\text{Score}} = 0.9593 + 0.0436 \cdot \text{Lighting} - 0.0587 \cdot \text{PoliceDist}_{\text{km}} - 0.0074 \cdot \text{Crime}_{\text{Count}}$$
 2. **Proactive Rerouting Triggers:**
    Trigger emergency notifications or suggest alternative paths whenever a user's planned route crosses segments where:
    - `police_station_distance_km` $> 5.0\text{ km}$ AND `lighting_score` $< 4.0$
-   - Computed `safety_score` $\le 0.50$ (High/Critical risk thresholds).
+   - Computed $\text{Safety}_{\text{Score}} \le 0.50$ (High/Critical risk thresholds).
 3. **IOT & Street Illumination Integration:**
    Since lighting score provides a direct $+0.0436$ safety boost per unit, integrate municipal IoT street light status feeds into GuardianAI to provide dynamic night routing.

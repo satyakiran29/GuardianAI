@@ -39,7 +39,7 @@ flowchart TD
 
 A deep quantitative analysis of [`Woman_Safety_Dataset_Management.csv`](file:///h:/Github/GuardianAI/Analysis/Woman_Safety_Dataset_Management.csv) revealed the exact mathematical relationship governing safety scores ($R^2 = 0.9629$):
 
-$$\text{Safety Score} \approx 0.9593 + 0.0436 \times \text{Lighting Score} - 0.0587 \times \text{Police Station Distance (km)} - 0.0074 \times \text{Crime Count}$$
+$$\text{Safety}_{\text{Score}} \approx 0.9593 + 0.0436 \times \text{Lighting}_{\text{Score}} - 0.0587 \times \text{PoliceDist}_{\text{km}} - 0.0074 \times \text{Crime}_{\text{Count}}$$
 
 ### Strategic Highlights:
 - **Police Station Distance:** Primary hazard factor ($-0.0587$ per km). Critical risk areas average $7.03\text{ km}$ from stations.
