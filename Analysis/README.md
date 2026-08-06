@@ -1,42 +1,13 @@
-# 🛡️ GuardianAI - Safety Data Analysis
+# 🛡️ GuardianAI - Safety Data Analysis & Deep Dataset Documentation
 
-This directory contains the exploratory data analysis (EDA) and dataset documentation for the **GuardianAI** safety prediction system.
-
----
-
-## 📌 Contents
-
-- **`Woman_Safety_Dataset_Management.csv`**: Dataset containing 20,000 incident logs across 10 Indian cities with environmental, spatial, and temporal features.
-- **[`Untitled.ipynb`](file:///h:/Github/GuardianAI/Analysis/Untitled.ipynb)**: Jupyter Notebook containing data cleaning, descriptive statistics, feature correlations, and safety distribution analysis.
+This directory contains the deep exploratory data analysis (EDA), statistical reverse-engineering, and architectural recommendations for the **GuardianAI** safety prediction and route-risk estimation system, based on [`Woman_Safety_Dataset_Management.csv`](file:///h:/Github/GuardianAI/Analysis/Woman_Safety_Dataset_Management.csv).
 
 ---
 
-## 📊 Dataset Overview
+## 📌 File Index
 
-- **Total Rows:** 20,000
-- **Total Features:** 15 base columns + 1 derived column (`Month`)
-- **Data Quality:** 0 missing values, 0 duplicate rows
-
-### Feature Schema
-
-| Feature Name | Data Type | Description |
-| :--- | :---: | :--- |
-| `incident_id` | `str` | Unique identifier (UUID) for each incident log |
-| `city` | `str` | City name (e.g., Bhopal, Chennai, Jaipur, Mumbai, Bengaluru, etc.) |
-| `area` | `str` | Local neighborhood/locality within the city |
-| `latitude` | `float` | Geographical latitude coordinate |
-| `longitude` | `float` | Geographical longitude coordinate |
-| `crime_type` | `str` | Type of incident reported (e.g., Assault, Cyber Crime, Stalking, etc.) |
-| `crime_count` | `int` | Historical incident count in the region (Range: 0 - 85) |
-| `time_of_day` | `str` | Categorical time frame (Morning, Afternoon, Evening, Night, Late Night) |
-| `lighting_score` | `float` | Street lighting quality rating (Range: 1.0 - 10.0) |
-| `police_station_distance_km` | `float` | Distance to the nearest police station in kilometers (Range: 0.2 - 8.0 km) |
-| `crowd_density` | `int` | Estimate of people density per area (Range: 10 - 1000) |
-| `weather_condition` | `str` | Weather during incident (Clear, Rainy, Stormy, Foggy, Humid) |
-| `safety_score` | `float` | Calculated safety score (Range: 0.0 - 1.0) |
-| `risk_level` | `str` | Risk category (`Low`, `Medium`, `High`, `Critical`) |
-| `incident_timestamp` | `str` / `datetime` | Date & time of the recorded incident |
-| `Month` | `str` | *(Derived)* Name of the month extracted from `incident_timestamp` |
+- **[`Woman_Safety_Dataset_Management.csv`](file:///h:/Github/GuardianAI/Analysis/Woman_Safety_Dataset_Management.csv)**: Primary dataset comprising 20,000 incident logs across 10 major Indian metropolitan areas with spatial, temporal, and environmental features.
+- **[`Untitled.ipynb`](file:///h:/Github/GuardianAI/Analysis/Untitled.ipynb)**: Primary Jupyter Notebook executing data cleaning, statistical modeling, visualizations, and safety score distributions.
 
 ---
 
@@ -44,74 +15,165 @@ This directory contains the exploratory data analysis (EDA) and dataset document
 
 ```mermaid
 flowchart TD
-    A["Raw Dataset<br><i>(Woman_Safety_Dataset_Management.csv)</i>"] --> B["Data Ingestion & Integrity Check<br><i>(20,000 Records | 0 Nulls | 0 Duplicates)</i>"]
+    A["Raw Dataset<br><i>(Woman_Safety_Dataset_Management.csv)</i><br>20,000 Records | 15 Attributes"] --> B["Data Integrity Audit<br><i>(0 Nulls | 0 Duplicates)</i>"]
     
-    B --> C["Feature Engineering<br><i>(Timestamp parsing & Month extraction)</i>"]
+    B --> C["Feature Engineering<br><i>(Datetime Parsing & Month Extraction)</i>"]
     
-    C --> D["Exploratory Data Analysis"]
+    C --> D["Multi-Dimensional Exploratory Analysis"]
     
-    D --> D1["Spatial & City Mapping<br><i>(Top hotspots: Bhopal, Bengaluru, etc.)</i>"]
-    D --> D2["Environmental Metrics<br><i>(Lighting, Police Distance, Crowd Density)</i>"]
-    D --> D3["Correlation Matrix<br><i>(Safety Score vs Risk Factors)</i>"]
+    D --> D1["Spatial & City Mapping<br><i>(10 Metros | 200+ Areas)</i>"]
+    D --> D2["Environmental Metrics<br><i>(Lighting, Police Dist, Crowd Density)</i>"]
+    D --> D3["Regression & Correlation Analysis<br><i>(OLS Linear Model: R² = 0.9629)</i>"]
     
-    D3 --> E["Key Correlative Insights"]
+    D3 --> E["Safety Score Equation Derivation<br><i>Safety = 0.9593 + 0.0436(Lighting) - 0.0587(PoliceDist) - 0.0074(CrimeCount)</i>"]
     
-    E --> E1["Police Station Distance<br><i>(r = -0.599)</i>"]
-    E --> E2["Historical Crime Count<br><i>(r = -0.581)</i>"]
-    E --> E3["Street Lighting Score<br><i>(r = +0.527)</i>"]
+    E --> F["Deterministic Risk Stratification"]
+    F --> F1["Low: > 0.75 (46.51%)"]
+    F --> F2["Medium: 0.51 - 0.75 (34.70%)"]
+    F --> F3["High: 0.26 - 0.50 (16.30%)"]
+    F --> F4["Critical: ≤ 0.25 (2.50%)"]
     
-    E1 & E2 & E3 --> F["Risk Level Modeling<br><i>(Low, Medium, High, Critical)</i>"]
-    F --> G["GuardianAI Real-Time Safety Engine"]
+    F1 & F2 & F3 & F4 --> G["GuardianAI Real-Time Safety Engine Integration"]
 ```
 
 ---
 
-## 📈 Key Insights & Analysis Findings
+## 📊 Dataset Schema & Data Integrity Profile
 
-### 1. Primary Safety Score Predictors
-Correlation analysis against `safety_score` highlights key factors influencing safety:
+- **Total Sample Size:** 20,000 observations
+- **Attribute Count:** 15 base columns + 1 derived column (`Month`)
+- **Missing Values:** `0` across all fields
+- **Duplicate Rows:** `0`
 
-- **Police Station Proximity (`police_station_distance_km`):** **`-0.599` correlation**  
-  *Closer proximity to a police station strongly increases the safety score.*
-- **Historical Crime Volume (`crime_count`):** **`-0.581` correlation**  
-  *Higher crime counts significantly depress local safety scores.*
-- **Infrastructure & Lighting (`lighting_score`):** **`+0.527` correlation**  
-  *Well-lit areas significantly elevate the overall safety rating.*
-- **Crowd Density (`crowd_density`):** **`-0.009` correlation**  
-  *Crowd density alone shows no direct linear effect on safety score.*
+### Exhaustive Feature Schema
 
-### 2. Risk Level vs. Police Station Distance
-Mean distance to nearest police station across risk levels:
-- **Low Risk:** `2.94 km`
-- **Medium Risk:** `4.64 km`
-- **High Risk:** `5.92 km`
-- **Critical Risk:** `7.03 km`
-
-### 3. High Risk Incident Profile
-- **3,260 records (16.3%)** are classified under **High** risk level.
-- Top city hotspots with high aggregated incident counts include **Bhopal**, **Bengaluru**, **Chennai**, and **Jaipur**.
-- High-incident localities include *Lajpat Nagar*, *Velachery*, *Malviya Nagar*, *Electronic City*, and *Garia*.
-
-### 4. Temporal Distribution
-- Crime counts peak mid-year in **May** (~59,000 total crimes) and **July** (~57,700 total crimes).
-
----
-
-## 🚀 How to Run the Analysis Notebook
-
-1. Ensure Python 3.8+ and Jupyter Notebook are installed.
-2. Install required packages:
-   ```bash
-   pip install pandas matplotlib seaborn notebook
-   ```
-3. Launch Jupyter Notebook and open [`Untitled.ipynb`](file:///h:/Github/GuardianAI/Analysis/Untitled.ipynb):
-   ```bash
-   jupyter notebook Analysis/Untitled.ipynb
-   ```
+| Feature Name | Data Type | Range / Values | Physical Meaning & Operational Role |
+| :--- | :---: | :---: | :--- |
+| `incident_id` | `str` (UUID) | 36 chars | Unique primary key identifier for each reported incident. |
+| `city` | `str` | 10 Metros | Metropolitan area (Bengaluru, Bhopal, Chennai, Delhi, Hyderabad, Jaipur, Kolkata, Lucknow, Mumbai, Patna). |
+| `area` | `str` | Text | Specific sub-locality/neighborhood within the city. |
+| `latitude` | `float64` | `12.87` – `28.72` | WGS84 latitude coordinate. |
+| `longitude` | `float64` | `72.76` – `88.46` | WGS84 longitude coordinate. |
+| `crime_type` | `str` | 10 Categories | Specific incident classification (Assault, Chain Snatching, Cyber Crime, Domestic Violence, Harassment, Kidnapping, Night Safety Complaint, Stalking, Unsafe Transport, Verbal Abuse). |
+| `crime_count` | `int64` | `0` – `85` | Historical volume of crimes logged in the surrounding spatial radius. |
+| `time_of_day` | `str` | 5 Categories | Operational time window (`Morning`, `Afternoon`, `Evening`, `Night`, `Late Night`). |
+| `lighting_score` | `float64` | `1.00` – `10.00` | Street illumination index (1.0 = pitch dark, 10.0 = bright illumination). |
+| `police_station_distance_km` | `float64` | `0.20` – `8.00` | Euclidean/road distance to the nearest operational police station in km. |
+| `crowd_density` | `int64` | `10` – `1,000` | Estimated pedestrian/bystander density per square kilometer. |
+| `weather_condition` | `str` | 5 Categories | Atmospheric state during incident (`Clear`, `Foggy`, `Humid`, `Rainy`, `Stormy`). |
+| `safety_score` | `float64` | `0.00` – `1.00` | Normalized safety index (0.0 = extreme hazard, 1.0 = high safety). |
+| `risk_level` | `str` | 4 Levels | Stratified risk categorization (`Low`, `Medium`, `High`, `Critical`). |
+| `incident_timestamp` | `str` / `datetime` | ISO Timestamp | Exact timestamp of incident recording. |
+| `Month` | `str` | Jan – Dec | *(Derived)* Name of the month extracted from `incident_timestamp`. |
 
 ---
 
-## 💡 Recommendations for GuardianAI System
+## 🧮 Mathematical Derivation of `safety_score`
 
-1. **Risk Scoring Engine:** Weight `police_station_distance_km`, `lighting_score`, and localized `crime_count` heavily in real-time safety score algorithms.
-2. **Dynamic Route Guidance:** Trigger warnings or reroute users when paths pass through areas with lighting scores $< 4.0$ or police station distances $> 5.0\text{ km}$.
+Through Ordinary Least Squares (OLS) regression modeling, the dataset's `safety_score` exhibits a near-deterministic linear relationship ($R^2 = 0.9629$, $\text{MAE} = 0.0275$) with three primary environmental variables:
+
+$$\text{safety\_score} \approx 0.95934 + 0.04362 \times \text{lighting\_score} - 0.05866 \times \text{police\_station\_distance\_km} - 0.00735 \times \text{crime\_count}$$
+
+### Feature Influence Breakdown
+1. **Police Station Distance ($\beta = -0.05866$):** Every additional kilometer from a police station reduces the safety score by $\approx 0.0587$ points (strongest negative factor).
+2. **Lighting Score ($\beta = +0.04362$):** Every unit increase in illumination improves the safety score by $\approx 0.0436$ points (strongest positive factor).
+3. **Historical Crime Count ($\beta = -0.00735$):** Every 10 additional historical crimes reduce the safety score by $\approx 0.0735$ points.
+4. **Crowd Density & Weather ($\beta \approx 0.0000$):** Negligible direct linear impact on the base safety score algorithm.
+
+---
+
+## 🎯 Risk Level Classification & Stratification
+
+Risk levels are strictly bucketed based on the computed `safety_score`:
+
+$$\text{Risk Level} = \begin{cases} \mathbf{Low} & \text{if } \text{safety\_score} > 0.75 \\ \mathbf{Medium} & \text{if } 0.50 < \text{safety\_score} \le 0.75 \\ \mathbf{High} & \text{if } 0.25 < \text{safety\_score} \le 0.50 \\ \mathbf{Critical} & \text{if } \text{safety\_score} \le 0.25 \end{cases}$$
+
+### Stratified Metrics by Risk Level
+
+| Risk Level | Sample Count | Share (%) | Mean Safety Score | Mean Lighting Score | Mean Police Dist (km) | Mean Crime Count | Mean Crowd Density |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Low** | 9,301 | 46.51% | $0.9083 \pm 0.0840$ | $6.7001 \pm 2.2968$ | $2.9359 \pm 1.8945$ | $23.52 \pm 14.16$ | $504.38 \pm 285.34$ |
+| **Medium** | 6,940 | 34.70% | $0.6381 \pm 0.0712$ | $4.9414 \pm 2.4267$ | $4.6424 \pm 2.0291$ | $35.95 \pm 15.54$ | $501.84 \pm 283.47$ |
+| **High** | 3,260 | 16.30% | $0.4055 \pm 0.0680$ | $3.6907 \pm 2.0006$ | $5.9215 \pm 1.5448$ | $46.11 \pm 13.08$ | $513.74 \pm 287.03$ |
+| **Critical** | 499 | 2.50% | $0.1779 \pm 0.0593$ | $2.4686 \pm 1.1659$ | $7.0254 \pm 0.8000$ | $57.26 \pm 8.94$ | $509.19 \pm 286.97$ |
+
+---
+
+## 🏙️ City-Level Comparative Matrix
+
+The dataset covers 10 Indian cities uniformly distributed with ~1,920 to ~2,040 incident logs per city:
+
+| City | Incident Count | Total Crime Volume | Avg Crime / Incident | Avg Safety Score | Avg Lighting Score | Avg Police Dist (km) | High + Critical Incidents |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Bhopal** | 2,043 | 67,843 | 33.21 | 0.7203 | 5.58 | 4.02 | 351 |
+| **Bengaluru** | 2,000 | 65,610 | 32.81 | 0.7112 | 5.45 | 4.09 | 379 |
+| **Chennai** | 2,026 | 65,185 | 32.17 | 0.7168 | 5.47 | 4.07 | 389 |
+| **Jaipur** | 2,021 | 65,148 | 32.24 | 0.7094 | 5.39 | 4.16 | 375 |
+| **Lucknow** | 2,016 | 65,099 | 32.29 | 0.7167 | 5.52 | 4.09 | 383 |
+| **Mumbai** | 2,019 | 64,740 | 32.07 | 0.7082 | 5.41 | 4.17 | 403 |
+| **Kolkata** | 2,014 | 64,730 | 32.14 | 0.7124 | 5.50 | 4.16 | 385 |
+| **Patna** | 2,015 | 64,227 | 31.87 | 0.7149 | 5.48 | 4.16 | 388 |
+| **Hyderabad** | 1,921 | 62,800 | 32.69 | 0.7166 | 5.57 | 4.09 | 362 |
+| **Delhi** | 1,925 | 61,755 | 32.08 | 0.7169 | 5.57 | 4.16 | 344 |
+
+---
+
+## 📌 Top High-Risk Localities Nationwide
+
+The top 10 lowest average safety score areas across the dataset:
+
+| City | Local Area | Total Logs | Avg Safety Score | High/Critical Logs | Avg Police Dist (km) | Avg Lighting |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| **Jaipur** | Vaishali Nagar | 412 | 0.6892 | 77 | 4.15 | 5.15 |
+| **Mumbai** | Dadar | 399 | 0.6921 | 87 | 4.28 | 5.30 |
+| **Kolkata** | Dum Dum | 398 | 0.6983 | 86 | 4.37 | 5.44 |
+| **Lucknow** | Aliganj | 373 | 0.7006 | 79 | 4.12 | 5.28 |
+| **Hyderabad** | Gachibowli | 382 | 0.7012 | 82 | 4.12 | 5.30 |
+| **Bengaluru** | Whitefield | 386 | 0.7017 | 82 | 4.15 | 5.36 |
+| **Patna** | Rajendra Nagar | 404 | 0.7018 | 85 | 4.28 | 5.34 |
+| **Lucknow** | Hazratganj | 425 | 0.7021 | 90 | 4.28 | 5.44 |
+| **Mumbai** | Andheri | 414 | 0.7037 | 85 | 4.24 | 5.35 |
+| **Bengaluru** | Yelahanka | 365 | 0.7042 | 78 | 4.10 | 5.49 |
+
+---
+
+## 📑 Cross-Tabulation Analysis
+
+### 1. Crime Type Distribution Across Risk Levels
+
+| Crime Category | Critical | High | Medium | Low | Total Count |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Night Safety Complaint** | 46 | 330 | 705 | 966 | 2,047 |
+| **Cyber Crime** | 50 | 323 | 715 | 957 | 2,045 |
+| **Harassment** | 61 | 315 | 721 | 939 | 2,036 |
+| **Stalking** | 49 | 314 | 713 | 960 | 2,036 |
+| **Verbal Abuse** | 52 | 329 | 673 | 946 | 2,000 |
+| **Assault** | 48 | 297 | 738 | 916 | 1,999 |
+| **Kidnapping** | 45 | 337 | 661 | 949 | 1,992 |
+| **Unsafe Transport** | 44 | 347 | 661 | 926 | 1,978 |
+| **Chain Snatching** | 54 | 326 | 680 | 878 | 1,938 |
+| **Domestic Violence** | 50 | 342 | 673 | 864 | 1,929 |
+
+### 2. Time of Day vs. Risk Category
+
+| Time Window | Critical | High | Medium | Low | Total Count |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Night** (20:00 - 00:00) | 96 | 688 | 1,385 | 1,892 | 4,061 |
+| **Evening** (16:00 - 20:00) | 97 | 630 | 1,409 | 1,893 | 4,029 |
+| **Morning** (06:00 - 12:00) | 112 | 611 | 1,414 | 1,850 | 3,987 |
+| **Afternoon** (12:00 - 16:00) | 83 | 643 | 1,415 | 1,837 | 3,978 |
+| **Late Night** (00:00 - 06:00) | 111 | 688 | 1,317 | 1,829 | 3,945 |
+
+---
+
+## 💡 Engineering Recommendations for GuardianAI System
+
+1. **Real-Time Safety Score Calculation:**
+   Implement the exact regression formula in GuardianAI's backend algorithm:
+   $$\text{Safety Score} = 0.9593 + 0.0436 \cdot \text{Lighting} - 0.0587 \cdot \text{PoliceDist\_KM} - 0.0074 \cdot \text{CrimeCount}$$
+2. **Proactive Rerouting Triggers:**
+   Trigger emergency notifications or suggest alternative paths whenever a user's planned route crosses segments where:
+   - `police_station_distance_km` $> 5.0\text{ km}$ AND `lighting_score` $< 4.0$
+   - Computed `safety_score` $\le 0.50$ (High/Critical risk thresholds).
+3. **IOT & Street Illumination Integration:**
+   Since lighting score provides a direct $+0.0436$ safety boost per unit, integrate municipal IoT street light status feeds into GuardianAI to provide dynamic night routing.
