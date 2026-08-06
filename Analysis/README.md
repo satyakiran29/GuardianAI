@@ -165,6 +165,37 @@ The top 10 lowest average safety score areas across the dataset:
 | **Afternoon** (12:00 - 16:00) | 83 | 643 | 1,415 | 1,837 | 3,978 |
 | **Late Night** (00:00 - 06:00) | 111 | 688 | 1,317 | 1,829 | 3,945 |
 
+### 3. Weather Condition Distribution
+
+The 20,000 incident logs are evenly distributed across 5 atmospheric states (~20% per category):
+
+| Weather Condition | Frequency (Count) | Percentage (%) |
+| :--- | :---: | :---: |
+| **Clear** | 4,054 | 20.27% |
+| **Stormy** | 4,032 | 20.16% |
+| **Rainy** | 4,016 | 20.08% |
+| **Humid** | 3,971 | 19.86% |
+| **Foggy** | 3,927 | 19.63% |
+
+### 4. Monthly Temporal Analysis (Total Crime Volume)
+
+Derived by extracting month names from `incident_timestamp`:
+
+| Month | Total Crime Volume | Percentage (%) |
+| :--- | :---: | :---: |
+| **January** | 53,357 | 8.24% |
+| **February** | 49,842 | 7.69% |
+| **March** | 55,229 | 8.52% |
+| **April** | 50,487 | 7.79% |
+| **May** | 59,012 | 9.11% |
+| **June** | 51,002 | 7.87% |
+| **July** | 57,749 | 8.91% |
+| **August** | 54,570 | 8.42% |
+| **September** | 53,275 | 8.22% |
+| **October** | 54,961 | 8.48% |
+| **November** | 53,958 | 8.33% |
+| **December** | 53,695 | 8.29% |
+
 ---
 
 ## 💡 Engineering Recommendations for GuardianAI System

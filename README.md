@@ -51,6 +51,8 @@ $$\text{Safety}_{\text{Score}} \approx 0.9593 + 0.0436 \times \text{Lighting}_{\
 ### Strategic Highlights:
 - **Police Station Distance:** Primary hazard factor ($-0.0587$ per km). Critical risk areas average $7.03\text{ km}$ from stations.
 - **Street Illumination:** Primary protective factor ($+0.0436$ per score point). Low risk areas average $6.70$ lighting score.
-- **Risk Distribution:** $46.51\%$ Low Risk, $34.70\%$ Medium Risk, $16.30\%$ High Risk, $2.50\%$ Critical Risk.
+- **Risk Stratification:** $46.51\%$ Low Risk, $34.70\%$ Medium Risk, $16.30\%$ High Risk, $2.50\%$ Critical Risk.
+- **Geospatial Coverage:** 10 major Indian metros (~2,000 incident logs per city), with Jaipur's *Vaishali Nagar* (0.6892) and Mumbai's *Dadar* (0.6921) registering the lowest average safety scores.
+- **Weather & Seasonality:** Incidents span 5 weather states evenly (~20% each); May registered the highest cumulative crime volume (59,012).
 
-For the full statistical breakdown, city comparison matrices, cross-tabulations, and ML deployment recommendations, see **[Analysis/README.md](file:///h:/Github/GuardianAI/Analysis/README.md)**.
+For the complete statistical breakdown, city comparison matrices, cross-tabulations, weather distributions, and ML deployment recommendations, see **[Analysis/README.md](file:///h:/Github/GuardianAI/Analysis/README.md)**.
