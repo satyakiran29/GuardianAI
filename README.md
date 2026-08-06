@@ -27,4 +27,23 @@ A comprehensive data analysis was conducted on `Woman_Safety_Dataset_Management.
 - **Historical Crime Count:** Strong negative correlation with safety ($r = -0.581$).
 - **Risk Profiles:** Critical & High risk areas average $> 5.9\text{ km}$ from the nearest police station.
 
+---
+
+## 🔄 System & Analysis Flowchart
+
+```mermaid
+flowchart TD
+    A["Dataset: 20,000 Safety Incident Logs"] --> B["Data Processing & Cleaning"]
+    B --> C["Exploratory Analysis (Untitled.ipynb)"]
+    
+    C --> D1["Police Distance (r = -0.599)"]
+    C --> D2["Historical Crimes (r = -0.581)"]
+    C --> D3["Lighting Score (r = +0.527)"]
+    
+    D1 & D2 & D3 --> E["Risk Stratification (Low to Critical)"]
+    E --> F["GuardianAI Route Safety & Alert Engine"]
+```
+
+---
+
 For a full breakdown of dataset features, statistical summaries, correlations, and instructions to run the analysis notebook, see **[Analysis/README.md](file:///h:/Github/GuardianAI/Analysis/README.md)**.

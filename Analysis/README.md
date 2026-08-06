@@ -40,6 +40,32 @@ This directory contains the exploratory data analysis (EDA) and dataset document
 
 ---
 
+## 🔄 Analysis Workflow Flowchart
+
+```mermaid
+flowchart TD
+    A["Raw Dataset<br><i>(Woman_Safety_Dataset_Management.csv)</i>"] --> B["Data Ingestion & Integrity Check<br><i>(20,000 Records | 0 Nulls | 0 Duplicates)</i>"]
+    
+    B --> C["Feature Engineering<br><i>(Timestamp parsing & Month extraction)</i>"]
+    
+    C --> D["Exploratory Data Analysis"]
+    
+    D --> D1["Spatial & City Mapping<br><i>(Top hotspots: Bhopal, Bengaluru, etc.)</i>"]
+    D --> D2["Environmental Metrics<br><i>(Lighting, Police Distance, Crowd Density)</i>"]
+    D --> D3["Correlation Matrix<br><i>(Safety Score vs Risk Factors)</i>"]
+    
+    D3 --> E["Key Correlative Insights"]
+    
+    E --> E1["Police Station Distance<br><i>(r = -0.599)</i>"]
+    E --> E2["Historical Crime Count<br><i>(r = -0.581)</i>"]
+    E --> E3["Street Lighting Score<br><i>(r = +0.527)</i>"]
+    
+    E1 & E2 & E3 --> F["Risk Level Modeling<br><i>(Low, Medium, High, Critical)</i>"]
+    F --> G["GuardianAI Real-Time Safety Engine"]
+```
+
+---
+
 ## 📈 Key Insights & Analysis Findings
 
 ### 1. Primary Safety Score Predictors
