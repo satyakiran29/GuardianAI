@@ -1,0 +1,22 @@
+{
+  "versionCode": 3,
+  "versionName": "1.3.0",
+  "appName": "GuardianAI",
+  "minSdkVersion": 24,
+  "targetSdkVersion": 35,
+  "releaseDate": "2026-08-18",
+  "apkFileName": "GuardianAI.apk",
+  "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI.apk",
+  "fileSizeBytes": 6996872,
+  "fileSizeFormatted": "7.00 MB",
+  "isMandatory": false,
+  "title": "GuardianAI v1.3.0 Update Available",
+  "changelog": [
+    "🌐 Added Multi-Language Translation (Telugu - తెలుగు, Hindi - हिन्दी, English)",
+    "🗣️ Multilingual Voice Feedback & Speech Recognition in Hindi & Telugu",
+    "✨ Added 4 Modern Home Screen Widgets (4x2 Safety Hub, 2x2 Quick SOS, 4x1 Safety Bar, 1x1 Glance)",
+    "🗺️ Interactive Nearby Risk Heatmap & 24h Safety Timeline on Widget",
+    "🚨 1-Tap Instant SOS Dispatch directly from Home Screen Widget",
+    "🔄 In-App update.json checker & offline auto-update installer"
+  ]
+}

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permissions for Location, SOS Voice Detection, Camera Evidence, SMS & Call -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <application
+        android:name=".GuardianApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.GuardianAi">
+
+        <!-- Login Activity (Launcher) -->
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Main Dashboard & Safe Routing Activity -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+
+        <!-- Emergency Contacts Manager Activity -->
+        <activity
+            android:name=".sos.EmergencyContactsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- Deep Explainable AI Simulator Activity -->
+        <activity
+            android:name=".dashboard.ExplainableAiActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- ========================================= -->
+        <!-- HOME SCREEN WIDGET PROVIDERS              -->
+        <!-- ========================================= -->
+
+        <!-- 1. 4x2 Safety Hub Widget -->
+        <receiver
+            android:name=".widget.SafetyHubWidget4x2"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.skdev.guardianai.ACTION_TRIGGER_SOS" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_safety_hub_4x2_info" />
+        </receiver>
+
+        <!-- 2. 2x2 Quick Emergency SOS Widget -->
+        <receiver
+            android:name=".widget.SosQuickWidget2x2"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.skdev.guardianai.ACTION_TRIGGER_SOS" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_sos_2x2_info" />
+        </receiver>
+
+        <!-- 3. 4x1 Horizontal Safety Bar Widget -->
+        <receiver
+            android:name=".widget.SafetyBarWidget4x1"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_safety_bar_4x1_info" />
+        </receiver>
+
+        <!-- 4. 1x1 Compact Glance Widget -->
+        <receiver
+            android:name=".widget.GlanceWidget1x1"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_glance_1x1_info" />
+        </receiver>
+
+    </application>
+
+</manifest>
