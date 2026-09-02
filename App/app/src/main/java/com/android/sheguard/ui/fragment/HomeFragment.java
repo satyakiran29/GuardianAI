@@ -73,6 +73,12 @@ public class HomeFragment extends Fragment {
         });
 
         binding.sosCircleBadge.setOnClickListener(v -> binding.sosButton.performClick());
+        binding.btnTopDrawer.setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).toggleDrawer();
+            }
+        });
+        binding.btnTopProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment));
         binding.btnTopAlertInfo.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_helplineFragment));
         binding.btnTopSettings.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_settingsFragment));
         binding.btnTopLogout.setOnClickListener(v -> showLogoutDialog());
