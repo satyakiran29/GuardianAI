@@ -243,6 +243,10 @@
     <string name="btn_download_update">Download &amp; Install</string>
     <string name="btn_later">Later</string>
     <string name="btn_ok">OK</string>
+    <string name="downloading_update">Downloading Update…</string>
+    <string name="download_complete">Download complete! Starting installer…</string>
+    <string name="download_failed">Download failed. Please check connection and try again.</string>
+    <string name="install_permission_msg">Please allow GuardianAI to install app updates in settings.</string>
 
     <!-- Safe Ride & Escort Map (Rapido-style) -->
     <string name="nav_safe_ride">🛵 Safe Ride &amp; Escort Map</string>
@@ -380,4 +384,14 @@
     <string name="voice_sos_stop_listening">Stop Voice Listening</string>
     <string name="voice_sos_listening_active">🎤 Listening for safety keywords (\"Help\", \"Guardian SOS\", \"Save Me\")…</string>
     <string name="voice_sos_keyword_detected">🚨 Voice SOS Triggered by Keyword!</string>
+
+    <!-- Profile Edit Strings -->
+    <string name="section_personal_info">Personal Information</string>
+    <string name="section_security_password">Security &amp; Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password_hint">Confirm New Password</string>
+    <string name="leave_blank_password_hint">Leave password fields blank if you do not wish to change your password.</string>
+    <string name="btn_save_changes">Save Profile Changes</string>
+    <string name="profile_updated_successfully">Profile updated successfully!</string>
 </resources>
+
