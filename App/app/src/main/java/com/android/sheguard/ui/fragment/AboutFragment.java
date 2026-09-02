@@ -95,7 +95,7 @@ public class AboutFragment extends Fragment {
         contributorList.add(new Contributor(
                 "P",
                 "Pampana Satya Kiran",
-                "Lead Developer & System Architect",
+                "Developer",
                 "Website", "http://psatyakiran.in/",
                 "GitHub", "https://github.com/satyakiran29",
                 "LinkedIn", "https://www.linkedin.com/in/satyakiran29"));
@@ -104,7 +104,7 @@ public class AboutFragment extends Fragment {
         contributorList.add(new Contributor(
                 "M",
                 "Madeli Narasimha",
-                "Backend & Cloud Integration",
+                "Developer",
                 "LinkedIn",
                 "https://www.linkedin.com/in/narasimha-madeli-ba7b73338?utm_source=share_via&utm_content=profile&utm_medium=member_android",
                 "GitHub", "https://github.com",
@@ -114,7 +114,7 @@ public class AboutFragment extends Fragment {
         contributorList.add(new Contributor(
                 "H",
                 "Amarthaluri Harshavardhan",
-                "Core Android & Security Engineer",
+                "Developer",
                 "LinkedIn", "https://www.linkedin.com",
                 "GitHub", "https://github.com",
                 "Website", "https://guardianai.app"));
@@ -123,7 +123,7 @@ public class AboutFragment extends Fragment {
         contributorList.add(new Contributor(
                 "S",
                 "Mammula Sneha",
-                "UI/UX & Safety Systems",
+                "Developer",
                 "LinkedIn", "https://guardianai.app",
                 "Instagram", "https://www.instagram.com",
                 "Website", "https://guardianai.app"));
@@ -132,7 +132,7 @@ public class AboutFragment extends Fragment {
         contributorList.add(new Contributor(
                 "M",
                 "Kadagala Meghana",
-                "QA & Location Telemetry",
+                "Developer",
                 "LinkedIn", "https://www.linkedin.com",
                 "GitHub", "https://github.com",
                 "Website", "https://guardianai.app"));
