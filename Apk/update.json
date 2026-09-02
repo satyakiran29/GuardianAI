@@ -1,15 +1,9 @@
 {
-  "versionCode": 2,
-  "versionName": "1.0.1",
+  "versionCode": 3,
+  "versionName": "1.0.2",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
     "hello update testing",
-    "🌟 Complete Zero-Firebase migration (Pure Django 6 REST API + Supabase Cloud)",
-    "🗺️ OpenFreeMap Free Live Telemetric Radar (No API keys or rate limits)",
-    "🔑 Dynamic 6-Digit OTP Security & Session Authorization System",
-    "👑 Multi-Role Security Model (SuperAdmin, Guardian Responder, Protected User)",
-    "⚡ 1-Tap SOS with Direct Contacts-Only Dispatching (No national auto-dial)",
-    "⚙️ Dedicated Settings and Logout Quick Action Buttons on Top Bar",
-    "🛡️ Full CRUD User Data Management on Web Dashboard with CSV Export"
+    "Ui changes"
   ]
 }

@@ -63,138 +63,73 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Bento Action Grid -->
+    <!-- Bento Action Row (3 Tiles) -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:orientation="horizontal">
 
-        <!-- Left 2x2 Grid -->
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/btn_bento_tile_1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <!-- Row 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="8dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:id="@+id/btn_bento_tile_1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_bento_tile"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/tv_bento_tile_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="#E2E8F0"
-                        android:textSize="13sp"
-                        tools:text="Website" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/btn_bento_tile_2"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_bento_tile"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/tv_bento_tile_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="#E2E8F0"
-                        android:textSize="13sp"
-                        tools:text="LinkedIn" />
-                </FrameLayout>
-            </LinearLayout>
-
-            <!-- Row 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:id="@+id/btn_bento_tile_3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_bento_tile"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/tv_bento_tile_3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="#E2E8F0"
-                        android:textSize="13sp"
-                        tools:text="GitHub" />
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/btn_bento_tile_4"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_bento_tile"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/tv_bento_tile_4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="#E2E8F0"
-                        android:textSize="13sp"
-                        tools:text="Share" />
-                </FrameLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- Right Tall Orange Accent Card -->
-        <FrameLayout
-            android:id="@+id/btn_bento_primary_accent"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_bento_tall_accent"
+            android:background="@drawable/bg_bento_tile"
             android:clickable="true"
             android:focusable="true">
 
-            <ImageView
-                android:id="@+id/iv_bento_primary_icon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+            <TextView
+                android:id="@+id/tv_bento_tile_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_play_arrow_vector"
-                app:tint="#18191E"
-                android:contentDescription="Open Primary Link" />
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#E2E8F0"
+                android:textSize="13sp"
+                tools:text="Website" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_bento_tile_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_bento_tile"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/tv_bento_tile_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#E2E8F0"
+                android:textSize="13sp"
+                tools:text="LinkedIn" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_bento_tile_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_bento_tile"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:id="@+id/tv_bento_tile_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#E2E8F0"
+                android:textSize="13sp"
+                tools:text="GitHub" />
         </FrameLayout>
     </LinearLayout>
 

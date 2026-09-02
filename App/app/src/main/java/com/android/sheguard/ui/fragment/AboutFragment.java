@@ -35,14 +35,11 @@ public class AboutFragment extends Fragment {
         final String tile2Url;
         final String tile3Label;
         final String tile3Url;
-        final String tile4Label;
-        final String primaryUrl;
 
         Contributor(String monogram, String name, String role,
                 String tile1Label, String tile1Url,
                 String tile2Label, String tile2Url,
-                String tile3Label, String tile3Url,
-                String tile4Label, String primaryUrl) {
+                String tile3Label, String tile3Url) {
             this.monogram = monogram;
             this.name = name;
             this.role = role;
@@ -52,8 +49,6 @@ public class AboutFragment extends Fragment {
             this.tile2Url = tile2Url;
             this.tile3Label = tile3Label;
             this.tile3Url = tile3Url;
-            this.tile4Label = tile4Label;
-            this.primaryUrl = primaryUrl;
         }
     }
 
@@ -97,8 +92,7 @@ public class AboutFragment extends Fragment {
                 "Lead Developer & System Architect",
                 "Website", "http://psatyakiran.in/",
                 "GitHub", "https://github.com/satyakiran29",
-                "LinkedIn", "https://www.linkedin.com/in/satyakiran299",
-                "Share", "http://psatyakiran.in/"));
+                "LinkedIn", "https://www.linkedin.com/in/satyakiran299"));
 
         // Narasimha
         contributorList.add(new Contributor(
@@ -108,8 +102,7 @@ public class AboutFragment extends Fragment {
                 "LinkedIn",
                 "https://www.linkedin.com/in/narasimha-madeli-ba7b73338?utm_source=share_via&utm_content=profile&utm_medium=member_android",
                 "GitHub", "https://github.com",
-                "Contact", "mailto:contact@guardianai.app",
-                "Share", "https://www.linkedin.com/in/narasimha-madeli-ba7b73338"));
+                "Contact", "mailto:contact@guardianai.app"));
 
         // Harshavardhan
         contributorList.add(new Contributor(
@@ -118,8 +111,7 @@ public class AboutFragment extends Fragment {
                 "Core Android & Security Engineer",
                 "LinkedIn", "https://www.linkedin.com",
                 "GitHub", "https://github.com",
-                "Android", "https://guardianai.app",
-                "Share", "https://guardianai.app"));
+                "Android", "https://guardianai.app"));
 
         // Sneha
         contributorList.add(new Contributor(
@@ -128,8 +120,7 @@ public class AboutFragment extends Fragment {
                 "UI/UX & Safety Systems",
                 "Design", "https://guardianai.app",
                 "LinkedIn", "https://www.linkedin.com",
-                "Safety", "https://guardianai.app",
-                "Share", "https://guardianai.app"));
+                "Safety", "https://guardianai.app"));
 
         // Meghana
         contributorList.add(new Contributor(
@@ -138,8 +129,7 @@ public class AboutFragment extends Fragment {
                 "QA & Location Telemetry",
                 "LinkedIn", "https://www.linkedin.com",
                 "Testing", "https://guardianai.app",
-                "Telemetry", "https://guardianai.app",
-                "Share", "https://guardianai.app"));
+                "Telemetry", "https://guardianai.app"));
     }
 
     private void renderContributors(LayoutInflater inflater) {
@@ -165,13 +155,6 @@ public class AboutFragment extends Fragment {
             card.tvBentoTile3.setText(dev.tile3Label);
             card.btnBentoTile3.setOnClickListener(v -> openUrl(dev.tile3Url, dev.name));
 
-            // Bento Tile 4 (Share action)
-            card.tvBentoTile4.setText(dev.tile4Label);
-            card.btnBentoTile4.setOnClickListener(v -> shareContributor(dev));
-
-            // Right Tall Orange Accent Card
-            card.btnBentoPrimaryAccent.setOnClickListener(v -> openUrl(dev.primaryUrl, dev.name));
-
             binding.layoutTeamContainer.addView(card.getRoot());
         }
     }
@@ -186,19 +169,6 @@ public class AboutFragment extends Fragment {
             startActivity(intent);
         } catch (Exception e) {
             Snackbar.make(binding.getRoot(), "Could not open link", Snackbar.LENGTH_SHORT).show();
-        }
-    }
-
-    private void shareContributor(Contributor dev) {
-        try {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Check out " + dev.name + " (" + dev.role + ") on GuardianAI! " + dev.primaryUrl);
-            sendIntent.setType("text/plain");
-            Intent shareIntent = Intent.createChooser(sendIntent, "Share " + dev.name);
-            startActivity(shareIntent);
-        } catch (Exception ignored) {
         }
     }
 }
