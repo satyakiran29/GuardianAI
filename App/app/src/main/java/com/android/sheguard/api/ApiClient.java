@@ -27,15 +27,16 @@ public class ApiClient {
         void onResult(boolean success, String role, String message);
     }
 
-    // Default Android Emulator IP connecting to Django backend & Supabase
-    private static final String BASE_URL = "http://10.0.2.2:8000/api/";
+    // Production Cloud Render Backend URL
+    private static final String BASE_URL = "https://guardianai-backend-pwn5.onrender.com/api/";
     private static BackendApi apiService;
 
     public static synchronized BackendApi getService() {
         if (apiService == null) {
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(10, TimeUnit.SECONDS)
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
                     .build();
 
             Retrofit retrofit = new Retrofit.Builder()
