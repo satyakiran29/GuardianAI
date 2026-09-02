@@ -270,77 +270,8 @@ public class SettingsFragment extends Fragment {
     }
 
     private void checkForUpdates(View view) {
-        Snackbar.make(view, getString(R.string.checking_for_updates), Snackbar.LENGTH_SHORT).show();
-
-        Executors.newSingleThreadExecutor().execute(() -> {
-            try {
-                URL url = new URL(Constants.UPDATE_JSON_URL);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setConnectTimeout(6000);
-                conn.setReadTimeout(6000);
-
-                int responseCode = conn.getResponseCode();
-                StringBuilder response = new StringBuilder();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    String inputLine;
-                    while ((inputLine = in.readLine()) != null) {
-                        response.append(inputLine);
-                    }
-                    in.close();
-                }
-
-                String jsonStr = response.toString();
-                if (jsonStr.isEmpty()) {
-                    // Fallback to local default update metadata
-                    jsonStr = "{\"versionCode\":3,\"versionName\":\"1.3.0\",\"downloadUrl\":\"https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI.apk\",\"changelog\":[\"🌟 Added Safe Mode & Background Apps Stop\",\"🗺️ Live Map Location via SMS & WhatsApp\",\"🛵 Safe Ride & Escort Map (Rapido companion)\",\"♿ Accessibility Settings & Haptic Feedback\",\"🔄 In-App Updater\"]}";
-                }
-
-                JSONObject obj = new JSONObject(jsonStr);
-                int remoteVersionCode = obj.optInt("versionCode", 1);
-                String remoteVersionName = obj.optString("versionName", "1.0.0");
-                String downloadUrl = obj.optString("downloadUrl", "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI.apk");
-                JSONArray changelogArr = obj.optJSONArray("changelog");
-                StringBuilder changelogBuilder = new StringBuilder();
-                if (changelogArr != null) {
-                    for (int i = 0; i < changelogArr.length(); i++) {
-                        changelogBuilder.append("• ").append(changelogArr.getString(i)).append("\n");
-                    }
-                }
-
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    if (!isAdded()) return;
-
-                    if (remoteVersionCode > BuildConfig.VERSION_CODE) {
-                        new MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(getString(R.string.update_available_title))
-                                .setMessage(getString(R.string.update_available_msg, remoteVersionName, BuildConfig.VERSION_NAME, changelogBuilder.toString().trim()))
-                                .setPositiveButton(getString(R.string.btn_download_update), (dialog, which) -> {
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
-                                    startActivity(browserIntent);
-                                })
-                                .setNegativeButton(getString(R.string.btn_later), null)
-                                .show();
-                    } else {
-                        new MaterialAlertDialogBuilder(requireContext())
-                                .setTitle(getString(R.string.app_updater_title))
-                                .setMessage(getString(R.string.app_is_up_to_date, BuildConfig.VERSION_NAME))
-                                .setPositiveButton(getString(R.string.btn_ok), null)
-                                .show();
-                    }
-                });
-
-            } catch (Exception e) {
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    if (!isAdded()) return;
-                    new MaterialAlertDialogBuilder(requireContext())
-                            .setTitle(getString(R.string.app_updater_title))
-                            .setMessage(getString(R.string.app_is_up_to_date, BuildConfig.VERSION_NAME))
-                            .setPositiveButton(getString(R.string.btn_ok), null)
-                            .show();
-                });
-            }
-        });
+        if (getActivity() != null) {
+            com.android.sheguard.util.AppUpdateManager.checkForUpdates(requireActivity(), true);
+        }
     }
-}
+}

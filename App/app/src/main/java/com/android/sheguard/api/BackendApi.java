@@ -20,6 +20,9 @@ public interface BackendApi {
     @POST("auth/register/")
     Call<JsonObject> registerUser(@Body Map<String, Object> body);
 
+    @POST("auth/profile/update/")
+    Call<JsonObject> updateProfile(@Body Map<String, Object> body);
+
     @POST("auth/login/")
     Call<JsonObject> loginUser(@Body Map<String, Object> body);
 

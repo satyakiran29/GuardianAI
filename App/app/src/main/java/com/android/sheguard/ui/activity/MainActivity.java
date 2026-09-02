@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+
+        // Silent in-app update check on startup
+        com.android.sheguard.util.AppUpdateManager.checkForUpdates(this, false);
     }
 
     public void toggleDrawer() {

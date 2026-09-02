@@ -1,7 +1,7 @@
 {
   "versionCode": 3,
   "versionName": "1.0.4",
-  "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/beta/Apk/GuardianAI-debug.apk",
+  "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
     "hello update testing",
     "🌟 Complete Zero-Firebase migration (Pure Django 6 REST API + Supabase Cloud)",

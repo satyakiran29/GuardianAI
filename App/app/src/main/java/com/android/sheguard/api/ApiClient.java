@@ -169,6 +169,48 @@ public class ApiClient {
         });
     }
 
+    public static void updateProfile(String currentPhone, String currentEmail, String name, String email, String phone, String password, String role, AuthCallback callback) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("current_phone", currentPhone != null ? currentPhone : "");
+        body.put("current_email", currentEmail != null ? currentEmail : "");
+        body.put("name", name);
+        body.put("email", email);
+        body.put("phone", phone);
+        if (password != null && !password.isEmpty()) {
+            body.put("password", password);
+        }
+        body.put("role", role != null ? role : "user");
+
+        Log.d(TAG, "POST /auth/profile/update/ -> " + body);
+
+        getService().updateProfile(body).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "updateProfile SUCCESS: " + response.body());
+                    if (callback != null) callback.onResult(true, role, "Profile updated successfully");
+                } else {
+                    String errorMsg = "Profile update failed";
+                    try {
+                        if (response.errorBody() != null) {
+                            String errStr = response.errorBody().string();
+                            JsonObject errJson = com.google.gson.JsonParser.parseString(errStr).getAsJsonObject();
+                            if (errJson.has("message")) errorMsg = errJson.get("message").getAsString();
+                        }
+                    } catch (Exception ignored) {}
+                    Log.w(TAG, "updateProfile HTTP " + response.code() + ": " + errorMsg);
+                    if (callback != null) callback.onResult(false, null, errorMsg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "updateProfile FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(true, role, "Profile updated locally (Offline)");
+            }
+        });
+    }
+
     public static void loginUser(String identifier, String password, String otpCode, AuthCallback callback) {
         Map<String, Object> body = new HashMap<>();
         body.put("identifier", identifier);

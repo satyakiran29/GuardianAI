@@ -167,6 +167,10 @@
     <string name="btn_download_update">డౌన్‌లోడ్ &amp; ఇన్‌స్టాల్</string>
     <string name="btn_later">తరువాత</string>
     <string name="btn_ok">సరే</string>
+    <string name="downloading_update">అప్‌డేట్ డౌన్‌లోడ్ అవుతోంది…</string>
+    <string name="download_complete">డౌన్‌లోడ్ పూర్తయింది! ఇన్‌స్టాలర్ ప్రారంభమవుతోంది…</string>
+    <string name="download_failed">డౌన్‌లోడ్ విఫలమైంది. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="install_permission_msg">దయచేసి సెట్టింగ్స్‌లో అప్‌డేట్‌లను ఇన్‌స్టాల్ చేయడానికి అనుమతి ఇవ్వండి.</string>
 
     <!-- Safe Ride -->
     <string name="nav_safe_ride">🛵 సేఫ్ రైడ్ &amp; ఎస్కార్ట్ మ్యాప్</string>
@@ -291,4 +295,15 @@
     <string name="voice_sos_stop_listening">వాయిస్ లిజనింగ్ ఆపండి</string>
     <string name="voice_sos_listening_active">🎤 భద్రతా పదాల కోసం వింటోంది…</string>
     <string name="voice_sos_keyword_detected">🚨 వాయిస్ కమాండ్ ద్వారా SOS యాక్టివేట్ చేయబడింది!</string>
+
+    <!-- Profile Edit Strings -->
+    <string name="section_personal_info">వ్యక్తిగత సమాచారం</string>
+    <string name="section_security_password">భద్రత &amp; పాస్‌వర్డ్</string>
+    <string name="new_password">కొత్త పాస్‌వర్డ్</string>
+    <string name="confirm_new_password_hint">కొత్త పాస్‌వర్డ్ నిర్ధారించండి</string>
+    <string name="leave_blank_password_hint">మీరు పాస్‌వర్డ్ మార్చకూడదనుకుంటే ఖాళీగా ఉంచండి.</string>
+    <string name="btn_save_changes">ప్రొఫైల్ సేవ్ చేయండి</string>
+    <string name="profile_updated_successfully">ప్రొఫైల్ విజయవంతంగా నవీకరించబడింది!</string>
 </resources>
+
+
