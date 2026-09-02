@@ -316,19 +316,24 @@ public class SosUtil {
         if (!jsonContacts.isEmpty()) {
             Type type = new TypeToken<List<ContactModel>>() {}.getType();
             try {
-                contacts.addAll(SheGuard.GSON.fromJson(jsonContacts, type));
+                List<ContactModel> loaded = SheGuard.GSON.fromJson(jsonContacts, type);
+                if (loaded != null) {
+                    for (ContactModel c : loaded) {
+                        // Exclude 112 or emergency helplines from stored personal SMS contacts
+                        if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone())) {
+                            contacts.add(c);
+                        }
+                    }
+                }
             } catch (Exception ignored) {}
         }
 
         if (contacts.isEmpty() && ContactsFragment.contacts != null && !ContactsFragment.contacts.isEmpty()) {
-            contacts.addAll(ContactsFragment.contacts);
-        }
-
-        if (contacts.isEmpty()) {
-            contacts.add(new ContactModel("Emergency Helpline", "112"));
-            try {
-                Prefs.putString(Constants.CONTACTS_LIST, SheGuard.GSON.toJson(contacts));
-            } catch (Exception ignored) {}
+            for (ContactModel c : ContactsFragment.contacts) {
+                if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone())) {
+                    contacts.add(c);
+                }
+            }
         }
 
         return contacts;

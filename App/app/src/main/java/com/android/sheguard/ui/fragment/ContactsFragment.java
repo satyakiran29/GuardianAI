@@ -21,6 +21,7 @@ import com.android.sheguard.common.Constants;
 import com.android.sheguard.config.Prefs;
 import com.android.sheguard.databinding.FragmentContactsBinding;
 import com.android.sheguard.model.ContactModel;
+import com.android.sheguard.util.SmsHelper;
 import com.android.sheguard.ui.adapter.ContactsAdapter;
 import com.android.sheguard.ui.adapter.NewContactAdapter;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -95,9 +96,19 @@ public class ContactsFragment extends Fragment {
         Gson gson = SheGuard.GSON;
         String jsonContacts = Prefs.getString(Constants.CONTACTS_LIST, "");
         if (!jsonContacts.isEmpty()) {
-            Type type = new TypeToken<List<ContactModel>>() {
-            }.getType();
-            contacts.addAll(gson.fromJson(jsonContacts, type));
+            Type type = new TypeToken<List<ContactModel>>() {}.getType();
+            try {
+                List<ContactModel> loaded = gson.fromJson(jsonContacts, type);
+                if (loaded != null) {
+                    for (ContactModel c : loaded) {
+                        if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone())) {
+                            contacts.add(c);
+                        }
+                    }
+                }
+            } catch (Exception ignored) {}
+            // Save sanitized list without 112
+            Prefs.putString(Constants.CONTACTS_LIST, gson.toJson(contacts));
         }
 
         if (contacts.isEmpty() && Prefs.getBoolean(Constants.IS_DEMO_MODE, false)) {

@@ -57,6 +57,12 @@ public class RegisterFragment extends Fragment {
                     // 1. Sync with Django & Supabase Backend
                     ApiClient.registerUser(fullName, email, phone, role, (success, assignedRole, msg) -> {
                         loadingDialog.hide();
+                        if (!success) {
+                            if (getContext() != null) {
+                                Toast.makeText(getContext(), msg != null ? msg : "❌ Registration failed", Toast.LENGTH_LONG).show();
+                            }
+                            return;
+                        }
 
                         // 2. Save session locally in Prefs
                         Prefs.putBoolean(Constants.IS_DEMO_MODE, false);

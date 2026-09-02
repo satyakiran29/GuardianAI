@@ -33,6 +33,7 @@ import com.android.sheguard.util.SmsHelper;
 import com.android.sheguard.util.SosUtil;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -80,13 +81,21 @@ public class HomeFragment extends Fragment {
         binding.btnSafeCheckIn.setOnClickListener(v -> {
             SosUtil.vibrateDevice(requireContext());
             ArrayList<ContactModel> contacts = SosUtil.getStoredContacts(requireContext());
+            if (contacts.isEmpty()) {
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), "Your contacts list is empty! Please add emergency contacts.", Snackbar.LENGTH_LONG).show();
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), "Your contacts list is empty! Please add emergency contacts.", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
             String locationUrl = SosUtil.getLiveLocationUrl();
             if (locationUrl.isEmpty()) {
                 locationUrl = "https://maps.google.com";
             }
             String checkInMsg = "✅ I am safe and everything is okay! My current location:\n" + locationUrl;
-            SmsHelper.sendEmergencySmsToContacts(requireContext(), contacts, checkInMsg);
-            Snackbar.make(requireActivity().findViewById(android.R.id.content), "Safety check-in sent to contacts! ✅", Snackbar.LENGTH_LONG).show();
+            int sentCount = SmsHelper.sendEmergencySmsToContacts(requireContext(), contacts, checkInMsg);
+            Snackbar.make(requireActivity().findViewById(android.R.id.content), "Safety check-in sent to " + sentCount + " contact(s)! ✅", Snackbar.LENGTH_LONG).show();
         });
 
         MainActivity.shakeDetection.setValue(Prefs.getBoolean(Constants.SETTINGS_SHAKE_DETECTION, false));

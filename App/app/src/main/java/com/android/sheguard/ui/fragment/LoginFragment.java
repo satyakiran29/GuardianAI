@@ -108,6 +108,13 @@ public class LoginFragment extends Fragment {
 
             ApiClient.loginUser(email, password, null, (success, role, message) -> {
                 loadingDialog.hide();
+                if (!success) {
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), message != null ? message : "❌ Invalid email or password", Toast.LENGTH_LONG).show();
+                    }
+                    return;
+                }
+
                 Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
                 Prefs.putString(Constants.PREFS_USER_EMAIL, email);
                 if (Prefs.getString(Constants.PREFS_USER_PHONE, null) == null) {

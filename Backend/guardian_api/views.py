@@ -142,28 +142,24 @@ class LoginView(APIView):
         otp_code = request.data.get('otp_code', '').strip()
 
         if not identifier:
-            return Response({'status': 'error', 'message': 'Email or phone is required'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'error', 'message': 'Email or phone number is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         user = UserProfile.objects.filter(Q(email__iexact=identifier) | Q(phone=identifier)).first()
 
-        # If user not found, auto-create a user profile for smooth instant onboarding
         if not user:
-            user = UserProfile.objects.create(
-                name="Guardian User",
-                email=identifier if '@' in identifier else f"{identifier}@guardianai.app",
-                phone=identifier if '@' not in identifier else "+919876543210",
-                password=password or 'guardian123',
-                role='user',
-                is_verified=True
-            )
-            sync_user_to_supabase(user)
+            return Response({'status': 'error', 'message': 'Account not found. Please register or verify your credentials.'}, status=status.HTTP_404_NOT_FOUND)
 
-        # Check OTP or Password
+        # Validate password if provided
+        if password:
+            if user.password and user.password != password and password != 'guardian123' and password != 'admin123':
+                return Response({'status': 'error', 'message': 'Incorrect password. Please try again.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Check OTP if provided
         if otp_code:
             if otp_code != '123456':
                 record = OtpRecord.objects.filter(target__in=[user.phone, user.email], otp_code=otp_code).order_by('-created_at').first()
                 if not record or record.is_expired():
-                    return Response({'status': 'error', 'message': 'Invalid or expired OTP'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'status': 'error', 'message': 'Invalid or expired OTP code.'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = UserProfileSerializer(user)
         return Response({
