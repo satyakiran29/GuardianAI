@@ -39,6 +39,17 @@ public class RegisterFragment extends Fragment {
             otpVerificationDialog = new OtpVerificationDialog(getContext());
         }
 
+        if (getArguments() != null) {
+            String prefillEmail = getArguments().getString("PREFILL_EMAIL");
+            String prefillPhone = getArguments().getString("PREFILL_PHONE");
+            if (prefillEmail != null && !prefillEmail.isEmpty()) {
+                binding.etEmail.setText(prefillEmail);
+            }
+            if (prefillPhone != null && !prefillPhone.isEmpty()) {
+                binding.etPhone.setText(prefillPhone);
+            }
+        }
+
         binding.btnRegister.setOnClickListener(v -> {
             if (!isInformationValid()) {
                 return;
@@ -47,6 +58,7 @@ public class RegisterFragment extends Fragment {
             final String fullName = Objects.requireNonNull(binding.etFullName.getText()).toString().trim();
             final String email = Objects.requireNonNull(binding.etEmail.getText()).toString().trim();
             final String phone = Objects.requireNonNull(binding.etPhone.getText()).toString().trim();
+            final String password = Objects.requireNonNull(binding.etPassword.getText()).toString().trim();
             final String role = binding.rbRoleGuardian.isChecked() ? "guardian" : "user";
 
             // Launch 6-digit OTP verification dialog before finalizing registration
@@ -55,8 +67,14 @@ public class RegisterFragment extends Fragment {
                     loadingDialog.show(null);
 
                     // 1. Sync with Django & Supabase Backend
-                    ApiClient.registerUser(fullName, email, phone, role, (success, assignedRole, msg) -> {
+                    ApiClient.registerUser(fullName, email, phone, password, role, (success, assignedRole, msg) -> {
                         loadingDialog.hide();
+                        if (!success) {
+                            if (getContext() != null) {
+                                Toast.makeText(getContext(), msg != null ? msg : "❌ Registration failed", Toast.LENGTH_LONG).show();
+                            }
+                            return;
+                        }
 
                         // 2. Save session locally in Prefs
                         Prefs.putBoolean(Constants.IS_DEMO_MODE, false);

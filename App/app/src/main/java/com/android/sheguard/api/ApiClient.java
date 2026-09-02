@@ -1,5 +1,7 @@
 package com.android.sheguard.api;
 
+import android.util.Log;
+
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -15,6 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
+    private static final String TAG = "GuardianAPI";
+
     public interface OtpSendCallback {
         void onResult(boolean success, String generatedOtp);
     }
@@ -27,15 +31,26 @@ public class ApiClient {
         void onResult(boolean success, String role, String message);
     }
 
-    // Default Android Emulator IP connecting to Django backend & Supabase
-    private static final String BASE_URL = "http://10.0.2.2:8000/api/";
+    // Production Cloud Render Backend URL
+    private static String BASE_URL = "https://guardianai-backend-pwn5.onrender.com/api/";
     private static BackendApi apiService;
+
+    public static void setBaseUrl(String newUrl) {
+        BASE_URL = newUrl;
+        apiService = null;
+    }
+
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
 
     public static synchronized BackendApi getService() {
         if (apiService == null) {
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(10, TimeUnit.SECONDS)
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .retryOnConnectionFailure(true)
                     .build();
 
             Retrofit retrofit = new Retrofit.Builder()
@@ -54,21 +69,26 @@ public class ApiClient {
         body.put("target", target);
         body.put("purpose", purpose);
 
+        Log.d(TAG, "POST /auth/send-otp/ -> " + body + " to " + BASE_URL);
+
         getService().sendOtp(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     JsonObject json = response.body();
+                    Log.d(TAG, "sendOtp SUCCESS: " + json);
                     String otp = json.has("otp") ? json.get("otp").getAsString() : "123456";
                     if (callback != null) callback.onResult(true, otp);
                 } else {
+                    Log.w(TAG, "sendOtp HTTP " + response.code() + ": " + response.message());
                     if (callback != null) callback.onResult(true, "123456");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                // Fallback demo OTP when offline
+                Log.e(TAG, "sendOtp FAILED: " + t.getMessage());
+                // Fallback demo OTP when offline or sleeping
                 if (callback != null) callback.onResult(true, "123456");
             }
         });
@@ -76,6 +96,7 @@ public class ApiClient {
 
     public static void verifyOtp(String target, String otpCode, OtpVerifyCallback callback) {
         if ("123456".equals(otpCode)) {
+            Log.d(TAG, "verifyOtp: Master Demo Passcode 123456 used");
             if (callback != null) callback.onResult(true, "Verified (Demo Passcode)");
             return;
         }
@@ -84,43 +105,66 @@ public class ApiClient {
         body.put("target", target);
         body.put("otp_code", otpCode);
 
+        Log.d(TAG, "POST /auth/verify-otp/ -> " + body);
+
         getService().verifyOtp(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "verifyOtp SUCCESS: " + response.body());
                     if (callback != null) callback.onResult(true, "Verified");
                 } else {
+                    Log.w(TAG, "verifyOtp HTTP " + response.code());
                     if (callback != null) callback.onResult(false, "Invalid OTP code");
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "verifyOtp FAILED: " + t.getMessage());
                 if (callback != null) callback.onResult(true, "Verified (Offline)");
             }
         });
     }
 
     public static void registerUser(String name, String email, String phone, String role, AuthCallback callback) {
+        registerUser(name, email, phone, "guardian123", role, callback);
+    }
+
+    public static void registerUser(String name, String email, String phone, String password, String role, AuthCallback callback) {
         Map<String, Object> body = new HashMap<>();
         body.put("name", name);
         body.put("email", email);
         body.put("phone", phone);
+        body.put("password", password != null && !password.isEmpty() ? password : "guardian123");
         body.put("role", role != null ? role : "user");
+
+        Log.d(TAG, "POST /auth/register/ -> " + body);
 
         getService().registerUser(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "registerUser SUCCESS: " + response.body());
                     if (callback != null) callback.onResult(true, role, "Registration successful");
                 } else {
-                    if (callback != null) callback.onResult(true, role, "Local registration saved");
+                    String errorMsg = "Registration failed";
+                    try {
+                        if (response.errorBody() != null) {
+                            String errStr = response.errorBody().string();
+                            JsonObject errJson = com.google.gson.JsonParser.parseString(errStr).getAsJsonObject();
+                            if (errJson.has("message")) errorMsg = errJson.get("message").getAsString();
+                        }
+                    } catch (Exception ignored) {}
+                    Log.w(TAG, "registerUser HTTP " + response.code() + ": " + errorMsg);
+                    if (callback != null) callback.onResult(false, null, errorMsg);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                if (callback != null) callback.onResult(true, role, "Offline registration saved");
+                Log.e(TAG, "registerUser FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, "Network error: " + t.getMessage());
             }
         });
     }
@@ -131,21 +175,34 @@ public class ApiClient {
         body.put("password", password);
         body.put("otp_code", otpCode);
 
+        Log.d(TAG, "POST /auth/login/ -> " + body);
+
         getService().loginUser(body).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     JsonObject json = response.body();
+                    Log.d(TAG, "loginUser SUCCESS: " + json);
                     String role = json.has("role") ? json.get("role").getAsString() : "user";
                     if (callback != null) callback.onResult(true, role, "Login successful");
                 } else {
-                    if (callback != null) callback.onResult(true, "user", "Offline login granted");
+                    String errorMsg = "Invalid email or password";
+                    try {
+                        if (response.errorBody() != null) {
+                            String errStr = response.errorBody().string();
+                            JsonObject errJson = com.google.gson.JsonParser.parseString(errStr).getAsJsonObject();
+                            if (errJson.has("message")) errorMsg = errJson.get("message").getAsString();
+                        }
+                    } catch (Exception ignored) {}
+                    Log.w(TAG, "loginUser HTTP " + response.code() + ": " + errorMsg);
+                    if (callback != null) callback.onResult(false, null, errorMsg);
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                if (callback != null) callback.onResult(true, "user", "Offline login granted");
+                Log.e(TAG, "loginUser FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, "Network error: Unable to connect to server");
             }
         });
     }
@@ -160,12 +217,22 @@ public class ApiClient {
         body.put("siren_active", siren);
         body.put("battery_level", battery);
 
+        Log.d(TAG, "POST /sos/trigger/ -> " + body + " to " + BASE_URL);
+
         getService().triggerSos(body).enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {}
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d(TAG, "triggerSos SUCCESS [200]: " + response.body());
+                } else {
+                    Log.w(TAG, "triggerSos response HTTP " + response.code() + ": " + response.message());
+                }
+            }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {}
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "triggerSos network error: " + t.getMessage(), t);
+            }
         });
     }
 
@@ -177,12 +244,22 @@ public class ApiClient {
         body.put("address", address);
         body.put("battery_level", battery);
 
+        Log.d(TAG, "POST /location/ping/ -> " + body);
+
         getService().pingLocation(body).enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {}
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "pingLocation SUCCESS: " + response.body());
+                } else {
+                    Log.w(TAG, "pingLocation HTTP " + response.code());
+                }
+            }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {}
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "pingLocation FAILED: " + t.getMessage());
+            }
         });
     }
 }

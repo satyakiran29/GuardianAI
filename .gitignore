@@ -1,0 +1,41 @@
+# Python & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Django local DB & logs
+*.sqlite3
+db.sqlite3
+*.log
+
+# Environment Secrets (NEVER COMMIT)
+.env
+Backend/.env
+.env.local
+.env.*.local
+
+# Static collected files (optional, rebuilt on server)
+# staticfiles/
+
+# IDE & OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Android
+.gradle/
+build/
+app/build/
+*.apk
+*.aab
+local.properties
+.cxx/
+/Backend/staticfiles

@@ -62,6 +62,19 @@ public final class SmsHelper {
     }
 
     /**
+     * Checks if a phone number is an official emergency dispatch helpline (e.g. 112, 100, 911).
+     * SMS messages should never be dispatched to emergency call center hotlines.
+     */
+    public static boolean isEmergencyHelplineNumber(@Nullable String rawPhone) {
+        if (rawPhone == null) return false;
+        String phone = sanitizePhoneNumber(rawPhone);
+        return phone.equals("112") || phone.equals("911") || phone.equals("100") ||
+               phone.equals("101") || phone.equals("102") || phone.equals("108") ||
+               phone.equals("1090") || phone.equals("1091") || phone.equals("999") ||
+               phone.equals("109");
+    }
+
+    /**
      * Sanitizes phone number by stripping unsupported special characters.
      */
     @NonNull
@@ -94,6 +107,12 @@ public final class SmsHelper {
         String phoneNumber = sanitizePhoneNumber(rawPhoneNumber);
         if (phoneNumber.isEmpty()) {
             Log.e(TAG, "sendSms: Target phone number is empty or invalid!");
+            return false;
+        }
+
+        // Never send automated text/check-in SMS to 112 / emergency dispatch lines
+        if (isEmergencyHelplineNumber(phoneNumber)) {
+            Log.w(TAG, "sendSms: Blocked SMS to emergency helpline hotline: " + phoneNumber);
             return false;
         }
 

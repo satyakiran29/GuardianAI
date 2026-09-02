@@ -21,6 +21,7 @@ import com.android.sheguard.model.ContactModel;
 import com.android.sheguard.ui.activity.MainActivity;
 import com.android.sheguard.ui.view.LoadingDialog;
 import com.android.sheguard.ui.view.OtpVerificationDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -106,8 +107,51 @@ public class LoginFragment extends Fragment {
             String email = Objects.requireNonNull(binding.etEmail.getText()).toString().trim();
             String password = Objects.requireNonNull(binding.etPassword.getText()).toString().trim();
 
+            binding.etEmailLayout.setError(null);
+            binding.etEmailLayout.setErrorEnabled(false);
+            binding.etPasswordLayout.setError(null);
+            binding.etPasswordLayout.setErrorEnabled(false);
+
             ApiClient.loginUser(email, password, null, (success, role, message) -> {
                 loadingDialog.hide();
+                if (!success) {
+                    boolean isUserNotFound = message != null && (
+                            message.toLowerCase().contains("not found") ||
+                            message.toLowerCase().contains("register") ||
+                            message.toLowerCase().contains("no account")
+                    );
+
+                    boolean isPasswordError = message != null && message.toLowerCase().contains("password");
+
+                    if (isUserNotFound && getContext() != null) {
+                        binding.etEmailLayout.setError("Account not found");
+                        new MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog)
+                                .setTitle("Account Not Found")
+                                .setMessage("No GuardianAI account exists for \"" + email + "\".\n\nWould you like to register a new account now?")
+                                .setPositiveButton("Register Now", (dialog, which) -> {
+                                    Bundle bundle = new Bundle();
+                                    if (email.contains("@")) {
+                                        bundle.putString("PREFILL_EMAIL", email);
+                                    } else {
+                                        bundle.putString("PREFILL_PHONE", email);
+                                    }
+                                    NavHostFragment.findNavController(LoginFragment.this)
+                                            .navigate(R.id.action_loginFragment_to_registerFragment, bundle);
+                                })
+                                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                                .show();
+                    } else if (isPasswordError) {
+                        binding.etPasswordLayout.setError(message);
+                        binding.etPassword.requestFocus();
+                        if (getContext() != null) {
+                            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                        }
+                    } else if (getContext() != null) {
+                        Toast.makeText(getContext(), message != null ? message : "❌ Invalid email or password", Toast.LENGTH_LONG).show();
+                    }
+                    return;
+                }
+
                 Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
                 Prefs.putString(Constants.PREFS_USER_EMAIL, email);
                 if (Prefs.getString(Constants.PREFS_USER_PHONE, null) == null) {
