@@ -63,7 +63,7 @@ public class RegisterFragment extends Fragment {
 
             // Launch 6-digit OTP verification dialog before finalizing registration
             if (otpVerificationDialog != null) {
-                otpVerificationDialog.show(phone, "registration", (target, otpCode) -> {
+                otpVerificationDialog.show(email.isEmpty() ? phone : email, "registration", (target, otpCode) -> {
                     loadingDialog.show(null);
 
                     // 1. Sync with Django & Supabase Backend

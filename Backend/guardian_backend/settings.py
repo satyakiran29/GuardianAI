@@ -89,10 +89,11 @@ if DATABASE_URL:
         DATABASES = {
             'default': dj_database_url.parse(
                 DATABASE_URL,
-                conn_max_age=600,
+                conn_max_age=0,
                 ssl_require=True
             )
         }
+        DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
         DATABASES['default']['CONN_HEALTH_CHECKS'] = True
     except Exception:
         DATABASES = {
@@ -151,3 +152,13 @@ REST_FRAMEWORK = {
 # Supabase Credentials (Loaded from .env)
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://jwntzspmzapxablkmqhp.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "sb_publishable_jB5ChDHJa-XPwBPyoHMLNQ_1kZb3AMv")
+
+# Email Configuration (Gmail SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_TIMEOUT = 3
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'satyakiran294@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'tfwaavbdoyxeegnx')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'GuardianAI Safety <satyakiran294@gmail.com>')

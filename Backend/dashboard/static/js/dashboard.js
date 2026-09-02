@@ -24,32 +24,34 @@ function initLiveMap() {
     attributionControl: true
   }).setView([17.4065, 78.4772], 12);
 
-  // OpenFreeMap Free Dark Tiles Layer (No API Key Required)
-  const openFreeMapDark = L.tileLayer('https://tiles.openfreemap.org/styles/dark/{z}/{x}/{y}.png', {
+  // CartoDB Dark Matter (Sleek Dark Theme - 100% Free / No Key)
+  const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
-    attribution: 'Map data &copy; <a href="https://openfreemap.org" target="_blank" style="color: #60a5fa; text-decoration: none;">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" style="color: #64748b;">OpenStreetMap</a> contributors'
+    subdomains: 'abcd',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
   });
 
-  // OpenFreeMap Free Liberty / High-Detail Street Tiles Layer
-  const openFreeMapLiberty = L.tileLayer('https://tiles.openfreemap.org/styles/liberty/{z}/{x}/{y}.png', {
+  // CartoDB Voyager (Clean High-Contrast Street View)
+  const cartoVoyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
-    attribution: 'Map data &copy; <a href="https://openfreemap.org" target="_blank" style="color: #60a5fa; text-decoration: none;">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" style="color: #64748b;">OpenStreetMap</a> contributors'
+    subdomains: 'abcd',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
   });
 
-  // OpenFreeMap Bright / High-Contrast Layer
-  const openFreeMapBright = L.tileLayer('https://tiles.openfreemap.org/styles/bright/{z}/{x}/{y}.png', {
+  // OpenStreetMap Standard Street Layer
+  const osmStandard = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: 'Map data &copy; <a href="https://openfreemap.org" target="_blank" style="color: #60a5fa; text-decoration: none;">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" style="color: #64748b;">OpenStreetMap</a> contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   });
 
   // Add default dark layer
-  openFreeMapDark.addTo(liveMap);
+  cartoDark.addTo(liveMap);
 
-  // Add layer controls for easy switching between free OpenFreeMap styles
+  // Add layer controls for switching styles
   const baseMaps = {
-    "🌌 OpenFreeMap Dark Radar": openFreeMapDark,
-    "🏙️ OpenFreeMap Liberty Street": openFreeMapLiberty,
-    "☀️ OpenFreeMap Bright Mode": openFreeMapBright
+    "🌌 Dark Radar (Default)": cartoDark,
+    "🏙️ Voyager Street Map": cartoVoyager,
+    "🗺️ OpenStreetMap": osmStandard
   };
   L.control.layers(baseMaps, null, { position: 'topright' }).addTo(liveMap);
 
@@ -85,15 +87,18 @@ function renderMapMarkers() {
         iconAnchor: [15, 15]
       });
 
+      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}`;
+
       const popupContent = `
-        <div style="color: #0f172a; font-family: sans-serif; min-width: 220px;">
+        <div style="color: #0f172a; font-family: sans-serif; min-width: 230px;">
           <h4 style="margin: 0 0 6px; color: #ef4444; font-size: 14px; font-weight: bold;">🚨 SOS #${item.id} - ${item.status.toUpperCase()}</h4>
           <p style="margin: 0 0 4px; font-size: 12px;"><strong>Victim:</strong> ${item.user_name} (<code>${item.user_phone}</code>)</p>
           <p style="margin: 0 0 4px; font-size: 12px;"><strong>Trigger:</strong> ${item.trigger_source}</p>
           <p style="margin: 0 0 4px; font-size: 12px;"><strong>Battery:</strong> ${item.battery}%</p>
-          <p style="margin: 0 0 8px; font-size: 11px; color: #475569;">📍 ${item.address}</p>
-          <div style="display: flex; gap: 6px; margin-top: 6px;">
-            <a href="/alerts/" style="background: #ef4444; color: #fff; padding: 4px 10px; text-decoration: none; border-radius: 4px; font-size: 11px; font-weight: bold;">⚡ Dispatch Unit</a>
+          <p style="margin: 0 0 8px; font-size: 11px; color: #475569;">📍 <a href="${googleMapsUrl}" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: none;">${item.address} ↗</a></p>
+          <div style="display: flex; gap: 6px; margin-top: 8px;">
+            <a href="/alerts/" style="background: #ef4444; color: #fff; padding: 5px 10px; text-decoration: none; border-radius: 6px; font-size: 11px; font-weight: bold;">⚡ Dispatch Unit</a>
+            <a href="${googleMapsUrl}" target="_blank" style="background: #2563eb; color: #fff; padding: 5px 10px; text-decoration: none; border-radius: 6px; font-size: 11px; font-weight: bold;">🗺️ Google Maps ↗</a>
           </div>
         </div>
       `;
@@ -124,12 +129,15 @@ function renderMapMarkers() {
         iconAnchor: [13, 13]
       });
 
+      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}`;
+
       const guardPopup = `
-        <div style="color: #0f172a; font-family: sans-serif; min-width: 180px;">
+        <div style="color: #0f172a; font-family: sans-serif; min-width: 190px;">
           <h4 style="margin: 0 0 4px; color: #10b981; font-size: 13px; font-weight: bold;">🛡️ Guardian Unit</h4>
           <p style="margin: 0 0 2px; font-size: 12px;"><strong>${item.name}</strong></p>
           <p style="margin: 0 0 4px; font-size: 11px; color: #475569;">📞 ${item.phone}</p>
-          <p style="margin: 0; font-size: 11px; color: #64748b;">📍 ${item.address || 'Patrol Route'}</p>
+          <p style="margin: 0 0 6px; font-size: 11px; color: #64748b;">📍 ${item.address || 'Patrol Route'}</p>
+          <a href="${googleMapsUrl}" target="_blank" style="background: #059669; color: #fff; padding: 4px 8px; text-decoration: none; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block;">🗺️ Google Maps ↗</a>
         </div>
       `;
 

@@ -32,6 +32,12 @@ public class VoiceSosFragment extends Fragment {
         binding = FragmentVoiceSosBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(0, statusBarHeight, 0, 0);
+            return insets;
+        });
+
         binding.btnToggleVoiceSos.setOnClickListener(v -> {
             if (isListening) {
                 stopListening();

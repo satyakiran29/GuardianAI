@@ -8,36 +8,52 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.android.sheguard.BuildConfig;
 import com.android.sheguard.R;
 import com.android.sheguard.databinding.FragmentAboutBinding;
 import com.android.sheguard.databinding.ItemDeveloperCardBinding;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class AboutFragment extends Fragment {
 
     private FragmentAboutBinding binding;
-    private final List<Developer> developerList = new ArrayList<>();
+    private final List<Contributor> contributorList = new ArrayList<>();
 
-    private static class Developer {
-        final int nameRes;
-        final int roleRes;
-        final String url;
-        final boolean isHighlight;
+    private static class Contributor {
+        final String monogram;
+        final String name;
+        final String role;
+        final String tile1Label;
+        final String tile1Url;
+        final String tile2Label;
+        final String tile2Url;
+        final String tile3Label;
+        final String tile3Url;
+        final String tile4Label;
+        final String primaryUrl;
 
-        Developer(int nameRes, int roleRes, String url, boolean isHighlight) {
-            this.nameRes = nameRes;
-            this.roleRes = roleRes;
-            this.url = url;
-            this.isHighlight = isHighlight;
+        Contributor(String monogram, String name, String role,
+                String tile1Label, String tile1Url,
+                String tile2Label, String tile2Url,
+                String tile3Label, String tile3Url,
+                String tile4Label, String primaryUrl) {
+            this.monogram = monogram;
+            this.name = name;
+            this.role = role;
+            this.tile1Label = tile1Label;
+            this.tile1Url = tile1Url;
+            this.tile2Label = tile2Label;
+            this.tile2Url = tile2Url;
+            this.tile3Label = tile3Label;
+            this.tile3Url = tile3Url;
+            this.tile4Label = tile4Label;
+            this.primaryUrl = primaryUrl;
         }
     }
 
@@ -46,66 +62,143 @@ public class AboutFragment extends Fragment {
         binding = FragmentAboutBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.header.toolbar);
-        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-            binding.header.collapsingToolbar.setTitle(getString(R.string.activity_about_title));
-            binding.header.collapsingToolbar.setSubtitle(getString(R.string.activity_about_desc));
-        }
-
-        initDeveloperList();
-        renderDevelopers(inflater);
-
-        binding.btnShuffleTeam.setOnClickListener(v -> {
-            renderDevelopers(inflater);
-            Snackbar.make(binding.getRoot(), "🔀 Team order randomized!", Snackbar.LENGTH_SHORT).show();
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(0, statusBarHeight, 0, 0);
+            return insets;
         });
+
+        // Close / Back button action
+        binding.btnCloseCredits.setOnClickListener(v -> {
+            try {
+                Navigation.findNavController(v).navigateUp();
+            } catch (Exception ignored) {
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
+            }
+        });
+
+        binding.tvAppVersion.setText("guardianai v" + BuildConfig.VERSION_NAME);
+
+        initContributorList();
+        renderContributors(inflater);
 
         return view;
     }
 
-    private void initDeveloperList() {
-        developerList.clear();
-        developerList.add(new Developer(R.string.team_member_1_name, R.string.team_member_1_role, "http://psatyakiran.in/", true));
-        developerList.add(new Developer(R.string.team_member_2_name, R.string.team_member_2_role, null, false));
-        developerList.add(new Developer(R.string.team_member_3_name, R.string.team_member_3_role, null, false));
-        developerList.add(new Developer(R.string.team_member_4_name, R.string.team_member_4_role, null, false));
-        developerList.add(new Developer(R.string.team_member_5_name, R.string.team_member_5_role, null, false));
+    private void initContributorList() {
+        contributorList.clear();
+
+        // Satya Kiran
+        contributorList.add(new Contributor(
+                "P",
+                "Pampana Satya Kiran",
+                "Lead Developer & System Architect",
+                "Website", "http://psatyakiran.in/",
+                "GitHub", "https://github.com/satyakiran29",
+                "LinkedIn", "https://www.linkedin.com/in/satyakiran299",
+                "Share", "http://psatyakiran.in/"));
+
+        // Narasimha
+        contributorList.add(new Contributor(
+                "M",
+                "Madeli Narasimha",
+                "Backend & Cloud Integration",
+                "LinkedIn",
+                "https://www.linkedin.com/in/narasimha-madeli-ba7b73338?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+                "GitHub", "https://github.com",
+                "Contact", "mailto:contact@guardianai.app",
+                "Share", "https://www.linkedin.com/in/narasimha-madeli-ba7b73338"));
+
+        // Harshavardhan
+        contributorList.add(new Contributor(
+                "H",
+                "Amarthaluri Harshavardhan",
+                "Core Android & Security Engineer",
+                "LinkedIn", "https://www.linkedin.com",
+                "GitHub", "https://github.com",
+                "Android", "https://guardianai.app",
+                "Share", "https://guardianai.app"));
+
+        // Sneha
+        contributorList.add(new Contributor(
+                "S",
+                "Mammula Sneha",
+                "UI/UX & Safety Systems",
+                "Design", "https://guardianai.app",
+                "LinkedIn", "https://www.linkedin.com",
+                "Safety", "https://guardianai.app",
+                "Share", "https://guardianai.app"));
+
+        // Meghana
+        contributorList.add(new Contributor(
+                "M",
+                "Kadagala Meghana",
+                "QA & Location Telemetry",
+                "LinkedIn", "https://www.linkedin.com",
+                "Testing", "https://guardianai.app",
+                "Telemetry", "https://guardianai.app",
+                "Share", "https://guardianai.app"));
     }
 
-    private void renderDevelopers(LayoutInflater inflater) {
-        Collections.shuffle(developerList);
+    private void renderContributors(LayoutInflater inflater) {
         binding.layoutTeamContainer.removeAllViews();
 
-        for (Developer dev : developerList) {
-            ItemDeveloperCardBinding cardBinding = ItemDeveloperCardBinding.inflate(inflater, binding.layoutTeamContainer, false);
-            cardBinding.tvDevName.setText(getString(dev.nameRes));
-            cardBinding.tvDevRole.setText(getString(dev.roleRes));
+        for (Contributor dev : contributorList) {
+            ItemDeveloperCardBinding card = ItemDeveloperCardBinding.inflate(inflater, binding.layoutTeamContainer,
+                    false);
 
-            if (dev.url != null && !dev.url.isEmpty()) {
-                cardBinding.tvDevUrl.setVisibility(View.VISIBLE);
-                cardBinding.tvDevUrl.setText("🌐 " + dev.url);
-                cardBinding.ivDevArrow.setVisibility(View.VISIBLE);
-                cardBinding.cardDeveloper.setStrokeWidth(3);
-                cardBinding.cardDeveloper.setOnClickListener(v -> {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(dev.url)));
-                    } catch (Exception ignored) {
-                    }
-                });
-            } else {
-                cardBinding.tvDevUrl.setVisibility(View.GONE);
-                cardBinding.ivDevArrow.setVisibility(View.GONE);
-                cardBinding.cardDeveloper.setStrokeWidth(0);
-                cardBinding.cardDeveloper.setOnClickListener(v -> {
-                    renderDevelopers(inflater);
-                    Snackbar.make(binding.getRoot(), "🔀 Randomized: " + getString(dev.nameRes), Snackbar.LENGTH_SHORT).show();
-                });
-            }
+            card.tvDevMonogram.setText(dev.monogram);
+            card.tvDevName.setText(dev.name);
+            card.tvDevRole.setText(dev.role);
 
-            binding.layoutTeamContainer.addView(cardBinding.getRoot());
+            // Bento Tile 1
+            card.tvBentoTile1.setText(dev.tile1Label);
+            card.btnBentoTile1.setOnClickListener(v -> openUrl(dev.tile1Url, dev.name));
+
+            // Bento Tile 2
+            card.tvBentoTile2.setText(dev.tile2Label);
+            card.btnBentoTile2.setOnClickListener(v -> openUrl(dev.tile2Url, dev.name));
+
+            // Bento Tile 3
+            card.tvBentoTile3.setText(dev.tile3Label);
+            card.btnBentoTile3.setOnClickListener(v -> openUrl(dev.tile3Url, dev.name));
+
+            // Bento Tile 4 (Share action)
+            card.tvBentoTile4.setText(dev.tile4Label);
+            card.btnBentoTile4.setOnClickListener(v -> shareContributor(dev));
+
+            // Right Tall Orange Accent Card
+            card.btnBentoPrimaryAccent.setOnClickListener(v -> openUrl(dev.primaryUrl, dev.name));
+
+            binding.layoutTeamContainer.addView(card.getRoot());
+        }
+    }
+
+    private void openUrl(String url, String devName) {
+        if (url == null || url.isEmpty()) {
+            Snackbar.make(binding.getRoot(), devName + " profile coming soon!", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        } catch (Exception e) {
+            Snackbar.make(binding.getRoot(), "Could not open link", Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void shareContributor(Contributor dev) {
+        try {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Check out " + dev.name + " (" + dev.role + ") on GuardianAI! " + dev.primaryUrl);
+            sendIntent.setType("text/plain");
+            Intent shareIntent = Intent.createChooser(sendIntent, "Share " + dev.name);
+            startActivity(shareIntent);
+        } catch (Exception ignored) {
         }
     }
 }

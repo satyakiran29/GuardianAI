@@ -31,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.drawerLayout, (v, insets) -> {
+            androidx.core.view.ViewCompat.dispatchApplyWindowInsets(binding.fragmentContainerView, insets);
+            return insets;
+        });
+
         binding.navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             binding.drawerLayout.closeDrawer(binding.navView);
