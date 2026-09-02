@@ -312,4 +312,36 @@ public class HomeFragment extends Fragment {
                 .setNegativeButton("Cancel", null)
                 .show();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        syncLiveLocationTelemetry();
+    }
+
+    private void syncLiveLocationTelemetry() {
+        if (getContext() == null) return;
+        if (com.android.sheguard.util.LocationHelper.hasLocationPermission(requireContext())) {
+            com.android.sheguard.util.LocationHelper.requestSingleLocationUpdate(requireContext(), new com.android.sheguard.util.LocationHelper.LocationResultListener() {
+                @Override
+                public void onLocationReceived(double latitude, double longitude, String addressName) {
+                    if (getContext() == null) return;
+                    String phone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+                    int battery = 85;
+                    try {
+                        android.os.BatteryManager bm = (android.os.BatteryManager) requireContext().getSystemService(Context.BATTERY_SERVICE);
+                        if (bm != null) {
+                            battery = bm.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY);
+                        }
+                    } catch (Exception ignored) {}
+                    if (!phone.isEmpty()) {
+                        com.android.sheguard.api.ApiClient.pingLocation(phone, latitude, longitude, addressName, battery);
+                    }
+                }
+
+                @Override
+                public void onLocationError(String error) {}
+            });
+        }
+    }
 }

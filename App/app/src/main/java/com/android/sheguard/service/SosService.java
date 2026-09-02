@@ -224,6 +224,34 @@ public class SosService extends Service implements SensorEventListener {
             SosUtil.sendWhatsAppLocation(SosService.this, contacts, mLocation);
             sentWhatsApp = true;
         }
+
+        // 4. Sync live telemetric SOS alert with Django & Supabase Cloud
+        String userPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "+919876543210");
+        boolean isSiren = Prefs.getBoolean(Constants.SETTINGS_PLAY_SIREN, false);
+        int batteryLevel = 85;
+        try {
+            android.os.BatteryManager bm = (android.os.BatteryManager) getSystemService(Context.BATTERY_SERVICE);
+            if (bm != null) {
+                batteryLevel = bm.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY);
+            }
+        } catch (Exception ignored) {}
+
+        com.android.sheguard.api.ApiClient.triggerSos(
+                userPhone,
+                latitude != 0.0 ? latitude : 17.3850,
+                longitude != 0.0 ? longitude : 78.4867,
+                mLocation,
+                "shake",
+                isSiren,
+                batteryLevel
+        );
+        com.android.sheguard.api.ApiClient.pingLocation(
+                userPhone,
+                latitude != 0.0 ? latitude : 17.3850,
+                longitude != 0.0 ? longitude : 78.4867,
+                mLocation,
+                batteryLevel
+        );
     }
 
     private void sendLocation(ArrayList<ContactModel> contacts) {
