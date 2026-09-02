@@ -51,6 +51,12 @@ public class SafeRouteFragment extends Fragment {
         binding = FragmentSafeRouteBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(0, statusBarHeight, 0, 0);
+            return insets;
+        });
+
         checkPermissionsAndFetchLocation();
 
         binding.btnRefreshLocation.setOnClickListener(v -> checkPermissionsAndFetchLocation());

@@ -393,5 +393,6 @@
     <string name="leave_blank_password_hint">Leave password fields blank if you do not wish to change your password.</string>
     <string name="btn_save_changes">Save Profile Changes</string>
     <string name="profile_updated_successfully">Profile updated successfully!</string>
+    <string name="btn_sign_in_email_otp">✉️ Sign In with Email OTP</string>
 </resources>
-
+

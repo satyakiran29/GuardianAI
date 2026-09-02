@@ -70,12 +70,45 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'guardian_backend.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database Configuration (Supabase PostgreSQL with fallback to SQLite)
+DATABASE_URL = os.getenv('DATABASE_URL') or os.getenv('SUPABASE_DB_URL')
+
+if DATABASE_URL:
+    # Auto-rewrite direct IPv6 Supabase host to verified IPv4 pooler for Render/Cloud hosts
+    if 'db.jwntzspmzapxablkmqhp.supabase.co' in DATABASE_URL:
+        DATABASE_URL = DATABASE_URL.replace(
+            'db.jwntzspmzapxablkmqhp.supabase.co:5432',
+            'aws-0-ap-northeast-1.pooler.supabase.com:6543'
+        ).replace(
+            '//postgres:',
+            '//postgres.jwntzspmzapxablkmqhp:'
+        )
+
+    try:
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.parse(
+                DATABASE_URL,
+                conn_max_age=0,
+                ssl_require=True
+            )
+        }
+        DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
+        DATABASES['default']['CONN_HEALTH_CHECKS'] = True
+    except Exception:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -119,3 +152,13 @@ REST_FRAMEWORK = {
 # Supabase Credentials (Loaded from .env)
 SUPABASE_URL = os.getenv("SUPABASE_URL", "https://jwntzspmzapxablkmqhp.supabase.co")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "sb_publishable_jB5ChDHJa-XPwBPyoHMLNQ_1kZb3AMv")
+
+# Email Configuration (Gmail SMTP)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_TIMEOUT = 3
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'satyakiran294@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'tfwaavbdoyxeegnx')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'GuardianAI Safety <satyakiran294@gmail.com>')

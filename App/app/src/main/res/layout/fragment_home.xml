@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#0A0B0E"
+        android:fitsSystemWindows="true"
         tools:context=".ui.fragment.HomeFragment">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -14,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:fitsSystemWindows="true"
             app:elevation="0dp">
 
             <include
@@ -21,7 +23,7 @@
                 layout="@layout/view_header_expandable"
                 android:visibility="gone" />
 
-            <!-- Clean Top Navigation Bar matching the reference image -->
+            <!-- Clean Top Navigation Bar with Avatar & Overflow Menu -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,9 +31,10 @@
                 android:gravity="center_vertical"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:paddingTop="28dp"
+                android:paddingTop="16dp"
                 android:paddingBottom="12dp">
 
+                <!-- Title & Slogan on the Left -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -42,9 +45,9 @@
                         android:id="@+id/tv_home_main_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Guardian AI"
+                        android:text="Safety"
                         android:textColor="#FFFFFF"
-                        android:textSize="32sp"
+                        android:textSize="26sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
 
@@ -55,22 +58,42 @@
                         android:layout_marginTop="2dp"
                         android:text="Stay aware. Stay connected."
                         android:textColor="#94A3B8"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
 
-                <!-- Top Action Buttons: Info, Settings, and Logout -->
+                <!-- Profile Avatar & 3-Dots Menu Button on the Right -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
-                    <!-- Settings Button -->
+                    <!-- User Avatar -->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/btn_top_profile"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="12dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="#1F2026"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:id="@+id/iv_top_profile_avatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_drdisagree"
+                            android:contentDescription="Profile" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- 3-Dots Overflow Menu Button -->
                     <FrameLayout
-                        android:id="@+id/btn_top_settings"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_marginEnd="8dp"
+                        android:id="@+id/btn_top_menu"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/bg_circle_info"
                         android:clickable="true"
                         android:focusable="true">
@@ -79,51 +102,14 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_settings"
+                            android:src="@drawable/ic_more_vert"
                             app:tint="#E2E8F0"
-                            android:contentDescription="Settings" />
-                    </FrameLayout>
-
-                    <!-- Top Right Info / Helpline Circle Button -->
-                    <FrameLayout
-                        android:id="@+id/btn_top_alert_info"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_circle_info"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="!"
-                            android:textColor="#FFFFFF"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                    </FrameLayout>
-
-                    <!-- Logout Button -->
-                    <FrameLayout
-                        android:id="@+id/btn_top_logout"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:background="@drawable/bg_circle_logout"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_logout_2"
-                            app:tint="#EF4444"
-                            android:contentDescription="Logout" />
+                            android:contentDescription="More Options" />
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

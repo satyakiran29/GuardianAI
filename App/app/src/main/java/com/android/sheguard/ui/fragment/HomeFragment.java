@@ -54,6 +54,12 @@ public class HomeFragment extends Fragment {
         } catch (Exception ignored) {}
         setUserNameOnTitle();
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.appBarLayout, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(0, statusBarHeight, 0, 0);
+            return insets;
+        });
+
         NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel channel1 = new NotificationChannel(getString(R.string.notification_channel_push), getString(R.string.notification_channel_push), NotificationManager.IMPORTANCE_HIGH);
         NotificationChannel channel2 = new NotificationChannel(getString(R.string.notification_channel_emergency), getString(R.string.notification_channel_emergency), NotificationManager.IMPORTANCE_DEFAULT);
@@ -73,9 +79,8 @@ public class HomeFragment extends Fragment {
         });
 
         binding.sosCircleBadge.setOnClickListener(v -> binding.sosButton.performClick());
-        binding.btnTopAlertInfo.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_helplineFragment));
-        binding.btnTopSettings.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_settingsFragment));
-        binding.btnTopLogout.setOnClickListener(v -> showLogoutDialog());
+        binding.btnTopProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment));
+        binding.btnTopMenu.setOnClickListener(this::showTopOverflowMenu);
         binding.cardCrowdSafety.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safeRouteFragment));
 
         binding.btnSafeCheckIn.setOnClickListener(v -> {
@@ -193,6 +198,8 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_safeRideFragment, null, navOptions);
             } else if (id == R.id.nav_settings) {
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_settingsFragment, null, navOptions);
+            } else if (id == R.id.nav_credits) {
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_aboutFragment, null, navOptions);
             } else if (id == R.id.nav_logout) {
                 Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
                 Prefs.remove(Constants.PREFS_USER_NAME);
@@ -285,6 +292,37 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private void showTopOverflowMenu(View anchor) {
+        androidx.appcompat.widget.PopupMenu popup = new androidx.appcompat.widget.PopupMenu(requireContext(), anchor);
+        popup.getMenuInflater().inflate(R.menu.menu_home_overflow, popup.getMenu());
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.menu_drawer) {
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).toggleDrawer();
+                }
+                return true;
+            } else if (id == R.id.menu_helplines) {
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_helplineFragment);
+                return true;
+            } else if (id == R.id.menu_safe_ride) {
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_safeRideFragment);
+                return true;
+            } else if (id == R.id.menu_settings) {
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_settingsFragment);
+                return true;
+            } else if (id == R.id.menu_credits) {
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_aboutFragment);
+                return true;
+            } else if (id == R.id.menu_logout) {
+                showLogoutDialog();
+                return true;
+            }
+            return false;
+        });
+        popup.show();
+    }
+
     private void showLogoutDialog() {
         new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Log Out")
@@ -305,5 +343,37 @@ public class HomeFragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        syncLiveLocationTelemetry();
+    }
+
+    private void syncLiveLocationTelemetry() {
+        if (getContext() == null) return;
+        if (com.android.sheguard.util.LocationHelper.hasLocationPermission(requireContext())) {
+            com.android.sheguard.util.LocationHelper.requestSingleLocationUpdate(requireContext(), new com.android.sheguard.util.LocationHelper.LocationResultListener() {
+                @Override
+                public void onLocationReceived(double latitude, double longitude, String addressName) {
+                    if (getContext() == null) return;
+                    String phone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+                    int battery = 85;
+                    try {
+                        android.os.BatteryManager bm = (android.os.BatteryManager) requireContext().getSystemService(Context.BATTERY_SERVICE);
+                        if (bm != null) {
+                            battery = bm.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY);
+                        }
+                    } catch (Exception ignored) {}
+                    if (!phone.isEmpty()) {
+                        com.android.sheguard.api.ApiClient.pingLocation(phone, latitude, longitude, addressName, battery);
+                    }
+                }
+
+                @Override
+                public void onLocationError(String error) {}
+            });
+        }
     }
 }

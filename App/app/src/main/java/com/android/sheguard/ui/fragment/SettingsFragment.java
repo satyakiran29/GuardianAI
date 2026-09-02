@@ -52,6 +52,21 @@ public class SettingsFragment extends Fragment {
             binding.header.collapsingToolbar.setSubtitle(getString(R.string.activity_settings_desc));
         }
 
+        // Profile & Account Settings
+        String userName = Prefs.getString(Constants.PREFS_USER_NAME, "My Profile");
+        String userPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+        binding.tvProfileName.setText(userName);
+        if (!userPhone.isEmpty()) {
+            binding.tvProfileDesc.setText(userPhone + " • " + getString(R.string.activity_edit_profile_desc));
+        }
+        binding.profileContainer.setOnClickListener(v -> {
+            try {
+                androidx.navigation.Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_editProfileFragment);
+            } catch (Exception e) {
+                // Fallback
+            }
+        });
+
         // Shake Detection
         binding.switchShakeDetection.setChecked(Prefs.getBoolean(Constants.SETTINGS_SHAKE_DETECTION, false));
         binding.switchShakeDetection.setOnCheckedChangeListener((buttonView, isChecked) -> {

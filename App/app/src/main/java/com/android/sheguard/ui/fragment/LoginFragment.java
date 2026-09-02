@@ -45,32 +45,49 @@ public class LoginFragment extends Fragment {
 
         binding.btnRegister.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_registerFragment));
 
-        // Phone OTP Sign-In
+        // Email / Phone OTP Sign-In
         binding.btnLoginOtp.setOnClickListener(v -> {
             String target = Objects.requireNonNull(binding.etEmail.getText()).toString().trim();
             if (target.isEmpty()) {
-                target = "+919876501234"; // Demo phone
+                binding.etEmailLayout.setError("Enter your email or phone to receive an OTP");
+                binding.etEmail.requestFocus();
+                return;
             }
+
+            binding.etEmailLayout.setError(null);
+            binding.etEmailLayout.setErrorEnabled(false);
 
             final String loginTarget = target;
             if (otpVerificationDialog != null) {
                 otpVerificationDialog.show(loginTarget, "login", (verifiedTarget, otpCode) -> {
-                    Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
-                    Prefs.putString(Constants.PREFS_USER_NAME, "Guardian User");
-                    Prefs.putString(Constants.PREFS_USER_PHONE, verifiedTarget);
-                    Prefs.putString("USER_ROLE", "user");
+                    loadingDialog.show(null);
+                    ApiClient.loginUser(verifiedTarget, null, otpCode, (success, role, message) -> {
+                        loadingDialog.hide();
+                        if (success) {
+                            Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
+                            if (verifiedTarget.contains("@")) {
+                                Prefs.putString(Constants.PREFS_USER_EMAIL, verifiedTarget);
+                            } else {
+                                Prefs.putString(Constants.PREFS_USER_PHONE, verifiedTarget);
+                            }
+                            Prefs.putString("USER_ROLE", role != null ? role : "user");
 
-                    if (getContext() != null) {
-                        Toast.makeText(getContext(), "🎉 Signed in with OTP successfully!", Toast.LENGTH_SHORT).show();
-                    }
+                            if (getContext() != null) {
+                                Toast.makeText(getContext(), "🎉 Signed in with OTP successfully!", Toast.LENGTH_SHORT).show();
+                            }
 
-                    Intent mainIntent = new Intent(getActivity(), MainActivity.class);
-                    mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(mainIntent);
+                            Intent mainIntent = new Intent(getActivity(), MainActivity.class);
+                            mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(mainIntent);
+                        } else {
+                            if (getContext() != null) {
+                                Toast.makeText(getContext(), message != null ? message : "Verification failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 });
             }
         });
-
         // 1-Click Demo Account Mode
         binding.btnDemoAccount.setOnClickListener(v -> {
             Prefs.putBoolean(Constants.IS_DEMO_MODE, true);

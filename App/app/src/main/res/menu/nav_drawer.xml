@@ -18,6 +18,11 @@
         android:title="@string/activity_settings_title" />
 
     <item
+        android:id="@+id/nav_credits"
+        android:icon="@drawable/ic_about"
+        android:title="@string/activity_about_title" />
+
+    <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_logout_2"
         android:title="@string/btn_log_out" />

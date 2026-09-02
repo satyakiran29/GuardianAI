@@ -30,6 +30,12 @@ public class SafetyTimerFragment extends Fragment {
         binding = FragmentSafetyTimerBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(0, statusBarHeight, 0, 0);
+            return insets;
+        });
+
         binding.chip15m.setOnClickListener(v -> setDuration(15));
         binding.chip30m.setOnClickListener(v -> setDuration(30));
         binding.chip45m.setOnClickListener(v -> setDuration(45));

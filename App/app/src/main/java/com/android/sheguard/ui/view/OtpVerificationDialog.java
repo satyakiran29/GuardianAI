@@ -95,7 +95,11 @@ public class OtpVerificationDialog {
         this.currentTarget = target;
         this.listener = listener;
 
-        binding.tvOtpSubtitle.setText(String.format("Enter the 6-digit verification code sent to %s", target));
+        if (target != null && target.contains("@")) {
+            binding.tvOtpSubtitle.setText(String.format("Enter the 6-digit code sent from security@psatyakiran.in to %s", target));
+        } else {
+            binding.tvOtpSubtitle.setText(String.format("Enter the 6-digit verification code sent to %s", target));
+        }
         clearOtpBoxes();
         startTimer(60000);
 
@@ -103,7 +107,8 @@ public class OtpVerificationDialog {
         ApiClient.sendOtp(target, purpose != null ? purpose : "verification", (success, otpCode) -> {
             if (success && otpCode != null && !otpCode.isEmpty()) {
                 // Hint demo users
-                Toast.makeText(context, "🔑 OTP Generated: " + otpCode, Toast.LENGTH_LONG).show();
+                String prefix = (target != null && target.contains("@")) ? "📧 Email OTP sent to " : "📱 SMS OTP sent to ";
+                Toast.makeText(context, prefix + target + " (Code: " + otpCode + ")", Toast.LENGTH_LONG).show();
             }
         });
 

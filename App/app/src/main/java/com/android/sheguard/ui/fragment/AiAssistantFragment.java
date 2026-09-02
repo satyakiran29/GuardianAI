@@ -28,6 +28,12 @@ public class AiAssistantFragment extends Fragment {
         binding = FragmentAiAssistantBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(0, statusBarHeight, 0, 0);
+            return insets;
+        });
+
         binding.chipQ1.setOnClickListener(v -> handleQuestion("🚨 I feel I'm being followed"));
         binding.chipQ2.setOnClickListener(v -> handleQuestion("🚕 Safety tips for night cab"));
         binding.chipQ3.setOnClickListener(v -> handleQuestion("🥋 Key self-defense moves"));

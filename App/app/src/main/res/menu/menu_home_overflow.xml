@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_drawer"
+        android:title="Open Side Menu" />
+    <item
+        android:id="@+id/menu_helplines"
+        android:title="Emergency Helplines" />
+    <item
+        android:id="@+id/menu_safe_ride"
+        android:title="Safe Ride Monitoring" />
+    <item
+        android:id="@+id/menu_settings"
+        android:title="Settings" />
+    <item
+        android:id="@+id/menu_credits"
+        android:title="Engineering Credits" />
+    <item
+        android:id="@+id/menu_logout"
+        android:title="Log Out" />
+</menu>

@@ -39,3 +39,6 @@ app/build/
 local.properties
 .cxx/
 /Backend/staticfiles
+Backend/.env
+Backend/.env
+Backend/.env
