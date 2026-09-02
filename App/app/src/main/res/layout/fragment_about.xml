@@ -38,6 +38,7 @@
 
         <!-- Centered CREDITS Label -->
         <TextView
+            android:id="@+id/tv_credits_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -82,7 +83,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="sans-serif"
                 android:letterSpacing="0.08"
-                android:text="guardianai v1.0.2"
+                android:text="guardianai v1.0.3"
                 android:textColor="#64748B"
                 android:textSize="12sp" />
         </LinearLayout>

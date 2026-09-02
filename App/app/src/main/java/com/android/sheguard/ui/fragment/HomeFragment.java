@@ -297,12 +297,7 @@ public class HomeFragment extends Fragment {
         popup.getMenuInflater().inflate(R.menu.menu_home_overflow, popup.getMenu());
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
-            if (id == R.id.menu_drawer) {
-                if (getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).toggleDrawer();
-                }
-                return true;
-            } else if (id == R.id.menu_helplines) {
+            if (id == R.id.menu_helplines) {
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_helplineFragment);
                 return true;
             } else if (id == R.id.menu_safe_ride) {

@@ -79,6 +79,12 @@ public class AboutFragment extends Fragment {
         initContributorList();
         renderContributors(inflater);
 
+        // Also randomize on clicking the CREDITS title
+        binding.tvAppVersion.setOnClickListener(v -> {
+            java.util.Collections.shuffle(contributorList);
+            renderContributors(inflater);
+        });
+
         return view;
     }
 
@@ -92,7 +98,7 @@ public class AboutFragment extends Fragment {
                 "Lead Developer & System Architect",
                 "Website", "http://psatyakiran.in/",
                 "GitHub", "https://github.com/satyakiran29",
-                "LinkedIn", "https://www.linkedin.com/in/satyakiran299"));
+                "LinkedIn", "https://www.linkedin.com/in/satyakiran29"));
 
         // Narasimha
         contributorList.add(new Contributor(
@@ -102,7 +108,7 @@ public class AboutFragment extends Fragment {
                 "LinkedIn",
                 "https://www.linkedin.com/in/narasimha-madeli-ba7b73338?utm_source=share_via&utm_content=profile&utm_medium=member_android",
                 "GitHub", "https://github.com",
-                "Contact", "mailto:contact@guardianai.app"));
+                "Website", "https://guardianai.app"));
 
         // Harshavardhan
         contributorList.add(new Contributor(
@@ -111,16 +117,16 @@ public class AboutFragment extends Fragment {
                 "Core Android & Security Engineer",
                 "LinkedIn", "https://www.linkedin.com",
                 "GitHub", "https://github.com",
-                "Android", "https://guardianai.app"));
+                "Website", "https://guardianai.app"));
 
         // Sneha
         contributorList.add(new Contributor(
                 "S",
                 "Mammula Sneha",
                 "UI/UX & Safety Systems",
-                "Design", "https://guardianai.app",
-                "LinkedIn", "https://www.linkedin.com",
-                "Safety", "https://guardianai.app"));
+                "LinkedIn", "https://guardianai.app",
+                "Instagram", "https://www.instagram.com",
+                "Website", "https://guardianai.app"));
 
         // Meghana
         contributorList.add(new Contributor(
@@ -128,8 +134,11 @@ public class AboutFragment extends Fragment {
                 "Kadagala Meghana",
                 "QA & Location Telemetry",
                 "LinkedIn", "https://www.linkedin.com",
-                "Testing", "https://guardianai.app",
-                "Telemetry", "https://guardianai.app"));
+                "GitHub", "https://github.com",
+                "Website", "https://guardianai.app"));
+
+        // Randomize the order each time
+        java.util.Collections.shuffle(contributorList);
     }
 
     private void renderContributors(LayoutInflater inflater) {
@@ -154,6 +163,12 @@ public class AboutFragment extends Fragment {
             // Bento Tile 3
             card.tvBentoTile3.setText(dev.tile3Label);
             card.btnBentoTile3.setOnClickListener(v -> openUrl(dev.tile3Url, dev.name));
+
+            // Tapping card header also re-shuffles
+            card.cardDeveloper.setOnClickListener(v -> {
+                java.util.Collections.shuffle(contributorList);
+                renderContributors(inflater);
+            });
 
             binding.layoutTeamContainer.addView(card.getRoot());
         }

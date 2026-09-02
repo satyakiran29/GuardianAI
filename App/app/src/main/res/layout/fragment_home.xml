@@ -45,7 +45,7 @@
                         android:id="@+id/tv_home_main_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Safety"
+                        android:text="Guardian AI"
                         android:textColor="#FFFFFF"
                         android:textSize="26sp"
                         android:textStyle="bold"
