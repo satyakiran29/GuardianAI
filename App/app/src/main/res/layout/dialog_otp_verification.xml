@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
+
+        <!-- Top Icon Header -->
+        <FrameLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/shape_circle_primary_tint">
+
+            <ImageView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_password_small"
+                app:tint="?attr/colorPrimary"
+                android:contentDescription="@string/password" />
+        </FrameLayout>
+
+        <!-- Title -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_otp_title"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verify OTP Passcode"
+            android:textStyle="bold"
+            android:textColor="@color/text_color_primary"
+            android:textSize="22sp" />
+
+        <!-- Subtitle -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_otp_subtitle"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="Enter the 6-digit verification code sent to your phone or email"
+            android:textColor="@color/text_color_secondary"
+            android:textSize="14sp" />
+
+        <!-- 6-Digit OTP Input Container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_otp_1"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@drawable/shape_otp_box"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_otp_2"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@drawable/shape_otp_box"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_otp_3"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@drawable/shape_otp_box"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_otp_4"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@drawable/shape_otp_box"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_otp_5"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@drawable/shape_otp_box"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_otp_6"
+                android:layout_width="44dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="3dp"
+                android:background="@drawable/shape_otp_box"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Resend Timer -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="20dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_resend_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resend code in: "
+                android:textColor="@color/text_color_secondary"
+                android:textSize="13sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_otp_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:59"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="13sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/btn_resend_otp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Resend Now"
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Verify Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_verify_otp"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/button_height"
+            android:text="Verify &amp; Continue"
+            android:textSize="16sp"
+            app:cornerRadius="@dimen/component_corner_radius" />
+
+        <!-- Demo Passcode Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_demo_fill_otp"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="🌟 Auto-Fill Demo OTP (123456)"
+            android:textSize="13sp" />
+
+        <!-- Cancel / Close -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel_otp"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="@color/text_color_secondary"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

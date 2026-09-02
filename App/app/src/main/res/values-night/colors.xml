@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="pink">#FFEF6B99</color>
+    <color name="shadow">#66000000</color>
+    <color name="colorPrimary">#6366F1</color>
+    <color name="colorPrimaryDark">#4F46E5</color>
+    <color name="colorAccent">#34D399</color>
+    <color name="colorPurple">#818CF8</color>
+    <color name="colorIndigo">#6366F1</color>
+    <color name="colorBlueMidnight">#0B0F19</color>
+    <color name="colorGrey">#64748B</color>
+    <color name="textColorPrimary">#F8FAFC</color>
+    <color name="textColorSecondary">#94A3B8</color>
+    <color name="login_bg">#0B0F19</color>
+    <color name="surface_card">#161B26</color>
+    <color name="surface_background">#0B0F19</color>
+</resources>

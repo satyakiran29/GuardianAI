@@ -1,0 +1,383 @@
+<resources>
+    <string name="app_name" translatable="false">GuardianAI</string>
+    <string name="app_moto">Your safety in your hands</string>
+
+    <string name="onboarding_slide1_title">Welcome to GuardianAI</string>
+    <string name="onboarding_slide1_subtitle">Your personal guardian app for safety and security</string>
+    <string name="onboarding_slide1_desc">GuardianAI empowers and protects you. Let\'s start your journey toward safety and peace of mind.</string>
+    <string name="onboarding_slide2_title">Your Safety, Your Way</string>
+    <string name="onboarding_slide2_subtitle">Customized protection at your fingertips</string>
+    <string name="onboarding_slide2_desc">Tailor GuardianAI to your preferences, choosing the features that matter most.</string>
+    <string name="onboarding_slide3_title">A Supportive Community</string>
+    <string name="onboarding_slide3_subtitle">Be more independent and feel the happiness</string>
+    <string name="onboarding_slide3_desc">Join our community, access safety resources, and stand together for safety and empowerment.</string>
+
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="get_started">Get started</string>
+
+    <string name="email_verification">Please verify your email</string>
+    <string name="email_verification_description"><![CDATA[You\'re almost there! We sent an email to <b>%s</b><br /><br />Just click on the link in that email to complete your signup. If you don\'t see it, you may need to <b>check your spam</b> folder.]]></string>
+    <string name="email_reset">Please check your email</string>
+    <string name="email_reset_description"><![CDATA[You\'re almost there! We sent an email to <b>%s</b><br /><br />Just click on the link in that email to reset your password. If you don\'t see it, you may need to <b>check your spam</b> folder.]]></string>
+
+    <string name="notification_channel_push">Push notification</string>
+    <string name="notification_channel_push_desc">Push notification</string>
+    <string name="notification_channel_emergency">Emergency mode</string>
+    <string name="notification_channel_emergency_desc">Emergency alert service</string>
+
+    <string name="notification_emergency_mode">%s is now in Emergency Mode</string>
+    <string name="sos_message">🚨 EMERGENCY SOS!\nHey %1$s, I am in Danger and need help!\n📍 Coordinates &amp; Live Map:\n%2$s</string>
+    <string name="sos_notification">I\'m in Danger! My location: %s</string>
+    <string name="btn_start_service">Start Shake Detection</string>
+    <string name="btn_stop_service">Stop Shake Detection</string>
+
+    <string name="activity_home_title">Welcome</string>
+    <string name="activity_home_desc">%s!</string>
+    <string name="activity_profile_title">Profile</string>
+    <string name="activity_profile_desc">Manage your account information</string>
+    <string name="activity_edit_profile_title">Edit Profile</string>
+    <string name="activity_edit_profile_desc">Change account information</string>
+    <string name="activity_contacts_title">Contacts</string>
+    <string name="activity_contacts_desc">Quick access to trusted contacts</string>
+    <string name="activity_helpline_title">Helpline</string>
+    <string name="activity_helpline_desc">Support from local authorities</string>
+    <string name="activity_settings_title">Settings</string>
+    <string name="activity_settings_desc">Customize your safety experience</string>
+    <string name="activity_safety_tips_title">Safety tips</string>
+    <string name="activity_safety_tips_desc">Access a wealth of safety resources</string>
+    <string name="activity_about_title">About</string>
+    <string name="activity_about_desc">Learn more about our mission</string>
+
+    <string name="background_story">In recent years, we\'ve witnessed a surge in safety incidents targeting citizens, women, children, and the elderly. Introducing GuardianAI, our innovative response to these challenges.\n\nGuardianAI empowers you by putting your safety back into your hands with AI-driven and instant alert systems that keep your family and friends informed during times of distress.</string>
+    <string name="whats_good">What\'s Good About This App?</string>
+    <string name="intuitive_design">Intuitive Design</string>
+    <string name="intuitive_design_desc">Experience seamless navigation through our app, designed with the principles of modern material design, ensuring both functionality and aesthetics.</string>
+    <string name="effortless_registration">Effortless Registration</string>
+    <string name="effortless_registration_desc">Join our community swiftly with our hassle-free registration and demo account process. Your safety is just moments away.</string>
+    <string name="automatic_alerts">Automatic Alerts</string>
+    <string name="automatic_alerts_desc">GuardianAI provides you with an instant lifeline. A simple press of the SOS button sends automated SMS alerts to your selected contacts, including your precise location.</string>
+    <string name="contact_empty">Contact list is empty</string>
+    <string name="new_name">New name</string>
+    <string name="new_phone">New phone</string>
+    <string name="btn_save">Save</string>
+    <string name="sos">SOS</string>
+    <string name="sign_in">Sign In</string>
+    <string name="please_sign_in">Please sign in to your account first</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="btn_sign_in">Sign in</string>
+    <string name="dont_have_account">Don\'t have an account yet?</string>
+    <string name="btn_sign_up">Sign up</string>
+    <string name="btn_edit_profile">Edit profile</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="location">Location</string>
+    <string name="btn_log_out">Log out</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_your_account">Create your account and start your journey</string>
+    <string name="full_name">Full name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="btn_register">Register</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="phone_number">Phone number</string>
+    <string name="btn_add_contact">Add contact</string>
+    <string name="details">Details</string>
+    <string name="btn_close">Close</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="shake_detection">Shake detection</string>
+    <string name="shake_detection_desc">Send SOS when you shake your phone. This requires accelerometer sensor.</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="send_sms_desc">Use SMS service to send SOS. Carrier charges may apply.</string>
+    <string name="send_notification">Send notification</string>
+    <string name="send_notification_desc">Use Notification service to send SOS. Your contacts must have account.</string>
+    <string name="play_siren">Play siren</string>
+    <string name="play_siren_desc">Play fake police siren at full volume in emergency mode.</string>
+    <string name="call_emergency_service">Call primary contact</string>
+    <string name="call_emergency_service_desc">Automatically call your primary emergency contact number in emergency mode.</string>
+    <string name="btn_resend_email">Resend Email</string>
+    <string name="remove_contact_confirmation">Are you sure you want to remove this contact?</string>
+    <string name="contact_removed_successfully">Contact removed successfully</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="details_saved_successfully">Details saved successfully</string>
+    <string name="service_started">Service Started!</string>
+    <string name="service_stopped">Service Stopped!</string>
+    <string name="unknown_user">Unknown user</string>
+    <string name="permission_must_be_granted">Permission Must Be Granted!</string>
+    <string name="grant">Grant</string>
+    <string name="verification_email_sent">Verification email sent</string>
+    <string name="enter_your_email_address">Enter your email address</string>
+    <string name="password_reset_email_sent">Password reset email sent</string>
+    <string name="email_is_required">Email is required</string>
+    <string name="password_is_required">Password is required</string>
+    <string name="gps_is_not_enabled">GPS is not enabled</string>
+    <string name="getting_location">Getting location…</string>
+    <string name="failed_to_get_location">Failed to get location</string>
+    <string name="please_enter_your_full_name">Please enter your full name</string>
+    <string name="please_enter_your_email">Please enter your email</string>
+    <string name="please_enter_a_valid_email">Please enter a valid email</string>
+    <string name="please_enter_your_phone_number">Please enter your phone number</string>
+    <string name="please_enter_a_valid_phone_number">Please enter a valid phone number</string>
+    <string name="please_enter_your_password">Please enter your password</string>
+    <string name="please_enter_your_password_again">Please enter your password again</string>
+    <string name="password_does_not_match">Password does not match</string>
+    <string name="password_constraints">Password must contain at least 8 characters, 1 digit, 1 lower case letter, 1 upper case letter and no white spaces</string>
+
+    <string name="safety_tips_tip_1">Be Alert! Scan the area as you walk. Be aware of your surroundings and walk with confidence.</string>
+    <string name="safety_tips_tip_2">Avoid shopping alone. Try to shop with a friend or relative.</string>
+    <string name="safety_tips_tip_3">Know your surroundings. Keep an eye on the people in front of you as well as behind you.</string>
+    <string name="safety_tips_tip_4">Carry your purse close to your body and do not leave it unattended.</string>
+    <string name="safety_tips_tip_5">Try not to carry too many packages. Place all packages out of sight in your vehicle, preferably in the trunk.</string>
+    <string name="safety_tips_tip_6">Park your vehicle in a well-lighted area. Even in daylight hours, you may want to park near a light pole so if you leave when it is darker, your car will be in a well-lit location.</string>
+    <string name="safety_tips_tip_7">Approach your vehicle with your keys already in your hand. Keep your vehicle doors locked and your windows shut.  Look around, under and in your car, especially the back seat, before you get in.</string>
+    <string name="safety_tips_tip_8">When leaving a business late at night, (if available) ask a security guard to walk you to your car. Do not go up to just any security guard. Go directly to the kiosk and ask for them to assign an officer to escort you. Predators sometimes dress up to resemble security or other authority figures.</string>
+    <string name="safety_tips_tip_9">When a business requests you to confirm your home address, whisper it to them. Broadcasting your home address among strangers in the line could compromise your safety.</string>
+    <string name="safety_tips_tip_10">When checking into a hotel room, if the person at the front desk says your room number out loud, ask them to give you a new room and write the number on a piece of paper. Or when you check-in, ask up front to not say your room number out loud. Your room number should be your business only.</string>
+    <string name="safety_tips_tip_11">Before entering your hotel room, make sure no one is lingering in the hallway.</string>
+    <string name="safety_tips_tip_12">Always immediately lock your hotel room door after you enter.</string>
+    <string name="safety_tips_tip_13">If you call for room service, and you get a knock on your door, do not immediately open the door. Ask: "Who is it?" Make the person on the other side of the door tell you who they are before you open it. If in doubt do not open the door and call the front desk.</string>
+    <string name="safety_tips_tip_14">When asking for directions and someone offers to show you the way by having you follow them, do not go. Just ask for them to point you in the right direction. Often, predators just want to lure you to a place less crowded where your calls for help can\'t be heard.</string>
+    <string name="safety_tips_tip_15">Always pour your own drink at a party and bring it with you everywhere…even to the bathroom. This will make it more difficult for someone to drug you via your drink.</string>
+    <string name="safety_tips_tip_16">If you choose to partake in drinking alcohol, remember to have a designated driver.</string>
+    <string name="safety_tips_tip_17">Watch the bartender as he or she pours your drink. To be extra safe, drink wine instead of a cocktail. Mixed drinks take longer to make. You could be easily distracted and miss the bartender  (who could be working with a predator) or someone else placing something in your drink.</string>
+    <string name="safety_tips_tip_18">When going out with your friends, decide beforehand you will stick together. Do not let your friend go off alone with any person.</string>
+    <string name="safety_tips_tip_19">Don\'t check-in on social media apps when you arrive somewhere. Instead, check in as you leave. This way no one will be able to digitally stalk you and know your every move or when you\'re not at home. Along the same lines, avoid tweeting or using Facebook from vacation, especially if your account is public, as it is a way of letting the world know your home is unoccupied.</string>
+    <string name="safety_tips_tip_20">When you move into a new residence, check areas for possible hidden cameras. Your landlord, previous tenant or previous owner could be spying on you.</string>
+    <string name="safety_tips_tip_21">Unfortunately, no matter how diligently we practice awareness and avoidance techniques, we may find ourselves in a physical confrontation. If available, it is suggested to take self defense training.</string>
+
+    <string name="helpline_name1">Government helpline number for Violence against women / prevention of child marriage</string>
+    <string name="helpline_name2">National Emergency Hotline Number</string>
+    <string name="helpline_name3">National Hotline Number</string>
+    <string name="helpline_name4">National helpline center for violence against women</string>
+    <string name="helpline_name5">Kaan Pete Roi</string>
+    <string name="helpline_name6">Moner Bondhu</string>
+    <string name="helpline_name7">Sajida Foundation</string>
+    <string name="helpline_name8">Dosh Unisher Mor Helpdesk for GBV/SRHR/psychosocial support.</string>
+    <string name="helpline_name9">Ain o Salish Kendra (ASK)</string>
+    <string name="helpline_name10">Bandhu Social Welfare Society (In collaboration with Ministry of Social Welfare)</string>
+    <string name="helpline_name11">Friendship Bangladesh</string>
+    <string name="helpline_name12">Action Against Hunger (ACF BD)</string>
+    <string name="helpline_desc1">Multi sectoral referral and psychosocial support; This is the main helpline number to call and has been/being circulated nationwide.</string>
+    <string name="helpline_desc2">Immediate services to police and hospitals.</string>
+    <string name="helpline_desc3">Immediate reports/help for any social problems from enquiring after COVID 19 to child marriage and sexual harassment cases.</string>
+    <string name="helpline_desc4">Immediate service to victims and links up to relevant agencies: doctors, counselors, lawyers, DNA experts, police officers.</string>
+    <string name="helpline_desc5"><![CDATA[Mental Health & Psychosocial helpline.]]></string>
+    <string name="helpline_desc6"><![CDATA[Mental Health & Psychosocial helpline.]]></string>
+    <string name="helpline_desc7"><![CDATA[Mental Health & Psychosocial helpline. (9AM - 5PM)]]></string>
+    <string name="helpline_desc8"><![CDATA[Mental Health & Psychosocial helpline.]]></string>
+    <string name="helpline_desc9">Legal assistance, emergency shelter and mental healthcare.</string>
+    <string name="helpline_desc10">Psychosocial support as well as guideline for SRHR and legal aspects.</string>
+    <string name="helpline_desc11">Advices on primary healthcare, SGBV and psychosocial support.</string>
+    <string name="helpline_desc12">Psychosocial support and case management.</string>
+    <string name="helpline_num1">109</string>
+    <string name="helpline_num2">999</string>
+    <string name="helpline_num3">333</string>
+    <string name="helpline_num4">10921</string>
+    <string name="helpline_num6">1776632344</string>
+    <string name="helpline_num7_1">9678771511</string>
+    <string name="helpline_num7_2">01777771515 (9AM - 5PM)</string>
+    <string name="helpline_num8">9612600600</string>
+    <string name="helpline_num9">01724415677 (9AM - 5PM)</string>
+    <string name="helpline_num10_1">01714048418 (SRHR)</string>
+    <string name="helpline_num10_2">01771 444666 (legal)</string>
+    <string name="helpline_num11">01880081111 (24/7 Helpline) based in Cox\'s Bazar</string>
+    <string name="helpline_num12_1">01888066747 (For Chittagong Region, including Cox’s Bazar district)</string>
+    <string name="helpline_num12_2">01869859757 (For Dhaka and rest of the districts)</string>
+    <string name="helpline_num5_1">01779554391</string>
+    <string name="helpline_num5_2">01779554392</string>
+    <string name="helpline_num5_3">01688709965</string>
+    <string name="helpline_num5_4">01688709966</string>
+    <string name="helpline_num5_5">1985275286</string>
+    <string name="helpline_num5_6">1852035634</string>
+    <string name="helpline_num5_7">1517969150</string>
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+
+    <string name="btn_demo_account">🌟 Explore with Demo Account</string>
+    <string name="demo_account_subtitle">Instant access to all safety features</string>
+    <string name="demo_mode_badge">Demo Mode</string>
+    <string name="demo_logged_in_toast">Welcome! Logged in as Demo User</string>
+    <string name="or_divider">─── OR ───</string>
+    <string name="demo_contact_mom">Mom</string>
+    <string name="demo_contact_mom_phone">+15552345678</string>
+    <string name="demo_contact_alex">Alex (Roommate)</string>
+    <string name="demo_contact_alex_phone">+15558765432</string>
+    <string name="demo_contact_security">Campus Security</string>
+    <string name="demo_contact_security_phone">+15559990000</string>
+
+    <!-- Safe Mode & WhatsApp -->
+    <string name="safe_mode">Safe Mode</string>
+    <string name="safe_mode_desc">Stops background apps to conserve power and forwards live Google Maps location via SMS and WhatsApp.</string>
+    <string name="safe_mode_home_title">🛡️ Safe Mode System</string>
+    <string name="safe_mode_home_desc_active">Active • Background processes halted • Live GPS map forwarding ON</string>
+    <string name="safe_mode_home_desc_inactive">Tap to halt background apps and broadcast live map location via SMS &amp; WhatsApp</string>
+    <string name="btn_safe_mode_activate">Activate Safe Mode</string>
+    <string name="btn_safe_mode_deactivate">Deactivate Safe Mode</string>
+    <string name="safe_mode_activated_toast">🛡️ Safe Mode Activated! Background apps stopped &amp; live map location sent.</string>
+    <string name="safe_mode_deactivated_toast">Safe Mode Deactivated.</string>
+    <string name="send_whatsapp">WhatsApp Live Location</string>
+    <string name="send_whatsapp_desc">Forward emergency live Google Maps location to emergency contacts via WhatsApp.</string>
+    <string name="stop_background_apps">Stop Background Apps</string>
+    <string name="stop_background_apps_desc">Close non-essential background processes to prioritize battery and tracking.</string>
+    <string name="btn_forward_whatsapp">Forward Live Map on WhatsApp</string>
+    <string name="whatsapp_sos_message">🚨 *GuardianAI Emergency Alert!*\nHey %1$s, I am in Danger / Emergency!\n📍 *Coordinates &amp; Live Map:*\n%2$s\nPlease track my location immediately and stay alert!</string>
+    <string name="whatsapp_not_installed">WhatsApp is not installed on this device</string>
+    <string name="whatsapp_sent_toast">Opening WhatsApp with live location...</string>
+
+    <!-- Accessibility -->
+    <string name="accessibility_settings">Accessibility Settings</string>
+    <string name="accessibility_settings_desc">Configure Android accessibility options, text scaling, and display shortcuts.</string>
+    <string name="haptic_feedback">Haptic &amp; Vibration Feedback</string>
+    <string name="haptic_feedback_desc">Vibrate device on SOS triggers, Safe Mode activation, and emergency alerts.</string>
+
+    <!-- App Updater -->
+    <string name="app_updater_title">Check for Updates</string>
+    <string name="app_updater_desc">Current Version: %1$s • Check for new safety releases</string>
+    <string name="checking_for_updates">Checking for updates…</string>
+    <string name="update_available_title">Update Available!</string>
+    <string name="update_available_msg">A new version of GuardianAI is available.\n\nLatest: %1$s\nCurrent: %2$s\n\nChangelog:\n%3$s</string>
+    <string name="app_is_up_to_date">GuardianAI is up to date (Version %1$s)</string>
+    <string name="btn_download_update">Download &amp; Install</string>
+    <string name="btn_later">Later</string>
+    <string name="btn_ok">OK</string>
+
+    <!-- Safe Ride & Escort Map (Rapido-style) -->
+    <string name="nav_safe_ride">🛵 Safe Ride &amp; Escort Map</string>
+    <string name="activity_safe_ride_title">Safe Ride &amp; Escort Map</string>
+    <string name="activity_safe_ride_desc">Rapido-style on-demand verified safety ride &amp; escort companion</string>
+    <string name="safe_ride_coming_soon_badge">⚡ COMING SOON</string>
+    <string name="safe_ride_coming_soon_title">Guardian Ride &amp; Safe Escort</string>
+    <string name="safe_ride_coming_soon_subtitle">Rapid 2-Wheeler &amp; 4-Wheeler Verified Safety Escorts</string>
+    <string name="safe_ride_coming_soon_desc">We are integrating a Rapido-style instant safety escort system. Request a verified Guardian safety rider to escort you home safely at night, with live telemetric route tracking and panic button integration.</string>
+    <string name="safe_ride_feature1_title">🛵 Instant Guardian Rider Escort</string>
+    <string name="safe_ride_feature1_desc">Request a background-verified Guardian pilot to escort you or ride alongside your commute during late hours.</string>
+    <string name="safe_ride_feature2_title">🗺️ Real-Time Telemetry &amp; Live Route Shield</string>
+    <string name="safe_ride_feature2_desc">Instant off-route detection with automated alert triggers to local police and emergency contacts.</string>
+    <string name="safe_ride_feature3_title">🚨 1-Tap SOS Pilot Intercept</string>
+    <string name="safe_ride_feature3_desc">Nearest Guardian riders on patrol receive priority beacon dispatch within seconds of distress.</string>
+    <string name="safe_ride_notify_btn">🔔 Notify Me When Launched</string>
+    <string name="safe_ride_notify_success">You will be notified as soon as Guardian Safe Ride launches!</string>
+
+    <!-- Team Members -->
+    <string name="meet_the_team">Engineering Team</string>
+    <string name="team_subtitle">Dedicated developers building and securing GuardianAI</string>
+    <string name="team_member_1_name">👤 Pampana Satya Kiran</string>
+    <string name="team_member_1_role">Lead Developer &amp; System Architect</string>
+    <string name="team_member_1_url">http://psatyakiran.in/</string>
+    <string name="team_member_2_name">👤 Amarthaluri Harshavardhan</string>
+    <string name="team_member_2_role">Core Android &amp; Security Engineer</string>
+    <string name="team_member_3_name">👤 Madeli Narasimha</string>
+    <string name="team_member_3_role">Backend &amp; Cloud Integration</string>
+    <string name="team_member_4_name">👤 Mammula Sneha</string>
+    <string name="team_member_4_role">UI/UX &amp; Safety Systems</string>
+    <string name="team_member_5_name">👤 Kadagala Meghana</string>
+    <string name="team_member_5_role">QA &amp; Location Telemetry</string>
+
+    <!-- Widgets -->
+    <string name="widget_quick_sos_name">🚨 1-Tap SOS</string>
+    <string name="widget_quick_sos_desc">Instant 1-tap emergency panic button directly on your home screen</string>
+    <string name="widget_safety_hub_name">🛡️ Guardian Safety Hub (4x2)</string>
+    <string name="widget_safety_hub_desc">Complete safety command dock with SOS, Safe Mode, and Live Map Share</string>
+    <string name="widget_safety_bar_name">⚡ Quick Safety Bar (4x1)</string>
+    <string name="widget_safety_bar_desc">Compact dock for SOS, Safe Mode, Location Share, and Helpline</string>
+    <string name="widget_sos_triggered">🚨 Emergency SOS Triggered from Widget!</string>
+    <string name="widget_safe_mode_toggled">🛡️ Safe Mode Toggled from Widget</string>
+    <string name="widget_location_shared">📍 Live Location Shared</string>
+
+    <!-- Battery Awareness: 15% Low Battery Guardian Alert -->
+    <string name="low_battery_alert_title">15% Low Battery Guardian Alert</string>
+    <string name="low_battery_alert_desc">Monitors device power and alerts guardians automatically at the 15% threshold with your live Google Maps location.</string>
+    <string name="low_battery_sms_message">⚠️ *GuardianAI Battery Alert*\nHey %1$s, my phone battery has dropped to %2$d%% and might power down soon.\n📍 *My Live Google Maps Location:*\n%3$s\nPlease note my location!</string>
+    <string name="low_battery_alert_sent_toast">⚠️ Battery ≤ 15%: Auto-alerted guardians with your live location!</string>
+
+    <!-- Version Changelog System -->
+    <string name="changelog_title">Version Changelog</string>
+    <string name="changelog_desc">What\'s new in GuardianAI v%1$s and version history</string>
+    <string name="changelog_v1_0_1_title">🚀 What\'s New in GuardianAI v1.0.1</string>
+    <string name="changelog_v1_0_1_content">• 🎨 <b>Anify Material 3 Redesign</b>: Modern glassmorphism cards, fluid animations &amp; AMOLED Pure Black mode 🖤.\n• 🌐 <b>Multilingual Support</b>: Full localization in English 🇬🇧, Telugu 🇮🇳 (తెలుగు), and Hindi 🇮🇳 (हिन्दी).\n• ⏱️ <b>Safety Countdown Timer</b>: Auto-dispatches emergency SOS if check-in is missed.\n• 📞 <b>Fake Incoming Call</b>: Realistic incoming call simulator with customizable delay &amp; speech audio.\n• 🧠 <b>AI Safety Assistant</b>: 24/7 intelligent crisis advisor for stalking, transit safety, self-defense &amp; legal rights.\n• 🗺️ <b>Safe Route &amp; Safe Arrival</b>: Lighting-based route safety index &amp; geofence arrival check-in.\n• 🚕 <b>Taxi &amp; Trip Monitoring</b>: Vehicle registration, driver details tracking &amp; off-route detection.\n• 🎙️ <b>Voice SOS Trigger</b>: Hands-free emergency trigger by safety keywords (\"Help\", \"Guardian SOS\").\n\n<b>── Previous Releases ──</b>\n\n<b>v1.0.0 Initial Release:</b>\n• 🌟 One-Click Demo Mode with mock safety contacts.\n• 🛡️ Safe Mode Engine to stop background apps.\n• 🗺️ Live Map Location Broadcast via SMS &amp; WhatsApp.\n• 🔋 Battery Awareness (15% Auto-Alert).\n• 📱 3 Home Screen Widgets (1-Tap SOS, 4x2 Hub, 4x1 Bar).\n• 🛵 Guardian Safe Ride Companion Preview.\n• 🔄 In-App Updater System.</string>
+    <string name="changelog_v1_0_0_title">🚀 What\'s New in GuardianAI v1.0.0</string>
+    <string name="changelog_v1_0_0_content">• 🌟 <b>One-Click Demo Mode</b>: Instant offline demo account access with mock safety contacts.\n• 🛡️ <b>Safe Mode Engine</b>: Auto-stops background apps to save CPU/battery and maximize safety response.\n• 🗺️ <b>Live Map Location Broadcast</b>: Automated SMS &amp; WhatsApp Google Maps link sharing with contacts.\n• 🔋 <b>Battery Awareness (15% Alert)</b>: Auto-dispatches live location to guardians at 15% battery before shutdown.\n• 📱 <b>3 Home Screen Widgets</b>: 1-Tap SOS (2x2), 4x2 Safety Hub, and 4x1 Quick Safety Bar.\n• 🛵 <b>Guardian Ride &amp; Escort Map</b>: Rapido-style companion safety ride preview (Coming Soon).\n• ♿ <b>Accessibility &amp; Haptics</b>: Quick system accessibility launcher &amp; tactile vibration feedback.\n• 👥 <b>Team Credits</b>: Engineering team credits in About screen.\n• 🔄 <b>In-App Updater</b>: Version update check &amp; APK installer.</string>
+
+    <!-- Theme & Display Mode (Dark/Light) -->
+    <string name="theme_setting_title">App Theme &amp; Display</string>
+    <string name="theme_setting_desc">Switch between Light, Dark, or System Default theme</string>
+    <string name="theme_system">System Default 🌗</string>
+    <string name="theme_light">Light Mode ☀️</string>
+    <string name="theme_dark">Dark Mode 🌙</string>
+    <string name="theme_amoled">Pure AMOLED Black 🖤</string>
+    <string name="choose_theme">Choose App Theme</string>
+
+    <!-- App Language Selection -->
+    <string name="language_setting_title">App Language / భాష / भाषा</string>
+    <string name="language_setting_desc">Choose your preferred language (English, తెలుగు, हिन्दी)</string>
+    <string name="language_system">System Default 🌐</string>
+    <string name="language_english">English 🇬🇧</string>
+    <string name="language_hindi">हिन्दी (Hindi) 🇮🇳</string>
+    <string name="language_telugu">తెలుగు (Telugu) 🇮🇳</string>
+    <string name="choose_language">Select Language / భాష ఎంచుకోండి / भाषा चुनें</string>
+
+    <!-- 15-Feature Safety Suite Strings -->
+    <!-- Safety Timer -->
+    <string name="safety_timer_title">⏱️ Safety Timer &amp; Check-In</string>
+    <string name="safety_timer_desc">If you do not check in before the countdown ends, your emergency contacts will be alerted automatically.</string>
+    <string name="safety_timer_running">Safety Timer Active</string>
+    <string name="safety_timer_check_in_btn">✅ I am Safe (Check In)</string>
+    <string name="safety_timer_start_btn">Start Safety Timer</string>
+    <string name="safety_timer_cancel_btn">Cancel Timer</string>
+    <string name="safety_timer_expired_alert">🚨 Safety Timer Expired! Alerting emergency contacts with live location...</string>
+    <string name="safety_timer_checked_in">Checked in successfully! You are safe.</string>
+    <string name="safety_timer_15m">15 Minutes</string>
+    <string name="safety_timer_30m">30 Minutes</string>
+    <string name="safety_timer_45m">45 Minutes</string>
+    <string name="safety_timer_60m">60 Minutes</string>
+
+    <!-- Fake Call -->
+    <string name="fake_call_title">📞 Fake Incoming Call</string>
+    <string name="fake_call_desc">Simulate an urgent incoming call to give you a discreet reason to leave uncomfortable situations.</string>
+    <string name="fake_call_caller_name">Caller Name</string>
+    <string name="fake_call_default_caller">Mom 💖</string>
+    <string name="fake_call_delay_title">Call Delay Timer</string>
+    <string name="fake_call_now">Call Now (Instant)</string>
+    <string name="fake_call_10s">10 Seconds</string>
+    <string name="fake_call_30s">30 Seconds</string>
+    <string name="fake_call_schedule_btn">Schedule Fake Call</string>
+    <string name="fake_call_incoming_label">Incoming Call…</string>
+    <string name="fake_call_decline">Decline</string>
+    <string name="fake_call_accept">Answer</string>
+    <string name="fake_call_active">Call in progress • 00:%02d</string>
+
+    <!-- AI Safety Assistant -->
+    <string name="ai_assistant_title">🧠 AI Safety Assistant</string>
+    <string name="ai_assistant_desc">24/7 intelligent emergency guidance, self-defense moves, legal rights, and real-time safety companion.</string>
+    <string name="ai_assistant_prompt_hint">Ask AI for emergency advice, rights, or safety tips…</string>
+    <string name="ai_quick_q1">🚨 I feel I\'m being followed</string>
+    <string name="ai_quick_q2">🚕 Safety tips for night cab</string>
+    <string name="ai_quick_q3">🥋 Key self-defense moves</string>
+    <string name="ai_quick_q4">⚖️ My legal rights in public</string>
+
+    <!-- Safe Route & Safe Arrival -->
+    <string name="safe_route_title">🗺️ Safe Route &amp; Safe Arrival</string>
+    <string name="safe_route_desc">Analyze routes by lighting, police station proximity, and safe arrival geofence detection.</string>
+    <string name="safe_arrival_destination">Destination Address</string>
+    <string name="safe_arrival_start_monitoring">Start Route &amp; Arrival Shield</string>
+    <string name="safe_arrival_arrived_toast">🎉 You have arrived safely! Contacts notified.</string>
+
+    <!-- Trip Monitoring -->
+    <string name="trip_monitor_title">🚕 Taxi &amp; Trip Monitoring</string>
+    <string name="trip_monitor_desc">Track taxi journey, log vehicle number &amp; driver details, and detect abnormal route diversions.</string>
+    <string name="trip_vehicle_num">Vehicle / Cab Number (e.g. AP 05 AB 1234)</string>
+    <string name="trip_driver_name">Driver Name (Optional)</string>
+    <string name="trip_start_btn">Start Live Trip Guard</string>
+    <string name="trip_active_shield">Trip Guard Active • Telemetry Linked</string>
+
+    <!-- Voice SOS -->
+    <string name="voice_sos_title">🎙️ Voice SOS Trigger</string>
+    <string name="voice_sos_desc">Hands-free emergency trigger when saying predefined safety phrases like \"Help\", \"Guardian SOS\", or \"Save Me\".</string>
+    <string name="voice_sos_start_listening">Start Voice Listening</string>
+    <string name="voice_sos_stop_listening">Stop Voice Listening</string>
+    <string name="voice_sos_listening_active">🎤 Listening for safety keywords (\"Help\", \"Guardian SOS\", \"Save Me\")…</string>
+    <string name="voice_sos_keyword_detected">🚨 Voice SOS Triggered by Keyword!</string>
+</resources>

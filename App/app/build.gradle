@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.android.sheguard'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.android.sheguard"
+        minSdk 27
+        targetSdk 35
+        versionCode 2
+        versionName "1.0.1"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            crunchPngs true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+        buildConfig true
+    }
+    packagingOptions {
+        resources.excludes.add("META-INF/DEPENDENCIES")
+    }
+}
+
+dependencies {
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.navigation.fragment
+    implementation libs.androidx.navigation.ui
+    implementation(platform(libs.kotlin.bom))
+
+    implementation libs.retrofit
+    implementation libs.converter.gson
+
+    implementation libs.dotsindicator
+    implementation libs.gson
+    implementation libs.circleimageview
+    implementation libs.androidx.viewpager2
+    implementation libs.play.services.maps
+    implementation libs.play.services.location
+    implementation libs.collapsingtoolbarlayout.subtitle
+}
