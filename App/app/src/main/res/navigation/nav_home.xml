@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.android.sheguard.ui.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_helplineFragment"
+            app:destination="@id/helplineFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_safetyTipsFragment"
+            app:destination="@id/safetyTipsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_safeRideFragment"
+            app:destination="@id/safeRideFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_safetyTimerFragment"
+            app:destination="@id/safetyTimerFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_aiAssistantFragment"
+            app:destination="@id/aiAssistantFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_safeRouteFragment"
+            app:destination="@id/safeRouteFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_tripMonitorFragment"
+            app:destination="@id/tripMonitorFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_voiceSosFragment"
+            app:destination="@id/voiceSosFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.android.sheguard.ui.fragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
+    <fragment
+        android:id="@+id/helplineFragment"
+        android:name="com.android.sheguard.ui.fragment.HelplineFragment"
+        android:label="fragment_helpline"
+        tools:layout="@layout/fragment_helpline" />
+    <fragment
+        android:id="@+id/safetyTipsFragment"
+        android:name="com.android.sheguard.ui.fragment.SafetyTipsFragment"
+        android:label="fragment_safety_tips"
+        tools:layout="@layout/fragment_safety_tips" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.android.sheguard.ui.fragment.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.android.sheguard.ui.fragment.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.android.sheguard.ui.fragment.ContactsFragment"
+        android:label="fragment_contacts"
+        tools:layout="@layout/fragment_contacts" />
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.android.sheguard.ui.fragment.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/safeRideFragment"
+        android:name="com.android.sheguard.ui.fragment.SafeRideFragment"
+        android:label="fragment_safe_ride"
+        tools:layout="@layout/fragment_safe_ride" />
+    <fragment
+        android:id="@+id/safetyTimerFragment"
+        android:name="com.android.sheguard.ui.fragment.SafetyTimerFragment"
+        android:label="fragment_safety_timer"
+        tools:layout="@layout/fragment_safety_timer" />
+    <fragment
+        android:id="@+id/aiAssistantFragment"
+        android:name="com.android.sheguard.ui.fragment.AiAssistantFragment"
+        android:label="fragment_ai_assistant"
+        tools:layout="@layout/fragment_ai_assistant" />
+    <fragment
+        android:id="@+id/safeRouteFragment"
+        android:name="com.android.sheguard.ui.fragment.SafeRouteFragment"
+        android:label="fragment_safe_route"
+        tools:layout="@layout/fragment_safe_route" />
+    <fragment
+        android:id="@+id/tripMonitorFragment"
+        android:name="com.android.sheguard.ui.fragment.TripMonitorFragment"
+        android:label="fragment_trip_monitor"
+        tools:layout="@layout/fragment_trip_monitor" />
+    <fragment
+        android:id="@+id/voiceSosFragment"
+        android:name="com.android.sheguard.ui.fragment.VoiceSosFragment"
+        android:label="fragment_voice_sos"
+        tools:layout="@layout/fragment_voice_sos" />
+
+</navigation>

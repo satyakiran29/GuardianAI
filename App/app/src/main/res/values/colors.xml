@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="pink">#FFEF6B99</color>
+    <color name="shadow">#26000000</color>
+    <color name="colorPrimary">#4F46E5</color>
+    <color name="colorPrimaryDark">#4338CA</color>
+    <color name="colorAccent">#10B981</color>
+    <color name="colorPurple">#6366F1</color>
+    <color name="colorIndigo">#4F46E5</color>
+    <color name="colorBlueMidnight">#0F172A</color>
+    <color name="colorGrey">#94A3B8</color>
+    <color name="textColorPrimary">#0F172A</color>
+    <color name="textColorSecondary">#475569</color>
+    <color name="color_surface_variant">#F1F5F9</color>
+    <color name="color_outline">#CBD5E1</color>
+    <color name="color_sos_red">#EF4444</color>
+    <color name="login_bg">#F1F5F9</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="surface_background">#F8FAFC</color>
+</resources>

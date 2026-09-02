@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_moto">మీ భద్రత మీ చేతుల్లోనే</string>
+
+    <string name="onboarding_slide1_title">GuardianAI కి స్వాగతం</string>
+    <string name="onboarding_slide1_subtitle">మీ భద్రత మరియు రక్షణ కోసం వ్యక్తిగత రక్షణ యాప్</string>
+    <string name="onboarding_slide1_desc">GuardianAI మీకు రక్షణ కల్పిస్తుంది. భద్రత మరియు ప్రశాంతత వైపు మీ ప్రయాణాన్ని ప్రారంభించండి.</string>
+    <string name="onboarding_slide2_title">మీ భద్రత, మీ పద్ధతి</string>
+    <string name="onboarding_slide2_subtitle">మీ వేలికొనలలో రక్షణ సేవలు</string>
+    <string name="onboarding_slide2_desc">మీకు అవసరమైన భద్రతా ఫీచర్లను సులభంగా అనుకూలీకరించుకోండి.</string>
+    <string name="onboarding_slide3_title">తోడుగా ఉండే సమాజం</string>
+    <string name="onboarding_slide3_subtitle">స్వతంత్రంగా మరియు సంతోషంగా జీవించండి</string>
+    <string name="onboarding_slide3_desc">మా సమాజంలో చేరండి, భద్రతా వనరులను పొందండి మరియు ఎల్లప్పుడూ సురక్షితంగా ఉండండి.</string>
+
+    <string name="next">తరువాత</string>
+    <string name="skip">దాటవేయి</string>
+    <string name="get_started">ప్రారంభించండి</string>
+
+    <string name="email_verification">దయచేసి మీ ఇమెయిల్‌ను ధృవీకరించండి</string>
+    <string name="email_reset">దయచేసి మీ ఇమెయిల్‌ను తనిఖీ చేయండి</string>
+
+    <string name="notification_channel_push">పుష్ నోటిఫికేషన్</string>
+    <string name="notification_channel_push_desc">పుష్ నోటిఫికేషన్లు</string>
+    <string name="notification_channel_emergency">అత్యవసర మోడ్</string>
+    <string name="notification_channel_emergency_desc">అత్యవసర హెచ్చరిక సేవ</string>
+
+    <string name="notification_emergency_mode">%s ఇప్పుడు అత్యవసర మోడ్‌లో ఉన్నారు</string>
+    <string name="sos_message">🚨 అత్యవసర SOS!\nహలో %1$s, నేను ఆపదలో ఉన్నాను!\n📍 కోఆర్డినేట్స్ &amp; లైవ్ లొకేషన్:\n%2$s</string>
+    <string name="sos_notification">నేను ఆపదలో ఉన్నాను! నా లొకేషన్: %s</string>
+    <string name="btn_start_service">షేక్ డిటెక్షన్ ప్రారంభించండి</string>
+    <string name="btn_stop_service">షేక్ డిటెక్షన్ ఆపండి</string>
+
+    <string name="activity_home_title">స్వాగతం</string>
+    <string name="activity_home_desc">%s!</string>
+    <string name="activity_profile_title">ప్రొఫైల్</string>
+    <string name="activity_profile_desc">మీ ఖాతా వివరాలు నిర్వహించండి</string>
+    <string name="activity_edit_profile_title">ప్రొఫైల్ సవరించండి</string>
+    <string name="activity_edit_profile_desc">ఖాతా సమాచారం మార్చండి</string>
+    <string name="activity_contacts_title">కాంటాక్ట్‌లు</string>
+    <string name="activity_contacts_desc">నమ్మకమైన అత్యవసర కాంటాక్ట్‌లు</string>
+    <string name="activity_helpline_title">హెల్ప్‌లైన్</string>
+    <string name="activity_helpline_desc">అత్యవసర సహాయ సేవలు</string>
+    <string name="activity_settings_title">సెట్టింగ్‌లు</string>
+    <string name="activity_settings_desc">భద్రతా అనుభవాన్ని అనుకూలీకరించండి</string>
+    <string name="activity_safety_tips_title">భద్రతా చిట్కాలు</string>
+    <string name="activity_safety_tips_desc">ముఖ్యమైన భద్రతా సూచనలు</string>
+    <string name="activity_about_title">గురించి</string>
+    <string name="activity_about_desc">మా లక్ష్యం గురించి తెలుసుకోండి</string>
+
+    <string name="background_story">పౌరులు, మహిళలు, పిల్లలు మరియు వృద్ధుల భద్రత కోసం GuardianAI సరికొత్త సాంకేతిక పరిష్కారం.\n\nఆపద సమయంలో మీ కుటుంబం మరియు స్నేహితులకు తక్షణ హెచ్చరికలను పంపడం ద్వారా మీ భద్రతను మీ చేతుల్లో ఉంచుతుంది.</string>
+    <string name="whats_good">ఈ యాప్ ఎందుకు ప్రత్యేకం?</string>
+    <string name="intuitive_design">ఆధునిక డిజైన్</string>
+    <string name="intuitive_design_desc">సొగసైన మరియు యూజర్ ఫ్రెండ్లీ మెటీరియల్ డిజైన్ అనుభవం.</string>
+    <string name="effortless_registration">సులభమైన లాగిన్</string>
+    <string name="effortless_registration_desc">డెమో ఖాతా లేదా శీఘ్ర నమోదు ద్వారా క్షణాల్లో ప్రారంభించండి.</string>
+    <string name="automatic_alerts">ఆటోమేటిక్ హెచ్చరికలు</string>
+    <string name="automatic_alerts_desc">SOS బటన్ నొక్కడం ద్వారా లైవ్ GPS లొకేషన్‌తో తక్షణ SMS &amp; WhatsApp హెచ్చరికలు పంపబడతాయి.</string>
+    <string name="contact_empty">కాంటాక్ట్ జాబితా ఖాళీగా ఉంది</string>
+    <string name="new_name">కొత్త పేరు</string>
+    <string name="new_phone">కొత్త ఫోన్ నంబర్</string>
+    <string name="btn_save">సేవ్ చేయండి</string>
+    <string name="sos">SOS</string>
+    <string name="sign_in">లాగిన్</string>
+    <string name="please_sign_in">దయచేసి మొదట మీ ఖాతాకు సైన్ ఇన్ చేయండి</string>
+    <string name="email">ఇమెయిల్</string>
+    <string name="password">పాస్‌వర్డ్</string>
+    <string name="forgot_password">పాస్‌వర్డ్ మర్చిపోయారా?</string>
+    <string name="btn_sign_in">సైన్ ఇన్</string>
+    <string name="dont_have_account">ఇంకా ఖాతా లేదా?</string>
+    <string name="btn_sign_up">రిజిస్టర్ అవ్వండి</string>
+    <string name="btn_edit_profile">ప్రొఫైల్ సవరణ</string>
+    <string name="name">పేరు</string>
+    <string name="phone">ఫోన్ నంబర్</string>
+    <string name="location">లొకేషన్</string>
+    <string name="btn_log_out">లాగౌట్</string>
+    <string name="sign_up">రిజిస్ట్రేషన్</string>
+    <string name="create_your_account">మీ ఖాతాను సృష్టించండి</string>
+    <string name="full_name">పూర్తి పేరు</string>
+    <string name="confirm_password">పాస్‌వర్డ్ నిర్ధారించండి</string>
+    <string name="btn_register">నమోదు చేసుకోండి</string>
+    <string name="already_have_account">ఇప్పటికే ఖాతా ఉందా?</string>
+    <string name="phone_number">ఫోన్ నంబర్</string>
+    <string name="btn_add_contact">కాంటాక్ట్ జోడించండి</string>
+    <string name="details">వివరాలు</string>
+    <string name="btn_close">మూసివేయి</string>
+    <string name="please_wait">దయచేసి వేచి ఉండండి</string>
+    <string name="shake_detection">షేక్ డిటెక్షన్</string>
+    <string name="shake_detection_desc">ఫోన్‌ను షేక్ చేసినప్పుడు తక్షణ SOS పంపండి.</string>
+    <string name="send_sms">SMS పంపండి</string>
+    <string name="send_sms_desc">అత్యవసర కాంటాక్ట్‌లకు SMS హెచ్చరికలు పంపండి.</string>
+    <string name="send_notification">నోటిఫికేషన్ పంపండి</string>
+    <string name="send_notification_desc">GuardianAI వినియోగదారులకు హెచ్చరిక నోటిఫికేషన్ పంపండి.</string>
+    <string name="play_siren">సైరన్ మోగించండి</string>
+    <string name="play_siren_desc">అత్యవసర సమయాల్లో బిగ్గరగా రక్షణ సైరన్ మోగించండి.</string>
+    <string name="call_emergency_service">ప్రధాన పరిచయానికి కాల్ చేయండి</string>
+    <string name="call_emergency_service_desc">అత్యవసర సమయంలో మీ ప్రాథమిక పరిచయ నంబర్‌కు ఆటోమేటిక్ కాల్ చేయండి.</string>
+    <string name="btn_resend_email">ఇమెయిల్ మళ్లీ పంపండి</string>
+    <string name="remove_contact_confirmation">ఈ కాంటాక్ట్‌ను ఖచ్చితంగా తొలగించాలనుకుంటున్నారా?</string>
+    <string name="contact_removed_successfully">కాంటాక్ట్ విజయవంతంగా తొలగించబడింది</string>
+    <string name="yes">అవును</string>
+    <string name="no">కాదు</string>
+    <string name="details_saved_successfully">వివరాలు సేవ్ చేయబడ్డాయి</string>
+    <string name="service_started">సేవ ప్రారంభమైంది!</string>
+    <string name="service_stopped">సేవ ఆగిపోయింది!</string>
+    <string name="unknown_user">తెలియని యూజర్</string>
+    <string name="permission_must_be_granted">అనుమతి ఇవ్వడం తప్పనిసరి!</string>
+    <string name="grant">అనుమతించు</string>
+    <string name="verification_email_sent">ధృవీకరణ ఇమెయిల్ పంపబడింది</string>
+    <string name="enter_your_email_address">మీ ఇమెయిల్ నమోదు చేయండి</string>
+    <string name="password_reset_email_sent">పాస్‌వర్డ్ రీసెట్ ఇమెయిల్ పంపబడింది</string>
+    <string name="email_is_required">ఇమెయిల్ అవసరం</string>
+    <string name="password_is_required">పాస్‌వర్డ్ అవసరం</string>
+    <string name="gps_is_not_enabled">GPS ఆన్ చేయబడలేదు</string>
+    <string name="getting_location">లొకేషన్ పొందుతోంది…</string>
+    <string name="failed_to_get_location">లొకేషన్ పొందడంలో విఫలమైంది</string>
+    <string name="please_enter_your_full_name">దయచేసి పూర్తి పేరు నమోదు చేయండి</string>
+    <string name="please_enter_your_email">దయచేసి ఇమెయిల్ నమోదు చేయండి</string>
+    <string name="please_enter_a_valid_email">సరైన ఇమెయిల్ నమోదు చేయండి</string>
+    <string name="please_enter_your_phone_number">దయచేసి ఫోన్ నంబర్ నమోదు చేయండి</string>
+    <string name="please_enter_a_valid_phone_number">సరైన ఫోన్ నంబర్ నమోదు చేయండి</string>
+    <string name="please_enter_your_password">దయచేసి పాస్‌వర్డ్ నమోదు చేయండి</string>
+    <string name="please_enter_your_password_again">పాస్‌వర్డ్ మళ్లీ నమోదు చేయండి</string>
+    <string name="password_does_not_match">పాస్‌వర్డ్‌లు సరిపోలడం లేదు</string>
+    <string name="password_constraints">పాస్‌వర్డ్ కనీసం 8 అక్షరాలు, 1 అంకె మరియు పెద్ద అక్షరం కలిగి ఉండాలి</string>
+
+    <string name="nav_open">తెరవండి</string>
+    <string name="nav_close">మూసివేయండి</string>
+
+    <string name="btn_demo_account">🌟 డెమో ఖాతాతో చూడండి</string>
+    <string name="demo_account_subtitle">అన్ని రక్షణ ఫీచర్లను వెంటనే ఉపయోగించండి</string>
+    <string name="demo_mode_badge">డెమో మోడ్</string>
+    <string name="demo_logged_in_toast">స్వాగతం! డెమో యూజర్‌గా లాగిన్ అయ్యారు</string>
+    <string name="or_divider">─── లేదా ───</string>
+
+    <!-- Safe Mode & WhatsApp -->
+    <string name="safe_mode">సేఫ్ మోడ్</string>
+    <string name="safe_mode_desc">బ్యాక్‌గ్రౌండ్ యాప్‌లను ఆపి లైవ్ గూగుల్ మ్యాప్ లొకేషన్‌ను SMS మరియు వాట్సాప్‌లో పంపుతుంది.</string>
+    <string name="safe_mode_home_title">🛡️ సేఫ్ మోడ్ సిస్టమ్</string>
+    <string name="safe_mode_home_desc_active">యాక్టివ్ • బ్యాక్‌గ్రౌండ్ యాప్‌లు ఆపబడ్డాయి • లైవ్ మ్యాప్ ఫార్వార్డింగ్ ఆన్</string>
+    <string name="safe_mode_home_desc_inactive">బ్యాక్‌గ్రౌండ్ యాప్‌లను ఆపి లైవ్ మ్యాప్ లొకేషన్ పంపడానికి నొక్కండి</string>
+    <string name="btn_safe_mode_activate">సేఫ్ మోడ్ ఆన్ చేయండి</string>
+    <string name="btn_safe_mode_deactivate">సేఫ్ మోడ్ ఆఫ్ చేయండి</string>
+    <string name="safe_mode_activated_toast">🛡️ సేఫ్ మోడ్ ఆన్ చేయబడింది! బ్యాక్‌గ్రౌండ్ యాప్‌లు ఆపబడ్డాయి.</string>
+    <string name="safe_mode_deactivated_toast">సేఫ్ మోడ్ ఆఫ్ చేయబడింది.</string>
+    <string name="send_whatsapp">వాట్సాప్ లైవ్ లొకేషన్</string>
+    <string name="send_whatsapp_desc">అత్యవసర కాంటాక్ట్‌లకు వాట్సాప్ ద్వారా లైవ్ మ్యాప్ లొకేషన్ పంపండి.</string>
+    <string name="stop_background_apps">బ్యాక్‌గ్రౌండ్ యాప్‌లను ఆపండి</string>
+    <string name="stop_background_apps_desc">బ్యాటరీ ఆదా చేయడానికి అనవసర బ్యాక్‌గ్రౌండ్ ప్రాసెస్‌లను మూసివేయండి.</string>
+    <string name="btn_forward_whatsapp">వాట్సాప్‌లో లైవ్ మ్యాప్ పంపండి</string>
+    <string name="whatsapp_sos_message">🚨 *GuardianAI అత్యవసర హెచ్చరిక!*\nహలో %1$s, నేను ఆపదలో ఉన్నాను!\n📍 *కోఆర్డినేట్స్ &amp; లైవ్ లొకేషన్:*\n%2$s\nదయచేసి వెంటనే నా లొకేషన్ ట్రాక్ చేయండి!</string>
+    <string name="whatsapp_not_installed">ఈ ఫోన్‌లో వాట్సాప్ ఇన్‌స్టాల్ చేయబడలేదు</string>
+    <string name="whatsapp_sent_toast">లైవ్ లొకేషన్‌తో వాట్సాప్ ఓపెన్ అవుతోంది...</string>
+
+    <!-- Accessibility -->
+    <string name="accessibility_settings">యాక్సెసిబిలిటీ సెట్టింగ్‌లు</string>
+    <string name="accessibility_settings_desc">ఆండ్రాయిడ్ యాక్సెసిబిలిటీ మరియు టెక్స్ట్ సైజ్ ఎంపికలు కాన్ఫిగర్ చేయండి.</string>
+    <string name="haptic_feedback">వైబ్రేషన్ &amp; హాప్టిక్ ఫీడ్‌బ్యాక్</string>
+    <string name="haptic_feedback_desc">SOS మరియు సేఫ్ మోడ్ సమయంలో డివైజ్‌ను వైబ్రేట్ చేయండి.</string>
+
+    <!-- App Updater -->
+    <string name="app_updater_title">అప్‌డేట్‌లను తనిఖీ చేయండి</string>
+    <string name="app_updater_desc">ప్రస్తుత వెర్షన్: %1$s • కొత్త భద్రతా అప్‌డేట్‌లను తనిఖీ చేయండి</string>
+    <string name="checking_for_updates">అప్‌డేట్‌లు తనిఖీ చేస్తోంది…</string>
+    <string name="update_available_title">కొత్త అప్‌డేట్ అందుబాటులో ఉంది!</string>
+    <string name="update_available_msg">GuardianAI కొత్త వెర్షన్ అందుబాటులో ఉంది.\n\nతాజా వెర్షన్: %1$s\nప్రస్తుత వెర్షన్: %2$s\n\nమార్పుల వివరాలు:\n%3$s</string>
+    <string name="app_is_up_to_date">GuardianAI తాజా వెర్షన్‌లో ఉంది (%1$s)</string>
+    <string name="btn_download_update">డౌన్‌లోడ్ &amp; ఇన్‌స్టాల్</string>
+    <string name="btn_later">తరువాత</string>
+    <string name="btn_ok">సరే</string>
+
+    <!-- Safe Ride -->
+    <string name="nav_safe_ride">🛵 సేఫ్ రైడ్ &amp; ఎస్కార్ట్ మ్యాప్</string>
+    <string name="activity_safe_ride_title">సేఫ్ రైడ్ &amp; ఎస్కార్ట్ మ్యాప్</string>
+    <string name="activity_safe_ride_desc">ర్యాపిడో తరహాలో సురక్షిత ప్రయాణ తోడు సేవ</string>
+    <string name="safe_ride_coming_soon_badge">⚡ త్వరలో రాబోతోంది</string>
+    <string name="safe_ride_coming_soon_title">గార్డియన్ రైడ్ &amp; సేఫ్ ఎస్కార్ట్</string>
+    <string name="safe_ride_coming_soon_subtitle">ద్విచక్ర &amp; నాలుగు చక్రాల ధృవీకృత భద్రతా రైడర్లు</string>
+    <string name="safe_ride_coming_soon_desc">మేము ర్యాపిడో శైలిలో ధృవీకరించబడిన భద్రతా రైడర్ వ్యవస్థను తీసుకువస్తున్నాము.</string>
+    <string name="safe_ride_notify_btn">🔔 ప్రారంభమైనప్పుడు నాకు తెలియజేయండి</string>
+    <string name="safe_ride_notify_success">గార్డియన్ సేఫ్ రైడ్ ప్రారంభమైన వెంటనే మీకు నోటిఫికేషన్ వస్తుంది!</string>
+
+    <!-- Team Members -->
+    <string name="meet_the_team">ఇంజనీరింగ్ బృందం</string>
+    <string name="team_subtitle">GuardianAI ని రూపొందించిన డెవలపర్లు</string>
+    <string name="team_member_1_name">👤 Pampana Satya Kiran</string>
+    <string name="team_member_1_role">లీడ్ డెవలపర్ &amp; సిస్టమ్ ఆర్కిటెక్ట్</string>
+    <string name="team_member_2_name">👤 Amarthaluri Harshavardhan</string>
+    <string name="team_member_2_role">ఆండ్రాయిడ్ &amp; సెక్యూరిటీ ఇంజనీర్</string>
+    <string name="team_member_3_name">👤 Madeli Narasimha</string>
+    <string name="team_member_3_role">బ్యాకెండ్ &amp; క్లౌడ్ ఇంటిగ్రేషన్</string>
+    <string name="team_member_4_name">👤 Mammula Sneha</string>
+    <string name="team_member_4_role">UI/UX &amp; భద్రతా వ్యవస్థలు</string>
+    <string name="team_member_5_name">👤 Kadagala Meghana</string>
+    <string name="team_member_5_role">QA &amp; లొకేషన్ టెలిమెట్రీ</string>
+
+    <!-- Widgets -->
+    <string name="widget_quick_sos_name">🚨 1-ట్యాప్ SOS</string>
+    <string name="widget_quick_sos_desc">హోమ్ స్క్రీన్ నుంచే తక్షణ అత్యవసర ప్యానిక్ బటన్</string>
+    <string name="widget_safety_hub_name">🛡️ గార్డియన్ సేఫ్టీ హబ్ (4x2)</string>
+    <string name="widget_safety_hub_desc">SOS, సేఫ్ మోడ్ మరియు లైవ్ మ్యాప్ షేరింగ్‌తో కూడిన డాక్</string>
+    <string name="widget_safety_bar_name">⚡ త్వరిత భద్రతా బార్ (4x1)</string>
+    <string name="widget_safety_bar_desc">హోమ్ స్క్రీన్ కోసం చిన్న భద్రతా బటన్లు</string>
+    <string name="widget_sos_triggered">🚨 విడ్జెట్ నుండి అత్యవసర SOS యాక్టివేట్ చేయబడింది!</string>
+    <string name="widget_safe_mode_toggled">🛡️ విడ్జెట్ నుండి సేఫ్ మోడ్ మార్చబడింది</string>
+    <string name="widget_location_shared">📍 లైవ్ లొకేషన్ షేర్ చేయబడింది</string>
+
+    <!-- Battery Alert -->
+    <string name="low_battery_alert_title">15% తక్కువ బ్యాటరీ హెచ్చరిక</string>
+    <string name="low_battery_alert_desc">బ్యాటరీ 15% కు పడిపోయినప్పుడు లైవ్ మ్యాప్ లొకేషన్‌ను ఆటోమేటిక్‌గా పంపుతుంది.</string>
+    <string name="low_battery_sms_message">⚠️ *GuardianAI బ్యాటరీ హెచ్చరిక*\nహలో %1$s, నా ఫోన్ బ్యాటరీ %2$d%% కి పడిపోయింది.\n📍 *నా లైవ్ గూగుల్ మ్యాప్స్ లొకేషన్:*\n%3$s\nదయచేసి గమనించండి!</string>
+    <string name="low_battery_alert_sent_toast">⚠️ బ్యాటరీ ≤ 15%: మీ లొకేషన్ కాంటాక్ట్‌లకు పంపబడింది!</string>
+
+    <!-- Changelog -->
+    <string name="changelog_title">వెర్షన్ మార్పుల జాబితా</string>
+    <string name="changelog_desc">GuardianAI v%1$s లో కొత్త ఫీచర్లు</string>
+    <string name="changelog_v1_0_1_title">🚀 GuardianAI v1.0.1 లో కొత్తవి</string>
+    <string name="changelog_v1_0_1_content">• 🎨 <b>కొత్త డిజైన్</b>: సరికొత్త మెటీరియల్ 3 UI, అమోలెడ్ బ్లాక్ మోడ్ 🖤.\n• 🌐 <b>బహుళ భాషా మద్దతు</b>: తెలుగు (తెలుగు), English, మరియు हिन्दी మద్దతు.\n• ⏱️ <b>సేఫ్టీ టైమర్ కౌంట్‌డౌన్</b>: సమయానికి చెక్-ఇన్ చేయకపోతే ఆటోమేటిక్ అలర్ట్.\n• 📞 <b>ఫేక్ ఇన్‌కమింగ్ కాల్</b>: ఇబ్బందికర పరిస్థితుల నుండి బయటపడటానికి నకిలీ కాల్.\n• 🧠 <b>AI సేఫ్టీ అసిస్టెంట్</b>: 24/7 అత్యవసర సలహాలు, రక్షణ పద్ధతులు, చట్టపరమైన హక్కులు.\n• 🗺️ <b>సేఫ్ రూట్ &amp; అరైవల్</b>: సురక్షితమైన మార్గం &amp; చేరినప్పుడు ఆటోమేటిక్ మెసేజ్.\n• 🚕 <b>ట్యాక్సీ &amp; ట్రిప్ మానిటరింగ్</b>: వాహనం నంబర్ నమోదు, డ్రైవర్ ట్రాకింగ్.\n• 🎙️ <b>వాయిస్ SOS ట్రిగ్గర్</b>: మాటల ద్వారా చేతులు ఉపయోగించకుండానే SOS యాక్టివేషన్.\n\n<b>── మునుపటి వెర్షన్లు ──</b>\n\n<b>v1.0.0 విడుదల:</b>\n• 🌟 వన్-క్లిక్ డెమో మోడ్.\n• 🛡️ సేఫ్ మోడ్ ఇంజిన్.\n• 🗺️ లైవ్ మ్యాప్ షేరింగ్.\n• 🔋 15% బ్యాటరీ ఆటో అలర్ట్.\n• 📱 3 హోమ్ స్క్రీన్ విడ్జెట్లు.\n• 🛵 గార్డియన్ సేఫ్ రైడ్.\n• 🔄 ఇన్-యాప్ అప్‌డేటర్ సిస్టమ్.</string>
+    <string name="changelog_v1_0_0_title">🚀 GuardianAI v1.0.0 లో కొత్తవి</string>
+    <string name="changelog_v1_0_0_content">• 🌟 <b>డెమో ఖాతా</b>: ఆఫ్లైన్ డెమో కాంటాక్ట్‌లతో సులభమైన లాగిన్.\n• 🛡️ <b>సేఫ్ మోడ్</b>: బ్యాటరీ ఆదా చేయడానికి బ్యాక్‌గ్రౌండ్ యాప్‌లను ఆపడం.\n• 🗺️ <b>లైవ్ మ్యాప్ బ్రాడ్‌కాస్ట్</b>: SMS &amp; వాట్సాప్ ద్వారా గూగుల్ మ్యాప్ లింక్ షేరింగ్.\n• 🔋 <b>15% బ్యాటరీ హెచ్చరిక</b>: ఫోన్ స్విచ్ ఆఫ్ అయ్యేముందు లైవ్ లొకేషన్ పంపడం.\n• 📱 <b>3 హోమ్ స్క్రీన్ విడ్జెట్లు</b>: 1-ట్యాప్ SOS, 4x2 సేఫ్టీ హబ్, 4x1 సేఫ్టీ బార్.\n• 🛵 <b>గార్డియన్ సేఫ్ రైడ్</b>: సురక్షిత ప్రయాణ తోడు ప్రివ్యూ.\n• ♿ <b>యాక్సెసిబిలిటీ &amp; వైబ్రేషన్</b>: సులభమైన సెట్టింగ్‌లు &amp; హెచ్చరికలు.\n• 👥 <b>ఇంజనీరింగ్ బృందం</b>: డెవలపర్ల వివరాలు.\n• 🔄 <b>ఇన్-యాప్ అప్‌డేటర్</b>: సులభమైన అప్‌డేట్ సిస్టమ్.</string>
+
+    <!-- Themes -->
+    <string name="theme_setting_title">యాప్ థీమ్ &amp; ప్రదర్శన</string>
+    <string name="theme_setting_desc">లైట్, డార్క్ లేదా సిస్టమ్ థీమ్ ఎంచుకోండి</string>
+    <string name="theme_system">సిస్టమ్ డీఫాల్ట్ 🌗</string>
+    <string name="theme_light">లైట్ మోడ్ ☀️</string>
+    <string name="theme_dark">డార్క్ మోడ్ 🌙</string>
+    <string name="theme_amoled">ప్యూర్ AMOLED బ్లాక్ 🖤</string>
+    <string name="choose_theme">యాప్ థీమ్ ఎంచుకోండి</string>
+
+    <!-- Language -->
+    <string name="language_setting_title">యాప్ భాష / భాష / भाषा</string>
+    <string name="language_setting_desc">మీకు నచ్చిన భాషను ఎంచుకోండి (తెలుగు, English, हिन्दी)</string>
+    <string name="language_system">సిస్టమ్ డీఫాల్ట్ 🌐</string>
+    <string name="language_english">English 🇬🇧</string>
+    <string name="language_hindi">हिन्दी (Hindi) 🇮🇳</string>
+    <string name="language_telugu">తెలుగు (Telugu) 🇮🇳</string>
+    <string name="choose_language">భాషను ఎంచుకోండి</string>
+
+    <!-- 15-Feature Safety Suite Telugu Strings -->
+    <string name="safety_timer_title">⏱️ సేఫ్టీ టైమర్ &amp; చెక్-ఇన్</string>
+    <string name="safety_timer_desc">కౌంట్‌డౌన్ ముగిసేలోపు మీరు చెక్-ఇన్ చేయకపోతే, మీ అత్యవసర కాంటాక్ట్‌లకు ఆటోమేటిక్‌గా హెచ్చరిక పంపబడుతుంది.</string>
+    <string name="safety_timer_running">సేఫ్టీ టైమర్ యాక్టివ్</string>
+    <string name="safety_timer_check_in_btn">✅ నేను సురక్షితంగా ఉన్నాను (చెక్-ఇన్)</string>
+    <string name="safety_timer_start_btn">టైమర్ ప్రారంభించండి</string>
+    <string name="safety_timer_cancel_btn">టైమర్ రద్దు చేయండి</string>
+    <string name="safety_timer_expired_alert">🚨 టైమర్ ముగిసింది! లైవ్ లొకేషన్‌తో కాంటాక్ట్‌లకు సమాచారం పంపబడింది...</string>
+    <string name="safety_timer_checked_in">విజయవంతంగా చెక్-ఇన్ చేయబడింది! మీరు సురక్షితం.</string>
+    <string name="safety_timer_15m">15 నిమిషాలు</string>
+    <string name="safety_timer_30m">30 నిమిషాలు</string>
+    <string name="safety_timer_45m">45 నిమిషాలు</string>
+    <string name="safety_timer_60m">60 నిమిషాలు</string>
+
+    <string name="fake_call_title">📞 ఫేక్ ఇన్‌కమింగ్ కాల్</string>
+    <string name="fake_call_desc">ఇబ్బందికరమైన పరిస్థితుల నుండి తప్పుకోవడానికి అత్యవసర కాల్‌ను సిమ్యులేట్ చేయండి.</string>
+    <string name="fake_call_caller_name">కాలర్ పేరు</string>
+    <string name="fake_call_default_caller">అమ్మ 💖</string>
+    <string name="fake_call_delay_title">కాల్ ఆలస్య సమయం</string>
+    <string name="fake_call_now">ఇప్పుడే కాల్ చేయండి</string>
+    <string name="fake_call_10s">10 సెకన్లు</string>
+    <string name="fake_call_30s">30 సెకన్లు</string>
+    <string name="fake_call_schedule_btn">ఫేక్ కాల్ షెడ్యూల్ చేయండి</string>
+    <string name="fake_call_incoming_label">ఇన్‌కమింగ్ కాల్…</string>
+    <string name="fake_call_decline">తిరస్కరించు</string>
+    <string name="fake_call_accept">ఎత్తండి</string>
+    <string name="fake_call_active">కాల్ కొనసాగుతోంది • 00:%02d</string>
+
+    <string name="ai_assistant_title">🧠 AI సేఫ్టీ అసిస్టెంట్</string>
+    <string name="ai_assistant_desc">24/7 అత్యవసర సలహాలు, స్వీయ రక్షణ పద్ధతులు మరియు భద్రతా సూచనలు.</string>
+    <string name="ai_assistant_prompt_hint">సలహాలు, హక్కులు లేదా చిట్కాల కోసం AI ని అడగండి…</string>
+    <string name="ai_quick_q1">🚨 నన్ను ఎవరైనా వెంబడిస్తున్నారు</string>
+    <string name="ai_quick_q2">🚕 రాత్రి పూట క్యాబ్ భద్రతా చిట్కాలు</string>
+    <string name="ai_quick_q3">🥋 ముఖ్యమైన స్వీయ రక్షణ పద్ధతులు</string>
+    <string name="ai_quick_q4">⚖️ పబ్లిక్ స్థలాల్లో నా చట్టపరమైన హక్కులు</string>
+
+    <string name="safe_route_title">🗺️ సేఫ్ రూట్ &amp; సేఫ్ అరైవల్</string>
+    <string name="safe_route_desc">సురక్షితమైన మార్గాలు మరియు గమ్యస్థానానికి చేరినప్పుడు ఆటోమేటిక్ సమాచారం.</string>
+    <string name="safe_arrival_destination">గమ్యస్థాన చిరునామా</string>
+    <string name="safe_arrival_start_monitoring">రూట్ షీల్డ్ ప్రారంభించండి</string>
+    <string name="safe_arrival_arrived_toast">🎉 మీరు సురక్షితంగా చేరుకున్నారు! కాంటాక్ట్‌లకు సమాచారం అందింది.</string>
+
+    <string name="trip_monitor_title">🚕 ట్యాక్సీ &amp; ట్రిప్ మానిటరింగ్</string>
+    <string name="trip_monitor_desc">క్యాబ్ ప్రయాణాన్ని ట్రాక్ చేయండి, వాహనం నంబర్ నమోదు చేయండి మరియు దారి మళ్లింపులను గుర్తించండి.</string>
+    <string name="trip_vehicle_num">వాహనం / క్యాబ్ నంబర్ (ఉదా: AP 05 AB 1234)</string>
+    <string name="trip_driver_name">డ్రైవర్ పేరు (ఐచ్ఛికం)</string>
+    <string name="trip_start_btn">లైవ్ ట్రిప్ గార్డ్ ప్రారంభించండి</string>
+    <string name="trip_active_shield">ట్రిప్ గార్డ్ యాక్టివ్ • ట్రాకింగ్ ఆన్</string>
+
+    <string name="voice_sos_title">🎙️ వాయిస్ SOS ట్రిగ్గర్</string>
+    <string name="voice_sos_desc">\"Help\", \"Guardian SOS\", \"Save Me\" వంటి మాటలతో ఆటోమేటిక్ SOS హెచ్చరిక.</string>
+    <string name="voice_sos_start_listening">వాయిస్ లిజనింగ్ ప్రారంభించండి</string>
+    <string name="voice_sos_stop_listening">వాయిస్ లిజనింగ్ ఆపండి</string>
+    <string name="voice_sos_listening_active">🎤 భద్రతా పదాల కోసం వింటోంది…</string>
+    <string name="voice_sos_keyword_detected">🚨 వాయిస్ కమాండ్ ద్వారా SOS యాక్టివేట్ చేయబడింది!</string>
+</resources>
