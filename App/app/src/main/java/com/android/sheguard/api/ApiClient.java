@@ -128,10 +128,15 @@ public class ApiClient {
     }
 
     public static void registerUser(String name, String email, String phone, String role, AuthCallback callback) {
+        registerUser(name, email, phone, "guardian123", role, callback);
+    }
+
+    public static void registerUser(String name, String email, String phone, String password, String role, AuthCallback callback) {
         Map<String, Object> body = new HashMap<>();
         body.put("name", name);
         body.put("email", email);
         body.put("phone", phone);
+        body.put("password", password != null && !password.isEmpty() ? password : "guardian123");
         body.put("role", role != null ? role : "user");
 
         Log.d(TAG, "POST /auth/register/ -> " + body);
