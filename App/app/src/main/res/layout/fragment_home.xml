@@ -416,6 +416,90 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- GUARDIAN ROLE & TRACKING HERO CARDS -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+
+                    <!-- Card A: My Guardians & Safety Chat -->
+                    <LinearLayout
+                        android:id="@+id/card_my_guardians"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_card_safety_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_contacts_safety"
+                            app:tint="#C084FC"
+                            android:contentDescription="Guardians" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="My Guardians"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Chat &amp; Live Sharing"
+                            android:textColor="#94A3B8"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Card B: Guardian Portal (Wards Radar) -->
+                    <LinearLayout
+                        android:id="@+id/card_guardian_portal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_card_safety_dark"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_radar_map_graphic"
+                            android:contentDescription="Guardian Portal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="Guardian Portal"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Track Wards &amp; %"
+                            android:textColor="#34D399"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
                 <!-- 4. SAFETY CHECK-IN CARD -->
                 <LinearLayout
                     android:id="@+id/card_safety_check_in"

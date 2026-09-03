@@ -94,6 +94,27 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_guardianPortalFragment"
+            app:destination="@id/guardianPortalFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_myGuardiansFragment"
+            app:destination="@id/myGuardiansFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_guardianChatFragment"
+            app:destination="@id/guardianChatFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -176,5 +197,39 @@
         android:name="com.android.sheguard.ui.fragment.VoiceSosFragment"
         android:label="fragment_voice_sos"
         tools:layout="@layout/fragment_voice_sos" />
+
+    <fragment
+        android:id="@+id/guardianPortalFragment"
+        android:name="com.android.sheguard.ui.fragment.GuardianPortalFragment"
+        android:label="fragment_guardian_portal"
+        tools:layout="@layout/fragment_guardian_portal">
+        <action
+            android:id="@+id/action_guardianPortalFragment_to_guardianChatFragment"
+            app:destination="@id/guardianChatFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myGuardiansFragment"
+        android:name="com.android.sheguard.ui.fragment.MyGuardiansFragment"
+        android:label="fragment_my_guardians"
+        tools:layout="@layout/fragment_my_guardians">
+        <action
+            android:id="@+id/action_myGuardiansFragment_to_guardianChatFragment"
+            app:destination="@id/guardianChatFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/guardianChatFragment"
+        android:name="com.android.sheguard.ui.fragment.GuardianChatFragment"
+        android:label="fragment_guardian_chat"
+        tools:layout="@layout/fragment_guardian_chat" />
 
 </navigation>

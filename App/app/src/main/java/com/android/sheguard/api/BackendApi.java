@@ -6,8 +6,10 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface BackendApi {
 
@@ -34,4 +36,21 @@ public interface BackendApi {
 
     @GET("dashboard/stats/")
     Call<JsonObject> getDashboardStats();
+
+    // Guardian Role & Tracking Endpoints
+    @POST("guardians/link/")
+    Call<JsonObject> linkGuardian(@Body Map<String, Object> body);
+
+    @GET("guardians/my-guardians/")
+    Call<JsonObject> getMyGuardians(@Query("phone") String phone);
+
+    @GET("guardians/tracked-wards/")
+    Call<JsonObject> getTrackedWards(@Query("guardian_phone") String guardianPhone);
+
+    @POST("chat/send/")
+    Call<JsonObject> sendChatMessage(@Body Map<String, Object> body);
+
+    @GET("chat/messages/")
+    Call<JsonObject> getChatMessages(@Query("user1") String user1, @Query("user2") String user2);
 }
+

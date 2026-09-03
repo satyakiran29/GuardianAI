@@ -304,4 +304,121 @@ public class ApiClient {
             }
         });
     }
+
+    public interface JsonCallback {
+        void onResult(boolean success, JsonObject data, String message);
+    }
+
+    public static void linkGuardian(String userPhone, String guardianPhone, String guardianName, String relationship, JsonCallback callback) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("user_phone", userPhone);
+        body.put("guardian_phone", guardianPhone);
+        body.put("guardian_name", guardianName != null ? guardianName : "");
+        body.put("relationship", relationship != null ? relationship : "Family");
+
+        Log.d(TAG, "POST /guardians/link/ -> " + body);
+
+        getService().linkGuardian(body).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Guardian linked successfully");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Failed to link guardian");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "linkGuardian FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
+
+    public static void getMyGuardians(String userPhone, JsonCallback callback) {
+        getService().getMyGuardians(userPhone).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Success");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Failed to fetch guardians");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "getMyGuardians FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
+
+    public static void getTrackedWards(String guardianPhone, JsonCallback callback) {
+        getService().getTrackedWards(guardianPhone).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Success");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Failed to fetch tracked wards");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "getTrackedWards FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
+
+    public static void sendChatMessage(String senderPhone, String receiverPhone, String message, boolean isSos, int battery, double lat, double lng, JsonCallback callback) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("sender_phone", senderPhone);
+        body.put("receiver_phone", receiverPhone);
+        body.put("message", message);
+        body.put("is_sos", isSos);
+        body.put("battery_level", battery);
+        body.put("latitude", lat);
+        body.put("longitude", lng);
+
+        getService().sendChatMessage(body).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Sent");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Failed to send message");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "sendChatMessage FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
+
+    public static void getChatMessages(String user1, String user2, JsonCallback callback) {
+        getService().getChatMessages(user1, user2).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Success");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Failed to load chat history");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "getChatMessages FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
 }
+

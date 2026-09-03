@@ -139,6 +139,10 @@ public class HomeFragment extends Fragment {
         binding.about.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_aboutFragment));
         binding.cardSafeRide.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safeRideFragment));
 
+        // Guardian Role & Live Tracking Suite
+        binding.cardMyGuardians.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_myGuardiansFragment));
+        binding.cardGuardianPortal.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_guardianPortalFragment));
+
         // 15-Feature Safety Suite Navigation
         binding.cardSafetyTimer.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safetyTimerFragment));
         binding.cardFakeCall.setOnClickListener(v -> showFakeCallLauncherDialog());
@@ -218,9 +222,14 @@ public class HomeFragment extends Fragment {
 
     public void setUserNameOnTitle() {
         String userName = Prefs.getString(Constants.PREFS_USER_NAME, "Guardian User");
+        String role = Prefs.getString("USER_ROLE", "user");
         if (getContext() != null && binding.header.collapsingToolbar != null) {
             try {
-                binding.header.collapsingToolbar.setSubtitle(getString(R.string.activity_home_desc, userName));
+                if ("guardian".equalsIgnoreCase(role)) {
+                    binding.header.collapsingToolbar.setSubtitle("🛡️ Guardian Active: " + userName);
+                } else {
+                    binding.header.collapsingToolbar.setSubtitle(getString(R.string.activity_home_desc, userName));
+                }
             } catch (Exception ignored) {}
         }
     }

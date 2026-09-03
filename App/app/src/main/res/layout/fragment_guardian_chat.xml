@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0A0B0E"
+    android:fitsSystemWindows="true">
+
+    <!-- Top Bar with Partner Profile & Battery Indicator -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#13151B"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_info"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#FFFFFF"
+            android:contentDescription="Back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_chat_partner_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Safety Guardian"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_chat_partner_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Battery: 85% • Online"
+                android:textColor="#34D399"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_call_partner"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_info"
+            android:src="@drawable/ic_call"
+            app:tint="#34D399"
+            android:contentDescription="Call" />
+    </LinearLayout>
+
+    <!-- Preset Quick Safety Reply Chips -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:scrollbars="none"
+        android:background="#0F172A">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_im_safe"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="I am safe and reached"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:layout_marginEnd="6dp"
+                app:chipBackgroundColor="@color/colorIndigo" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_call_me"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="Please call me now"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:layout_marginEnd="6dp"
+                app:chipBackgroundColor="@color/colorPurple" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_send_location"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="Share live GPS location"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:layout_marginEnd="6dp"
+                app:chipBackgroundColor="@color/colorAccent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_low_battery"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="Phone battery is low"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                app:chipBackgroundColor="@color/color_sos_red" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Chat Messages Scroll Area -->
+    <ScrollView
+        android:id="@+id/scroll_chat_messages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:id="@+id/layout_chat_messages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <!-- Bottom Message Compose Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#13151B"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <EditText
+            android:id="@+id/et_chat_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_card_safety_dark"
+            android:hint="Type safety message or update..."
+            android:textColor="#FFFFFF"
+            android:textColorHint="#94A3B8"
+            android:textSize="14sp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:maxLines="3"
+            android:inputType="textCapSentences|textMultiLine" />
+
+        <ImageButton
+            android:id="@+id/btn_send_chat"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_info"
+            android:src="@drawable/ic_send"
+            app:tint="#8B5CF6"
+            android:contentDescription="Send" />
+    </LinearLayout>
+
+</LinearLayout>

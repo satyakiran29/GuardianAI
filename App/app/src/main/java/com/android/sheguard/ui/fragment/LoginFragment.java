@@ -114,6 +114,23 @@ public class LoginFragment extends Fragment {
             startActivity(intent);
         });
 
+        // 1-Click Guardian / Responder Account Mode
+        binding.btnGuardianDemoAccount.setOnClickListener(v -> {
+            Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
+            Prefs.putString(Constants.PREFS_USER_NAME, "Rajesh Sharma (Guardian Unit)");
+            Prefs.putString(Constants.PREFS_USER_EMAIL, "guardian@sheguard.app");
+            Prefs.putString(Constants.PREFS_USER_PHONE, "+919988776655");
+            Prefs.putString("USER_ROLE", "guardian");
+
+            if (getContext() != null) {
+                Toast.makeText(getContext(), R.string.guardian_logged_in_toast, Toast.LENGTH_SHORT).show();
+            }
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
         // Email & Password Sign-In via Django/Supabase REST Backend
         binding.btnLogin.setOnClickListener(v -> {
             if (!isInformationValid()) {

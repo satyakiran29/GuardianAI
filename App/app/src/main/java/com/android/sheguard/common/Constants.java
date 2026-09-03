@@ -36,6 +36,9 @@ public class Constants {
     public static final String PREFS_USER_NAME = "user_name";
     public static final String PREFS_USER_EMAIL = "user_email";
     public static final String PREFS_USER_PHONE = "user_phone";
+    public static final String PREFS_BATTERY_LEVEL = "user_battery_level";
+    public static final String PREFS_LAST_LATITUDE = "last_latitude";
+    public static final String PREFS_LAST_LONGITUDE = "last_longitude";
     public static final String IS_DEMO_MODE = "is_demo_mode";
     public static final String DEMO_USER_NAME = "Sarah Connor";
     public static final String DEMO_USER_EMAIL = "demo.user@guardianai.app";

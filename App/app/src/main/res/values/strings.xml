@@ -58,6 +58,8 @@
     <string name="automatic_alerts">Automatic Alerts</string>
     <string name="automatic_alerts_desc">GuardianAI provides you with an instant lifeline. A simple press of the SOS button sends automated SMS alerts to your selected contacts, including your precise location.</string>
     <string name="contact_empty">Contact list is empty</string>
+    <string name="btn_guardian_demo_account">Guardian / Responder Sign-In</string>
+    <string name="guardian_logged_in_toast">Logged in as Guardian Unit</string>
     <string name="new_name">New name</string>
     <string name="new_phone">New phone</string>
     <string name="btn_save">Save</string>

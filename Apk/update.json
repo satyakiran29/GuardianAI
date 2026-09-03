@@ -1,11 +1,12 @@
 {
-  "versionCode": 6,
-  "versionName": "1.0.5",
+  "versionCode": 7,
+  "versionName": "1.0.6",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Added Power Button Triple-Click SOS & Volume Buttons Multi-Press trigger",
-    "Added Hardware Button SOS trigger mode selector in Settings",
-    "24/7 Persistent background safety shield notification with Quick SOS action",
-    "Continuous 5-second background location & Supabase live telemetry stream"
+    "Added Guardian Role support with dedicated Guardian Login on App & Web",
+    "Real-time battery percentage tracking with critical low-battery alerts",
+    "Live GPS location radar & address sync for protected citizens and wards",
+    "Interactive safety chat between protected users and guardians with quick reply presets",
+    "SuperAdmin user data management with credentials & guardian assignment controls"
   ]
 }

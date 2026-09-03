@@ -52,6 +52,18 @@ public class Prefs {
         return prefs.getLong(key, defValue);
     }
 
+    public static void putFloat(String key, float val) {
+        editor.putFloat(key, val).apply();
+    }
+
+    public static float getFloat(String key) {
+        return prefs.getFloat(key, 0.0f);
+    }
+
+    public static float getFloat(String key, float defValue) {
+        return prefs.getFloat(key, defValue);
+    }
+
     public static String getString(String key) {
         return prefs.getString(key, null);
     }
