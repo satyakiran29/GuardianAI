@@ -2,6 +2,8 @@ package com.android.sheguard.api;
 
 import android.util.Log;
 
+import com.android.sheguard.common.Constants;
+import com.android.sheguard.config.Prefs;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -226,6 +228,19 @@ public class ApiClient {
                     JsonObject json = response.body();
                     Log.d(TAG, "loginUser SUCCESS: " + json);
                     String role = json.has("role") ? json.get("role").getAsString() : "user";
+                    if (json.has("user") && json.get("user").isJsonObject()) {
+                        JsonObject u = json.getAsJsonObject("user");
+                        if (u.has("phone") && !u.get("phone").isJsonNull()) {
+                            com.android.sheguard.config.Prefs.putString(com.android.sheguard.common.Constants.PREFS_USER_PHONE, u.get("phone").getAsString());
+                        }
+                        if (u.has("name") && !u.get("name").isJsonNull()) {
+                            com.android.sheguard.config.Prefs.putString(com.android.sheguard.common.Constants.PREFS_USER_NAME, u.get("name").getAsString());
+                        }
+                        if (u.has("email") && !u.get("email").isJsonNull()) {
+                            com.android.sheguard.config.Prefs.putString(com.android.sheguard.common.Constants.PREFS_USER_EMAIL, u.get("email").getAsString());
+                        }
+                    }
+                    com.android.sheguard.config.Prefs.putString("USER_ROLE", role);
                     if (callback != null) callback.onResult(true, role, "Login successful");
                 } else {
                     String errorMsg = "Invalid email or password";
@@ -287,6 +302,11 @@ public class ApiClient {
         body.put("battery_level", battery);
 
         Log.d(TAG, "POST /location/ping/ -> " + body);
+
+        // Persist locally so chat 'Send Location' always has real coords
+        Prefs.putFloat(Constants.PREFS_LAST_LATITUDE, (float) lat);
+        Prefs.putFloat(Constants.PREFS_LAST_LONGITUDE, (float) lng);
+        Prefs.putInt(Constants.PREFS_BATTERY_LEVEL, battery);
 
         getService().pingLocation(body).enqueue(new Callback<JsonObject>() {
             @Override

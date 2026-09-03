@@ -1,12 +1,12 @@
 {
-  "versionCode": 11,
-  "versionName": "1.1.0",
+  "versionCode": 12,
+  "versionName": "1.1.1",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Resolved startup crash and stabilized role-based navigation lifecycle",
-    "Dedicated Guardian Command Desk: real-time ward radar, live battery %, GPS telemetry, and 1-click distress response",
-    "Dedicated SuperAdmin Platform Control Center: real-time platform KPIs, active SOS incident feed, and global user directory",
-    "Tailored Protected User Safety UI: personal safety suite, SOS panic triggers, and My Guardians directory",
-    "Automatic background telemetry polling and real-time distress alert synchronization"
+    "Guardian Command Desk: fixed role fetching — identity lookup now works via username, email, or phone",
+    "SuperAdmin [Guardians] filter fixed: switching tabs now clears search so guardians load correctly",
+    "Chat 'Send Location' chip fixed: now sends real GPS coordinates (lat/lng) instead of a blank Maps URL",
+    "Location coords auto-saved to device on every GPS ping — chat always has fresh live location",
+    "Guardian UI overhaul: real-time ward radar, live battery %, 1-click pair ward and demo sample radar"
   ]
 }

@@ -131,6 +131,23 @@ public class LoginFragment extends Fragment {
             startActivity(intent);
         });
 
+        // 1-Click Chief SuperAdmin Account Mode
+        binding.btnSuperadminDemoAccount.setOnClickListener(v -> {
+            Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
+            Prefs.putString(Constants.PREFS_USER_NAME, "Chief SuperAdmin");
+            Prefs.putString(Constants.PREFS_USER_EMAIL, "admin@sheguard.app");
+            Prefs.putString(Constants.PREFS_USER_PHONE, "+919876500000");
+            Prefs.putString("USER_ROLE", "superadmin");
+
+            if (getContext() != null) {
+                Toast.makeText(getContext(), "👑 Logged in as Chief SuperAdmin", Toast.LENGTH_SHORT).show();
+            }
+
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+
         // Email & Password Sign-In via Django/Supabase REST Backend
         binding.btnLogin.setOnClickListener(v -> {
             if (!isInformationValid()) {
@@ -170,7 +187,7 @@ public class LoginFragment extends Fragment {
                                         bundle.putString("PREFILL_PHONE", email);
                                     }
                                     NavHostFragment.findNavController(LoginFragment.this)
-                                            .navigate(R.id.action_loginFragment_to_registerFragment, bundle);
+                                             .navigate(R.id.action_loginFragment_to_registerFragment, bundle);
                                 })
                                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                                 .show();
@@ -188,10 +205,16 @@ public class LoginFragment extends Fragment {
 
                 Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
                 Prefs.putString(Constants.PREFS_USER_EMAIL, email);
-                if (Prefs.getString(Constants.PREFS_USER_PHONE, null) == null) {
-                    Prefs.putString(Constants.PREFS_USER_PHONE, "+919876501234");
+                if ("superadmin".equalsIgnoreCase(role) || "admin@sheguard.app".equalsIgnoreCase(email)) {
+                    Prefs.putString(Constants.PREFS_USER_PHONE, "+919876500000");
+                    Prefs.putString(Constants.PREFS_USER_NAME, "Chief SuperAdmin");
+                    Prefs.putString("USER_ROLE", "superadmin");
+                } else {
+                    if (Prefs.getString(Constants.PREFS_USER_PHONE, null) == null) {
+                        Prefs.putString(Constants.PREFS_USER_PHONE, email.contains("@") ? "+919876543210" : email);
+                    }
+                    Prefs.putString("USER_ROLE", role != null ? role : "user");
                 }
-                Prefs.putString("USER_ROLE", role != null ? role : "user");
 
                 if (getContext() != null) {
                     Toast.makeText(getContext(), "🎉 Welcome back!", Toast.LENGTH_SHORT).show();

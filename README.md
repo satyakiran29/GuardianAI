@@ -2,7 +2,7 @@
   # 🛡️ GuardianAI
   ### *Autonomous Women Safety, Telemetric Emergency Response, Multi-Role Command & Guardian Ecosystem*
 
-  [![Android App v1.1.0](https://img.shields.io/badge/Android%20App-v1.1.0%20(Build%2011)-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk)
+  [![Android App v1.1.1](https://img.shields.io/badge/Android%20App-v1.1.1%20(Build%2012)-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk)
   [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Java%20%26%20XML-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
   [![Django Backend](https://img.shields.io/badge/Backend-Django%206%20%2B%20REST%20Framework-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
   [![Cloud Database](https://img.shields.io/badge/Cloud-Supabase%20Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
@@ -49,9 +49,20 @@ The platform connects a native **Android Client (Java + XML UI)** with an intell
 
 | Artifact | Version | File Size | Direct Download |
 | :--- | :---: | :---: | :--- |
-| **Android Safety App (Debug APK)** | **v1.1.0 (Build 11)** | ~16.8 MB | [Download GuardianAI-debug.apk](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk) |
-| **OTA Update Manifest** | **v1.1.0** | ~711 B | [View update.json](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/update.json) |
-| **Backend Release Package** | **v1.1.0** | ~16.8 MB | [Backend APK Release](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Backend/GuardianAI-Safety-Debug.apk) |
+| **Android Safety App (Debug APK)** | **v1.1.1 (Build 12)** | ~16.8 MB | [Download GuardianAI-debug.apk](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk) |
+| **OTA Update Manifest** | **v1.1.1** | ~710 B | [View update.json](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/update.json) |
+| **Backend Release Package** | **v1.1.1** | ~16.8 MB | [Backend APK Release](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Backend/GuardianAI-Safety-Debug.apk) |
+
+### 🆕 What's New in v1.1.1 (Build 12)
+
+| # | Fix / Feature | Area |
+|---|---|---|
+| ✅ | **Guardian filter fixed** — `[Guardians]` tab correctly shows all guardian-role accounts; switching tabs clears the search to avoid conflicts | SuperAdmin UI |
+| ✅ | **Chat location fixed** — "📍 Send Location" chip now sends a real `maps.google.com/?q=LAT,LNG` link using device's last saved GPS coordinates | Safety Chat |
+| ✅ | **Location persistence** — `pingLocation()` saves lat/lng to device storage so chat chip always has fresh coordinates between SOS events | Android Client |
+| ✅ | **Guardian role fetching** — Backend identity lookup now resolves by username, email prefix, name, and phone number — fixes "Guardian Not Found" errors | Django Backend |
+| ✅ | **Guardian Command Desk overhaul** — Live ward radar with battery color indicators, empty-state quick-actions (`+ Pair Ward` / `⚡ Sample Radar`) | Android UI |
+| ✅ | **SuperAdmin Command Center** — High-contrast KPI icons (👥🛡️🚨🔋), readable bold-white filter tabs with Indigo active state | Android UI |
 
 ---
 

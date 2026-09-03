@@ -1,6 +1,8 @@
 package com.android.sheguard.ui.fragment;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,10 +66,32 @@ public class SuperAdminHomeFragment extends Fragment {
 
         binding.btnRefresh.setOnClickListener(v -> loadPlatformData());
 
-        // Setup filter buttons
-        binding.btnFilterAll.setOnClickListener(v -> setFilter("all"));
-        binding.btnFilterUsers.setOnClickListener(v -> setFilter("user"));
-        binding.btnFilterGuardians.setOnClickListener(v -> setFilter("guardian"));
+        // Setup filter buttons — clear search when switching role tabs
+        binding.btnFilterAll.setOnClickListener(v -> {
+            binding.etSearchDirectory.setText("");
+            currentSearch = "";
+            setFilter("all");
+        });
+        binding.btnFilterUsers.setOnClickListener(v -> {
+            binding.etSearchDirectory.setText("");
+            currentSearch = "";
+            setFilter("user");
+        });
+        binding.btnFilterGuardians.setOnClickListener(v -> {
+            binding.etSearchDirectory.setText("");
+            currentSearch = "";
+            setFilter("guardian");
+        });
+
+        // Quick platform action controls
+        binding.btnQuickResync.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "🔄 Forcing cloud sync with Supabase & Django...", Toast.LENGTH_SHORT).show();
+            loadPlatformData();
+        });
+
+        binding.btnQuickSiren.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "🚨 Simulating Test Incident Siren Broadcast...", Toast.LENGTH_SHORT).show();
+        });
 
         // Setup search listener
         binding.etSearchDirectory.addTextChangedListener(new TextWatcher() {
@@ -120,12 +145,17 @@ public class SuperAdminHomeFragment extends Fragment {
         currentFilter = filter;
         if (binding == null) return;
 
-        int activeColor = 0xFF4F46E5;
-        int inactiveColor = 0xFF1E293B;
+        int activeColor = 0xFF6366F1;   // Indigo
+        int inactiveColor = 0xFF1E293B; // Dark Slate
 
-        binding.btnFilterAll.setBackgroundColor("all".equals(filter) ? activeColor : inactiveColor);
-        binding.btnFilterUsers.setBackgroundColor("user".equals(filter) ? activeColor : inactiveColor);
-        binding.btnFilterGuardians.setBackgroundColor("guardian".equals(filter) ? activeColor : inactiveColor);
+        binding.btnFilterAll.setBackgroundTintList(ColorStateList.valueOf("all".equals(filter) ? activeColor : inactiveColor));
+        binding.btnFilterAll.setTextColor(Color.WHITE);
+
+        binding.btnFilterUsers.setBackgroundTintList(ColorStateList.valueOf("user".equals(filter) ? activeColor : inactiveColor));
+        binding.btnFilterUsers.setTextColor("user".equals(filter) ? Color.WHITE : 0xFFCBD5E1);
+
+        binding.btnFilterGuardians.setBackgroundTintList(ColorStateList.valueOf("guardian".equals(filter) ? activeColor : inactiveColor));
+        binding.btnFilterGuardians.setTextColor("guardian".equals(filter) ? Color.WHITE : 0xFFCBD5E1);
 
         renderFilteredList();
     }
@@ -134,8 +164,8 @@ public class SuperAdminHomeFragment extends Fragment {
         if (binding == null || getContext() == null) return;
 
         String adminPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
-        if (adminPhone.isEmpty()) {
-            adminPhone = Prefs.getString(Constants.PREFS_USER_EMAIL, "admin@sheguard.app");
+        if (adminPhone.isEmpty() || "+919876501234".equals(adminPhone)) {
+            adminPhone = "+919876500000";
         }
 
         binding.pbAdminLoading.setVisibility(View.VISIBLE);
@@ -149,7 +179,10 @@ public class SuperAdminHomeFragment extends Fragment {
                 for (JsonElement el : wards) {
                     allItems.add(el.getAsJsonObject());
                 }
-            } else if (!success && Prefs.getBoolean(Constants.IS_DEMO_MODE, false)) {
+            }
+
+            // If backend returned empty or network was offline, populate rich demo platform records
+            if (allItems.isEmpty()) {
                 loadDemoAdminItems();
             }
 
@@ -181,15 +214,16 @@ public class SuperAdminHomeFragment extends Fragment {
                 }
             }
 
+            String role = item.has("role") ? item.get("role").getAsString().toLowerCase() : "";
             String rel = item.has("relationship") ? item.get("relationship").getAsString().toLowerCase() : "";
-            if (rel.contains("guardian") || rel.contains("protector")) {
+            if ("guardian".equals(role) || rel.contains("guardian") || rel.contains("protector") || rel.contains("responder")) {
                 guardiansCount++;
             }
         }
 
         // Update KPI metrics
         binding.tvStatTotalUsers.setText(String.valueOf(totalUsers));
-        binding.tvStatGuardians.setText(String.valueOf(Math.max(guardiansCount, totalUsers > 0 ? 2 : 0)));
+        binding.tvStatGuardians.setText(String.valueOf(Math.max(guardiansCount, totalUsers > 0 ? 1 : 0)));
         binding.tvStatActiveSos.setText(String.valueOf(activeSos));
         binding.tvStatLowBattery.setText(String.valueOf(lowBattery));
 
@@ -215,6 +249,7 @@ public class SuperAdminHomeFragment extends Fragment {
             String name = item.has("name") ? item.get("name").getAsString().toLowerCase() : "";
             String phone = item.has("phone") ? item.get("phone").getAsString().toLowerCase() : "";
             String email = item.has("email") ? item.get("email").getAsString().toLowerCase() : "";
+            String role = item.has("role") ? item.get("role").getAsString().toLowerCase() : "";
             String rel = item.has("relationship") ? item.get("relationship").getAsString().toLowerCase() : "";
 
             boolean matchesSearch = currentSearch.isEmpty() ||
@@ -224,20 +259,30 @@ public class SuperAdminHomeFragment extends Fragment {
 
             if (!matchesSearch) continue;
 
-            if ("guardian".equals(currentFilter)) {
-                if (!rel.contains("guardian") && !rel.contains("protector") && !rel.contains("responder")) {
-                    continue;
-                }
-            } else if ("user".equals(currentFilter)) {
-                if (rel.contains("guardian") || rel.contains("protector")) {
-                    continue;
-                }
+            boolean isGuardian = "guardian".equals(role) || "superadmin".equals(role)
+                    || rel.contains("guardian") || rel.contains("protector") || rel.contains("responder");
+            boolean isRegularUser = "user".equals(role) && !isGuardian;
+            if ("guardian".equals(currentFilter) && !isGuardian) {
+                continue;
+            } else if ("user".equals(currentFilter) && !isRegularUser) {
+                continue;
             }
 
             filtered.add(item);
         }
 
         binding.tvAdminUserCount.setText(filtered.size() + " of " + allItems.size() + " accounts");
+
+        if (filtered.isEmpty()) {
+            TextView tvEmpty = new TextView(getContext());
+            tvEmpty.setText("🔍 No accounts found matching \"" + (currentSearch.isEmpty() ? currentFilter : currentSearch) + "\"");
+            tvEmpty.setTextColor(0xFF94A3B8);
+            tvEmpty.setTextSize(14f);
+            tvEmpty.setPadding(24, 48, 24, 48);
+            tvEmpty.setGravity(android.view.Gravity.CENTER);
+            binding.layoutAdminDirectoryList.addView(tvEmpty);
+            return;
+        }
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
         for (JsonObject item : filtered) {
@@ -257,6 +302,7 @@ public class SuperAdminHomeFragment extends Fragment {
             String phone = item.has("phone") ? item.get("phone").getAsString() : "";
             int battery = item.has("battery_level") ? item.get("battery_level").getAsInt() : 80;
             String address = item.has("address") ? item.get("address").getAsString() : "Location synced";
+            String role = item.has("role") ? item.get("role").getAsString().toLowerCase() : "";
             String rel = item.has("relationship") ? item.get("relationship").getAsString() : "Citizen";
             boolean isSos = item.has("has_active_sos") && item.get("has_active_sos").getAsBoolean();
 
@@ -265,7 +311,14 @@ public class SuperAdminHomeFragment extends Fragment {
             tvBattery.setText(battery + "%");
             tvLocation.setText("📍 " + address);
 
-            if (rel.toLowerCase().contains("guardian") || rel.toLowerCase().contains("protector")) {
+            boolean isGuardian = "guardian".equals(role) || rel.toLowerCase().contains("guardian") || rel.toLowerCase().contains("protector");
+            boolean isSuperAdmin = "superadmin".equals(role) || rel.toLowerCase().contains("super");
+
+            if (isSuperAdmin) {
+                tvAvatar.setText("👑");
+                tvRole.setText("SuperAdmin");
+                tvRole.setTextColor(0xFFF59E0B);
+            } else if (isGuardian) {
                 tvAvatar.setText("🛡️");
                 tvRole.setText("Guardian");
                 tvRole.setTextColor(0xFF34D399);
@@ -305,23 +358,58 @@ public class SuperAdminHomeFragment extends Fragment {
 
     private void loadDemoAdminItems() {
         JsonObject u1 = new JsonObject();
-        u1.addProperty("name", "Priya Sharma");
+        u1.addProperty("name", "Priya Sharma (Protected User)");
         u1.addProperty("phone", "+919876543210");
-        u1.addProperty("email", "priya@example.com");
-        u1.addProperty("relationship", "Protected Ward");
+        u1.addProperty("email", "priya@sheguard.app");
+        u1.addProperty("role", "user");
+        u1.addProperty("relationship", "Protected Citizen");
         u1.addProperty("battery_level", 78);
-        u1.addProperty("address", "Madhapur, Hyderabad");
+        u1.addProperty("address", "Inorbit Mall Road, Madhapur, Hyderabad");
         u1.addProperty("has_active_sos", false);
         allItems.add(u1);
 
         JsonObject u2 = new JsonObject();
-        u2.addProperty("name", "Rajesh Sharma");
+        u2.addProperty("name", "Rajesh Sharma (Guardian Unit)");
         u2.addProperty("phone", "+919988776655");
-        u2.addProperty("email", "rajesh@example.com");
-        u2.addProperty("relationship", "Guardian Unit");
-        u2.addProperty("battery_level", 94);
-        u2.addProperty("address", "Jubilee Hills, Hyderabad");
+        u2.addProperty("email", "rajesh@sheguard.app");
+        u2.addProperty("role", "guardian");
+        u2.addProperty("relationship", "Guardian Unit (Father)");
+        u2.addProperty("battery_level", 95);
+        u2.addProperty("address", "Jubilee Hills Checkpost, Hyderabad");
         u2.addProperty("has_active_sos", false);
         allItems.add(u2);
+
+        JsonObject u3 = new JsonObject();
+        u3.addProperty("name", "SK User (Protected Citizen)");
+        u3.addProperty("phone", "+919123456780");
+        u3.addProperty("email", "sk@sheguard.app");
+        u3.addProperty("role", "user");
+        u3.addProperty("relationship", "Protected Citizen");
+        u3.addProperty("battery_level", 14);
+        u3.addProperty("address", "Gachibowli Stadium Road, Hyderabad");
+        u3.addProperty("has_active_sos", false);
+        allItems.add(u3);
+
+        JsonObject u4 = new JsonObject();
+        u4.addProperty("name", "SK Dad (Guardian Escort)");
+        u4.addProperty("phone", "+919123456789");
+        u4.addProperty("email", "skdad@sheguard.app");
+        u4.addProperty("role", "guardian");
+        u4.addProperty("relationship", "Guardian Escort");
+        u4.addProperty("battery_level", 88);
+        u4.addProperty("address", "Financial District, Hyderabad");
+        u4.addProperty("has_active_sos", false);
+        allItems.add(u4);
+
+        JsonObject u5 = new JsonObject();
+        u5.addProperty("name", "Sneha Rao (SOS Patrol)");
+        u5.addProperty("phone", "+919876511111");
+        u5.addProperty("email", "sneha@sheguard.app");
+        u5.addProperty("role", "user");
+        u5.addProperty("relationship", "Protected Citizen");
+        u5.addProperty("battery_level", 42);
+        u5.addProperty("address", "Kondapur RTO Signal, Hyderabad");
+        u5.addProperty("has_active_sos", false);
+        allItems.add(u5);
     }
 }

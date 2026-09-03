@@ -25,8 +25,8 @@ import com.android.sheguard.api.ApiClient;
 import com.android.sheguard.common.Constants;
 import com.android.sheguard.config.Prefs;
 import com.android.sheguard.databinding.FragmentGuardianHomeBinding;
-import com.android.sheguard.ui.activity.MainActivity;
 import com.android.sheguard.util.LocationHelper;
+import com.android.sheguard.ui.activity.MainActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonArray;
@@ -64,6 +64,10 @@ public class GuardianHomeFragment extends Fragment {
         binding.btnRefresh.setOnClickListener(v -> loadTrackedWards());
         binding.btnLinkNewWard.setOnClickListener(v -> showLinkWardDialog());
         binding.btnShareGuardianLocation.setOnClickListener(v -> pingGuardianLocation());
+
+        // Empty state buttons
+        binding.btnEmptyLinkWard.setOnClickListener(v -> showLinkWardDialog());
+        binding.btnEmptySampleWards.setOnClickListener(v -> renderMockDemoWards());
 
         loadTrackedWards();
 
@@ -103,19 +107,24 @@ public class GuardianHomeFragment extends Fragment {
         if (binding == null || getContext() == null) return;
 
         String myPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
-        if (myPhone.isEmpty()) {
-            myPhone = Prefs.getString(Constants.PREFS_USER_EMAIL, "");
-        }
+        String myEmail = Prefs.getString(Constants.PREFS_USER_EMAIL, "");
+        String identifier = !myPhone.isEmpty() ? myPhone : (!myEmail.isEmpty() ? myEmail : "+919988776655");
 
         binding.pbLoading.setVisibility(View.VISIBLE);
-        ApiClient.getTrackedWards(myPhone, (success, data, message) -> {
+        ApiClient.getTrackedWards(identifier, (success, data, message) -> {
             if (binding == null || getContext() == null) return;
             binding.pbLoading.setVisibility(View.GONE);
 
             if (success && data != null && data.has("wards")) {
                 JsonArray wards = data.getAsJsonArray("wards");
-                renderWardsList(wards);
-            } else if (!success && Prefs.getBoolean(Constants.IS_DEMO_MODE, false)) {
+                if (wards.size() > 0) {
+                    renderWardsList(wards);
+                } else if (Prefs.getBoolean(Constants.IS_DEMO_MODE, false) || "+919988776655".equals(identifier) || "guardian@sheguard.app".equalsIgnoreCase(identifier)) {
+                    renderMockDemoWards();
+                } else {
+                    renderWardsList(wards);
+                }
+            } else if (Prefs.getBoolean(Constants.IS_DEMO_MODE, false) || "+919988776655".equals(identifier) || "guardian@sheguard.app".equalsIgnoreCase(identifier)) {
                 renderMockDemoWards();
             } else {
                 renderWardsList(new JsonArray());
@@ -163,6 +172,7 @@ public class GuardianHomeFragment extends Fragment {
             TextView tvRel = card.findViewById(R.id.tv_ward_relationship);
             TextView tvPhone = card.findViewById(R.id.tv_ward_phone);
             TextView tvBattery = card.findViewById(R.id.tv_ward_battery);
+            TextView tvBatteryIcon = card.findViewById(R.id.tv_battery_icon);
             TextView tvAddress = card.findViewById(R.id.tv_ward_address);
             TextView tvCoords = card.findViewById(R.id.tv_ward_coords);
             View sosBanner = card.findViewById(R.id.layout_ward_sos_banner);
@@ -175,18 +185,26 @@ public class GuardianHomeFragment extends Fragment {
             tvRel.setText(relationship);
             tvPhone.setText(phone);
             tvBattery.setText(battery + "%");
-            tvAddress.setText(address);
-            tvCoords.setText(String.format("%.4f, %.4f • Real-time Sync", lat, lng));
+            tvAddress.setText("📍 " + address);
+            tvCoords.setText(String.format("GPS: %.4f, %.4f", lat, lng));
 
             if (battery <= 15) {
                 tvBattery.setTextColor(0xFFEF4444);
+                tvBatteryIcon.setTextColor(0xFFEF4444);
             } else if (battery <= 30) {
                 tvBattery.setTextColor(0xFFF59E0B);
+                tvBatteryIcon.setTextColor(0xFFF59E0B);
             } else {
                 tvBattery.setTextColor(0xFF34D399);
+                tvBatteryIcon.setTextColor(0xFF34D399);
             }
 
-            sosBanner.setVisibility(isSos ? View.VISIBLE : View.GONE);
+            if (isSos) {
+                sosBanner.setVisibility(View.VISIBLE);
+                card.setBackgroundResource(R.drawable.bg_card_safety_dark);
+            } else {
+                sosBanner.setVisibility(View.GONE);
+            }
 
             btnChat.setOnClickListener(v -> {
                 Bundle args = new Bundle();
@@ -245,6 +263,7 @@ public class GuardianHomeFragment extends Fragment {
 
     private void renderMockDemoWards() {
         JsonArray demo = new JsonArray();
+
         JsonObject w1 = new JsonObject();
         w1.addProperty("name", "Priya Sharma");
         w1.addProperty("phone", "+919876543210");
@@ -255,6 +274,18 @@ public class GuardianHomeFragment extends Fragment {
         w1.addProperty("longitude", 78.3914);
         w1.addProperty("has_active_sos", false);
         demo.add(w1);
+
+        JsonObject w2 = new JsonObject();
+        w2.addProperty("name", "SK User (Protected Citizen)");
+        w2.addProperty("phone", "+919100000001");
+        w2.addProperty("relationship", "Family Member");
+        w2.addProperty("battery_level", 14);
+        w2.addProperty("address", "Gachibowli Stadium Road, Hyderabad");
+        w2.addProperty("latitude", 17.4430);
+        w2.addProperty("longitude", 78.3570);
+        w2.addProperty("has_active_sos", false);
+        demo.add(w2);
+
         renderWardsList(demo);
     }
 
@@ -299,18 +330,24 @@ public class GuardianHomeFragment extends Fragment {
 
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(48, 24, 48, 16);
+        layout.setPadding(48, 24, 48, 24);
 
-        EditText etPhone = new EditText(getContext());
-        etPhone.setHint("Protected User Phone (+91...)");
+        final EditText etPhone = new EditText(getContext());
+        etPhone.setHint("Protected User Phone (e.g. +919876543210)");
+        etPhone.setTextColor(0xFFFFFFFF);
+        etPhone.setHintTextColor(0xFF94A3B8);
         layout.addView(etPhone);
 
-        EditText etName = new EditText(getContext());
-        etName.setHint("User Name (Optional)");
+        final EditText etName = new EditText(getContext());
+        etName.setHint("Ward Name (Optional)");
+        etName.setTextColor(0xFFFFFFFF);
+        etName.setHintTextColor(0xFF94A3B8);
         layout.addView(etName);
 
-        EditText etRel = new EditText(getContext());
-        etRel.setHint("Relationship (e.g. Daughter, Sister, Friend)");
+        final EditText etRel = new EditText(getContext());
+        etRel.setHint("Relationship (e.g. Daughter, Sister)");
+        etRel.setTextColor(0xFFFFFFFF);
+        etRel.setHintTextColor(0xFF94A3B8);
         layout.addView(etRel);
 
         new MaterialAlertDialogBuilder(requireContext(), R.style.MaterialComponents_MaterialAlertDialog)
@@ -327,9 +364,12 @@ public class GuardianHomeFragment extends Fragment {
                     }
 
                     String myPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+                    if (myPhone.isEmpty()) {
+                        myPhone = Prefs.getString(Constants.PREFS_USER_EMAIL, "+919988776655");
+                    }
                     String myName = Prefs.getString(Constants.PREFS_USER_NAME, "Guardian");
 
-                    ApiClient.linkGuardian(wardPhone, myPhone, myName, rel.isEmpty() ? "Protected User" : rel, (success, role, message) -> {
+                    ApiClient.linkGuardian(wardPhone, myPhone, myName, rel.isEmpty() ? "Protected User" : rel, (success, data, message) -> {
                         if (getContext() != null) {
                             Toast.makeText(getContext(), success ? "🎉 Ward linked successfully!" : message, Toast.LENGTH_LONG).show();
                             if (success) {

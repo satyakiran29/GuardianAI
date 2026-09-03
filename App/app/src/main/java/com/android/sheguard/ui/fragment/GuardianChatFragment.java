@@ -68,8 +68,16 @@ public class GuardianChatFragment extends Fragment {
         binding.chipImSafe.setOnClickListener(v -> sendMessage("✅ I have reached safely and everything is okay!", false));
         binding.chipCallMe.setOnClickListener(v -> sendMessage("📞 Please call me now; urgent update!", true));
         binding.chipSendLocation.setOnClickListener(v -> {
-            String locationUrl = SosUtil.getLiveLocationUrl();
-            sendMessage("📍 Live GPS Checkpoint:\n" + (locationUrl.isEmpty() ? "https://maps.google.com" : locationUrl), false);
+            double lat = Prefs.getFloat(Constants.PREFS_LAST_LATITUDE, 0f);
+            double lng = Prefs.getFloat(Constants.PREFS_LAST_LONGITUDE, 0f);
+            String locationUrl;
+            if (lat != 0 && lng != 0) {
+                locationUrl = "https://maps.google.com/?q=" + lat + "," + lng;
+            } else {
+                String fromSos = SosUtil.getLiveLocationUrl();
+                locationUrl = fromSos.isEmpty() ? "https://maps.google.com" : fromSos;
+            }
+            sendMessage("📍 Live GPS Location:\n" + locationUrl, false);
         });
         binding.chipLowBattery.setOnClickListener(v -> {
             int myBattery = Prefs.getInt(Constants.PREFS_BATTERY_LEVEL, 15);
