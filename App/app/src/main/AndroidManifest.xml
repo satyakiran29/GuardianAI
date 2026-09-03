@@ -70,6 +70,14 @@
             android:name=".service.SosService"
             android:enabled="true"
             android:foregroundServiceType="location|specialUse" />
+
+        <!-- Dead Man's Switch — background countdown, auto-SOS on expiry -->
+        <service
+            android:name=".service.DeadMansSwitchService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse" />
+
         <!-- 1-Tap SOS Widget -->
         <receiver
             android:name=".widget.QuickSosWidgetProvider"

@@ -58,4 +58,7 @@ public class Constants {
     public static final String HW_MODE_POWER_ONLY = "power_only";
     public static final String HW_MODE_VOLUME_ONLY = "volume_only";
     public static final String HW_MODE_DISABLED = "disabled";
+
+    // Dead Man's Switch
+    public static final String DMS_TRIGGER_SOURCE = "dms_trigger_source";
 }

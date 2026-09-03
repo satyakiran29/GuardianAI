@@ -40,14 +40,42 @@
                         android:src="@drawable/ic_safety_timer"
                         app:tint="#6366F1" />
 
-                    <TextView
-                        style="@style/TextAppearance.Material3.TitleLarge"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="@string/safety_timer_title"
-                        android:textColor="@color/text_color_primary"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextAppearance.Material3.TitleLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/safety_timer_title"
+                            android:textColor="@color/text_color_primary"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Auto-SOS if you don't check in"
+                            android:textColor="@color/text_color_secondary" />
+                    </LinearLayout>
+
+                    <!-- Shield badge -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#1A6366F1"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="4dp"
+                        android:text="💀 DMS"
+                        android:textColor="#6366F1"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <TextView
@@ -82,7 +110,7 @@
                     style="@style/TextAppearance.Material3.LabelLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Select duration to start timer"
+                    android:text="Set duration, then arm the switch"
                     android:textColor="#6366F1"
                     android:textStyle="bold" />
 
@@ -95,14 +123,86 @@
                     android:fontFamily="sans-serif-black"
                     android:text="30:00"
                     android:textColor="@color/text_color_primary"
-                    android:textSize="54sp" />
+                    android:textSize="64sp" />
 
-                <!-- Preset Duration Chips -->
+                <!-- Selected duration label -->
+                <TextView
+                    android:id="@+id/tv_selected_duration"
+                    style="@style/TextAppearance.Material3.LabelMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Duration: 30 min"
+                    android:textColor="@color/text_color_secondary" />
+
+                <!-- ══════════════════════════════════════════════════
+                     Duration Slider  (1 min → 180 min = 3 hr)
+                     ══════════════════════════════════════════════════ -->
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/slider_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:stepSize="1"
+                    android:value="30"
+                    android:valueFrom="1"
+                    android:valueTo="180"
+                    app:labelBehavior="floating"
+                    app:thumbColor="#6366F1"
+                    app:thumbRadius="10dp"
+                    app:trackColorActive="#6366F1"
+                    app:trackColorInactive="#334155"
+                    app:trackHeight="4dp" />
+
+                <!-- Range labels -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1 min"
+                        android:textColor="@color/text_color_secondary"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="1 hr"
+                        android:textColor="@color/text_color_secondary"
+                        android:textSize="11sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="3 hr"
+                        android:textColor="@color/text_color_secondary"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- ══════════════════════════════════════════════════
+                     Quick-pick preset chips
+                     ══════════════════════════════════════════════════ -->
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group_timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_5m"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5m" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_15m"
@@ -133,13 +233,34 @@
                         android:layout_height="wrap_content"
                         android:text="@string/safety_timer_60m" />
 
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_90m"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.5h" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_120m"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2h" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_180m"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3h" />
+
                 </com.google.android.material.chip.ChipGroup>
 
                 <!-- Start / Cancel Action Buttons -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="24dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
@@ -149,24 +270,61 @@
                         android:layout_height="54dp"
                         android:layout_weight="1"
                         android:text="@string/safety_timer_start_btn"
-                        app:cornerRadius="16dp" />
+                        app:cornerRadius="16dp"
+                        app:backgroundTint="#6366F1" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_check_in_safe"
-                        style="@style/Widget.Material3.Button.TonalButton"
+                        style="@style/Widget.Material3.Button"
                         android:layout_width="0dp"
                         android:layout_height="54dp"
                         android:layout_marginStart="12dp"
                         android:layout_weight="1"
                         android:text="@string/safety_timer_check_in_btn"
-                        android:textColor="#10B981"
                         android:visibility="gone"
+                        app:backgroundTint="#10B981"
                         app:cornerRadius="16dp" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- How it works info card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="#0F1A2B"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ℹ️  How Dead Man's Switch works"
+                    android:textColor="#94A3B8"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:lineSpacingMultiplier="1.4"
+                    android:text="1. Set duration (1 min – 3 hrs) using slider or quick chips\n2. Tap Arm Switch — a persistent notification appears\n3. You can close the app — countdown runs in background\n4. At 30s remaining, an urgent notification fires\n5. If you don't tap ✅ I'm Safe — SOS auto-triggers"
+                    android:textColor="#64748B"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
