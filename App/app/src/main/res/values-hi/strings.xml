@@ -304,6 +304,20 @@
     <string name="leave_blank_password_hint">यदि आप पासवर्ड नहीं बदलना चाहते हैं, तो इसे खाली छोड़ दें।</string>
     <string name="btn_save_changes">प्रोफ़ाइल सुरक्षित करें</string>
     <string name="profile_updated_successfully">प्रोफ़ाइल सफलतापूर्वक अपडेट हो गई!</string>
+
+    <!-- Hardware Buttons SOS -->
+    <string name="hardware_button_sos_title">हार्डवेयर बटन SOS ट्रिगर</string>
+    <string name="hardware_button_sos_desc">फ़ोन के भौतिक बटनों से चुपके से आपातकालीन SOS भेजें।</string>
+    <string name="power_button_sos_title">पावर बटन ट्रिपल-क्लिक</string>
+    <string name="power_button_sos_desc">स्क्रीन लॉक होने पर भी पावर बटन को 3 बार दबाकर तुरंत SOS भेजें।</string>
+    <string name="volume_button_sos_title">वॉल्यूम बटन (3x प्रेस)</string>
+    <string name="volume_button_sos_desc">वॉल्यूम बटन को 3 बार तेजी से दबाकर तत्काल SOS आपातकालीन संदेश भेजें।</string>
+    <string name="choose_hardware_trigger_mode">हार्डवेयर ट्रिगर मोड चुनें</string>
+    <string name="hw_mode_both">⚡ पावर और वॉल्यूम दोनों (अनुशंसित)</string>
+    <string name="hw_mode_power_only">🔌 केवल पावर बटन ट्रिपल-क्लिक</string>
+    <string name="hw_mode_volume_only">🔊 केवल वॉल्यूम बटन (3x)</string>
+    <string name="hw_mode_disabled">🚫 अक्षम</string>
+    <string name="hardware_sos_triggered_toast">🚨 हार्डवेयर बटन SOS सक्रिय हुआ!</string>
 </resources>
 
 

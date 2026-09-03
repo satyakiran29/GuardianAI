@@ -83,6 +83,49 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, binding.drawerLayout) || super.onSupportNavigateUp();
     }
 
+    private int volumeKeyPressCount = 0;
+    private long firstVolumeKeyPressTime = 0;
+    private long lastVolumeKeyTriggerTime = 0;
+
+    @Override
+    public boolean dispatchKeyEvent(android.view.KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        if (event.getAction() == android.view.KeyEvent.ACTION_DOWN &&
+                (keyCode == android.view.KeyEvent.KEYCODE_VOLUME_UP || keyCode == android.view.KeyEvent.KEYCODE_VOLUME_DOWN)) {
+
+            String mode = Prefs.getString(Constants.SETTINGS_HARDWARE_TRIGGER_MODE, Constants.HW_MODE_BOTH);
+            boolean isVolumeEnabled = Prefs.getBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, true);
+            boolean isMasterHwEnabled = Prefs.getBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, true);
+
+            if (isMasterHwEnabled && (isVolumeEnabled || Constants.HW_MODE_BOTH.equals(mode) || Constants.HW_MODE_VOLUME_ONLY.equals(mode)) && !Constants.HW_MODE_DISABLED.equals(mode) && !Constants.HW_MODE_POWER_ONLY.equals(mode)) {
+                long now = System.currentTimeMillis();
+                if (now - lastVolumeKeyTriggerTime < 10000) {
+                    return super.dispatchKeyEvent(event);
+                }
+
+                if (volumeKeyPressCount == 0 || (now - firstVolumeKeyPressTime) > 2000) {
+                    volumeKeyPressCount = 1;
+                    firstVolumeKeyPressTime = now;
+                } else {
+                    volumeKeyPressCount++;
+                    if (volumeKeyPressCount >= 3) {
+                        lastVolumeKeyTriggerTime = now;
+                        volumeKeyPressCount = 0;
+                        firstVolumeKeyPressTime = 0;
+                        android.util.Log.w("MainActivity", "🚨 VOLUME KEY TRIPLE-CLICK DETECTED in Foreground!");
+                        com.android.sheguard.util.SosUtil.vibrateDevice(this);
+                        try {
+                            android.widget.Toast.makeText(this, getString(R.string.hardware_sos_triggered_toast), android.widget.Toast.LENGTH_LONG).show();
+                        } catch (Exception ignored) {}
+                        com.android.sheguard.util.SosUtil.activateInstantSosMode(this);
+                        return true;
+                    }
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -93,6 +136,14 @@ public class MainActivity extends AppCompatActivity {
         if (!isDemoMode && !isUserLoggedIn) {
             startActivity(new Intent(MainActivity.this, OnBoardingActivity.class));
             finishAffinity();
+            return;
+        }
+
+        // Always ensure 24/7 background safety protection service is running with notification
+        if (!com.android.sheguard.service.SosService.isRunning) {
+            if (com.android.sheguard.util.AppUtil.permissionsGranted(this)) {
+                com.android.sheguard.util.SosUtil.startSosNotificationService(this);
+            }
         }
     }
 }

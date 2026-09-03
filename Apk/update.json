@@ -1,9 +1,11 @@
 {
-  "versionCode": 5,
-  "versionName": "1.0.4",
+  "versionCode": 6,
+  "versionName": "1.0.5",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "hello update testing",
-    "Ui changes and bug fixes"
+    "Added Power Button Triple-Click SOS & Volume Buttons Multi-Press trigger",
+    "Added Hardware Button SOS trigger mode selector in Settings",
+    "24/7 Persistent background safety shield notification with Quick SOS action",
+    "Continuous 5-second background location & Supabase live telemetry stream"
   ]
 }

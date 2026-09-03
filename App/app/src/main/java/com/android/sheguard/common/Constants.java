@@ -45,4 +45,14 @@ public class Constants {
     public static final String GROQ_API_KEY = "";
     public static final String GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
     public static final String GROQ_MODEL = "llama-3.3-70b-versatile";
+
+    // Hardware Buttons SOS Triggers
+    public static final String SETTINGS_HARDWARE_BUTTON_SOS = "hardware_button_sos";
+    public static final String SETTINGS_POWER_BUTTON_SOS = "power_button_sos";
+    public static final String SETTINGS_VOLUME_BUTTON_SOS = "volume_button_sos";
+    public static final String SETTINGS_HARDWARE_TRIGGER_MODE = "hardware_trigger_mode";
+    public static final String HW_MODE_BOTH = "both";
+    public static final String HW_MODE_POWER_ONLY = "power_only";
+    public static final String HW_MODE_VOLUME_ONLY = "volume_only";
+    public static final String HW_MODE_DISABLED = "disabled";
 }

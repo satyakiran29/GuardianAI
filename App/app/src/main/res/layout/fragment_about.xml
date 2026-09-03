@@ -83,7 +83,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="sans-serif"
                 android:letterSpacing="0.08"
-                android:text="guardianai v1.0.4"
+                android:text="guardianai v1.0.5"
                 android:textColor="#64748B"
                 android:textSize="12sp" />
         </LinearLayout>

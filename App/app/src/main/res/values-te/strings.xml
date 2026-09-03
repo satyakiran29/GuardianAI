@@ -304,6 +304,20 @@
     <string name="leave_blank_password_hint">మీరు పాస్‌వర్డ్ మార్చకూడదనుకుంటే ఖాళీగా ఉంచండి.</string>
     <string name="btn_save_changes">ప్రొఫైల్ సేవ్ చేయండి</string>
     <string name="profile_updated_successfully">ప్రొఫైల్ విజయవంతంగా నవీకరించబడింది!</string>
+
+    <!-- Hardware Buttons SOS -->
+    <string name="hardware_button_sos_title">హార్డ్‌వేర్ బటన్ల SOS ట్రిగ్గర్స్</string>
+    <string name="hardware_button_sos_desc">ఫోన్ బటన్లతో రహస్యంగా అత్యవసర SOS హెచ్చరిక పంపండి.</string>
+    <string name="power_button_sos_title">పవర్ బటన్ ట్రిపుల్-క్లిక్</string>
+    <string name="power_button_sos_desc">ఫోన్ లాక్ అయి ఉన్నప్పుడు కూడా పవర్ బటన్‌ను 3 సార్లు నొక్కి SOS పంపండి.</string>
+    <string name="volume_button_sos_title">వాల్యూమ్ బటన్లు (3x ప్రెస్)</string>
+    <string name="volume_button_sos_desc">వాల్యూమ్ బటన్లను 3 సార్లు నొక్కి తక్షణమే SOS హెచ్చరికను పంపండి.</string>
+    <string name="choose_hardware_trigger_mode">హార్డ్‌వేర్ ట్రిగ్గర్ ఎంచుకోండి</string>
+    <string name="hw_mode_both">⚡ పవర్ &amp; వాల్యూమ్ రెండూ (సిఫార్సు చేయబడింది)</string>
+    <string name="hw_mode_power_only">🔌 పవర్ బటన్ ట్రిపుల్-క్లిక్ మాత్రమే</string>
+    <string name="hw_mode_volume_only">🔊 వాల్యూమ్ బటన్లు (3x) మాత్రమే</string>
+    <string name="hw_mode_disabled">🚫 నిలిపివేయబడింది</string>
+    <string name="hardware_sos_triggered_toast">🚨 హార్డ్‌వేర్ బటన్ SOS యాక్టివేట్ అయింది!</string>
 </resources>
 
 

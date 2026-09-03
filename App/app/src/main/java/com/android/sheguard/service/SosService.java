@@ -33,6 +33,7 @@ import com.android.sheguard.api.NotificationAPI;
 import com.android.sheguard.common.Constants;
 import com.android.sheguard.config.Prefs;
 import com.android.sheguard.model.ContactModel;
+import com.android.sheguard.receiver.HardwareButtonReceiver;
 import com.android.sheguard.ui.activity.MainActivity;
 import com.android.sheguard.util.FirebaseUtil;
 import com.android.sheguard.util.NotificationClient;
@@ -70,6 +71,31 @@ public class SosService extends Service implements SensorEventListener {
     private static NotificationAPI notificationApiService = null;
     private static final MediaPlayer mediaPlayer = new MediaPlayer();
 
+    // Hardware Button Listeners
+    private HardwareButtonReceiver hardwareButtonReceiver = null;
+    private android.database.ContentObserver volumeObserver = null;
+    private int volumeClickCount = 0;
+    private long firstVolumeClickTime = 0;
+    private long lastVolumeTriggerTime = 0;
+
+    // 5-Second Background Telemetry & Supabase Live Stream
+    private com.google.android.gms.location.FusedLocationProviderClient fusedLocationClient = null;
+    private com.google.android.gms.location.LocationCallback locationStreamCallback = null;
+    private double currentLatitude = 17.3850;
+    private double currentLongitude = 78.4867;
+    private final android.os.Handler telemetryStreamHandler = new android.os.Handler(Looper.getMainLooper());
+    private boolean isTelemetryStreamActive = false;
+
+    private final Runnable telemetryStreamRunnable = new Runnable() {
+        @Override
+        public void run() {
+            sendLiveTelemetryPing();
+            if (isTelemetryStreamActive) {
+                telemetryStreamHandler.postDelayed(this, 5000); // 5 seconds interval
+            }
+        }
+    };
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -99,48 +125,240 @@ public class SosService extends Service implements SensorEventListener {
             Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
+
+        // Register Power Button Screen State Receiver
+        try {
+            hardwareButtonReceiver = new HardwareButtonReceiver();
+            android.content.IntentFilter filter = new android.content.IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(Intent.ACTION_SCREEN_ON);
+            registerReceiver(hardwareButtonReceiver, filter);
+            Log.i("SosService", "HardwareButtonReceiver registered for Power button triple-click");
+        } catch (Exception e) {
+            Log.e("SosService", "Error registering HardwareButtonReceiver: " + e.getMessage());
+        }
+
+        // Register Volume Observer for background volume triggers
+        try {
+            volumeObserver = new android.database.ContentObserver(new android.os.Handler(Looper.getMainLooper())) {
+                @Override
+                public void onChange(boolean selfChange) {
+                    super.onChange(selfChange);
+                    handleVolumeChangeTrigger();
+                }
+            };
+            getContentResolver().registerContentObserver(
+                    android.provider.Settings.System.CONTENT_URI,
+                    true,
+                    volumeObserver
+            );
+            Log.i("SosService", "Volume ContentObserver registered for Volume SOS");
+        } catch (Exception e) {
+            Log.e("SosService", "Error registering volume observer: " + e.getMessage());
+        }
+    }
+
+    private void handleVolumeChangeTrigger() {
+        String mode = Prefs.getString(Constants.SETTINGS_HARDWARE_TRIGGER_MODE, Constants.HW_MODE_BOTH);
+        boolean isVolumeEnabled = Prefs.getBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, true);
+        boolean isMasterHwEnabled = Prefs.getBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, true);
+
+        if (!isMasterHwEnabled || (!isVolumeEnabled && !Constants.HW_MODE_BOTH.equals(mode) && !Constants.HW_MODE_VOLUME_ONLY.equals(mode)) || Constants.HW_MODE_DISABLED.equals(mode) || Constants.HW_MODE_POWER_ONLY.equals(mode)) {
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        if (now - lastVolumeTriggerTime < 10000) {
+            return;
+        }
+
+        if (volumeClickCount == 0 || (now - firstVolumeClickTime) > 2500) {
+            volumeClickCount = 1;
+            firstVolumeClickTime = now;
+        } else {
+            volumeClickCount++;
+            if (volumeClickCount >= 3) {
+                lastVolumeTriggerTime = now;
+                volumeClickCount = 0;
+                firstVolumeClickTime = 0;
+                Log.w("SosService", "🚨 VOLUME BUTTON TRIPLE-PRESS DETECTED! Triggering Emergency SOS!");
+                SosUtil.vibrateDevice(this);
+                activateSosMode();
+            }
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getAction() != null) {
+        if (intent != null && intent.getAction() != null) {
             if (intent.getAction().equalsIgnoreCase("STOP")) {
                 if (isRunning) {
+                    stopTelemetryStream();
                     this.stopForeground(true);
                     this.stopSelf();
 
                     stopSiren();
                     resetValues();
                     Log.i("SosService", "Service Stopped");
+                    return START_NOT_STICKY;
                 }
-            } else {
-                Intent notificationIntent = new Intent(this, MainActivity.class);
-                notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
-
-                NotificationChannel channel = new NotificationChannel(getString(R.string.notification_channel_emergency), getString(R.string.notification_channel_emergency), NotificationManager.IMPORTANCE_DEFAULT);
-                channel.setDescription(getString(R.string.notification_channel_emergency_desc));
-                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.createNotificationChannel(channel);
-
-                Notification notification = new Notification.Builder(this, getString(R.string.notification_channel_emergency))
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText(getString(R.string.notification_emergency_mode, getString(R.string.app_name)))
-                        .setSmallIcon(R.drawable.ic_launcher_notification)
-                        .setContentIntent(pendingIntent)
-                        .setOngoing(true)
-                        .build();
-
-                this.startForeground(1, notification);
-                notificationManager.notify(1, notification);
-
-                isRunning = true;
-                Log.i("SosService", "Service Started");
-                return START_NOT_STICKY;
+            } else if (intent.getAction().equalsIgnoreCase("TRIGGER_SOS")) {
+                Log.w("SosService", "🚨 SOS Triggered via Notification Action Button");
+                activateSosMode();
             }
         }
 
-        return super.onStartCommand(intent, flags, startId);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        // Action: Quick SOS Button
+        Intent sosActionIntent = new Intent(this, SosService.class);
+        sosActionIntent.setAction("TRIGGER_SOS");
+        PendingIntent sosPendingIntent = PendingIntent.getService(this, 2, sosActionIntent, PendingIntent.FLAG_IMMUTABLE);
+        Notification.Action sosAction = new Notification.Action.Builder(
+                R.drawable.ic_launcher_notification,
+                "🚨 Quick SOS",
+                sosPendingIntent
+        ).build();
+
+        // Action: Stop Service
+        Intent stopActionIntent = new Intent(this, SosService.class);
+        stopActionIntent.setAction("STOP");
+        PendingIntent stopPendingIntent = PendingIntent.getService(this, 3, stopActionIntent, PendingIntent.FLAG_IMMUTABLE);
+        Notification.Action stopAction = new Notification.Action.Builder(
+                R.drawable.ic_remove,
+                "🛑 Stop",
+                stopPendingIntent
+        ).build();
+
+        NotificationChannel channel = new NotificationChannel(
+                getString(R.string.notification_channel_emergency),
+                "GuardianAI 24/7 Shield",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        channel.setDescription("Shows active 24/7 background safety protection and live GPS telemetry updates.");
+        channel.setShowBadge(false);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Notification notification = new Notification.Builder(this, getString(R.string.notification_channel_emergency))
+                .setContentTitle("🛡️ GuardianAI is Running in Background")
+                .setContentText("24/7 safety protection, shake detection & live GPS telemetry active.")
+                .setSubText("Protection Active")
+                .setSmallIcon(R.drawable.ic_launcher_notification)
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .addAction(sosAction)
+                .addAction(stopAction)
+                .build();
+
+        this.startForeground(1, notification);
+        if (notificationManager != null) {
+            notificationManager.notify(1, notification);
+        }
+
+        isRunning = true;
+        Log.i("SosService", "Service Started - Running in background with notification & 5s Supabase telemetry stream");
+        startContinuousLocationAndTelemetryStream();
+
+        return START_STICKY;
+    }
+
+    private void startContinuousLocationAndTelemetryStream() {
+        if (isTelemetryStreamActive) return;
+        isTelemetryStreamActive = true;
+
+        if (fusedLocationClient == null) {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        }
+
+        // Fast-path last known location fix
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            try {
+                fusedLocationClient.getLastLocation().addOnSuccessListener(loc -> {
+                    if (loc != null) {
+                        currentLatitude = loc.getLatitude();
+                        currentLongitude = loc.getLongitude();
+                        mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
+                        sendLiveTelemetryPing();
+                    }
+                });
+            } catch (SecurityException ignored) {}
+        }
+
+        // High accuracy 5-second continuous GPS stream
+        LocationRequest continuousRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
+                .setWaitForAccurateLocation(false)
+                .setMinUpdateIntervalMillis(3000)
+                .setMaxUpdateDelayMillis(5000)
+                .build();
+
+        locationStreamCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                if (!locationResult.getLocations().isEmpty()) {
+                    android.location.Location loc = locationResult.getLastLocation();
+                    if (loc != null) {
+                        currentLatitude = loc.getLatitude();
+                        currentLongitude = loc.getLongitude();
+                        mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
+                        Log.d("SosService", "Fresh 5s GPS location: " + currentLatitude + ", " + currentLongitude);
+                    }
+                }
+            }
+        };
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            try {
+                fusedLocationClient.requestLocationUpdates(continuousRequest, locationStreamCallback, Looper.getMainLooper());
+            } catch (SecurityException ignored) {}
+        }
+
+        // Launch 5s heartbeat loop to backend and Supabase
+        telemetryStreamHandler.removeCallbacks(telemetryStreamRunnable);
+        telemetryStreamHandler.post(telemetryStreamRunnable);
+    }
+
+    private void sendLiveTelemetryPing() {
+        String userPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "+919876543210");
+        int batteryLevel = 85;
+        try {
+            android.os.BatteryManager bm = (android.os.BatteryManager) getSystemService(Context.BATTERY_SERVICE);
+            if (bm != null) {
+                batteryLevel = bm.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY);
+            }
+        } catch (Exception ignored) {}
+
+        String address = mLocation;
+        if (address.isEmpty()) {
+            address = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
+        }
+
+        Log.d("SosService", "⚡ 5s Background Telemetry Stream -> Lat: " + currentLatitude + ", Lng: " + currentLongitude + ", Battery: " + batteryLevel + "% to Backend & Supabase");
+
+        com.android.sheguard.api.ApiClient.pingLocation(
+                userPhone,
+                currentLatitude,
+                currentLongitude,
+                address,
+                batteryLevel
+        );
+    }
+
+    private void stopTelemetryStream() {
+        isTelemetryStreamActive = false;
+        telemetryStreamHandler.removeCallbacks(telemetryStreamRunnable);
+        if (fusedLocationClient != null && locationStreamCallback != null) {
+            try {
+                fusedLocationClient.removeLocationUpdates(locationStreamCallback);
+            } catch (Exception ignored) {}
+        }
     }
 
     @Override
@@ -392,5 +610,32 @@ public class SosService extends Service implements SensorEventListener {
         sentWhatsApp = false;
         sentNotification = false;
         calledEmergency = false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopTelemetryStream();
+
+        if (hardwareButtonReceiver != null) {
+            try {
+                unregisterReceiver(hardwareButtonReceiver);
+            } catch (Exception ignored) {}
+            hardwareButtonReceiver = null;
+        }
+
+        if (volumeObserver != null) {
+            try {
+                getContentResolver().unregisterContentObserver(volumeObserver);
+            } catch (Exception ignored) {}
+            volumeObserver = null;
+        }
+
+        if (sensorManager != null) {
+            try {
+                sensorManager.unregisterListener(this);
+            } catch (Exception ignored) {}
+        }
+        Log.i("SosService", "SosService destroyed and listeners unregistered");
     }
 }

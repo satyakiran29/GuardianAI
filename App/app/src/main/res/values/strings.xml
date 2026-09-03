@@ -394,5 +394,19 @@
     <string name="btn_save_changes">Save Profile Changes</string>
     <string name="profile_updated_successfully">Profile updated successfully!</string>
     <string name="btn_sign_in_email_otp">✉️ Sign In with Email OTP</string>
+
+    <!-- Hardware Buttons SOS -->
+    <string name="hardware_button_sos_title">Hardware Button SOS Triggers</string>
+    <string name="hardware_button_sos_desc">Stealthily trigger emergency SOS using your physical phone buttons.</string>
+    <string name="power_button_sos_title">Power Button Triple-Click</string>
+    <string name="power_button_sos_desc">Quickly press the power button 3 times to stealthily dispatch SOS even when locked.</string>
+    <string name="volume_button_sos_title">Volume Buttons (3x Press)</string>
+    <string name="volume_button_sos_desc">Rapidly press volume up or down buttons 3 times to immediately dispatch SOS.</string>
+    <string name="choose_hardware_trigger_mode">Choose Hardware Button Trigger</string>
+    <string name="hw_mode_both">⚡ Both Power &amp; Volume Buttons (Recommended)</string>
+    <string name="hw_mode_power_only">🔌 Power Button Triple-Click Only</string>
+    <string name="hw_mode_volume_only">🔊 Volume Buttons (3x) Only</string>
+    <string name="hw_mode_disabled">🚫 Disabled</string>
+    <string name="hardware_sos_triggered_toast">🚨 Hardware Button SOS Triggered!</string>
 </resources>
 

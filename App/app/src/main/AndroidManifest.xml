@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -68,7 +69,7 @@
         <service
             android:name=".service.SosService"
             android:enabled="true"
-            android:foregroundServiceType="specialUse" />
+            android:foregroundServiceType="location|specialUse" />
         <!-- 1-Tap SOS Widget -->
         <receiver
             android:name=".widget.QuickSosWidgetProvider"

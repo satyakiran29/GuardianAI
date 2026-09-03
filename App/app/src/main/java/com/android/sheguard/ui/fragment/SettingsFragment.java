@@ -75,6 +75,28 @@ public class SettingsFragment extends Fragment {
         });
         binding.shakeDetectionContainer.setOnClickListener(v -> binding.switchShakeDetection.toggle());
 
+        // Hardware Button Mode Selector
+        updateHardwareModeLabel();
+        binding.hardwareModeContainer.setOnClickListener(v -> showHardwareTriggerModeDialog());
+
+        // Power Button Triple-Click SOS Switch
+        boolean isPowerEnabled = Prefs.getBoolean(Constants.SETTINGS_POWER_BUTTON_SOS, true);
+        binding.switchPowerButtonSos.setChecked(isPowerEnabled);
+        binding.switchPowerButtonSos.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Prefs.putBoolean(Constants.SETTINGS_POWER_BUTTON_SOS, isChecked);
+            syncHardwareModeFromSwitches();
+        });
+        binding.powerButtonSosContainer.setOnClickListener(v -> binding.switchPowerButtonSos.toggle());
+
+        // Volume Buttons SOS Switch
+        boolean isVolumeEnabled = Prefs.getBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, true);
+        binding.switchVolumeButtonSos.setChecked(isVolumeEnabled);
+        binding.switchVolumeButtonSos.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Prefs.putBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, isChecked);
+            syncHardwareModeFromSwitches();
+        });
+        binding.volumeButtonSosContainer.setOnClickListener(v -> binding.switchVolumeButtonSos.toggle());
+
         // Send SMS
         binding.switchSendSms.setChecked(Prefs.getBoolean(Constants.SETTINGS_SEND_SMS, true));
         binding.switchSendSms.setOnCheckedChangeListener((buttonView, isChecked) -> Prefs.putBoolean(Constants.SETTINGS_SEND_SMS, isChecked));
@@ -288,5 +310,108 @@ public class SettingsFragment extends Fragment {
         if (getActivity() != null) {
             com.android.sheguard.util.AppUpdateManager.checkForUpdates(requireActivity(), true);
         }
+    }
+
+    private void updateHardwareModeLabel() {
+        String mode = Prefs.getString(Constants.SETTINGS_HARDWARE_TRIGGER_MODE, Constants.HW_MODE_BOTH);
+        String label;
+        switch (mode) {
+            case Constants.HW_MODE_POWER_ONLY:
+                label = getString(R.string.hw_mode_power_only);
+                break;
+            case Constants.HW_MODE_VOLUME_ONLY:
+                label = getString(R.string.hw_mode_volume_only);
+                break;
+            case Constants.HW_MODE_DISABLED:
+                label = getString(R.string.hw_mode_disabled);
+                break;
+            case Constants.HW_MODE_BOTH:
+            default:
+                label = getString(R.string.hw_mode_both);
+                break;
+        }
+        binding.tvHardwareModeDesc.setText(label);
+    }
+
+    private void syncHardwareModeFromSwitches() {
+        boolean isPower = Prefs.getBoolean(Constants.SETTINGS_POWER_BUTTON_SOS, true);
+        boolean isVolume = Prefs.getBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, true);
+        String newMode;
+        if (isPower && isVolume) {
+            newMode = Constants.HW_MODE_BOTH;
+            Prefs.putBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, true);
+        } else if (isPower) {
+            newMode = Constants.HW_MODE_POWER_ONLY;
+            Prefs.putBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, true);
+        } else if (isVolume) {
+            newMode = Constants.HW_MODE_VOLUME_ONLY;
+            Prefs.putBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, true);
+        } else {
+            newMode = Constants.HW_MODE_DISABLED;
+            Prefs.putBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, false);
+        }
+        Prefs.putString(Constants.SETTINGS_HARDWARE_TRIGGER_MODE, newMode);
+        updateHardwareModeLabel();
+    }
+
+    private void showHardwareTriggerModeDialog() {
+        String[] modes = {
+                getString(R.string.hw_mode_both),
+                getString(R.string.hw_mode_power_only),
+                getString(R.string.hw_mode_volume_only),
+                getString(R.string.hw_mode_disabled)
+        };
+
+        String currentMode = Prefs.getString(Constants.SETTINGS_HARDWARE_TRIGGER_MODE, Constants.HW_MODE_BOTH);
+        int selectedIndex = 0;
+        if (Constants.HW_MODE_POWER_ONLY.equals(currentMode)) selectedIndex = 1;
+        else if (Constants.HW_MODE_VOLUME_ONLY.equals(currentMode)) selectedIndex = 2;
+        else if (Constants.HW_MODE_DISABLED.equals(currentMode)) selectedIndex = 3;
+
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.choose_hardware_trigger_mode))
+                .setSingleChoiceItems(modes, selectedIndex, (dialog, which) -> {
+                    String chosenMode;
+                    switch (which) {
+                        case 1:
+                            chosenMode = Constants.HW_MODE_POWER_ONLY;
+                            Prefs.putBoolean(Constants.SETTINGS_POWER_BUTTON_SOS, true);
+                            Prefs.putBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, false);
+                            Prefs.putBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, true);
+                            binding.switchPowerButtonSos.setChecked(true);
+                            binding.switchVolumeButtonSos.setChecked(false);
+                            break;
+                        case 2:
+                            chosenMode = Constants.HW_MODE_VOLUME_ONLY;
+                            Prefs.putBoolean(Constants.SETTINGS_POWER_BUTTON_SOS, false);
+                            Prefs.putBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, true);
+                            Prefs.putBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, true);
+                            binding.switchPowerButtonSos.setChecked(false);
+                            binding.switchVolumeButtonSos.setChecked(true);
+                            break;
+                        case 3:
+                            chosenMode = Constants.HW_MODE_DISABLED;
+                            Prefs.putBoolean(Constants.SETTINGS_POWER_BUTTON_SOS, false);
+                            Prefs.putBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, false);
+                            Prefs.putBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, false);
+                            binding.switchPowerButtonSos.setChecked(false);
+                            binding.switchVolumeButtonSos.setChecked(false);
+                            break;
+                        case 0:
+                        default:
+                            chosenMode = Constants.HW_MODE_BOTH;
+                            Prefs.putBoolean(Constants.SETTINGS_POWER_BUTTON_SOS, true);
+                            Prefs.putBoolean(Constants.SETTINGS_VOLUME_BUTTON_SOS, true);
+                            Prefs.putBoolean(Constants.SETTINGS_HARDWARE_BUTTON_SOS, true);
+                            binding.switchPowerButtonSos.setChecked(true);
+                            binding.switchVolumeButtonSos.setChecked(true);
+                            break;
+                    }
+                    Prefs.putString(Constants.SETTINGS_HARDWARE_TRIGGER_MODE, chosenMode);
+                    updateHardwareModeLabel();
+                    dialog.dismiss();
+                })
+                .setNegativeButton(getString(R.string.btn_close), null)
+                .show();
     }
 }
