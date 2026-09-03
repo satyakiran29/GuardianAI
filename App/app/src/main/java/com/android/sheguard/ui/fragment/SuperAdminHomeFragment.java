@@ -91,6 +91,13 @@ public class SuperAdminHomeFragment extends Fragment {
         };
         pollHandler.postDelayed(pollRunnable, 20000);
 
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new androidx.activity.OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                requireActivity().finish();
+            }
+        });
+
         return view;
     }
 

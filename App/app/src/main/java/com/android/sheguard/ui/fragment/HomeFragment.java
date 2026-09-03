@@ -191,24 +191,19 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String role = Prefs.getString("USER_ROLE", "user");
-        if ("guardian".equalsIgnoreCase(role)) {
-            try {
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .build();
-                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_guardianHomeFragment, null, navOptions);
-                return;
-            } catch (Exception ignored) {}
-        } else if ("superadmin".equalsIgnoreCase(role)) {
-            try {
-                NavOptions navOptions = new NavOptions.Builder()
-                        .setPopUpTo(R.id.homeFragment, true)
-                        .build();
-                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_superAdminHomeFragment, null, navOptions);
-                return;
-            } catch (Exception ignored) {}
-        }
+        view.post(() -> {
+            if (!isAdded() || getContext() == null) return;
+            String role = Prefs.getString("USER_ROLE", "user");
+            if ("guardian".equalsIgnoreCase(role)) {
+                try {
+                    Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_guardianHomeFragment);
+                } catch (Exception ignored) {}
+            } else if ("superadmin".equalsIgnoreCase(role)) {
+                try {
+                    Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_superAdminHomeFragment);
+                } catch (Exception ignored) {}
+            }
+        });
     }
 
     private void initializeDrawerItems() {

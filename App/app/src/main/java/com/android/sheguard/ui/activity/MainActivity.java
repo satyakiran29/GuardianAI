@@ -36,12 +36,12 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
-
         binding.navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             binding.drawerLayout.closeDrawer(binding.navView);
-            NavController currentNav = Navigation.findNavController(this, R.id.fragmentContainerView);
+            androidx.navigation.fragment.NavHostFragment navHost = (androidx.navigation.fragment.NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+            if (navHost == null) return false;
+            NavController currentNav = navHost.getNavController();
             if (id == R.id.nav_profile) {
                 currentNav.navigate(R.id.profileFragment);
                 return true;

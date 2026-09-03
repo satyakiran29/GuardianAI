@@ -74,6 +74,13 @@ public class GuardianHomeFragment extends Fragment {
         };
         pollHandler.postDelayed(pollRunnable, 15000);
 
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new androidx.activity.OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                requireActivity().finish();
+            }
+        });
+
         return view;
     }
 
