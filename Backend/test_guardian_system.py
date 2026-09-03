@@ -115,6 +115,77 @@ def run_tests():
     assert ward_info['address'] == 'Inorbit Mall Road, Madhapur'
     print(f"✅ Guardian Radar Verified: Live Telemetry is {ward_info['battery_level']}% battery at {ward_info['address']}")
 
+    # 8. Test Regular User access to "My Guardians" API
+    res = client.get(f'/api/guardians/my-guardians/?phone={user.phone}')
+    assert res.status_code == 200, f"My Guardians failed: {res.content}"
+    user_guardians = res.json()['links']
+    assert len(user_guardians) >= 1, "User should see their assigned guardians"
+    print(f"✅ User 'My Guardians' Access Verified: {len(user_guardians)} guardian(s) protecting user")
+
+    # 9. Test Regular User CANNOT access Guardian Portal / Tracked Wards (Forbidden 403)
+    res = client.get(f'/api/guardians/tracked-wards/?guardian_phone={user.phone}')
+    assert res.status_code == 403, f"Regular user should be denied access to Guardian Portal: {res.status_code}"
+    print(f"✅ User Guardian Portal Removal Verified: 403 Forbidden correctly returned for regular users")
+
+    # 10. Scenario Test: User 'sk' with guardian 'skdad'; another user 'other_user' with guardian 'other_guardian'
+    sk_user, _ = UserProfile.objects.update_or_create(
+        phone="+919100000001",
+        defaults={'name': 'SK User', 'email': 'sk@sheguard.app', 'role': 'user', 'battery_level': 88}
+    )
+    skdad_guardian, _ = UserProfile.objects.update_or_create(
+        phone="+919200000002",
+        defaults={'name': 'SK Dad Guardian', 'email': 'skdad@sheguard.app', 'role': 'guardian', 'battery_level': 99}
+    )
+    other_user, _ = UserProfile.objects.update_or_create(
+        phone="+919300000003",
+        defaults={'name': 'Other User', 'email': 'other_u@sheguard.app', 'role': 'user', 'battery_level': 65}
+    )
+    other_guardian, _ = UserProfile.objects.update_or_create(
+        phone="+919400000004",
+        defaults={'name': 'Other Guardian', 'email': 'other_g@sheguard.app', 'role': 'guardian', 'battery_level': 90}
+    )
+    superadmin, _ = UserProfile.objects.update_or_create(
+        phone="+919876500000",
+        defaults={'name': 'Chief SuperAdmin', 'email': 'admin@sheguard.app', 'role': 'superadmin'}
+    )
+
+    # Link sk -> skdad
+    GuardianLink.objects.update_or_create(user=sk_user, guardian=skdad_guardian, defaults={'relationship': 'Father', 'status': 'active'})
+    # Link other_user -> other_guardian
+    GuardianLink.objects.update_or_create(user=other_user, guardian=other_guardian, defaults={'relationship': 'Brother', 'status': 'active'})
+
+    # 10a. skdad can ONLY see sk
+    res = client.get(f'/api/guardians/tracked-wards/?guardian_phone={skdad_guardian.phone}')
+    assert res.status_code == 200
+    skdad_wards = res.json()['wards']
+    skdad_ward_phones = [w['phone'] for w in skdad_wards]
+    assert sk_user.phone in skdad_ward_phones, "skdad must see sk"
+    assert other_user.phone not in skdad_ward_phones, "skdad must NOT see other_user"
+    print(f"✅ Strict Guardian Isolation Verified: skdad ONLY sees their assigned ward ({sk_user.name}), cannot see other wards")
+
+    # 10b. other_guardian can ONLY see other_user
+    res = client.get(f'/api/guardians/tracked-wards/?guardian_phone={other_guardian.phone}')
+    assert res.status_code == 200
+    other_g_wards = res.json()['wards']
+    other_g_ward_phones = [w['phone'] for w in other_g_wards]
+    assert other_user.phone in other_g_ward_phones, "other_guardian must see other_user"
+    assert sk_user.phone not in other_g_ward_phones, "other_guardian must NOT see sk"
+    print(f"✅ Strict Guardian Isolation Verified: other_guardian ONLY sees {other_user.name}")
+
+    # 10c. sk (user) CANNOT access guardian portal
+    res = client.get(f'/api/guardians/tracked-wards/?guardian_phone={sk_user.phone}')
+    assert res.status_code == 403, "sk (user role) must be forbidden from accessing Guardian Portal"
+    print(f"✅ User Access Block Verified: sk (user) gets 403 Forbidden on Guardian Portal")
+
+    # 10d. superadmin can access ALL users data
+    res = client.get(f'/api/guardians/tracked-wards/?guardian_phone={superadmin.phone}')
+    assert res.status_code == 200
+    admin_wards = res.json()['wards']
+    admin_ward_phones = [w['phone'] for w in admin_wards]
+    assert sk_user.phone in admin_ward_phones, "superadmin must see sk"
+    assert other_user.phone in admin_ward_phones, "superadmin must see other_user"
+    print(f"✅ SuperAdmin Omniscient Access Verified: SuperAdmin accessed all {len(admin_wards)} users data across the system")
+
     print("\n🎉 ALL GUARDIAN SYSTEM VERIFICATION TESTS PASSED SUCCESSFULLY!")
 
 if __name__ == '__main__':

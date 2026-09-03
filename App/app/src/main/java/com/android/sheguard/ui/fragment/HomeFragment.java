@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment {
         // Guardian Role & Live Tracking Suite
         binding.cardMyGuardians.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_myGuardiansFragment));
         binding.cardGuardianPortal.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_guardianPortalFragment));
+        applyRoleBasedAccess();
 
         // 15-Feature Safety Suite Navigation
         binding.cardSafetyTimer.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safetyTimerFragment));
@@ -218,6 +219,51 @@ public class HomeFragment extends Fragment {
             ((MainActivity) requireActivity()).toggleDrawer();
             return true;
         });
+    }
+
+    public void applyRoleBasedAccess() {
+        if (binding == null || getContext() == null) return;
+        String role = Prefs.getString("USER_ROLE", "user");
+
+        if ("guardian".equalsIgnoreCase(role)) {
+            // Guardian Account: Access Guardian Portal, Remove My Guardians
+            binding.cardGuardianPortal.setVisibility(View.VISIBLE);
+            binding.cardMyGuardians.setVisibility(View.GONE);
+
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.cardGuardianPortal.getLayoutParams();
+            if (params != null) {
+                params.setMarginStart(0);
+                params.setMarginEnd(0);
+                binding.cardGuardianPortal.setLayoutParams(params);
+            }
+        } else if ("superadmin".equalsIgnoreCase(role)) {
+            // SuperAdmin Account: Access both
+            binding.cardMyGuardians.setVisibility(View.VISIBLE);
+            binding.cardGuardianPortal.setVisibility(View.VISIBLE);
+
+            ViewGroup.MarginLayoutParams paramsG = (ViewGroup.MarginLayoutParams) binding.cardGuardianPortal.getLayoutParams();
+            if (paramsG != null) {
+                paramsG.setMarginStart((int) (6 * getResources().getDisplayMetrics().density));
+                binding.cardGuardianPortal.setLayoutParams(paramsG);
+            }
+
+            ViewGroup.MarginLayoutParams paramsM = (ViewGroup.MarginLayoutParams) binding.cardMyGuardians.getLayoutParams();
+            if (paramsM != null) {
+                paramsM.setMarginEnd((int) (6 * getResources().getDisplayMetrics().density));
+                binding.cardMyGuardians.setLayoutParams(paramsM);
+            }
+        } else {
+            // Standard User Account: Access My Guardians, REMOVE Guardian Portal
+            binding.cardMyGuardians.setVisibility(View.VISIBLE);
+            binding.cardGuardianPortal.setVisibility(View.GONE);
+
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.cardMyGuardians.getLayoutParams();
+            if (params != null) {
+                params.setMarginStart(0);
+                params.setMarginEnd(0);
+                binding.cardMyGuardians.setLayoutParams(params);
+            }
+        }
     }
 
     public void setUserNameOnTitle() {
@@ -352,6 +398,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        setUserNameOnTitle();
+        applyRoleBasedAccess();
         syncLiveLocationTelemetry();
     }
 

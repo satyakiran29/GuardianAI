@@ -418,6 +418,7 @@
 
                 <!-- GUARDIAN ROLE & TRACKING HERO CARDS -->
                 <LinearLayout
+                    android:id="@+id/layout_guardian_cards"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
@@ -432,34 +433,49 @@
                         android:layout_weight="1"
                         android:layout_marginEnd="6dp"
                         android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:padding="16dp"
                         android:clickable="true"
                         android:focusable="true">
 
                         <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:src="@drawable/ic_contacts_safety"
                             app:tint="#C084FC"
                             android:contentDescription="Guardians" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="My Guardians"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:layout_weight="1"
+                            android:layout_marginStart="14dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Chat &amp; Live Sharing"
-                            android:textColor="#94A3B8"
-                            android:textSize="11.5sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="My Guardians"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Chat &amp; Live Tracking with your protectors"
+                                android:textColor="#94A3B8"
+                                android:textSize="11.5sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="#A855F7"
+                            android:contentDescription="Open" />
                     </LinearLayout>
 
                     <!-- Card B: Guardian Portal (Wards Radar) -->
@@ -470,33 +486,48 @@
                         android:layout_weight="1"
                         android:layout_marginStart="6dp"
                         android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
                         android:padding="16dp"
                         android:clickable="true"
                         android:focusable="true">
 
                         <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:src="@drawable/ic_radar_map_graphic"
                             android:contentDescription="Guardian Portal" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="Guardian Portal"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:layout_weight="1"
+                            android:layout_marginStart="14dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Track Wards &amp; %"
-                            android:textColor="#34D399"
-                            android:textSize="11.5sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Guardian Portal"
+                                android:textColor="#FFFFFF"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Track Wards &amp; Battery Telemetry"
+                                android:textColor="#34D399"
+                                android:textSize="11.5sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="#34D399"
+                            android:contentDescription="Open" />
                     </LinearLayout>
                 </LinearLayout>
 

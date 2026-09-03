@@ -46,16 +46,31 @@ public class GuardianPortalFragment extends Fragment {
 
         binding.btnLinkNewWard.setOnClickListener(v -> showLinkWardDialog());
 
-        loadTrackedWards();
-
-        // Auto poll ward telemetry every 15 seconds
-        pollRunnable = () -> {
+        String role = Prefs.getString("USER_ROLE", "user");
+        if ("guardian".equalsIgnoreCase(role) || "superadmin".equalsIgnoreCase(role)) {
             loadTrackedWards();
+
+            // Auto poll ward telemetry every 15 seconds
+            pollRunnable = () -> {
+                loadTrackedWards();
+                pollHandler.postDelayed(pollRunnable, 15000);
+            };
             pollHandler.postDelayed(pollRunnable, 15000);
-        };
-        pollHandler.postDelayed(pollRunnable, 15000);
+        }
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        String role = Prefs.getString("USER_ROLE", "user");
+        if (!"guardian".equalsIgnoreCase(role) && !"superadmin".equalsIgnoreCase(role)) {
+            if (getContext() != null) {
+                Toast.makeText(getContext(), "Guardian Portal is reserved for verified Guardians.", Toast.LENGTH_SHORT).show();
+            }
+            Navigation.findNavController(view).popBackStack();
+        }
     }
 
     @Override
@@ -67,6 +82,11 @@ public class GuardianPortalFragment extends Fragment {
     }
 
     private void loadTrackedWards() {
+        String role = Prefs.getString("USER_ROLE", "user");
+        if (!"guardian".equalsIgnoreCase(role) && !"superadmin".equalsIgnoreCase(role)) {
+            return;
+        }
+
         String myPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
         if (myPhone.isEmpty()) {
             myPhone = Prefs.getString(Constants.PREFS_USER_EMAIL, "");
@@ -80,8 +100,10 @@ public class GuardianPortalFragment extends Fragment {
             if (success && data != null && data.has("wards")) {
                 JsonArray wards = data.getAsJsonArray("wards");
                 renderWardsList(wards);
-            } else {
+            } else if (!success && Prefs.getBoolean(Constants.IS_DEMO_MODE, false)) {
                 renderMockDemoWardsIfEmpty();
+            } else {
+                renderWardsList(new JsonArray());
             }
         });
     }

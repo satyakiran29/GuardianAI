@@ -1,12 +1,12 @@
 {
-  "versionCode": 7,
-  "versionName": "1.0.6",
+  "versionCode": 8,
+  "versionName": "1.0.7",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Added Guardian Role support with dedicated Guardian Login on App & Web",
-    "Real-time battery percentage tracking with critical low-battery alerts",
-    "Live GPS location radar & address sync for protected citizens and wards",
-    "Interactive safety chat between protected users and guardians with quick reply presets",
-    "SuperAdmin user data management with credentials & guardian assignment controls"
+    "Strict role separation: User accounts access 'My Guardians'; Guardian Portal restricted to verified Guardians",
+    "Ward-level privacy isolation: Guardians only track and view telemetry for their assigned wards",
+    "SuperAdmin omniscient access to monitor all users, wards, and telemetry",
+    "Enhanced full-width responsive hero cards for My Guardians & Guardian Portal on Home screen",
+    "Real-time GPS tracking, battery %, direct safety chat and critical alerts"
   ]
 }
