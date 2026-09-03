@@ -1,12 +1,12 @@
 {
-  "versionCode": 12,
-  "versionName": "1.1.1",
+  "versionCode": 13,
+  "versionName": "1.1.3",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Guardian Command Desk: fixed role fetching — identity lookup now works via username, email, or phone",
-    "SuperAdmin [Guardians] filter fixed: switching tabs now clears search so guardians load correctly",
-    "Chat 'Send Location' chip fixed: now sends real GPS coordinates (lat/lng) instead of a blank Maps URL",
-    "Location coords auto-saved to device on every GPS ping — chat always has fresh live location",
-    "Guardian UI overhaul: real-time ward radar, live battery %, 1-click pair ward and demo sample radar"
+    "Chat GPS links are now clickable — tap to open Google Maps at exact coordinates",
+    "Phone numbers in chat messages are now tappable — opens dialer directly",
+    "Guardian filter fixed: [Guardians] tab no longer conflicts with search box",
+    "Chat location chip sends real lat/lng coordinates instead of blank Maps URL",
+    "Location persisted on every GPS ping for accurate live location sharing"
   ]
 }

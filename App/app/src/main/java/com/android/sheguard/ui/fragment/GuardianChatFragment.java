@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -217,6 +219,10 @@ public class GuardianChatFragment extends Fragment {
         tvMsg.setText(text);
         tvMsg.setTextColor(Color.WHITE);
         tvMsg.setTextSize(14f);
+        // Make URLs, map links, and phone numbers tappable
+        Linkify.addLinks(tvMsg, Linkify.WEB_URLS | Linkify.PHONE_NUMBERS);
+        tvMsg.setMovementMethod(LinkMovementMethod.getInstance());
+        tvMsg.setLinkTextColor(Color.parseColor("#60D8FF")); // Bright cyan for links
         bubble.addView(tvMsg);
 
         LinearLayout metaRow = new LinearLayout(getContext());
