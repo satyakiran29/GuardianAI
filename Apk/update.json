@@ -1,12 +1,11 @@
 {
-  "versionCode": 8,
-  "versionName": "1.0.7",
+  "versionCode": 10,
+  "versionName": "1.0.9",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Strict role separation: User accounts access 'My Guardians'; Guardian Portal restricted to verified Guardians",
-    "Ward-level privacy isolation: Guardians only track and view telemetry for their assigned wards",
-    "SuperAdmin omniscient access to monitor all users, wards, and telemetry",
-    "Enhanced full-width responsive hero cards for My Guardians & Guardian Portal on Home screen",
-    "Real-time GPS tracking, battery %, direct safety chat and critical alerts"
+    "Dedicated Guardian Command Desk: real-time ward radar, live battery %, GPS telemetry, and 1-click distress response",
+    "Dedicated SuperAdmin Platform Control Center: real-time platform KPIs, active SOS incident feed, and global user directory",
+    "Tailored Protected User Safety UI: personal safety tools, SOS panic triggers, and My Guardians directory",
+    "Automatic background telemetry polling and real-time distress alert synchronization"
   ]
 }

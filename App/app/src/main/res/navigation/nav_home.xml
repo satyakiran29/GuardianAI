@@ -115,6 +115,20 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_guardianHomeFragment"
+            app:destination="@id/guardianHomeFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_superAdminHomeFragment"
+            app:destination="@id/superAdminHomeFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -231,5 +245,61 @@
         android:name="com.android.sheguard.ui.fragment.GuardianChatFragment"
         android:label="fragment_guardian_chat"
         tools:layout="@layout/fragment_guardian_chat" />
+
+    <fragment
+        android:id="@+id/guardianHomeFragment"
+        android:name="com.android.sheguard.ui.fragment.GuardianHomeFragment"
+        android:label="fragment_guardian_home"
+        tools:layout="@layout/fragment_guardian_home">
+        <action
+            android:id="@+id/action_guardianHomeFragment_to_guardianChatFragment"
+            app:destination="@id/guardianChatFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_guardianHomeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_guardianHomeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/superAdminHomeFragment"
+        android:name="com.android.sheguard.ui.fragment.SuperAdminHomeFragment"
+        android:label="fragment_super_admin_home"
+        tools:layout="@layout/fragment_super_admin_home">
+        <action
+            android:id="@+id/action_superAdminHomeFragment_to_guardianChatFragment"
+            app:destination="@id/guardianChatFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_superAdminHomeFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_superAdminHomeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
 
 </navigation>

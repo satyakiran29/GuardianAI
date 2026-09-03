@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavOptions;
@@ -185,6 +186,29 @@ public class HomeFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        String role = Prefs.getString("USER_ROLE", "user");
+        if ("guardian".equalsIgnoreCase(role)) {
+            try {
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.homeFragment, true)
+                        .build();
+                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_guardianHomeFragment, null, navOptions);
+                return;
+            } catch (Exception ignored) {}
+        } else if ("superadmin".equalsIgnoreCase(role)) {
+            try {
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.homeFragment, true)
+                        .build();
+                Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_superAdminHomeFragment, null, navOptions);
+                return;
+            } catch (Exception ignored) {}
+        }
     }
 
     private void initializeDrawerItems() {

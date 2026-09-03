@@ -36,18 +36,23 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
+
         binding.navView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             binding.drawerLayout.closeDrawer(binding.navView);
-            NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView);
+            NavController currentNav = Navigation.findNavController(this, R.id.fragmentContainerView);
             if (id == R.id.nav_profile) {
-                navController.navigate(R.id.profileFragment);
+                currentNav.navigate(R.id.profileFragment);
                 return true;
             } else if (id == R.id.nav_safe_ride) {
-                navController.navigate(R.id.safeRideFragment);
+                currentNav.navigate(R.id.safeRideFragment);
                 return true;
             } else if (id == R.id.nav_settings) {
-                navController.navigate(R.id.settingsFragment);
+                currentNav.navigate(R.id.settingsFragment);
+                return true;
+            } else if (id == R.id.nav_credits) {
+                currentNav.navigate(R.id.aboutFragment);
                 return true;
             } else if (id == R.id.nav_logout) {
                 Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
