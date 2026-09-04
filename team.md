@@ -19,7 +19,8 @@ To ensure seamless collaboration, modular development, and zero-conflict ownersh
 
 ```mermaid
 graph TD
-    PSK["👤 Pampana Satya Kiran<br/><b>Lead Developer & System Architect</b>"]
+    PSK["👤 Pampana Satya Kiran<br/><b> 
+     System Architect</b>"]
     AH["👤 Amarthaluri Harshavardhan<br/><b>Core Android & Security Engineer</b>"]
     MN["👤 Madeli Narasimha<br/><b>Backend & Cloud Integration</b>"]
     MS["👤 Mammula Sneha<br/><b>UI/UX & Safety Systems</b>"]
