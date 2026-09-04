@@ -19,8 +19,7 @@ To ensure seamless collaboration, modular development, and zero-conflict ownersh
 
 ```mermaid
 graph TD
-    PSK["👤 Pampana Satya Kiran<br/><b> 
-     System Architect</b>"]
+    PSK["👤 Pampana Satya Kiran<br/><b> & System Architect</b>"]
     AH["👤 Amarthaluri Harshavardhan<br/><b>Core Android & Security Engineer</b>"]
     MN["👤 Madeli Narasimha<br/><b>Backend & Cloud Integration</b>"]
     MS["👤 Mammula Sneha<br/><b>UI/UX & Safety Systems</b>"]
@@ -39,7 +38,7 @@ graph TD
 
 ---
 
-### 1. 👤 Pampana Satya Kiran — Lead Developer & System Architect
+### 1. 👤 Pampana Satya Kiran — System Architect
 * **Primary Focus**: System Architecture, Role-Based Access Control (RBAC), Global Navigation Router, Build Orchestration & Cloud Deployment.
 
 #### 📱 App Responsibilities ([App](file:///c:/Users/psaty/Videos/GuardianAI/App))
