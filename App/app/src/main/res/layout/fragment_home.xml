@@ -6,7 +6,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#0A0B0E"
+        android:background="@color/surface_background"
         android:fitsSystemWindows="true"
         tools:context=".ui.fragment.HomeFragment">
 
@@ -23,75 +23,77 @@
                 layout="@layout/view_header_expandable"
                 android:visibility="gone" />
 
-            <!-- Clean Top Navigation Bar with Avatar & Overflow Menu -->
+            <!-- Modern Top Navigation Bar -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="12dp">
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="10dp">
 
-                <!-- Title & Slogan on the Left -->
+                <!-- Left: Guardian AI Brand Mark & Title -->
+                <ImageView
+                    android:id="@+id/iv_top_logo"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_logo_guardian_shield"
+                    android:contentDescription="Guardian AI Logo" />
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="10dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_home_main_title"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Guardian AI"
-                        android:textColor="#FFFFFF"
-                        android:textSize="26sp"
-                        android:textStyle="bold"
-                        android:fontFamily="sans-serif-medium" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/tv_home_main_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Guardian "
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="21sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AI"
+                            android:textColor="@color/colorPinkNeon"
+                            android:textSize="21sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-medium" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_home_main_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Stay aware. Stay connected."
-                        android:textColor="#94A3B8"
-                        android:textSize="13sp" />
+                        android:text="For her. Always there."
+                        android:textColor="@color/textColorSecondary"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Profile Avatar & 3-Dots Menu Button on the Right -->
+                <!-- Right: Notification Bell, Settings, Profile Avatar with Active Badge -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical">
 
-                    <!-- User Avatar -->
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/btn_top_profile"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginEnd="12dp"
-                        app:cardCornerRadius="20dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="#1F2026"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:id="@+id/iv_top_profile_avatar"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/img_drdisagree"
-                            android:contentDescription="Profile" />
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- 3-Dots Overflow Menu Button -->
+                    <!-- Notification Bell with Pink Badge Dot -->
                     <FrameLayout
-                        android:id="@+id/btn_top_menu"
+                        android:id="@+id/btn_top_notifications"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/bg_circle_info"
@@ -102,14 +104,84 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_more_vert"
-                            app:tint="#E2E8F0"
-                            android:contentDescription="More Options" />
+                            android:src="@drawable/ic_notifications"
+                            app:tint="@color/textColorPrimary"
+                            android:contentDescription="Notifications" />
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_gravity="top|end"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/bg_circle_num_1"
+                            android:backgroundTint="@color/colorPinkNeon" />
+                    </FrameLayout>
+
+                    <!-- Settings Gear Icon -->
+                    <FrameLayout
+                        android:id="@+id/btn_top_settings"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_circle_info"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_settings"
+                            app:tint="@color/textColorPrimary"
+                            android:contentDescription="Settings" />
+                    </FrameLayout>
+
+                    <!-- Hidden 3-dots Menu Button for backwards compatibility -->
+                    <FrameLayout
+                        android:id="@+id/btn_top_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:visibility="gone" />
+
+                    <!-- User Profile Avatar with Online Green Dot -->
+                    <FrameLayout
+                        android:id="@+id/btn_top_profile"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="8dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_gravity="center"
+                            app:cardCornerRadius="19dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="@color/surface_card_secondary">
+
+                            <ImageView
+                                android:id="@+id/iv_top_profile_avatar"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/img_hero_woman_safe"
+                                android:contentDescription="Profile" />
+                        </androidx.cardview.widget.CardView>
+
+                        <!-- Green Online Indicator -->
+                        <View
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginEnd="2dp"
+                            android:layout_marginBottom="2dp"
+                            android:background="@drawable/ic_badge_online_green" />
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -127,97 +199,148 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="48dp">
 
-                <!-- 1. CROWD SAFETY CARD (Top Location Hero) -->
+                <!-- 1. HERO SECTION: "Stronger Together" + Hero Art + Location Pill -->
                 <LinearLayout
-                    android:id="@+id/card_crowd_safety"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_card_safety_dark"
                     android:orientation="horizontal"
-                    android:padding="18dp"
-                    android:clickable="true"
-                    android:focusable="true">
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
 
+                    <!-- Left Typography & Location Pill -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="1.2"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Your location"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp"
-                            android:fontFamily="sans-serif-medium" />
+                            android:text="Stronger"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-black"
+                            android:includeFontPadding="false" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Together"
+                            android:textColor="@color/colorPinkNeon"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-black"
+                            android:includeFontPadding="false" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Crowd Safety"
-                            android:textColor="#FFFFFF"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Is your area busy right now?"
-                            android:textColor="#94A3B8"
+                            android:text="Your safety. Our priority."
+                            android:textColor="@color/textColorSecondary"
                             android:textSize="13sp" />
 
-                        <TextView
-                            android:id="@+id/tv_current_area_label"
+                        <!-- Location Pill: Home • Low Risk Area > -->
+                        <LinearLayout
+                            android:id="@+id/card_crowd_safety"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="Current area"
-                            android:textColor="#64748B"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="end|center_vertical">
-
-                        <ImageView
-                            android:layout_width="92dp"
-                            android:layout_height="62dp"
-                            android:src="@drawable/ic_radar_map_graphic"
-                            android:contentDescription="@null" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:background="@drawable/bg_pill_low_crowd"
+                            android:layout_marginTop="14dp"
+                            android:background="@drawable/bg_hero_location_pill"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
                             android:paddingStart="12dp"
                             android:paddingEnd="12dp"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="4dp"
-                            android:text="LOW CROWD"
-                            android:textColor="#10B981"
-                            android:textSize="11sp"
-                            android:textStyle="bold" />
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_location_on"
+                                app:tint="@color/colorPinkNeon"
+                                android:contentDescription="Location" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Current location"
+                                    android:textColor="@color/textColorMuted"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_current_area_label"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Home • Low Risk Area ›"
+                                    android:textColor="#10B981"
+                                    android:textSize="11.5sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <!-- Right Hero Art with Glowing Halo -->
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="160dp"
+                        android:layout_weight="0.95"
+                        android:layout_marginStart="8dp">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="140dp"
+                            android:layout_height="140dp"
+                            android:layout_gravity="center"
+                            app:cardCornerRadius="70dp"
+                            app:cardElevation="4dp"
+                            app:cardBackgroundColor="@color/surface_card_secondary">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/img_hero_woman_safe"
+                                android:contentDescription="Hero Safe Woman" />
+                        </androidx.cardview.widget.CardView>
+
+                        <!-- Stylized "You Are Safe Here ♡" badge -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:text="You Are\nSafe Here ♡"
+                            android:textColor="@color/colorPinkLight"
+                            android:textSize="11sp"
+                            android:textStyle="italic|bold"
+                            android:shadowColor="#80FF2E93"
+                            android:shadowRadius="8" />
+                    </FrameLayout>
                 </LinearLayout>
 
-                <!-- 2. EMERGENCY SOS HERO CARD -->
+                <!-- 2. EMERGENCY SOS MAIN CARD (Glowing Red/Pink Card + 3D Circular Button) -->
                 <LinearLayout
                     android:id="@+id/card_emergency_sos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:background="@drawable/bg_card_sos_dark"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_sos_hero_card"
                     android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
 
+                    <!-- Left: SOS Title & Description -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -228,195 +351,794 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Emergency SOS"
-                            android:textColor="#FFFFFF"
-                            android:textSize="22sp"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="19sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginEnd="12dp"
-                            android:text="Alert your trusted contacts and share your live location instantly."
-                            android:textColor="#D1D5DB"
-                            android:textSize="13sp"
-                            android:lineSpacingExtra="2dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/sos_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="46dp"
-                            android:layout_marginTop="18dp"
-                            android:backgroundTint="#EF4444"
-                            android:text="PRESS &amp; HOLD"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp"
-                            android:textStyle="bold"
-                            app:cornerRadius="24dp"
-                            app:elevation="0dp" />
+                            android:layout_marginTop="4dp"
+                            android:text="Alert your trusted contacts with live location, audio and photo instantly."
+                            android:textColor="@color/textColorSecondary"
+                            android:textSize="12sp"
+                            android:lineSpacingExtra="1.5dp" />
                     </LinearLayout>
 
+                    <!-- Center: 3D Pulsating Circular SOS Button -->
                     <FrameLayout
                         android:id="@+id/sos_circle_badge"
-                        android:layout_width="74dp"
-                        android:layout_height="74dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/bg_sos_circle_dark"
+                        android:layout_width="92dp"
+                        android:layout_height="92dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:clickable="true"
                         android:focusable="true">
 
-                        <TextView
+                        <!-- Outer Glow Ring -->
+                        <View
+                            android:layout_width="92dp"
+                            android:layout_height="92dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bg_sos_pulse_ring" />
+
+                        <!-- Inner 3D SOS Button -->
+                        <LinearLayout
+                            android:id="@+id/sos_button"
+                            android:layout_width="74dp"
+                            android:layout_height="74dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/bg_sos_3d_button"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:src="@drawable/ic_notifications"
+                                app:tint="#FFFFFF"
+                                android:contentDescription="SOS Bell" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="SOS"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:includeFontPadding="false" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PRESS &amp; HOLD"
+                                android:textColor="#FFFFFF"
+                                android:textSize="7.5sp"
+                                android:textStyle="bold"
+                                android:includeFontPadding="false" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <!-- Right: 4 Telemetry Mini Badges -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="start">
+
+                        <!-- Live Location -->
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="SOS"
-                            android:textColor="#EF4444"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-                    </FrameLayout>
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="⚡ "
+                                android:textSize="10sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Live Location"
+                                android:textColor="@color/colorPinkLight"
+                                android:textSize="10.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Record Audio -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🎙️ "
+                                android:textSize="10sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Record Audio"
+                                android:textColor="@color/colorPinkLight"
+                                android:textSize="10.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Capture Photo -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="📷 "
+                                android:textSize="10sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Capture Photo"
+                                android:textColor="@color/colorPinkLight"
+                                android:textSize="10.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Send Alert -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="💬 "
+                                android:textSize="10sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Send Alert"
+                                android:textColor="@color/colorPinkLight"
+                                android:textSize="10.5sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
 
-                <!-- 3. SECTION: QUICK ACTIONS -->
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- 3. SECTION: QUICK ACTIONS (4 Pastel Gradient Cards) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="12dp"
-                    android:text="Quick actions"
-                    android:textColor="#FFFFFF"
-                    android:textSize="19sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                <!-- 3 Quick Action Cards in Equal Columns -->
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Quick Actions"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/btn_quick_actions_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit"
+                        android:textColor="@color/colorPinkNeon"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <!-- 4 Pastel Action Cards Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:baselineAligned="false">
 
-                    <!-- Card 1: Share (WhatsApp & SMS) -->
+                    <!-- Card 1: Share (Live Location) -->
                     <LinearLayout
                         android:id="@+id/btn_home_forward_whatsapp"
                         android:layout_width="0dp"
-                        android:layout_height="120dp"
+                        android:layout_height="114dp"
                         android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/bg_card_safety_dark"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_quick_action_share"
                         android:orientation="vertical"
-                        android:padding="14dp"
+                        android:gravity="center"
+                        android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true">
 
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@drawable/ic_share_location_paperplane"
+                            app:tint="@color/qa_share_accent"
+                            android:contentDescription="Share Location" />
+
                         <TextView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_circle_num_1"
-                            android:gravity="center"
-                            android:text="1"
-                            android:textColor="#38BDF8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Share"
+                            android:textColor="@color/qa_share_accent"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="Share"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Live location"
-                            android:textColor="#94A3B8"
-                            android:textSize="11.5sp" />
+                            android:text="Live Location"
+                            android:textColor="@color/qa_share_subtitle"
+                            android:textSize="10.5sp" />
                     </LinearLayout>
 
-                    <!-- Card 2: Call (Helpline) -->
+                    <!-- Card 2: Call (Emergency) -->
                     <LinearLayout
                         android:id="@+id/helpline"
                         android:layout_width="0dp"
-                        android:layout_height="120dp"
+                        android:layout_height="114dp"
                         android:layout_weight="1"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:background="@drawable/bg_card_safety_dark"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:background="@drawable/bg_quick_action_call"
                         android:orientation="vertical"
-                        android:padding="14dp"
+                        android:gravity="center"
+                        android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true">
 
-                        <TextView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_circle_num_2"
-                            android:gravity="center"
-                            android:text="2"
-                            android:textColor="#2DD4BF"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@drawable/ic_phone_call_emergency"
+                            app:tint="@color/qa_call_accent"
+                            android:contentDescription="Call Emergency" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="10dp"
                             android:text="Call"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
+                            android:textColor="@color/qa_call_accent"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Emergency"
-                            android:textColor="#94A3B8"
-                            android:textSize="11.5sp" />
+                            android:textColor="@color/qa_call_subtitle"
+                            android:textSize="10.5sp" />
                     </LinearLayout>
 
-                    <!-- Card 3: Places (Safe Route & Nearby) -->
+                    <!-- Card 3: My Circle (Trusted Contacts) -->
                     <LinearLayout
-                        android:id="@+id/card_safe_route"
+                        android:id="@+id/contacts"
                         android:layout_width="0dp"
-                        android:layout_height="120dp"
+                        android:layout_height="114dp"
                         android:layout_weight="1"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_card_safety_dark"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
+                        android:background="@drawable/bg_quick_action_circle"
                         android:orientation="vertical"
-                        android:padding="14dp"
+                        android:gravity="center"
+                        android:padding="8dp"
                         android:clickable="true"
                         android:focusable="true">
 
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@drawable/ic_my_circle_people"
+                            app:tint="@color/qa_circle_accent"
+                            android:contentDescription="My Circle" />
+
                         <TextView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:background="@drawable/bg_circle_num_3"
-                            android:gravity="center"
-                            android:text="3"
-                            android:textColor="#60A5FA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="My Circle"
+                            android:textColor="@color/qa_circle_accent"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="Places"
-                            android:textColor="#FFFFFF"
+                            android:text="Trusted Contacts"
+                            android:textColor="@color/qa_circle_subtitle"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <!-- Card 4: Safe Places (Find nearby) -->
+                    <LinearLayout
+                        android:id="@+id/card_safe_route"
+                        android:layout_width="0dp"
+                        android:layout_height="114dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_quick_action_places"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@drawable/ic_safe_places_pin"
+                            app:tint="@color/qa_places_accent"
+                            android:contentDescription="Safe Places" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Safe Places"
+                            android:textColor="@color/qa_places_accent"
+                            android:textSize="13.5sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Find nearby"
+                            android:textColor="@color/qa_places_subtitle"
+                            android:textSize="10.5sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 4. AI SAFETY COMPANION BANNER (3D Bot Avatar + Chat Now >) -->
+                <LinearLayout
+                    android:id="@+id/card_ai_assistant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_ai_companion_card"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="14dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <!-- 3D AI Robot Avatar -->
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        app:cardCornerRadius="26dp"
+                        app:cardElevation="0dp"
+                        app:cardBackgroundColor="@android:color/transparent">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/img_ai_companion_bot"
+                            android:contentDescription="AI Companion" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Center Text -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AI Safety Companion"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Safe nearby"
-                            android:textColor="#94A3B8"
+                            android:layout_marginTop="2dp"
+                            android:text="Chat, get safety advice, or ask for help in any situation."
+                            android:textColor="@color/textColorSecondary"
                             android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <!-- Chat Now > Button -->
+                    <TextView
+                        android:id="@+id/btn_ai_chat_now"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_ai_chat_btn"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Chat Now ›"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- 5. SECTION: SAFETY SUITE (2x3 Grid of 6 Modern Cards) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Safety Suite"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/safety_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="See all"
+                        android:textColor="@color/colorPinkNeon"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
+                <!-- Row 1: Fake Call & Voice SOS -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+
+                    <!-- 1. Fake Call -->
+                    <LinearLayout
+                        android:id="@+id/card_fake_call"
+                        android:layout_width="0dp"
+                        android:layout_height="76dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_safety_suite_card"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_safety_chip_pink">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_phone_call_emergency"
+                                app:tint="@color/colorPinkNeon"
+                                android:contentDescription="Fake Call" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Fake Call"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="13.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Discreet exit"
+                                android:textColor="@color/textColorSecondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 2. Voice SOS -->
+                    <LinearLayout
+                        android:id="@+id/card_voice_sos"
+                        android:layout_width="0dp"
+                        android:layout_height="76dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_safety_suite_card"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_safety_chip_pink">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_contacts_safety"
+                                app:tint="@color/colorPinkNeon"
+                                android:contentDescription="Voice SOS" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Voice SOS"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="13.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Keyword trigger"
+                                android:textColor="@color/textColorSecondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- GUARDIAN ROLE & TRACKING HERO CARDS -->
+                <!-- Row 2: Timer & Safe Ride -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+
+                    <!-- 3. Timer (Dead Man's Switch) -->
+                    <LinearLayout
+                        android:id="@+id/card_safety_timer"
+                        android:layout_width="0dp"
+                        android:layout_height="76dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_safety_suite_card"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_safety_chip_pink">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_timer"
+                                app:tint="@color/colorPinkNeon"
+                                android:contentDescription="Timer" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Timer"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="13.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Auto alert"
+                                android:textColor="@color/textColorSecondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 4. Safe Ride -->
+                    <LinearLayout
+                        android:id="@+id/card_safe_ride"
+                        android:layout_width="0dp"
+                        android:layout_height="76dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_safety_suite_card"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_safety_chip_pink">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_location_on"
+                                app:tint="@color/colorPinkNeon"
+                                android:contentDescription="Safe Ride" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Safe Ride"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="13.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Verified escort"
+                                android:textColor="@color/textColorSecondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Row 3: Trip Monitor & Safety Check-in -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+
+                    <!-- 5. Trip Monitor -->
+                    <LinearLayout
+                        android:id="@+id/card_trip_monitor"
+                        android:layout_width="0dp"
+                        android:layout_height="76dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_safety_suite_card"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_safety_chip_pink">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_route_safety"
+                                app:tint="@color/colorPinkNeon"
+                                android:contentDescription="Trip Monitor" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Trip Monitor"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="13.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Share live route"
+                                android:textColor="@color/textColorSecondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- 6. Safety Check-in -->
+                    <LinearLayout
+                        android:id="@+id/btn_safe_check_in"
+                        android:layout_width="0dp"
+                        android:layout_height="76dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_safety_suite_card"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="12dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_safety_chip_pink">
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_logo_guardian_shield"
+                                app:tint="@color/colorPinkNeon"
+                                android:contentDescription="Check-in" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Safety Check-in"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="13.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Let others know"
+                                android:textColor="@color/textColorSecondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- GUARDIAN & SUPERADMIN ROLE CARDS (Dynamic Role Access) -->
                 <LinearLayout
                     android:id="@+id/layout_guardian_cards"
                     android:layout_width="match_parent"
@@ -425,555 +1147,183 @@
                     android:orientation="horizontal"
                     android:baselineAligned="false">
 
-                    <!-- Card A: My Guardians & Safety Chat -->
+                    <!-- Card A: My Guardians -->
                     <LinearLayout
                         android:id="@+id/card_my_guardians"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
+                        android:background="@drawable/bg_safety_suite_card"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:padding="16dp"
+                        android:padding="14dp"
                         android:clickable="true"
                         android:focusable="true">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
                             android:src="@drawable/ic_contacts_safety"
-                            app:tint="#C084FC"
-                            android:contentDescription="Guardians" />
+                            app:tint="@color/colorPinkNeon"
+                            android:contentDescription="My Guardians" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginStart="14dp"
+                            android:layout_marginStart="10dp"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="My Guardians"
-                                android:textColor="#FFFFFF"
-                                android:textSize="15sp"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="13.5sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Chat &amp; Live Tracking with your protectors"
-                                android:textColor="#94A3B8"
-                                android:textSize="11.5sp" />
+                                android:text="Emergency chat &amp; tracking"
+                                android:textColor="@color/textColorSecondary"
+                                android:textSize="11sp" />
                         </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#A855F7"
-                            android:contentDescription="Open" />
                     </LinearLayout>
 
-                    <!-- Card B: Guardian Portal (Wards Radar) -->
+                    <!-- Card B: Guardian Portal -->
                     <LinearLayout
                         android:id="@+id/card_guardian_portal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
+                        android:background="@drawable/bg_safety_suite_card"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:padding="16dp"
+                        android:padding="14dp"
                         android:clickable="true"
                         android:focusable="true">
 
                         <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:src="@drawable/ic_radar_map_graphic"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/colorAccent"
                             android:contentDescription="Guardian Portal" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginStart="14dp"
+                            android:layout_marginStart="10dp"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Guardian Portal"
-                                android:textColor="#FFFFFF"
-                                android:textSize="15sp"
+                                android:text="Guardian Radar"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="13.5sp"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Track Wards &amp; Battery Telemetry"
-                                android:textColor="#34D399"
-                                android:textSize="11.5sp" />
+                                android:text="Track linked wards live"
+                                android:textColor="@color/textColorSecondary"
+                                android:textSize="11sp" />
                         </LinearLayout>
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="#34D399"
-                            android:contentDescription="Open" />
                     </LinearLayout>
                 </LinearLayout>
 
-                <!-- 4. SAFETY CHECK-IN CARD -->
-                <LinearLayout
-                    android:id="@+id/card_safety_check_in"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:background="@drawable/bg_card_safety_dark"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="18dp"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Safety check-in"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Let someone know you are okay."
-                            android:textColor="#94A3B8"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/btn_safe_check_in"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_pill_check_in"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="CHECK IN"
-                        android:textColor="#34D399"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <!-- 5. SAFE MODE & SHAKE CONTROL SECTION -->
+                <!-- 6. TRUST & MOTIVATION BANNER ("You're not alone", "Stay Free Stay Safe ♡") -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:background="@drawable/bg_card_safety_dark"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_trust_card"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:padding="16dp">
 
+                    <FrameLayout
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/bg_safety_chip_pink">
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_logo_guardian_shield"
+                            app:tint="@color/colorPinkNeon"
+                            android:contentDescription="Trust Shield" />
+                    </FrameLayout>
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/safe_mode"
-                            android:textColor="#FFFFFF"
-                            android:textSize="16sp"
+                            android:text="You're not alone."
+                            android:textColor="@color/colorPinkNeon"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tv_safe_mode_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="@string/safe_mode_home_desc_inactive"
-                            android:textColor="#94A3B8"
-                            android:textSize="12.5sp" />
+                            android:text="Thousands of women trust Guardian AI every day."
+                            android:textColor="@color/textColorSecondary"
+                            android:textSize="11.5sp" />
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stay Free\nStay Safe ♡"
+                        android:textColor="@color/colorPinkLight"
+                        android:textSize="11.5sp"
+                        android:textStyle="italic|bold"
+                        android:gravity="end"
+                        android:shadowColor="#60FF2E93"
+                        android:shadowRadius="6" />
+                </LinearLayout>
+
+                <!-- Hidden Controls (Preserved for App Logic Compatibility) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switch_safe_mode_home"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btn_shake_detection"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="10dp"
-                    android:backgroundTint="#1F2937"
-                    android:text="@string/btn_start_service"
-                    android:textColor="#E5E7EB"
-                    android:textSize="13.5sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="14dp"
-                    android:visibility="gone" />
-
-                <!-- 6. MORE SAFETY FEATURES & SUITE -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:layout_marginBottom="12dp"
-                    android:text="Safety Suite"
-                    android:textColor="#FFFFFF"
-                    android:textSize="19sp"
-                    android:textStyle="bold" />
-
-                <!-- 2-Column Grid of Core Safety Features -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Timer -->
-                    <LinearLayout
-                        android:id="@+id/card_safety_timer"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Timer"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Auto-alert expiry"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Fake Call -->
-                    <LinearLayout
-                        android:id="@+id/card_fake_call"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Fake Call"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Discreet exit"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <!-- AI Assistant -->
-                    <LinearLayout
-                        android:id="@+id/card_ai_assistant"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="AI Advisor"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Crisis steps"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Voice SOS -->
-                    <LinearLayout
-                        android:id="@+id/card_voice_sos"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Voice SOS"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Keyword trigger"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <!-- Safe Ride -->
-                    <LinearLayout
-                        android:id="@+id/card_safe_ride"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Safe Ride"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Verified escort"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Taxi & Trip Monitor -->
-                    <LinearLayout
-                        android:id="@+id/card_trip_monitor"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Trip Monitor"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Off-route alert"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- 7. ESSENTIALS (Contacts, Safety Tips, About) -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:layout_marginBottom="12dp"
-                    android:text="Essentials"
-                    android:textColor="#FFFFFF"
-                    android:textSize="19sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- Contacts -->
-                    <LinearLayout
-                        android:id="@+id/contacts"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Contacts"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Guardians list"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <!-- Safety Tips -->
-                    <LinearLayout
-                        android:id="@+id/safety_tips"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:background="@drawable/bg_card_safety_dark"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Safety tips"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="Defense guides"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- About Card -->
-                <LinearLayout
-                    android:id="@+id/about"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_card_safety_dark"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:clickable="true"
-                    android:focusable="true">
 
                     <TextView
+                        android:id="@+id/tv_safe_mode_status"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="i"
-                        android:textColor="#60A5FA"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:layout_height="wrap_content" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="14dp"
-                        android:orientation="vertical">
+                    <Button
+                        android:id="@+id/btn_shake_detection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="About GuardianAI"
-                            android:textColor="#FFFFFF"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Developers &amp; team info"
-                            android:textColor="#94A3B8"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="#64748B"
-                        android:contentDescription="@null" />
+                    <TextView
+                        android:id="@+id/about"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </LinearLayout>

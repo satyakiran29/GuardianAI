@@ -2,7 +2,7 @@
   # 🛡️ GuardianAI
   ### *Autonomous Women Safety, Telemetric Emergency Response, Multi-Role Command & Guardian Ecosystem*
 
-  [![Android App v1.1.5](https://img.shields.io/badge/Android%20App-v1.1.5%20(Build%2015)-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk)
+  [![Android App v1.1.6](https://img.shields.io/badge/Android%20App-v1.1.6%20(Build%2016)-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk)
   [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Java%20%26%20XML-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
   [![Django Backend](https://img.shields.io/badge/Backend-Django%206%20%2B%20REST%20Framework-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
   [![Cloud Database](https://img.shields.io/badge/Cloud-Supabase%20Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
@@ -49,11 +49,11 @@ The platform connects a native **Android Client (Java + XML UI)** with an intell
 
 | Artifact | Version | File Size | Direct Download |
 | :--- | :---: | :---: | :--- |
-| **Android Safety App (Debug APK)** | **v1.1.5 (Build 15)** | ~16.8 MB | [Download GuardianAI-debug.apk](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk) |
-| **OTA Update Manifest** | **v1.1.5** | ~340 B | [View update.json](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/update.json) |
-| **Backend Release Package** | **v1.1.5** | ~16.8 MB | [Backend APK Release](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Backend/GuardianAI-Safety-Debug.apk) |
+| **Android Safety App (Debug APK)** | **v1.1.6 (Build 16)** | ~18.6 MB | [Download GuardianAI-debug.apk](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk) |
+| **OTA Update Manifest** | **v1.1.6** | ~520 B | [View update.json](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/update.json) |
+| **Backend Release Package** | **v1.1.6** | ~18.6 MB | [Backend APK Release](https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Backend/GuardianAI-Safety-Debug.apk) |
 
-### 🆕 What's New in v1.1.5 (Build 15)
+### 🆕 What's New in v1.1.6 (Build 16)
 
 | # | Fix / Feature | Area |
 |---|---|---|

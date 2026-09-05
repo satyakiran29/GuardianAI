@@ -2,21 +2,60 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="pink">#FFEF6B99</color>
+    <color name="pink">#FF2E93</color>
     <color name="shadow">#26000000</color>
-    <color name="colorPrimary">#4F46E5</color>
-    <color name="colorPrimaryDark">#4338CA</color>
+    
+    <!-- Brand / Primary -->
+    <color name="colorPrimary">#FF2E93</color>
+    <color name="colorPrimaryDark">#D81173</color>
     <color name="colorAccent">#10B981</color>
-    <color name="colorPurple">#6366F1</color>
-    <color name="colorIndigo">#4F46E5</color>
+    <color name="colorPurple">#8B5CF6</color>
+    <color name="colorIndigo">#6366F1</color>
     <color name="colorBlueMidnight">#0F172A</color>
     <color name="colorGrey">#94A3B8</color>
-    <color name="textColorPrimary">#0F172A</color>
-    <color name="textColorSecondary">#475569</color>
+    
+    <!-- Pink Accent Palette -->
+    <color name="colorPinkNeon">#FF2E93</color>
+    <color name="colorPinkHot">#FF1B7A</color>
+    <color name="colorPinkLight">#FF65A7</color>
+    <color name="colorPinkSubtle">#26FF2E93</color>
+    <color name="colorPinkGlow">#4DFF2E93</color>
+
+    <!-- Emergency SOS -->
+    <color name="color_sos_red">#EF4444</color>
+    <color name="color_sos_crimson">#E11D48</color>
+    <color name="color_sos_glow">#66EF4444</color>
+
+    <!-- Surfaces (Light Mode) -->
+    <color name="surface_background">#F8FAFC</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="surface_card_secondary">#F1F5F9</color>
+    <color name="surface_card_stroke">#E2E8F0</color>
     <color name="color_surface_variant">#F1F5F9</color>
     <color name="color_outline">#CBD5E1</color>
-    <color name="color_sos_red">#EF4444</color>
-    <color name="login_bg">#F1F5F9</color>
-    <color name="surface_card">#FFFFFF</color>
-    <color name="surface_background">#F8FAFC</color>
+    <color name="login_bg">#F8FAFC</color>
+    <color name="textColorPrimary">#0F172A</color>
+    <color name="textColorSecondary">#64748B</color>
+    <color name="textColorMuted">#94A3B8</color>
+
+    <!-- Quick Actions Pastel Cards (Light Mode) -->
+    <color name="qa_share_bg">#FCE7F3</color>
+    <color name="qa_share_accent">#DB2777</color>
+    <color name="qa_share_subtitle">#BE185D</color>
+
+    <color name="qa_call_bg">#CCFBF1</color>
+    <color name="qa_call_accent">#0D9488</color>
+    <color name="qa_call_subtitle">#0F766E</color>
+
+    <color name="qa_circle_bg">#EDE9FE</color>
+    <color name="qa_circle_accent">#7C3AED</color>
+    <color name="qa_circle_subtitle">#6D28D9</color>
+
+    <color name="qa_places_bg">#FFEDD5</color>
+    <color name="qa_places_accent">#EA580C</color>
+    <color name="qa_places_subtitle">#C2410C</color>
+
+    <!-- AI Companion Card (Light) -->
+    <color name="ai_banner_bg">#FDF2F8</color>
+    <color name="ai_banner_stroke">#FBCFE8</color>
 </resources>

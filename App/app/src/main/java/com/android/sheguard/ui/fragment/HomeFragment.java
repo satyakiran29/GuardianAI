@@ -81,7 +81,12 @@ public class HomeFragment extends Fragment {
 
         binding.sosCircleBadge.setOnClickListener(v -> binding.sosButton.performClick());
         binding.btnTopProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment));
+        binding.btnTopSettings.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_settingsFragment));
+        binding.btnTopNotifications.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_helplineFragment));
+        binding.btnAiChatNow.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_aiAssistantFragment));
+        binding.btnQuickActionsEdit.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_contactsFragment));
         binding.btnTopMenu.setOnClickListener(this::showTopOverflowMenu);
+        binding.ivTopLogo.setOnClickListener(v -> ((MainActivity) requireActivity()).toggleDrawer());
         binding.cardCrowdSafety.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safeRouteFragment));
 
         binding.btnSafeCheckIn.setOnClickListener(v -> {

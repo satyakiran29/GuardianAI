@@ -219,5 +219,5 @@ To prevent merge conflicts across the Android and Django codebases:
 - 👤 **Kadagala Meghana** (QA & Location Telemetry)
 - 🌐 **Project Repository**: [GitHub - satyakiran29/GuardianAI](https://github.com/satyakiran29/GuardianAI)
 - 🌐 **Live Web Command Center**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- 📱 **Latest Android Build**: [Download APK (v1.1.5)](file:///c:/Users/psaty/Videos/GuardianAI/Apk/GuardianAI-debug.apk)
+- 📱 **Latest Android Build**: [Download APK (v1.1.6)](file:///c:/Users/psaty/Videos/GuardianAI/Apk/GuardianAI-debug.apk)
 - 📖 **System Documentation**: [README.md](file:///c:/Users/psaty/Videos/GuardianAI/README.md) • [HOST.md](file:///c:/Users/psaty/Videos/GuardianAI/HOST.md)
