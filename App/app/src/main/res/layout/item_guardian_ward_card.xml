@@ -1,219 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/bg_card_safety_dark"
-    android:padding="16dp"
-    android:layout_marginBottom="12dp">
+    android:layout_marginBottom="14dp"
+    app:cardBackgroundColor="#111622"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="2dp"
+    app:strokeColor="#1E293B"
+    app:strokeWidth="1dp">
 
-    <!-- Header: Name, Relationship & Battery % -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tv_ward_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Priya Sharma"
-                    android:textColor="#FFFFFF"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_ward_relationship"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_monogram_badge"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:text="Family"
-                    android:textColor="#C084FC"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_ward_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="+91 98765 43210"
-                android:textColor="#94A3B8"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <!-- Battery Gauge Badge -->
-        <LinearLayout
-            android:id="@+id/layout_battery_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:background="@drawable/bg_circle_info"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp">
-
-            <TextView
-                android:id="@+id/tv_battery_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BAT"
-                android:textColor="#34D399"
-                android:textSize="11sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_ward_battery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="85%"
-                android:textColor="#34D399"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- SOS Banner if active -->
-    <LinearLayout
-        android:id="@+id/layout_ward_sos_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#3B0808"
-        android:padding="8dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ACTIVE SOS EMERGENCY BROADCASTED"
-            android:textColor="#EF4444"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <!-- Location Address Bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#161F30"
-        android:padding="10dp"
-        android:layout_marginTop="10dp">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Header: Avatar, Name, Relationship & Battery Gauge -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Current Location"
-            android:textColor="#94A3B8"
-            android:textSize="11sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_ward_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Madhapur, Hyderabad, Telangana"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            <!-- Ward Avatar Circle Frame -->
+            <FrameLayout
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_circle_icon_pink">
 
-        <TextView
-            android:id="@+id/tv_ward_coords"
-            android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_person_vector"
+                    app:tint="#FF70B5" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_ward_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Priya Sharma"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16.5sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_ward_relationship"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_monogram_badge"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="Family"
+                        android:textColor="#C084FC"
+                        android:textSize="10.5sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_ward_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="+91 98765 43210"
+                    android:textColor="#94A3B8"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Battery Gauge Badge -->
+            <LinearLayout
+                android:id="@+id/layout_battery_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_guardian_badge_active"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp">
+
+                <TextView
+                    android:id="@+id/tv_battery_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔋"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_ward_battery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="85%"
+                    android:textColor="#34D399"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- SOS Banner (Shown if emergency SOS is active) -->
+        <LinearLayout
+            android:id="@+id/layout_ward_sos_banner"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="17.4482, 78.3914 • Live Sync"
-            android:textColor="#94A3B8"
-            android:textSize="11sp" />
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_distress_emergency_card"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.04"
+                android:text="🚨 ACTIVE SOS DISTRESS BROADCASTED"
+                android:textColor="#EF4444"
+                android:textSize="11.5sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Live Telemetry / Location Terminal Box -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_guardian_telemetry_box"
+            android:orientation="vertical"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.06"
+                android:text="CURRENT TELEMETRY &amp; LOCATION"
+                android:textColor="#64748B"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_ward_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Madhapur, Hyderabad, Telangana"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_ward_coords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="17.4482, 78.3914 • Live Radar Ping"
+                android:textColor="#38BDF8"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Action Buttons Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ward_replay"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1.15"
+                android:background="@drawable/bg_action_btn_secondary"
+                android:text="🎞️ 24h Trail"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ward_chat"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_action_btn_secondary"
+                android:text="💬 Chat"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ward_map"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_action_btn_secondary"
+                android:text="🗺️ Map"
+                android:textAllCaps="false"
+                android:textColor="#38BDF8"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ward_call"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_action_btn_emerald"
+                android:paddingHorizontal="14dp"
+                android:text="📞 Call"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
     </LinearLayout>
-
-    <!-- Action Buttons Row -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        android:gravity="center_vertical">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_ward_replay"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:layout_weight="1.1"
-            android:layout_marginEnd="6dp"
-            android:text="24h Replay"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:cornerRadius="8dp"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="#1E293B"
-            app:strokeColor="#334155"
-            app:strokeWidth="1dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_ward_chat"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="6dp"
-            android:text="Chat"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:cornerRadius="8dp"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="#1E293B"
-            app:strokeColor="#334155"
-            app:strokeWidth="1dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_ward_map"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="6dp"
-            android:text="Map"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:cornerRadius="8dp"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="#1E293B"
-            app:strokeColor="#334155"
-            app:strokeWidth="1dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_ward_call"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:text="Call"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:cornerRadius="8dp"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="#10B981" />
-    </LinearLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

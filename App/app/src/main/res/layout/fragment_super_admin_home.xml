@@ -4,78 +4,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A0B0E"
+    android:background="@color/surface_background"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#12141C"
-        app:elevation="2dp">
+        android:background="#0C101A"
+        app:elevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp">
 
+            <!-- Drawer Menu Button -->
             <ImageButton
                 android:id="@+id/btn_menu"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/bg_circle_info"
+                android:contentDescription="Menu"
                 android:src="@drawable/ic_menu"
-                app:tint="#FFFFFF"
-                android:contentDescription="Menu" />
+                app:tint="#FFFFFF" />
 
+            <!-- Title & Subtitle -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="14dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="👑 Command Center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.02"
+                        android:text="👑 Command Center"
+                        android:textColor="#FFFFFF"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_circle_icon_pink"
+                        android:backgroundTint="#F59E0B" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_admin_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Platform Safety &amp; Citizen Overview"
-                    android:textColor="#94A3B8"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Console: Chief SuperAdmin • Full Platform Telemetry"
+                    android:textColor="#F59E0B"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
+            <!-- Refresh Button -->
             <ImageButton
                 android:id="@+id/btn_refresh"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/bg_circle_info"
-                android:src="@drawable/ic_refresh"
-                app:tint="#FFFFFF"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
-                android:contentDescription="Refresh" />
+                android:background="@drawable/bg_circle_info"
+                android:contentDescription="Refresh"
+                android:src="@drawable/ic_refresh"
+                app:tint="#FFFFFF" />
 
+            <!-- Profile Button -->
             <ImageButton
                 android:id="@+id/btn_top_profile"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/bg_circle_info"
+                android:contentDescription="Profile"
                 android:src="@drawable/ic_profile"
-                app:tint="#FFFFFF"
-                android:contentDescription="Profile" />
+                app:tint="#FFFFFF" />
         </LinearLayout>
+
+        <!-- Divider line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1E293B" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -88,235 +115,281 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="36dp">
 
-            <!-- System KPI Metrics Grid (2x2) -->
+            <!-- ══════════════════════════════════════════════════
+                 Executive KPI Metrics Grid (2x2)
+                 ══════════════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <!-- Metric 1: Total Users -->
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginEnd="6dp"
-                    android:background="@drawable/bg_card_safety_dark"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#111622"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="#1E293B"
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:letterSpacing="0.06"
+                                android:text="TOTAL USERS"
+                                android:textColor="#94A3B8"
+                                android:textSize="10.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="👥"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/tv_stat_total_users"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TOTAL USERS"
-                            android:textColor="#94A3B8"
-                            android:textSize="11sp"
+                            android:layout_marginTop="6dp"
+                            android:text="--"
+                            android:textColor="#38BDF8"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="👥"
-                            android:textSize="14sp" />
+                            android:layout_marginTop="2dp"
+                            android:text="Platform Registered"
+                            android:textColor="#64748B"
+                            android:textSize="11sp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_stat_total_users"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="--"
-                        android:textColor="#FFFFFF"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Platform Registered"
-                        android:textColor="#64748B"
-                        android:textSize="11sp" />
-                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <!-- Metric 2: Active Guardians -->
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_card_safety_dark"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#111622"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="#1E293B"
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:letterSpacing="0.06"
+                                android:text="GUARDIANS"
+                                android:textColor="#94A3B8"
+                                android:textSize="10.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🛡️"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/tv_stat_guardians"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="GUARDIAN UNITS"
-                            android:textColor="#94A3B8"
-                            android:textSize="11sp"
+                            android:layout_marginTop="6dp"
+                            android:text="--"
+                            android:textColor="#34D399"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🛡️"
-                            android:textSize="14sp" />
+                            android:layout_marginTop="2dp"
+                            android:text="Active Responders"
+                            android:textColor="#64748B"
+                            android:textSize="11sp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_stat_guardians"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="--"
-                        android:textColor="#FFFFFF"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Active Responders"
-                        android:textColor="#64748B"
-                        android:textSize="11sp" />
-                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <!-- Metric 3: Active Distress SOS -->
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginEnd="6dp"
-                    android:background="@drawable/bg_card_safety_dark"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#111622"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="#1E293B"
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:letterSpacing="0.06"
+                                android:text="ACTIVE SOS"
+                                android:textColor="#94A3B8"
+                                android:textSize="10.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🚨"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/tv_stat_active_sos"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="ACTIVE SOS"
-                            android:textColor="#94A3B8"
-                            android:textSize="11sp"
+                            android:layout_marginTop="6dp"
+                            android:text="--"
+                            android:textColor="#EF4444"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🚨"
-                            android:textSize="14sp" />
+                            android:layout_marginTop="2dp"
+                            android:text="Live Distress Alerts"
+                            android:textColor="#64748B"
+                            android:textSize="11sp" />
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
-                        android:id="@+id/tv_stat_active_sos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="--"
-                        android:textColor="#EF4444"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Live Incidents"
-                        android:textColor="#64748B"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <!-- Metric 4: Low Battery Alerts -->
-                <LinearLayout
+                <!-- Metric 4: Critical Low Battery -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="6dp"
-                    android:background="@drawable/bg_card_safety_dark"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#111622"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="#1E293B"
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:letterSpacing="0.06"
+                                android:text="LOW BATTERY"
+                                android:textColor="#94A3B8"
+                                android:textSize="10.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🔋"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/tv_stat_low_battery"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="LOW BATTERY"
-                            android:textColor="#94A3B8"
-                            android:textSize="11sp"
+                            android:layout_marginTop="6dp"
+                            android:text="--"
+                            android:textColor="#F59E0B"
+                            android:textSize="26sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="🔋"
-                            android:textSize="14sp" />
+                            android:layout_marginTop="2dp"
+                            android:text="Charge &lt; 15%"
+                            android:textColor="#64748B"
+                            android:textSize="11sp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_stat_low_battery"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="--"
-                        android:textColor="#FFFFFF"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Critical &lt; 15%"
-                        android:textColor="#64748B"
-                        android:textSize="11sp" />
-                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <!-- Active Emergencies Feed Banner -->
+            <!-- ══════════════════════════════════════════════════
+                 Active Emergencies Distress Feed Banner
+                 ══════════════════════════════════════════════════ -->
             <LinearLayout
                 android:id="@+id/layout_admin_distress_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/bg_card_safety_dark"
+                android:background="@drawable/bg_distress_emergency_card"
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:visibility="gone">
@@ -324,6 +397,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:letterSpacing="0.04"
                     android:text="🚨 ACTIVE DISTRESS EMERGENCY IN PROGRESS"
                     android:textColor="#EF4444"
                     android:textSize="13sp"
@@ -334,12 +408,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
+                    android:lineSpacingExtra="3dp"
                     android:text="Incident details loading..."
                     android:textColor="#FFFFFF"
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <!-- Quick Platform Controls Row -->
+            <!-- ══════════════════════════════════════════════════
+                 Platform Controls Row
+                 ══════════════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -349,130 +426,138 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_quick_resync"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
+                    android:layout_height="42dp"
                     android:layout_marginEnd="4dp"
-                    android:text="🔄 Refresh Data"
-                    android:textColor="#FFFFFF"
-                    android:textSize="11.5sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_action_btn_secondary"
+                    android:text="🔄 Force Cloud Resync"
+                    android:textAllCaps="false"
+                    android:textColor="#38BDF8"
+                    android:textSize="12sp"
                     android:textStyle="bold"
-                    app:backgroundTint="#1E293B"
-                    app:strokeColor="#334155"
-                    app:strokeWidth="1dp"
-                    app:cornerRadius="20dp" />
+                    app:backgroundTint="@null"
+                    app:cornerRadius="12dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_quick_siren"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
+                    android:layout_height="42dp"
                     android:layout_marginStart="4dp"
-                    android:text="🚨 Test Siren"
-                    android:textColor="#FFFFFF"
-                    android:textSize="11.5sp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_action_btn_secondary"
+                    android:text="🚨 Test Siren Broadcast"
+                    android:textAllCaps="false"
+                    android:textColor="#F43F5E"
+                    android:textSize="12sp"
                     android:textStyle="bold"
-                    app:backgroundTint="#1E293B"
-                    app:strokeColor="#334155"
-                    app:strokeWidth="1dp"
-                    app:cornerRadius="20dp" />
+                    app:backgroundTint="@null"
+                    app:cornerRadius="12dp" />
             </LinearLayout>
 
-            <!-- Section Title & Counter -->
+            <!-- ══════════════════════════════════════════════════
+                 Directory Section Header & Counter
+                 ══════════════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="22dp"
                 android:layout_marginBottom="12dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="👥 All Users &amp; Guardians"
+                    android:letterSpacing="0.02"
+                    android:text="👥 Platform Accounts"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_admin_user_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_action_btn_secondary"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
                     android:text="Loading..."
                     android:textColor="#94A3B8"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- High-Contrast Role Filter Bar -->
+            <!-- Role Filter Bar -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_filter_all"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
                     android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
                     android:text="All"
+                    android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="12sp"
+                    android:textSize="12.5sp"
                     android:textStyle="bold"
                     app:backgroundTint="#334155"
+                    app:cornerRadius="12dp"
                     app:strokeColor="#475569"
-                    app:strokeWidth="1dp"
-                    app:cornerRadius="20dp" />
+                    app:strokeWidth="1dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_filter_users"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
                     android:text="Users"
+                    android:textAllCaps="false"
                     android:textColor="#E2E8F0"
-                    android:textSize="12sp"
+                    android:textSize="12.5sp"
                     android:textStyle="bold"
                     app:backgroundTint="#1E293B"
+                    app:cornerRadius="12dp"
                     app:strokeColor="#334155"
-                    app:strokeWidth="1dp"
-                    app:cornerRadius="20dp" />
+                    app:strokeWidth="1dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_filter_guardians"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
                     android:layout_marginStart="4dp"
+                    android:layout_weight="1"
                     android:text="Guardians"
+                    android:textAllCaps="false"
                     android:textColor="#E2E8F0"
-                    android:textSize="12sp"
+                    android:textSize="12.5sp"
                     android:textStyle="bold"
                     app:backgroundTint="#1E293B"
+                    app:cornerRadius="12dp"
                     app:strokeColor="#334155"
-                    app:strokeWidth="1dp"
-                    app:cornerRadius="20dp" />
+                    app:strokeWidth="1dp" />
             </LinearLayout>
 
-            <!-- Search Field -->
+            <!-- Modern Search Input -->
             <EditText
                 android:id="@+id/et_search_directory"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="@drawable/bg_card_safety_dark"
-                android:hint="🔍 Search by name, phone or email..."
-                android:textColorHint="#94A3B8"
-                android:textColor="#FFFFFF"
-                android:textSize="13sp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:layout_height="48dp"
                 android:layout_marginBottom="14dp"
-                android:inputType="text" />
+                android:background="@drawable/bg_admin_search_bar"
+                android:hint="🔍 Search by name, phone or email..."
+                android:inputType="text"
+                android:paddingHorizontal="16dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#94A3B8"
+                android:textSize="13.5sp" />
 
             <!-- Loading Indicator -->
             <ProgressBar

@@ -4,79 +4,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A0B0E"
+    android:background="@color/surface_background"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#12141C"
-        app:elevation="2dp">
+        android:background="#0C101A"
+        app:elevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp">
 
+            <!-- Drawer Menu Button -->
             <ImageButton
                 android:id="@+id/btn_menu"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/bg_circle_info"
+                android:contentDescription="Menu"
                 android:src="@drawable/ic_menu"
-                app:tint="#FFFFFF"
-                android:contentDescription="Menu" />
+                app:tint="#FFFFFF" />
 
+            <!-- Title & Subtitle -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="14dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🛡️ Guardian Command"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.02"
+                        android:text="🛡️ Guardian Command"
+                        android:textColor="#FFFFFF"
+                        android:textSize="19sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_circle_icon_pink"
+                        android:backgroundTint="#10B981" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_guardian_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="Active Protector • Live Telemetry Radar"
                     android:textColor="#34D399"
                     android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <!-- Refresh Button -->
             <ImageButton
                 android:id="@+id/btn_refresh"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/bg_circle_info"
-                android:src="@drawable/ic_refresh"
-                app:tint="#FFFFFF"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
-                android:contentDescription="Refresh" />
+                android:background="@drawable/bg_circle_info"
+                android:contentDescription="Refresh"
+                android:src="@drawable/ic_refresh"
+                app:tint="#FFFFFF" />
 
+            <!-- Profile Button -->
             <ImageButton
                 android:id="@+id/btn_top_profile"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/bg_circle_info"
+                android:contentDescription="Profile"
                 android:src="@drawable/ic_profile"
-                app:tint="#FFFFFF"
-                android:contentDescription="Profile" />
+                app:tint="#FFFFFF" />
         </LinearLayout>
+
+        <!-- Divider line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1E293B" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -89,29 +115,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="36dp">
 
-            <!-- Critical Emergency Alert Banner (Shown if any ward activates SOS) -->
+            <!-- ══════════════════════════════════════════════════
+                 Critical Emergency Alert Banner (Active SOS)
+                 ══════════════════════════════════════════════════ -->
             <LinearLayout
                 android:id="@+id/layout_critical_sos_banner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_safety_dark"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_distress_emergency_card"
                 android:orientation="vertical"
                 android:padding="16dp"
-                android:layout_marginBottom="16dp"
                 android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🚨 ACTIVE DISTRESS ALERT"
+                        android:letterSpacing="0.04"
+                        android:text="🚨 CRITICAL DISTRESS ALERT"
                         android:textColor="#EF4444"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -124,7 +155,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="LIVE"
+                        android:background="@drawable/bg_distress_emergency_card"
+                        android:backgroundTint="#40EF4444"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="3dp"
+                        android:text="● LIVE SOS"
                         android:textColor="#EF4444"
                         android:textSize="11sp"
                         android:textStyle="bold" />
@@ -135,173 +170,205 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:lineSpacingExtra="3dp"
                     android:text="Your ward has triggered an emergency SOS alert! Immediate response required."
                     android:textColor="#FFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="13.5sp" />
 
+                <!-- Action Button Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp">
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_emergency_call"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
+                        android:layout_height="42dp"
                         android:layout_marginEnd="4dp"
-                        android:text="📞 Call"
+                        android:layout_weight="1"
+                        android:text="📞 Call Ward"
+                        android:textAllCaps="false"
                         android:textColor="#FFFFFF"
-                        android:textSize="11.5sp"
+                        android:textSize="12.5sp"
                         android:textStyle="bold"
                         app:backgroundTint="#EF4444"
-                        app:cornerRadius="8dp" />
+                        app:cornerRadius="10dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_emergency_track"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
+                        android:layout_height="42dp"
                         android:layout_marginStart="4dp"
                         android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_action_btn_secondary"
                         android:text="📍 Directions"
-                        android:textColor="#FFFFFF"
-                        android:textSize="11.5sp"
+                        android:textAllCaps="false"
+                        android:textColor="#38BDF8"
+                        android:textSize="12.5sp"
                         android:textStyle="bold"
-                        app:backgroundTint="#1E293B"
-                        app:strokeColor="#334155"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="8dp" />
+                        app:backgroundTint="@null"
+                        app:cornerRadius="10dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_emergency_replay"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1.2"
+                        android:layout_height="42dp"
                         android:layout_marginStart="4dp"
+                        android:layout_weight="1.2"
+                        android:background="@drawable/bg_action_btn_secondary"
                         android:text="🎞️ 24h Trail"
-                        android:textColor="#FFFFFF"
-                        android:textSize="11.5sp"
+                        android:textAllCaps="false"
+                        android:textColor="#F43F5E"
+                        android:textSize="12.5sp"
                         android:textStyle="bold"
-                        app:backgroundTint="#1E293B"
-                        app:strokeColor="#EF4444"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="8dp" />
+                        app:backgroundTint="@null"
+                        app:cornerRadius="10dp" />
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Guardian Radar Status Hero Card -->
-            <LinearLayout
+            <!-- ══════════════════════════════════════════════════
+                 Guardian Radar Status Hero Card
+                 ══════════════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_safety_dark"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="18dp"
+                app:cardBackgroundColor="#111622"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#1E293B"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:paddingHorizontal="18dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:letterSpacing="0.06"
+                            android:text="PROTECTED CIRCLE RADAR"
+                            android:textColor="#94A3B8"
+                            android:textSize="11.5sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_guardian_badge_active"
+                            android:gravity="center"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="● ACTIVE RADAR"
+                                android:textColor="#34D399"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:id="@+id/tv_guardian_wards_summary"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Protected Circle"
-                        android:textColor="#94A3B8"
-                        android:textSize="13sp"
+                        android:layout_marginTop="8dp"
+                        android:text="Tracking Assigned Wards"
+                        android:textColor="#FFFFFF"
+                        android:textSize="19sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="● ACTIVE"
-                        android:textColor="#34D399"
-                        android:textSize="11sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="3dp"
+                        android:text="Real-time battery, live GPS telemetry, and SOS alerts are active."
+                        android:textColor="#94A3B8"
+                        android:textSize="12.5sp" />
+
+                    <!-- Tactical Action Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_link_new_ward"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_action_btn_secondary"
+                            android:text="+ Pair Loved One"
+                            android:textAllCaps="false"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null"
+                            app:cornerRadius="12dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_share_guardian_location"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_action_btn_secondary"
+                            android:text="📍 Broadcast GPS"
+                            android:textAllCaps="false"
+                            android:textColor="#38BDF8"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null"
+                            app:cornerRadius="12dp" />
+                    </LinearLayout>
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/tv_guardian_wards_summary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:text="Tracking Assigned Wards"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Real-time battery, GPS telemetry, and SOS alerts are active."
-                    android:textColor="#94A3B8"
-                    android:textSize="12sp" />
-
-                <!-- Action row -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="14dp">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_link_new_ward"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:text="+ Add Loved One"
-                        android:textColor="#FFFFFF"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="#1E293B"
-                        app:strokeColor="#334155"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="8dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_share_guardian_location"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:text="📍 Share Location"
-                        android:textColor="#FFFFFF"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="#1E293B"
-                        app:strokeColor="#334155"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="8dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Section Title -->
+            <!-- ══════════════════════════════════════════════════
+                 Section Header: Protected Wards List
+                 ══════════════════════════════════════════════════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:letterSpacing="0.02"
                     android:text="Protected Wards"
                     android:textColor="#FFFFFF"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_guardian_ping_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_guardian_badge_active"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="3dp"
                     android:text="● Live Sync"
                     android:textColor="#34D399"
                     android:textSize="11sp"
@@ -315,80 +382,100 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="24dp"
-                android:indeterminateTint="#8B5CF6"
+                android:indeterminateTint="#34D399"
                 android:visibility="gone" />
 
-            <!-- Empty State -->
-            <LinearLayout
+            <!-- Empty State Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/layout_empty_wards"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:background="@drawable/bg_card_safety_dark"
-                android:padding="28dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_contacts_safety"
-                    app:tint="#64748B"
-                    android:contentDescription="No Wards" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="No Wards Linked Yet"
-                    android:textColor="#FFFFFF"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Assign a protected user by phone, or populate sample telemetry to test your guardian radar."
-                    android:textColor="#94A3B8"
-                    android:textSize="13sp"
-                    android:gravity="center" />
+                android:visibility="gone"
+                app:cardBackgroundColor="#111622"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="1dp"
+                app:strokeColor="#1E293B"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="32dp">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_empty_link_ward"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:text="+ Pair Ward"
+                    <FrameLayout
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:background="@drawable/bg_circle_icon_indigo">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="No Wards"
+                            android:src="@drawable/ic_contacts_safety"
+                            app:tint="#818CF8" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="No Wards Linked Yet"
                         android:textColor="#FFFFFF"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="#4F46E5"
-                        app:cornerRadius="8dp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_empty_sample_wards"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:text="⚡ Sample Radar"
-                        android:textColor="#38BDF8"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="#182234"
-                        app:strokeColor="#334155"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="8dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:lineSpacingExtra="2dp"
+                        android:text="Pair a protected citizen by phone number or load sample telemetry to test your guardian responder radar."
+                        android:textColor="#94A3B8"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_empty_link_ward"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_auth_btn_primary"
+                            android:text="+ Pair Ward"
+                            android:textAllCaps="false"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null"
+                            app:cornerRadius="12dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_empty_sample_wards"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_action_btn_secondary"
+                            android:text="⚡ Sample Radar"
+                            android:textAllCaps="false"
+                            android:textColor="#38BDF8"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null"
+                            app:cornerRadius="12dp" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Dynamic Wards Cards Container -->
             <LinearLayout

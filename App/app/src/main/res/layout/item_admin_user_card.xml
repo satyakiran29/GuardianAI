@@ -1,151 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/bg_card_safety_dark"
-    android:padding="16dp"
-    android:layout_marginBottom="12dp">
+    android:layout_marginBottom="14dp"
+    app:cardBackgroundColor="#111622"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="2dp"
+    app:strokeColor="#1E293B"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <!-- Role Avatar Circle -->
-        <TextView
-            android:id="@+id/tv_user_avatar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:background="@drawable/bg_circle_info"
-            android:gravity="center"
-            android:text="🌸"
-            android:textSize="20sp" />
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="12dp"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Role Avatar Circle Frame -->
+            <TextView
+                android:id="@+id/tv_user_avatar"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_circle_info"
+                android:gravity="center"
+                android:text="🌸"
+                android:textSize="20sp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_admin_user_name"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_admin_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="User Name"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16.5sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_admin_user_role_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_monogram_badge"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="2dp"
+                        android:text="User"
+                        android:textColor="#C084FC"
+                        android:textSize="10.5sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_admin_user_role_badge"
+                    android:id="@+id/tv_admin_user_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_monogram_badge"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:text="User"
-                    android:textColor="#C084FC"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="2dp"
+                    android:text="+91 98765 43210"
+                    android:textColor="#94A3B8"
+                    android:textSize="12sp" />
             </LinearLayout>
 
+            <!-- Battery / Telemetry Status Pill -->
             <TextView
-                android:id="@+id/tv_admin_user_phone"
+                android:id="@+id/tv_admin_user_battery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="+91 98765 43210"
-                android:textColor="#94A3B8"
-                android:textSize="12sp" />
+                android:background="@drawable/bg_guardian_badge_active"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:text="85%"
+                android:textColor="#34D399"
+                android:textSize="12sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Battery / Status Pill -->
-        <TextView
-            android:id="@+id/tv_admin_user_battery"
-            android:layout_width="wrap_content"
+        <!-- Location Telemetry Pill / Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_circle_info"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:text="85%"
-            android:textColor="#34D399"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_guardian_telemetry_box"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp">
+
+            <TextView
+                android:id="@+id/tv_admin_user_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="📍 Madhapur, Hitech City, Hyderabad"
+                android:textColor="#CBD5E1"
+                android:textSize="12.5sp" />
+        </LinearLayout>
+
+        <!-- Action Bar Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_admin_replay"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1.15"
+                android:background="@drawable/bg_action_btn_secondary"
+                android:text="🎞️ 24h Trail"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_admin_chat"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_action_btn_secondary"
+                android:text="💬 Chat"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_admin_call"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_action_btn_emerald"
+                android:paddingHorizontal="16dp"
+                android:text="📞 Call"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_admin_user_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="📍 Madhapur, Hitech City, Hyderabad"
-        android:textColor="#CBD5E1"
-        android:textSize="12sp" />
-
-    <!-- Action Bar -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_admin_replay"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1.1"
-            android:layout_marginEnd="4dp"
-            android:text="🎞️ Replay"
-            android:textColor="#FFFFFF"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:backgroundTint="#1E293B"
-            app:strokeColor="#334155"
-            app:strokeWidth="1dp"
-            app:cornerRadius="8dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_admin_chat"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="💬 Chat"
-            android:textColor="#FFFFFF"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:backgroundTint="#1E293B"
-            app:strokeColor="#334155"
-            app:strokeWidth="1dp"
-            app:cornerRadius="8dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_admin_call"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:layout_marginStart="4dp"
-            android:text="📞 Call"
-            android:textColor="#FFFFFF"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            app:backgroundTint="#10B981"
-            app:cornerRadius="8dp" />
-    </LinearLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,12 +1,11 @@
 {
-  "versionCode": 25,
-  "versionName": "1.2.7",
+  "versionCode": 26,
+  "versionName": "1.2.8",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Authentication UI Redesign: Complete premium dark overhaul for Login and Register screens (#0A0E1A surface, #111622 card containers, illuminated shield emblem)",
-    "Modern Outlined Input Fields: Dark slate input boxes (#101726) with glowing pink/cyan focus borders and clear iconography",
-    "Instant 1-Click Role Access: Stylized test cards for Protected User (Sarah), Guardian Unit (Rajesh), and Chief SuperAdmin",
-    "Tactile Role Selector: Streamlined account creation with dual persona support (Protected User vs Guardian Responder)",
-    "Fixed UI Layout Collision: Eliminated overlap between 'Add to Safety Circle' button and empty circle state"
+    "Guardian Responder Dashboard Redesign: High-tech cyber-dark UI with live radar status badge, glowing distress banner, and telemetry boxes",
+    "SuperAdmin Command Center Overhaul: Executive KPI grid (Total Users, Guardians, Active SOS, Low Battery), segmented filter pills, and search terminal",
+    "Enhanced Telemetry Ward Cards: Sleek Material3 card containers with live battery status, GPS telemetry badges, 24h Trail Replay, Chat, and Direct Call",
+    "Authentication UI Redesign: Dark slate outlined inputs with illuminated shield emblem and instant 1-click test roles"
   ]
 }
