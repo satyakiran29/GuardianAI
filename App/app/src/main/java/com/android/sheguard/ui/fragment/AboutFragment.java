@@ -85,8 +85,8 @@ public class AboutFragment extends Fragment {
         // 1. Pampana Satya Kiran
         teamMembers.add(new TeamMember(
                 "Pampana Satya Kiran",
-                "Lead Developer & System Architect",
-                "Building technology for a safer tomorrow.",
+                "Lead Architect & Android Systems",
+                "Engineered the core role router, SuperAdmin suite & release pipeline.",
                 R.drawable.ic_avatar_male,
                 true,
                 "http://psatyakiran.in/",
@@ -97,8 +97,8 @@ public class AboutFragment extends Fragment {
         // 2. Amarthaluri Harshavardhan
         teamMembers.add(new TeamMember(
                 "Amarthaluri Harshavardhan",
-                "Core Android & Security Engineer",
-                "Securing lives with code.",
+                "Android Security & Sensor Engineer",
+                "Built background panic triggers, power button listeners & SOS daemon.",
                 R.drawable.ic_avatar_male,
                 false,
                 null,
@@ -109,8 +109,8 @@ public class AboutFragment extends Fragment {
         // 3. Madeli Narasimha
         teamMembers.add(new TeamMember(
                 "Madeli Narasimha",
-                "Backend & Cloud Integration",
-                "Powering a safer and smarter backend.",
+                "Cloud Backend & Database Architect",
+                "Built Django REST APIs, Supabase real-time sync & emergency chat.",
                 R.drawable.ic_avatar_male,
                 false,
                 null,
@@ -121,8 +121,8 @@ public class AboutFragment extends Fragment {
         // 4. Mammula Sneha
         teamMembers.add(new TeamMember(
                 "Mammula Sneha",
-                "UI/UX & Safety Systems",
-                "Designing with empathy for real impact.",
+                "UI/UX & Safety Systems Designer",
+                "Designed empathetic mobile interfaces, safety suites & radar controls.",
                 R.drawable.ic_avatar_female,
                 true,
                 null,
@@ -133,8 +133,8 @@ public class AboutFragment extends Fragment {
         // 5. Kadagala Meghana
         teamMembers.add(new TeamMember(
                 "Kadagala Meghana",
-                "QA & Location Telemetry",
-                "Ensuring reliability, because safety matters.",
+                "Location Telemetry & QA Lead",
+                "Ensured high-accuracy GPS telemetry and battle-tested emergency dispatch.",
                 R.drawable.ic_avatar_female,
                 false,
                 null,

@@ -177,9 +177,23 @@ public class GuardianHomeFragment extends Fragment {
             TextView tvCoords = card.findViewById(R.id.tv_ward_coords);
             View sosBanner = card.findViewById(R.id.layout_ward_sos_banner);
 
+            MaterialButton btnReplay = card.findViewById(R.id.btn_ward_replay);
             MaterialButton btnChat = card.findViewById(R.id.btn_ward_chat);
             MaterialButton btnCall = card.findViewById(R.id.btn_ward_call);
             MaterialButton btnLocate = card.findViewById(R.id.btn_ward_map);
+
+            if (btnReplay != null) {
+                btnReplay.setOnClickListener(v -> {
+                    Bundle args = new Bundle();
+                    args.putString("WARD_PHONE", phone);
+                    args.putString("WARD_NAME", name);
+                    args.putDouble("WARD_LAT", lat);
+                    args.putDouble("WARD_LNG", lng);
+                    try {
+                        Navigation.findNavController(v).navigate(R.id.action_guardianHomeFragment_to_locationReplayFragment, args);
+                    } catch (Exception ignored) {}
+                });
+            }
 
             tvName.setText(name);
             tvRel.setText(relationship);

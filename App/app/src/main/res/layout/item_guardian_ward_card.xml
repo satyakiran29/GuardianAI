@@ -161,13 +161,25 @@
         android:gravity="center_vertical">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_ward_replay"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1.1"
+            android:layout_marginEnd="6dp"
+            android:text="Replay 24h"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:cornerRadius="8dp"
+            app:backgroundTint="@color/colorPinkNeon" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ward_chat"
             android:layout_width="0dp"
             android:layout_height="38dp"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
-            android:text="Live Chat"
-            android:textSize="12sp"
+            android:text="Chat"
+            android:textSize="11sp"
             app:cornerRadius="8dp"
             app:backgroundTint="#7C3AED" />
 
@@ -177,8 +189,8 @@
             android:layout_height="38dp"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
-            android:text="Map Radar"
-            android:textSize="12sp"
+            android:text="Map"
+            android:textSize="11sp"
             app:cornerRadius="8dp"
             app:backgroundTint="#2563EB" />
 
@@ -187,7 +199,7 @@
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:text="Call"
-            android:textSize="12sp"
+            android:textSize="11sp"
             app:cornerRadius="8dp"
             app:backgroundTint="#10B981" />
     </LinearLayout>

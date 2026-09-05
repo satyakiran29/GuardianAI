@@ -107,16 +107,16 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif"
                         android:lineSpacingExtra="2dp"
-                        android:text="We are a team of passionate developers working towards a safer, stronger and brighter tomorrow for every woman. 💗"
+                        android:text="We are a dedicated team of student engineers building GuardianAI to make personal safety accessible, reliable, and instantaneous for every woman and family."
                         android:textColor="#A0AEC0"
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <!-- Right Column: Hero Art with Glowing Scripts -->
+                <!-- Right Column: Hero Art Clean Circle -->
                 <FrameLayout
                     android:id="@+id/card_hero_illustration"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="104dp"
+                    android:layout_height="104dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true">
 
@@ -127,39 +127,8 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/img_hero_woman_safe"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                        app:strokeColor="#FF2E93"
+                        app:strokeColor="@color/colorPinkNeon"
                         app:strokeWidth="1.5dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top|start"
-                        android:fontFamily="cursive"
-                        android:lineSpacingExtra="-2dp"
-                        android:shadowColor="#FF2E93"
-                        android:shadowDx="0"
-                        android:shadowDy="0"
-                        android:shadowRadius="5"
-                        android:text="Together\nfor a Safer\nTomorrow ♡"
-                        android:textColor="#FF2E93"
-                        android:textSize="11sp"
-                        android:textStyle="bold|italic" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|end"
-                        android:fontFamily="cursive"
-                        android:gravity="end"
-                        android:lineSpacingExtra="-2dp"
-                        android:shadowColor="#FF2E93"
-                        android:shadowDx="0"
-                        android:shadowDy="0"
-                        android:shadowRadius="5"
-                        android:text="Together\nSafer\nBrighter\nYou"
-                        android:textColor="#FF69B4"
-                        android:textSize="11sp"
-                        android:textStyle="bold|italic" />
                 </FrameLayout>
             </RelativeLayout>
 
@@ -409,7 +378,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="Special Thanks"
                             android:src="@drawable/ic_people_group_vector"
-                            app:tint="#A78BFA" />
+                            app:tint="@color/colorPinkNeon" />
                     </FrameLayout>
 
                     <TextView
@@ -440,10 +409,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:cardBackgroundColor="#140D1E"
+                app:cardBackgroundColor="@color/surface_card"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#60FF2E93"
+                app:strokeColor="@color/surface_card_stroke"
                 app:strokeWidth="1dp">
 
                 <RelativeLayout
@@ -469,7 +438,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="Shield"
                             android:src="@drawable/ic_shield_check_vector"
-                            app:tint="#FF2E93" />
+                            app:tint="@color/colorPinkNeon" />
                     </FrameLayout>
 
                     <!-- Text Center -->
@@ -478,8 +447,6 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="12dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_toStartOf="@+id/tv_stay_safe_script"
                         android:layout_toEndOf="@+id/icon_bottom_shield"
                         android:orientation="vertical">
 
@@ -497,29 +464,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:fontFamily="sans-serif"
-                            android:text="Thank you for being part of Guardian AI 💗"
+                            android:text="Thank you for being part of Guardian AI"
                             android:textColor="#E2E8F0"
                             android:textSize="11sp" />
                     </LinearLayout>
-
-                    <!-- Script on Right -->
-                    <TextView
-                        android:id="@+id/tv_stay_safe_script"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="cursive"
-                        android:gravity="end"
-                        android:lineSpacingExtra="-3dp"
-                        android:shadowColor="#FF2E93"
-                        android:shadowDx="0"
-                        android:shadowDy="0"
-                        android:shadowRadius="5"
-                        android:text="Stay Safe\nStay Strong ♡"
-                        android:textColor="#FF2E93"
-                        android:textSize="14sp"
-                        android:textStyle="bold|italic" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -532,7 +480,7 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="sans-serif"
                 android:letterSpacing="0.08"
-                android:text="GuardianAI v1.1.8"
+                android:text="GuardianAI v1.2.0"
                 android:textColor="#64748B"
                 android:textSize="12sp" />
 

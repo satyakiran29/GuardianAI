@@ -169,9 +169,21 @@ public class GuardianPortalFragment extends Fragment {
             }
 
             // Buttons
+            MaterialButton btnReplay = card.findViewById(R.id.btn_ward_replay);
             MaterialButton btnChat = card.findViewById(R.id.btn_ward_chat);
             MaterialButton btnMap = card.findViewById(R.id.btn_ward_map);
             MaterialButton btnCall = card.findViewById(R.id.btn_ward_call);
+
+            if (btnReplay != null) {
+                btnReplay.setOnClickListener(v -> {
+                    Bundle args = new Bundle();
+                    args.putString("WARD_PHONE", phone);
+                    args.putString("WARD_NAME", name);
+                    args.putDouble("WARD_LAT", lat);
+                    args.putDouble("WARD_LNG", lng);
+                    Navigation.findNavController(v).navigate(R.id.action_guardianPortalFragment_to_locationReplayFragment, args);
+                });
+            }
 
             btnChat.setOnClickListener(v -> {
                 Bundle args = new Bundle();

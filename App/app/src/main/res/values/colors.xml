@@ -38,24 +38,24 @@
     <color name="textColorSecondary">#64748B</color>
     <color name="textColorMuted">#94A3B8</color>
 
-    <!-- Quick Actions Pastel Cards (Light Mode) -->
-    <color name="qa_share_bg">#FCE7F3</color>
-    <color name="qa_share_accent">#DB2777</color>
-    <color name="qa_share_subtitle">#BE185D</color>
+    <!-- Quick Actions Cards (Unified Palette - Light Mode) -->
+    <color name="qa_share_bg">@color/surface_card</color>
+    <color name="qa_share_accent">@color/textColorPrimary</color>
+    <color name="qa_share_subtitle">@color/textColorSecondary</color>
 
-    <color name="qa_call_bg">#CCFBF1</color>
-    <color name="qa_call_accent">#0D9488</color>
-    <color name="qa_call_subtitle">#0F766E</color>
+    <color name="qa_call_bg">@color/surface_card</color>
+    <color name="qa_call_accent">@color/textColorPrimary</color>
+    <color name="qa_call_subtitle">@color/textColorSecondary</color>
 
-    <color name="qa_circle_bg">#EDE9FE</color>
-    <color name="qa_circle_accent">#7C3AED</color>
-    <color name="qa_circle_subtitle">#6D28D9</color>
+    <color name="qa_circle_bg">@color/surface_card</color>
+    <color name="qa_circle_accent">@color/textColorPrimary</color>
+    <color name="qa_circle_subtitle">@color/textColorSecondary</color>
 
-    <color name="qa_places_bg">#FFEDD5</color>
-    <color name="qa_places_accent">#EA580C</color>
-    <color name="qa_places_subtitle">#C2410C</color>
+    <color name="qa_places_bg">@color/surface_card</color>
+    <color name="qa_places_accent">@color/textColorPrimary</color>
+    <color name="qa_places_subtitle">@color/textColorSecondary</color>
 
-    <!-- AI Companion Card (Light) -->
-    <color name="ai_banner_bg">#FDF2F8</color>
-    <color name="ai_banner_stroke">#FBCFE8</color>
+    <!-- Companion Banner (Light) -->
+    <color name="ai_banner_bg">#FFF1F5</color>
+    <color name="ai_banner_stroke">#FFE4E9</color>
 </resources>

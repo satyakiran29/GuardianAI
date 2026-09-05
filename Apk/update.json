@@ -1,11 +1,12 @@
 {
-  "versionCode": 17,
-  "versionName": "1.1.8",
+  "versionCode": 18,
+  "versionName": "1.2.0",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Brand new cyberpunk & neon Onboarding experience",
-    "Redesigned modern Settings & safety suites",
-    "Hardware button SOS triggers & custom actions",
-    "Performance optimizations & smooth navigation"
+    "24h Location History & Movement Trail Replay with Leaflet dark radar",
+    "Emergency SOS Incident Beacon correlation & telemetry timeline review",
+    "Interactive timeline scrubber, play/pause animations & speed toggles",
+    "Humanized UI design with clean 2-tone palette & personalized time-of-day greetings",
+    "Strict guardian-ward data isolation & live battery and GPS telemetry syncing"
   ]
 }

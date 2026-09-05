@@ -84,53 +84,6 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/img_onboarding_slide2" />
 
-            <!-- Left Pink Script Overlay -->
-            <TextView
-                android:id="@+id/tv_overlay_left_script"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="14dp"
-                android:fontFamily="cursive"
-                android:lineSpacingExtra="-2dp"
-                android:shadowColor="#FF2E93"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="6"
-                android:text="Safer\nStronger\nTogether\n♡"
-                android:textColor="#FF69B4"
-                android:textSize="15sp"
-                android:textStyle="bold|italic" />
-
-            <!-- Right Badge Overlay "SAFE WOMEN STRONGER SOCIETY ♡" -->
-            <LinearLayout
-                android:id="@+id/layout_overlay_right_badge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="14dp"
-                android:background="@drawable/bg_onboarding_badge_safe_women"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="8dp"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-black"
-                    android:gravity="center"
-                    android:lineSpacingExtra="1dp"
-                    android:text="SAFE\nWOMEN\nSTRONGER\nSOCIETY\n♡"
-                    android:textColor="#FF2E93"
-                    android:textSize="9sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 

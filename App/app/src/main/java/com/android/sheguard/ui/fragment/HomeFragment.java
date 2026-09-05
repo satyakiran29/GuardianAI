@@ -298,9 +298,49 @@ public class HomeFragment extends Fragment {
     }
 
     public void setUserNameOnTitle() {
-        String userName = Prefs.getString(Constants.PREFS_USER_NAME, "Guardian User");
+        String userName = Prefs.getString(Constants.PREFS_USER_NAME, "User");
         String role = Prefs.getString("USER_ROLE", "user");
-        if (getContext() != null && binding.header.collapsingToolbar != null) {
+
+        // Calculate time of day greeting for genuine human warmth
+        int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+        String greeting;
+        if (hour >= 5 && hour < 12) {
+            greeting = "Good morning,";
+        } else if (hour >= 12 && hour < 17) {
+            greeting = "Good afternoon,";
+        } else if (hour >= 17 && hour < 22) {
+            greeting = "Good evening,";
+        } else {
+            greeting = "Stay safe,";
+        }
+
+        // Extract first name for a natural, friendly tone
+        String firstName = userName.trim();
+        int spaceIdx = firstName.indexOf(" ");
+        if (spaceIdx > 0) {
+            firstName = firstName.substring(0, spaceIdx);
+        }
+        if (firstName.isEmpty() || "Guardian User".equalsIgnoreCase(firstName) || "User".equalsIgnoreCase(firstName)) {
+            firstName = "Friend";
+        }
+
+        if (binding != null) {
+            if (binding.tvHomeGreetingTitle != null) {
+                binding.tvHomeGreetingTitle.setText(greeting);
+            }
+            if (binding.tvHomeGreetingName != null) {
+                binding.tvHomeGreetingName.setText(firstName + " 👋");
+            }
+            if (binding.tvHomeStatusSubtext != null) {
+                if ("guardian".equalsIgnoreCase(role)) {
+                    binding.tvHomeStatusSubtext.setText("Guardian Radar active • Protecting your circle");
+                } else {
+                    binding.tvHomeStatusSubtext.setText("You're protected • Emergency standby");
+                }
+            }
+        }
+
+        if (getContext() != null && binding != null && binding.header != null && binding.header.collapsingToolbar != null) {
             try {
                 if ("guardian".equalsIgnoreCase(role)) {
                     binding.header.collapsingToolbar.setSubtitle("🛡️ Guardian Active: " + userName);
@@ -388,6 +428,14 @@ public class HomeFragment extends Fragment {
                 return true;
             } else if (id == R.id.menu_safe_ride) {
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_safeRideFragment);
+                return true;
+            } else if (id == R.id.menu_location_replay) {
+                Bundle args = new Bundle();
+                String myPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+                String myName = Prefs.getString(Constants.PREFS_USER_NAME, "My Trail");
+                args.putString("WARD_PHONE", myPhone);
+                args.putString("WARD_NAME", myName);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_locationReplayFragment, args);
                 return true;
             } else if (id == R.id.menu_settings) {
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_settingsFragment);

@@ -215,30 +215,33 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_home_greeting_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Stronger"
+                            android:text="Welcome,"
                             android:textColor="@color/textColorPrimary"
-                            android:textSize="32sp"
+                            android:textSize="28sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
                             android:includeFontPadding="false" />
 
                         <TextView
+                            android:id="@+id/tv_home_greeting_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Together"
+                            android:text="Stay Safe"
                             android:textColor="@color/colorPinkNeon"
-                            android:textSize="32sp"
+                            android:textSize="28sp"
                             android:textStyle="bold"
                             android:fontFamily="sans-serif-black"
                             android:includeFontPadding="false" />
 
                         <TextView
+                            android:id="@+id/tv_home_status_subtext"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Your safety. Our priority."
+                            android:text="You're protected • Emergency standby"
                             android:textColor="@color/textColorSecondary"
                             android:textSize="13sp" />
 
@@ -282,27 +285,27 @@
                                     android:id="@+id/tv_current_area_label"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Home • Low Risk Area ›"
-                                    android:textColor="#10B981"
+                                    android:text="Safe Area ›"
+                                    android:textColor="@color/textColorPrimary"
                                     android:textSize="11.5sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Right Hero Art with Glowing Halo -->
+                    <!-- Right Hero Art Clean Circle -->
                     <FrameLayout
                         android:layout_width="0dp"
-                        android:layout_height="168dp"
-                        android:layout_weight="1.0"
+                        android:layout_height="144dp"
+                        android:layout_weight="0.8"
                         android:layout_marginStart="6dp">
 
                         <androidx.cardview.widget.CardView
-                            android:layout_width="144dp"
-                            android:layout_height="144dp"
-                            android:layout_gravity="center_vertical|start"
-                            app:cardCornerRadius="72dp"
-                            app:cardElevation="4dp"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            app:cardCornerRadius="60dp"
+                            app:cardElevation="2dp"
                             app:cardBackgroundColor="@color/surface_card_secondary">
 
                             <ImageView
@@ -312,21 +315,6 @@
                                 android:src="@drawable/img_hero_woman_safe"
                                 android:contentDescription="Hero Safe Woman" />
                         </androidx.cardview.widget.CardView>
-
-                        <!-- Stylized "You Are Safe Here ♡" badge -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|end"
-                            android:layout_marginEnd="0dp"
-                            android:text="You\nAre\nSafe\nHere\n♡"
-                            android:textColor="@color/colorPinkLight"
-                            android:textSize="12.5sp"
-                            android:textStyle="italic|bold"
-                            android:lineSpacingExtra="1dp"
-                            android:gravity="center"
-                            android:shadowColor="#80FF2E93"
-                            android:shadowRadius="8" />
                     </FrameLayout>
                 </LinearLayout>
 
@@ -518,7 +506,7 @@
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:src="@drawable/ic_share_location_paperplane"
-                            app:tint="@color/qa_share_accent"
+                            app:tint="@color/colorPinkNeon"
                             android:contentDescription="Share Location" />
 
                         <TextView
@@ -557,7 +545,7 @@
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:src="@drawable/ic_phone_call_emergency"
-                            app:tint="@color/qa_call_accent"
+                            app:tint="@color/colorPinkNeon"
                             android:contentDescription="Call Emergency" />
 
                         <TextView
@@ -596,7 +584,7 @@
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:src="@drawable/ic_my_circle_people"
-                            app:tint="@color/qa_circle_accent"
+                            app:tint="@color/colorPinkNeon"
                             android:contentDescription="My Circle" />
 
                         <TextView
@@ -634,7 +622,7 @@
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:src="@drawable/ic_safe_places_pin"
-                            app:tint="@color/qa_places_accent"
+                            app:tint="@color/colorPinkNeon"
                             android:contentDescription="Safe Places" />
 
                         <TextView
@@ -668,21 +656,20 @@
                     android:clickable="true"
                     android:focusable="true">
 
-                    <!-- 3D AI Robot Avatar -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="54dp"
-                        android:layout_height="54dp"
-                        app:cardCornerRadius="27dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@android:color/transparent">
+                    <!-- Warm Protective Guardian Icon -->
+                    <FrameLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_safety_chip_pink">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/img_ai_companion_bot"
-                            android:contentDescription="AI Companion" />
-                    </androidx.cardview.widget.CardView>
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_shield_heart_vector"
+                            app:tint="@color/colorPinkNeon"
+                            android:contentDescription="Guardian Assistant" />
+                    </FrameLayout>
 
                     <!-- Center Text -->
                     <LinearLayout
@@ -696,7 +683,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="AI Safety Companion"
+                            android:text="Guardian Assistant"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -705,8 +692,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Chat, get safety advice, or ask for help in any situation."
-                            android:textColor="#34D399"
+                            android:text="Feeling uneasy? We're right here to guide and support you 24/7."
+                            android:textColor="@color/textColorSecondary"
                             android:textSize="11.5sp" />
                     </LinearLayout>
 
@@ -716,13 +703,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_ai_chat_btn"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Chat Now ›"
                         android:textColor="#FFFFFF"
-                        android:textSize="12.5sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -1223,7 +1210,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="You're not alone."
-                            android:textColor="@color/colorPinkNeon"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
@@ -1231,21 +1218,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Thousands of women trust Guardian AI every day."
+                            android:text="Backed by real-time GPS telemetry and instant family alerts."
                             android:textColor="@color/textColorSecondary"
                             android:textSize="11.5sp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Stay Free\nStay Safe ♡"
-                        android:textColor="@color/colorPinkLight"
-                        android:textSize="12sp"
-                        android:textStyle="italic|bold"
-                        android:gravity="end"
-                        android:shadowColor="#60FF2E93"
-                        android:shadowRadius="6" />
                 </LinearLayout>
 
                 <!-- Hidden Controls (Preserved for App Logic Compatibility) -->

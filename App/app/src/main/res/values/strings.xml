@@ -2,15 +2,15 @@
     <string name="app_name" translatable="false">GuardianAI</string>
     <string name="app_moto">Your safety in your hands</string>
 
-    <string name="onboarding_slide1_title">Welcome to GuardianAI</string>
-    <string name="onboarding_slide1_subtitle">Your personal guardian app for safety and security</string>
-    <string name="onboarding_slide1_desc">GuardianAI empowers and protects you. Let\'s start your journey toward safety and peace of mind.</string>
-    <string name="onboarding_slide2_title">Your Safety, Your Way</string>
-    <string name="onboarding_slide2_subtitle">Customized protection at your fingertips</string>
-    <string name="onboarding_slide2_desc">Tailor GuardianAI to your preferences, choosing the features that matter most.</string>
-    <string name="onboarding_slide3_title">A Supportive Community</string>
-    <string name="onboarding_slide3_subtitle">Be more independent and feel the happiness</string>
-    <string name="onboarding_slide3_desc">Join our community, access safety resources, and stand together for safety and empowerment.</string>
+    <string name="onboarding_slide1_title">Protection &amp; Peace of Mind</string>
+    <string name="onboarding_slide1_subtitle">Safety by your side, wherever you go</string>
+    <string name="onboarding_slide1_desc">Fast-response SOS alerts, live GPS location sharing, and direct emergency dispatch to keep you and your loved ones safe.</string>
+    <string name="onboarding_slide2_title">Built for Real Moments</string>
+    <string name="onboarding_slide2_subtitle">Discreet triggers that act in seconds</string>
+    <string name="onboarding_slide2_desc">Triple-press your power button, shake your phone, or use voice triggers to alert loved ones without unlocking your screen.</string>
+    <string name="onboarding_slide3_title">Never Walk Alone</string>
+    <string name="onboarding_slide3_subtitle">Your trusted circle is always with you</string>
+    <string name="onboarding_slide3_desc">Keep family, trusted friends, and 24/7 verified helplines by your side with automatic check-ins and live trip monitoring.</string>
 
     <string name="next">Next</string>
     <string name="skip">Skip</string>

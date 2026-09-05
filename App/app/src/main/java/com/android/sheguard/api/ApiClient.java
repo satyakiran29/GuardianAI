@@ -440,5 +440,28 @@ public class ApiClient {
             }
         });
     }
+
+    public static void getLocationHistory(String wardPhone, String guardianPhone, int hours, JsonCallback callback) {
+        getService().getLocationHistory(wardPhone, guardianPhone, hours).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Success");
+                } else {
+                    String msg = "Failed to load location trail (HTTP " + response.code() + ")";
+                    if (response.code() == 403) {
+                        msg = "Access denied: Unauthorized to view this ward's location trail.";
+                    }
+                    if (callback != null) callback.onResult(false, null, msg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "getLocationHistory FAILED: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
 }
 

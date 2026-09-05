@@ -186,7 +186,61 @@ def run_tests():
     assert other_user.phone in admin_ward_phones, "superadmin must see other_user"
     print(f"✅ SuperAdmin Omniscient Access Verified: SuperAdmin accessed all {len(admin_wards)} users data across the system")
 
-    print("\n🎉 ALL GUARDIAN SYSTEM VERIFICATION TESTS PASSED SUCCESSFULLY!")
+    # 11. Location History / 24h Trail Replay Tests
+    print("\n📍 Testing 24h Location History & Replay Playback API...")
+
+    # 11a. skdad queries sk's 24h trail -> 200 OK
+    res = client.get(f'/api/location/history/?ward_phone={sk_user.phone}&guardian_phone={skdad_guardian.phone}&hours=24')
+    assert res.status_code == 200, f"History request failed: {res.content}"
+    data = res.json()
+    assert data['status'] == 'success'
+    assert len(data['trail']) > 0, "Trail points should be populated"
+    print(f"✅ Guardian 24h Replay Access Verified: Retrieved {data['total_points']} trail points for ward {data['ward']['name']}")
+
+    # 11b. Send a real location ping for sk and check it appears in history
+    client.post('/api/location/ping/', data=json.dumps({
+        'phone': sk_user.phone,
+        'latitude': 17.4495,
+        'longitude': 78.3935,
+        'address': 'Kavuri Hills Junction',
+        'battery_level': 82
+    }), content_type='application/json')
+
+    # Trigger an emergency alert to check incident marker
+    alert_res = client.post('/api/sos/trigger/', data=json.dumps({
+        'phone': sk_user.phone,
+        'latitude': 17.4496,
+        'longitude': 78.3936,
+        'address': 'Kavuri Hills Junction (Incident Point)',
+        'trigger_source': 'button',
+        'battery_level': 81
+    }), content_type='application/json')
+    assert alert_res.status_code == 201
+
+    res = client.get(f'/api/location/history/?ward_phone={sk_user.phone}&guardian_phone={skdad_guardian.phone}&hours=24')
+    assert res.status_code == 200
+    data = res.json()
+    assert data['incident_count'] >= 1, "Incident point should be flagged"
+    incident_pts = [pt for pt in data['trail'] if pt.get('is_incident')]
+    assert len(incident_pts) >= 1
+    print(f"✅ Incident Beacon Correlation Verified: {len(incident_pts)} point(s) flagged with SOS incident beacon")
+
+    # 11c. Unauthorized guardian (other_guardian) tries to access sk's trail -> 403 Forbidden
+    res = client.get(f'/api/location/history/?ward_phone={sk_user.phone}&guardian_phone={other_guardian.phone}&hours=24')
+    assert res.status_code == 403, f"Expected 403 Forbidden for unauthorized guardian: {res.status_code}"
+    print(f"✅ Location Trail Isolation Verified: Unauthorized guardian received 403 Forbidden")
+
+    # 11d. Ward querying her own trail -> 200 OK
+    res = client.get(f'/api/location/history/?ward_phone={sk_user.phone}&guardian_phone={sk_user.phone}&hours=24')
+    assert res.status_code == 200
+    print(f"✅ Ward Self-Inspection Verified: User can inspect her own 24h trail")
+
+    # 11e. SuperAdmin querying ward trail -> 200 OK
+    res = client.get(f'/api/location/history/?ward_phone={sk_user.phone}&guardian_phone={superadmin.phone}&hours=24')
+    assert res.status_code == 200
+    print(f"✅ SuperAdmin Replay Access Verified: SuperAdmin can inspect any ward's trail")
+
+    print("\n🎉 ALL GUARDIAN SYSTEM & 24H REPLAY TESTS PASSED SUCCESSFULLY!")
 
 if __name__ == '__main__':
     run_tests()

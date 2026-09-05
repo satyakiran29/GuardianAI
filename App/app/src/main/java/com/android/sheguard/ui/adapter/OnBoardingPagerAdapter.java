@@ -59,51 +59,40 @@ public class OnBoardingPagerAdapter extends RecyclerView.Adapter<OnBoardingPager
             binding.img.setImageResource(onBoardingPage.getLogoResource());
 
             if (position == 0) {
-                // Slide 1: Welcome to GuardianAI
-                binding.subTitleTv.setText(Html.fromHtml("Your personal guardian\napp for <font color='#FF2E93'>safety and security</font>", Html.FROM_HTML_MODE_LEGACY));
-                binding.tvOverlayLeftScript.setText("You\nAre\nNot Alone\n♡");
-                binding.layoutOverlayRightBadge.setVisibility(View.VISIBLE);
-                ((TextView) binding.layoutOverlayRightBadge.getChildAt(0)).setText("SAFE\nWOMEN\nSTRONGER\nSOCIETY\n♡");
-
+                // Slide 1: Protection & Peace of Mind
+                binding.subTitleTv.setText(Html.fromHtml("Safety by your side,\n<font color='#FF2E93'>wherever you go</font>", Html.FROM_HTML_MODE_LEGACY));
                 binding.layoutSlideFeatures4.setVisibility(View.VISIBLE);
                 binding.layoutSlideFeatures3.setVisibility(View.GONE);
 
             } else if (position == 1) {
-                // Slide 2: Customized protection at your fingertips
-                binding.subTitleTv.setText(Html.fromHtml("Customized protection\n<font color='#FF2E93'>at your fingertips</font>", Html.FROM_HTML_MODE_LEGACY));
-                binding.tvOverlayLeftScript.setText("Safer\nStronger\nTogether\n♡");
-                binding.layoutOverlayRightBadge.setVisibility(View.GONE);
-
+                // Slide 2: Built for Real Moments
+                binding.subTitleTv.setText(Html.fromHtml("Discreet triggers\n<font color='#FF2E93'>that act in seconds</font>", Html.FROM_HTML_MODE_LEGACY));
                 binding.layoutSlideFeatures4.setVisibility(View.GONE);
                 binding.layoutSlideFeatures3.setVisibility(View.VISIBLE);
 
                 binding.ivFeature31.setImageResource(R.drawable.ic_shield_heart_vector);
-                binding.tvFeature31.setText("Personalized\nSafety Tools");
+                binding.tvFeature31.setText("Power Button\nEmergency SOS");
 
                 binding.ivFeature32.setImageResource(R.drawable.ic_settings_gear_vector);
-                binding.tvFeature32.setText("Flexible\nSettings");
+                binding.tvFeature32.setText("Shake &\nVoice Triggers");
 
                 binding.ivFeature33.setImageResource(R.drawable.ic_people_group_vector);
-                binding.tvFeature33.setText("Built for\na Safer You");
+                binding.tvFeature33.setText("Instant Safe\nCheck-in");
 
             } else {
-                // Slide 3: A Supportive Community
-                binding.subTitleTv.setText(Html.fromHtml("Be more independent\nand feel the <font color='#FF2E93'>happiness</font>", Html.FROM_HTML_MODE_LEGACY));
-                binding.tvOverlayLeftScript.setText("Safer\nTogether\nBrighter\nTomorrow\n♡");
-                binding.layoutOverlayRightBadge.setVisibility(View.VISIBLE);
-                ((TextView) binding.layoutOverlayRightBadge.getChildAt(0)).setText("Stronger\nCommunities\nSafer Lives\n💗");
-
+                // Slide 3: Never Walk Alone
+                binding.subTitleTv.setText(Html.fromHtml("Your trusted circle\n<font color='#FF2E93'>is always with you</font>", Html.FROM_HTML_MODE_LEGACY));
                 binding.layoutSlideFeatures4.setVisibility(View.GONE);
                 binding.layoutSlideFeatures3.setVisibility(View.VISIBLE);
 
                 binding.ivFeature31.setImageResource(R.drawable.ic_people_group_vector);
-                binding.tvFeature31.setText("Support\nNetwork");
+                binding.tvFeature31.setText("Trusted\nGuardians");
 
                 binding.ivFeature32.setImageResource(R.drawable.ic_book_open_vector);
-                binding.tvFeature32.setText("Safety\nResources");
+                binding.tvFeature32.setText("24/7 Helpline\nDesk");
 
                 binding.ivFeature33.setImageResource(R.drawable.ic_heart_pink_vector);
-                binding.tvFeature33.setText("Stronger\nTogether");
+                binding.tvFeature33.setText("Live Trip\nSharing");
             }
         }
     }

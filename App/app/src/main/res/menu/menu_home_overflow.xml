@@ -7,6 +7,9 @@
         android:id="@+id/menu_safe_ride"
         android:title="Safe Ride Monitoring" />
     <item
+        android:id="@+id/menu_location_replay"
+        android:title="24h Location History Replay" />
+    <item
         android:id="@+id/menu_settings"
         android:title="Settings" />
     <item

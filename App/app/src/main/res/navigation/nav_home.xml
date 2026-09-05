@@ -129,6 +129,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_locationReplayFragment"
+            app:destination="@id/locationReplayFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -231,6 +238,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_guardianPortalFragment_to_locationReplayFragment"
+            app:destination="@id/locationReplayFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
     </fragment>
 
     <fragment
@@ -279,6 +293,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_guardianHomeFragment_to_locationReplayFragment"
+            app:destination="@id/locationReplayFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
     </fragment>
 
     <fragment
@@ -308,5 +329,11 @@
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
     </fragment>
+
+    <fragment
+        android:id="@+id/locationReplayFragment"
+        android:name="com.android.sheguard.ui.fragment.LocationReplayFragment"
+        android:label="fragment_location_replay"
+        tools:layout="@layout/fragment_location_replay" />
 
 </navigation>

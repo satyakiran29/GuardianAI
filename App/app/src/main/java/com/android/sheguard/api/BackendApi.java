@@ -52,5 +52,12 @@ public interface BackendApi {
 
     @GET("chat/messages/")
     Call<JsonObject> getChatMessages(@Query("user1") String user1, @Query("user2") String user2);
+
+    @GET("location/history/")
+    Call<JsonObject> getLocationHistory(
+            @Query("ward_phone") String wardPhone,
+            @Query("guardian_phone") String guardianPhone,
+            @Query("hours") int hours
+    );
 }
 
