@@ -285,7 +285,7 @@ Visit **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** in your browser to ac
 - 👤 **[Pampana Satya Kiran](http://psatyakiran.in/)** — *Lead Developer & System Architect*
 - 👤 **Amarthaluri Harshavardhan** — *Core Android & Security Engineer*
 - 👤 **Madeli Narasimha** — *Backend & Cloud Integration*
-- 👤 **Mammula Sneha** — *UI/UX & Safety Systems*
+- 👤 **[Mammula Sneha](https://www.linkedin.com/in/sneha-mammula-b0651832a/)** — *UI/UX & Safety Systems*
 - 👤 **Kadagala Meghana** — *QA & Location Telemetry*
 
 ---

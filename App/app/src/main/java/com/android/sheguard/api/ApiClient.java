@@ -34,7 +34,7 @@ public class ApiClient {
     }
 
     // Production Cloud Render Backend URL
-    private static String BASE_URL = "https://guardianai-backend-pwn5.onrender.com/api/";
+    private static String BASE_URL = "https://guardianai-backend-lkpp.onrender.com/api/";
     private static BackendApi apiService;
 
     public static void setBaseUrl(String newUrl) {

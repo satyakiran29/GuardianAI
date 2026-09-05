@@ -1,8 +1,10 @@
 {
-  "versionCode": 14,
-  "versionName": "1.1.4",
+  "versionCode": 15,
+  "versionName": "1.1.5",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "deadman switch"
+    "Updated cloud backend endpoint",
+    "Dead Man's Switch safety system & real-time monitoring",
+    "Enhanced network synchronization and stability"
   ]
 }

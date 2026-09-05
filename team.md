@@ -19,7 +19,7 @@ To ensure seamless collaboration, modular development, and zero-conflict ownersh
 
 ```mermaid
 graph TD
-    PSK["👤 Pampana Satya Kiran<br/><b> & System Architect</b>"]
+    PSK["👤 Pampana Satya Kiran<br/><b>System Architect</b>"]
     AH["👤 Amarthaluri Harshavardhan<br/><b>Core Android & Security Engineer</b>"]
     MN["👤 Madeli Narasimha<br/><b>Backend & Cloud Integration</b>"]
     MS["👤 Mammula Sneha<br/><b>UI/UX & Safety Systems</b>"]
@@ -95,6 +95,7 @@ graph TD
 ---
 
 ### 4. 👤 Mammula Sneha — UI/UX & Safety Systems
+* **LinkedIn**: [linkedin.com/in/sneha-mammula-b0651832a](https://www.linkedin.com/in/sneha-mammula-b0651832a/)
 * **Primary Focus**: Design Systems, Interactive Mobile UI, AI Safety Assistant, Multilingual Localization & Web Command Radar UI.
 
 #### 📱 App Responsibilities ([App](file:///c:/Users/psaty/Videos/GuardianAI/App))
@@ -211,7 +212,12 @@ To prevent merge conflicts across the Android and Django codebases:
 
 ## 📞 Team Contacts & Repository Links
 
+- 👤 **Pampana Satya Kiran** (System Architect): [psatyakiran.in](http://psatyakiran.in/)
+- 👤 **Mammula Sneha** (UI/UX & Safety Systems): [LinkedIn Profile](https://www.linkedin.com/in/sneha-mammula-b0651832a/)
+- 👤 **Amarthaluri Harshavardhan** (Core Android & Security Engineer)
+- 👤 **Madeli Narasimha** (Backend & Cloud Integration)
+- 👤 **Kadagala Meghana** (QA & Location Telemetry)
 - 🌐 **Project Repository**: [GitHub - satyakiran29/GuardianAI](https://github.com/satyakiran29/GuardianAI)
 - 🌐 **Live Web Command Center**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- 📱 **Latest Android Build**: [Download APK (v1.1.3)](file:///c:/Users/psaty/Videos/GuardianAI/Apk/GuardianAI-debug.apk)
+- 📱 **Latest Android Build**: [Download APK (v1.1.5)](file:///c:/Users/psaty/Videos/GuardianAI/Apk/GuardianAI-debug.apk)
 - 📖 **System Documentation**: [README.md](file:///c:/Users/psaty/Videos/GuardianAI/README.md) • [HOST.md](file:///c:/Users/psaty/Videos/GuardianAI/HOST.md)

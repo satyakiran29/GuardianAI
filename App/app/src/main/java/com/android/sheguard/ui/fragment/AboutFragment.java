@@ -124,7 +124,7 @@ public class AboutFragment extends Fragment {
                 "S",
                 "Mammula Sneha",
                 "Developer",
-                "LinkedIn", "https://guardianai.app",
+                "LinkedIn", "https://www.linkedin.com/in/sneha-mammula-b0651832a/",
                 "Instagram", "https://www.instagram.com",
                 "Website", "https://guardianai.app"));
 
