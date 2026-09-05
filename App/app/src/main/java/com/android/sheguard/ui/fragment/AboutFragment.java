@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -23,32 +24,28 @@ import java.util.List;
 public class AboutFragment extends Fragment {
 
     private FragmentAboutBinding binding;
-    private final List<Contributor> contributorList = new ArrayList<>();
+    private final List<TeamMember> teamMembers = new ArrayList<>();
 
-    private static class Contributor {
-        final String monogram;
+    public static class TeamMember {
         final String name;
         final String role;
-        final String tile1Label;
-        final String tile1Url;
-        final String tile2Label;
-        final String tile2Url;
-        final String tile3Label;
-        final String tile3Url;
+        final String tagline;
+        final int avatarRes;
+        final boolean hasExternalLink;
+        final String webUrl;
+        final String githubUrl;
+        final String linkedinUrl;
 
-        Contributor(String monogram, String name, String role,
-                String tile1Label, String tile1Url,
-                String tile2Label, String tile2Url,
-                String tile3Label, String tile3Url) {
-            this.monogram = monogram;
+        public TeamMember(String name, String role, String tagline, int avatarRes,
+                          boolean hasExternalLink, String webUrl, String githubUrl, String linkedinUrl) {
             this.name = name;
             this.role = role;
-            this.tile1Label = tile1Label;
-            this.tile1Url = tile1Url;
-            this.tile2Label = tile2Label;
-            this.tile2Url = tile2Url;
-            this.tile3Label = tile3Label;
-            this.tile3Url = tile3Url;
+            this.tagline = tagline;
+            this.avatarRes = avatarRes;
+            this.hasExternalLink = hasExternalLink;
+            this.webUrl = webUrl;
+            this.githubUrl = githubUrl;
+            this.linkedinUrl = linkedinUrl;
         }
     }
 
@@ -74,100 +71,127 @@ public class AboutFragment extends Fragment {
             }
         });
 
-        binding.tvAppVersion.setText("guardianai v" + BuildConfig.VERSION_NAME);
+        binding.tvAppVersion.setText("GuardianAI v" + BuildConfig.VERSION_NAME);
 
-        initContributorList();
-        renderContributors(inflater);
-
-        // Also randomize on clicking the CREDITS title
-        binding.tvAppVersion.setOnClickListener(v -> {
-            java.util.Collections.shuffle(contributorList);
-            renderContributors(inflater);
-        });
+        initTeamList();
+        renderTeamMembers(inflater);
 
         return view;
     }
 
-    private void initContributorList() {
-        contributorList.clear();
+    private void initTeamList() {
+        teamMembers.clear();
 
-        // Satya Kiran
-        contributorList.add(new Contributor(
-                "P",
+        // 1. Pampana Satya Kiran
+        teamMembers.add(new TeamMember(
                 "Pampana Satya Kiran",
-                "Developer",
-                "Website", "http://psatyakiran.in/",
-                "GitHub", "https://github.com/satyakiran29",
-                "LinkedIn", "https://www.linkedin.com/in/satyakiran29"));
+                "Lead Developer & System Architect",
+                "Building technology for a safer tomorrow.",
+                R.drawable.ic_avatar_male,
+                true,
+                "http://psatyakiran.in/",
+                "https://github.com/satyakiran29",
+                "https://www.linkedin.com/in/satyakiran29"
+        ));
 
-        // Narasimha
-        contributorList.add(new Contributor(
-                "M",
-                "Madeli Narasimha",
-                "Developer",
-                "LinkedIn",
-                "https://www.linkedin.com/in/narasimha-madeli-ba7b73338?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-                "GitHub", "https://github.com",
-                "Website", "https://guardianai.app"));
-
-        // Harshavardhan
-        contributorList.add(new Contributor(
-                "H",
+        // 2. Amarthaluri Harshavardhan
+        teamMembers.add(new TeamMember(
                 "Amarthaluri Harshavardhan",
-                "Developer",
-                "LinkedIn", "https://www.linkedin.com",
-                "GitHub", "https://github.com",
-                "Website", "https://guardianai.app"));
+                "Core Android & Security Engineer",
+                "Securing lives with code.",
+                R.drawable.ic_avatar_male,
+                false,
+                null,
+                "https://github.com",
+                "https://www.linkedin.com"
+        ));
 
-        // Sneha
-        contributorList.add(new Contributor(
-                "S",
+        // 3. Madeli Narasimha
+        teamMembers.add(new TeamMember(
+                "Madeli Narasimha",
+                "Backend & Cloud Integration",
+                "Powering a safer and smarter backend.",
+                R.drawable.ic_avatar_male,
+                false,
+                null,
+                "https://github.com",
+                "https://www.linkedin.com/in/narasimha-madeli-ba7b73338"
+        ));
+
+        // 4. Mammula Sneha
+        teamMembers.add(new TeamMember(
                 "Mammula Sneha",
-                "Developer",
-                "LinkedIn", "https://www.linkedin.com/in/sneha-mammula-b0651832a/",
-                "Instagram", "https://www.instagram.com",
-                "Website", "https://guardianai.app"));
+                "UI/UX & Safety Systems",
+                "Designing with empathy for real impact.",
+                R.drawable.ic_avatar_female,
+                true,
+                null,
+                null,
+                "https://www.linkedin.com/in/sneha-mammula-b0651832a/"
+        ));
 
-        // Meghana
-        contributorList.add(new Contributor(
-                "M",
+        // 5. Kadagala Meghana
+        teamMembers.add(new TeamMember(
                 "Kadagala Meghana",
-                "Developer",
-                "LinkedIn", "https://www.linkedin.com",
-                "GitHub", "https://github.com",
-                "Website", "https://guardianai.app"));
-
-        // Randomize the order each time
-        java.util.Collections.shuffle(contributorList);
+                "QA & Location Telemetry",
+                "Ensuring reliability, because safety matters.",
+                R.drawable.ic_avatar_female,
+                false,
+                null,
+                "https://github.com",
+                "https://www.linkedin.com"
+        ));
     }
 
-    private void renderContributors(LayoutInflater inflater) {
+    private void renderTeamMembers(LayoutInflater inflater) {
         binding.layoutTeamContainer.removeAllViews();
 
-        for (Contributor dev : contributorList) {
-            ItemDeveloperCardBinding card = ItemDeveloperCardBinding.inflate(inflater, binding.layoutTeamContainer,
-                    false);
+        for (TeamMember member : teamMembers) {
+            ItemDeveloperCardBinding card = ItemDeveloperCardBinding.inflate(inflater, binding.layoutTeamContainer, false);
 
-            card.tvDevMonogram.setText(dev.monogram);
-            card.tvDevName.setText(dev.name);
-            card.tvDevRole.setText(dev.role);
+            card.imgMemberAvatar.setImageResource(member.avatarRes);
+            card.tvDevName.setText(member.name);
+            card.tvDevRole.setText(member.role);
+            card.tvDevTagline.setText(member.tagline);
 
-            // Bento Tile 1
-            card.tvBentoTile1.setText(dev.tile1Label);
-            card.btnBentoTile1.setOnClickListener(v -> openUrl(dev.tile1Url, dev.name));
+            if (member.hasExternalLink) {
+                card.ivDevLinkIcon.setVisibility(View.VISIBLE);
+            } else {
+                card.ivDevLinkIcon.setVisibility(View.GONE);
+            }
 
-            // Bento Tile 2
-            card.tvBentoTile2.setText(dev.tile2Label);
-            card.btnBentoTile2.setOnClickListener(v -> openUrl(dev.tile2Url, dev.name));
+            // Web
+            if (member.webUrl != null && !member.webUrl.isEmpty()) {
+                card.btnDevWeb.setVisibility(View.VISIBLE);
+                card.btnDevWeb.setOnClickListener(v -> openUrl(member.webUrl, member.name));
+            } else {
+                card.btnDevWeb.setVisibility(View.GONE);
+            }
 
-            // Bento Tile 3
-            card.tvBentoTile3.setText(dev.tile3Label);
-            card.btnBentoTile3.setOnClickListener(v -> openUrl(dev.tile3Url, dev.name));
+            // GitHub
+            if (member.githubUrl != null && !member.githubUrl.isEmpty()) {
+                card.btnDevGithub.setVisibility(View.VISIBLE);
+                card.btnDevGithub.setOnClickListener(v -> openUrl(member.githubUrl, member.name));
+            } else {
+                card.btnDevGithub.setVisibility(View.GONE);
+            }
 
-            // Tapping card header also re-shuffles
+            // LinkedIn
+            if (member.linkedinUrl != null && !member.linkedinUrl.isEmpty()) {
+                card.btnDevLinkedin.setVisibility(View.VISIBLE);
+                card.btnDevLinkedin.setOnClickListener(v -> openUrl(member.linkedinUrl, member.name));
+            } else {
+                card.btnDevLinkedin.setVisibility(View.GONE);
+            }
+
+            // Whole card click
             card.cardDeveloper.setOnClickListener(v -> {
-                java.util.Collections.shuffle(contributorList);
-                renderContributors(inflater);
+                String primaryUrl = member.webUrl != null ? member.webUrl : (member.linkedinUrl != null ? member.linkedinUrl : member.githubUrl);
+                if (primaryUrl != null) {
+                    openUrl(primaryUrl, member.name);
+                } else {
+                    Snackbar.make(binding.getRoot(), member.name + " profile coming soon!", Snackbar.LENGTH_SHORT).show();
+                }
             });
 
             binding.layoutTeamContainer.addView(card.getRoot());
@@ -185,5 +209,11 @@ public class AboutFragment extends Fragment {
         } catch (Exception e) {
             Snackbar.make(binding.getRoot(), "Could not open link", Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

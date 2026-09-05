@@ -48,6 +48,8 @@
     <string name="activity_safety_tips_desc">Access a wealth of safety resources</string>
     <string name="activity_about_title">About</string>
     <string name="activity_about_desc">Learn more about our mission</string>
+    <string name="about_us_title">About Us</string>
+    <string name="about_us_desc">Learn about our mission, creators &amp; team</string>
 
     <string name="background_story">In recent years, we\'ve witnessed a surge in safety incidents targeting citizens, women, children, and the elderly. Introducing GuardianAI, our innovative response to these challenges.\n\nGuardianAI empowers you by putting your safety back into your hands with AI-driven and instant alert systems that keep your family and friends informed during times of distress.</string>
     <string name="whats_good">What\'s Good About This App?</string>

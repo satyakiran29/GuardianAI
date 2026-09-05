@@ -89,6 +89,13 @@ public class HomeFragment extends Fragment {
         binding.ivTopLogo.setOnClickListener(v -> ((MainActivity) requireActivity()).toggleDrawer());
         binding.cardCrowdSafety.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safeRouteFragment));
 
+        // Bottom Nav Dock Listeners
+        binding.navItemHome.setOnClickListener(v -> {});
+        binding.navItemExplore.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safeRouteFragment));
+        binding.navItemSos.setOnClickListener(v -> binding.sosButton.performClick());
+        binding.navItemGuardians.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_myGuardiansFragment));
+        binding.navItemProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment));
+
         binding.btnSafeCheckIn.setOnClickListener(v -> {
             SosUtil.vibrateDevice(requireContext());
             ArrayList<ContactModel> contacts = SosUtil.getStoredContacts(requireContext());

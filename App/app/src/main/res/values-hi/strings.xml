@@ -46,6 +46,8 @@
     <string name="activity_safety_tips_desc">महत्वपूर्ण सुरक्षा मार्गदर्शन</string>
     <string name="activity_about_title">के बारे में</string>
     <string name="activity_about_desc">हमारे मिशन के बारे में जानें</string>
+    <string name="about_us_title">हमारे बारे में</string>
+    <string name="about_us_desc">हमारे मिशन, निर्माताओं और टीम के बारे में जानें</string>
 
     <string name="background_story">नागरिकों, महिलाओं, बच्चों और बुजुर्गों की सुरक्षा के लिए GuardianAI एक उन्नत तकनीकी समाधान है।\n\nमुसीबत के समय आपके परिवार और दोस्तों को तुरंत चेतावनी भेजकर आपकी सुरक्षा आपके हाथों में सौंपता है।</string>
     <string name="whats_good">यह ऐप क्यों खास है?</string>

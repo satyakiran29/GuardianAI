@@ -43,14 +43,13 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.header.toolbar);
-        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-            binding.header.collapsingToolbar.setTitle(getString(R.string.activity_settings_title));
-            binding.header.collapsingToolbar.setSubtitle(getString(R.string.activity_settings_desc));
-        }
+        binding.btnSettingsBack.setOnClickListener(v -> {
+            try {
+                androidx.navigation.Navigation.findNavController(view).navigateUp();
+            } catch (Exception e) {
+                if (getActivity() != null) getActivity().onBackPressed();
+            }
+        });
 
         // Profile & Account Settings
         String userName = Prefs.getString(Constants.PREFS_USER_NAME, "My Profile");
@@ -187,6 +186,18 @@ public class SettingsFragment extends Fragment {
         // Version Changelog
         binding.tvChangelogDesc.setText(getString(R.string.changelog_desc, BuildConfig.VERSION_NAME));
         binding.changelogContainer.setOnClickListener(v -> showChangelogDialog());
+
+        // About Us
+        binding.aboutUsContainer.setOnClickListener(v -> {
+            try {
+                androidx.navigation.Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_aboutFragment);
+            } catch (Exception e) {
+                try {
+                    androidx.navigation.Navigation.findNavController(view).navigate(R.id.aboutFragment);
+                } catch (Exception ignored) {
+                }
+            }
+        });
 
         // Log Out
         binding.logoutContainer.setOnClickListener(v -> showLogoutConfirmationDialog());

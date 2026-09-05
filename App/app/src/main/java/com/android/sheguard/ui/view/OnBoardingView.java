@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -39,6 +42,7 @@ public class OnBoardingView extends FrameLayout {
     }
 
     public static void navigateToPrevSlide() {
+        if (binding == null || binding.slider == null) return;
         int prevSlidePos = binding.slider.getCurrentItem() - 1;
         if (prevSlidePos < 0) {
             throw new IllegalArgumentException("Can't navigate to previous slide, because current slide is first");
@@ -58,16 +62,25 @@ public class OnBoardingView extends FrameLayout {
 
     private void setUpSlider(ViewOnboardingPageBinding binding) {
         binding.slider.setAdapter(new OnBoardingPagerAdapter());
-
         binding.slider.setPageTransformer(Transform::setParallaxTransformation);
 
         binding.slider.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                if (numberOfPages > 1) {
-                    float newProgress = (position + positionOffset) / (numberOfPages - 1);
-                    binding.onboardingRoot.setProgress(newProgress);
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) binding.nextBtn.getLayoutParams();
+                if (position == numberOfPages - 1) {
+                    binding.skipBtn.setVisibility(View.GONE);
+                    binding.btnTopSkip.setVisibility(View.GONE);
+                    params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                    binding.nextBtn.setLayoutParams(params);
+                    binding.nextBtn.setText("Get started  →");
+                } else {
+                    binding.skipBtn.setVisibility(View.VISIBLE);
+                    binding.btnTopSkip.setVisibility(View.VISIBLE);
+                    params.width = (int) (140 * getResources().getDisplayMetrics().density);
+                    binding.nextBtn.setLayoutParams(params);
+                    binding.nextBtn.setText("Next  →");
                 }
             }
         });
@@ -76,22 +89,24 @@ public class OnBoardingView extends FrameLayout {
     }
 
     private void addingButtonsClickListeners(ViewOnboardingPageBinding binding) {
-        binding.nextBtn.setOnClickListener(view -> navigateToNextSlide(binding.slider));
-        binding.skipBtn.setOnClickListener(view -> navigateToLastSlide(binding.slider));
+        binding.nextBtn.setOnClickListener(view -> {
+            int currentItem = binding.slider.getCurrentItem();
+            if (currentItem < numberOfPages - 1) {
+                binding.slider.setCurrentItem(currentItem + 1, true);
+            } else {
+                setFirstTimeLaunchToFalse();
+            }
+        });
+
+        binding.skipBtn.setOnClickListener(view -> setFirstTimeLaunchToFalse());
+        binding.btnTopSkip.setOnClickListener(view -> setFirstTimeLaunchToFalse());
         binding.startBtn.setOnClickListener(view -> setFirstTimeLaunchToFalse());
     }
 
     private void setFirstTimeLaunchToFalse() {
         getContext().startActivity(new Intent(getContext(), LoginRegisterActivity.class));
-        ((Activity) getContext()).finish();
-    }
-
-    private void navigateToNextSlide(ViewPager2 slider) {
-        int nextSlidePos = slider.getCurrentItem() + 1;
-        slider.setCurrentItem(nextSlidePos, true);
-    }
-
-    private void navigateToLastSlide(ViewPager2 slider) {
-        slider.setCurrentItem(2, true);
+        if (getContext() instanceof Activity) {
+            ((Activity) getContext()).finish();
+        }
     }
 }

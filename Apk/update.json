@@ -1,12 +1,11 @@
 {
-  "versionCode": 16,
-  "versionName": "1.1.6",
+  "versionCode": 17,
+  "versionName": "1.1.8",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "New ultra-modern Home UI with hero artwork and 3D SOS button",
-    "4 pastel quick actions: Share Location, Call, My Circle, Safe Places",
-    "AI Safety Companion floating card & 6-feature Safety Suite",
-    "Full Dark & Light mode theme system support",
-    "Updated cloud backend endpoint & stability improvements"
+    "Brand new cyberpunk & neon Onboarding experience",
+    "Redesigned modern Settings & safety suites",
+    "Hardware button SOS triggers & custom actions",
+    "Performance optimizations & smooth navigation"
   ]
 }
