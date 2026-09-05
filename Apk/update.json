@@ -1,12 +1,12 @@
 {
-  "versionCode": 24,
-  "versionName": "1.2.6",
+  "versionCode": 25,
+  "versionName": "1.2.7",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Fixed UI Layout Collision: Eliminated overlap between 'Add to Safety Circle' button and empty circle state by switching to vertical flow",
-    "Permanent Account Deletion: Dedicated Account & Security section with confirmation dialog, server cascade purge, and local session wipe",
-    "Profile Overhaul with Dark Reassuring Look: Glowing pink avatar halo, camera badge overlay, script watermarks, and unified card layout",
-    "Humanized Arrival & Safety Check-In with real-world journey presets (Cab/Auto, Walking Alone, Solo Run, Meeting, Late Transit, Custom)",
-    "Incident Heatmap & 24h Trail Forensic PDF Debrief Exporter with cryptographic SHA-256 seal"
+    "Authentication UI Redesign: Complete premium dark overhaul for Login and Register screens (#0A0E1A surface, #111622 card containers, illuminated shield emblem)",
+    "Modern Outlined Input Fields: Dark slate input boxes (#101726) with glowing pink/cyan focus borders and clear iconography",
+    "Instant 1-Click Role Access: Stylized test cards for Protected User (Sarah), Guardian Unit (Rajesh), and Chief SuperAdmin",
+    "Tactile Role Selector: Streamlined account creation with dual persona support (Protected User vs Guardian Responder)",
+    "Fixed UI Layout Collision: Eliminated overlap between 'Add to Safety Circle' button and empty circle state"
   ]
 }
