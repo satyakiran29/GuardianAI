@@ -270,6 +270,16 @@ public class GuardianHomeFragment extends Fragment {
                 Intent webMap = new Intent(Intent.ACTION_VIEW, Uri.parse("https://maps.google.com/?q=" + dLat + "," + dLng));
                 startActivity(webMap);
             });
+            binding.btnEmergencyReplay.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putString("WARD_PHONE", distPhone);
+                args.putString("WARD_NAME", distName);
+                args.putDouble("WARD_LAT", dLat);
+                args.putDouble("WARD_LNG", dLng);
+                try {
+                    Navigation.findNavController(v).navigate(R.id.action_guardianHomeFragment_to_locationReplayFragment, args);
+                } catch (Exception ignored) {}
+            });
         } else {
             binding.layoutCriticalSosBanner.setVisibility(View.GONE);
         }

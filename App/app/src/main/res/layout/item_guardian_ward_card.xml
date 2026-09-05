@@ -121,14 +121,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#1E293B"
+        android:background="#161F30"
         android:padding="10dp"
         android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Live Location Telemetry"
+            android:text="Current Location"
             android:textColor="#94A3B8"
             android:textSize="11sp" />
 
@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:text="17.4482, 78.3914 • Live Sync"
-            android:textColor="#60A5FA"
+            android:textColor="#94A3B8"
             android:textSize="11sp" />
     </LinearLayout>
 
@@ -166,11 +166,14 @@
             android:layout_height="38dp"
             android:layout_weight="1.1"
             android:layout_marginEnd="6dp"
-            android:text="Replay 24h"
+            android:text="24h Replay"
             android:textSize="11sp"
             android:textStyle="bold"
             app:cornerRadius="8dp"
-            app:backgroundTint="@color/colorPinkNeon" />
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#1E293B"
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ward_chat"
@@ -180,8 +183,12 @@
             android:layout_marginEnd="6dp"
             android:text="Chat"
             android:textSize="11sp"
+            android:textStyle="bold"
             app:cornerRadius="8dp"
-            app:backgroundTint="#7C3AED" />
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#1E293B"
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ward_map"
@@ -191,8 +198,12 @@
             android:layout_marginEnd="6dp"
             android:text="Map"
             android:textSize="11sp"
+            android:textStyle="bold"
             app:cornerRadius="8dp"
-            app:backgroundTint="#2563EB" />
+            android:textColor="#FFFFFF"
+            app:backgroundTint="#1E293B"
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_ward_call"
@@ -200,7 +211,9 @@
             android:layout_height="38dp"
             android:text="Call"
             android:textSize="11sp"
+            android:textStyle="bold"
             app:cornerRadius="8dp"
+            android:textColor="#FFFFFF"
             app:backgroundTint="#10B981" />
     </LinearLayout>
 </LinearLayout>
