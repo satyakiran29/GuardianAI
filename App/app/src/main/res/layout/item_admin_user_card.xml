@@ -105,27 +105,47 @@
         android:layout_marginTop="12dp">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_admin_replay"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1.1"
+            android:layout_marginEnd="4dp"
+            android:text="🎞️ Replay"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:backgroundTint="#1E293B"
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_admin_chat"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_weight="1"
-            android:layout_marginEnd="6dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:text="💬 Chat"
-            android:textSize="12sp"
-            app:backgroundTint="#4F46E5"
-            app:cornerRadius="6dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:backgroundTint="#1E293B"
+            app:strokeColor="#334155"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_admin_call"
             android:layout_width="0dp"
             android:layout_height="36dp"
             android:layout_weight="1"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="4dp"
             android:text="📞 Call"
-            android:textSize="12sp"
-            app:backgroundTint="#1E293B"
-            app:strokeColor="#475569"
-            app:strokeWidth="1dp"
-            app:cornerRadius="6dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:backgroundTint="#10B981"
+            app:cornerRadius="8dp" />
     </LinearLayout>
 </LinearLayout>

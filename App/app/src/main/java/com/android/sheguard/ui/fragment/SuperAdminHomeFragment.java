@@ -145,17 +145,17 @@ public class SuperAdminHomeFragment extends Fragment {
         currentFilter = filter;
         if (binding == null) return;
 
-        int activeColor = 0xFF6366F1;   // Indigo
+        int activeColor = 0xFF334155;   // Slate Active
         int inactiveColor = 0xFF1E293B; // Dark Slate
 
         binding.btnFilterAll.setBackgroundTintList(ColorStateList.valueOf("all".equals(filter) ? activeColor : inactiveColor));
         binding.btnFilterAll.setTextColor(Color.WHITE);
 
         binding.btnFilterUsers.setBackgroundTintList(ColorStateList.valueOf("user".equals(filter) ? activeColor : inactiveColor));
-        binding.btnFilterUsers.setTextColor("user".equals(filter) ? Color.WHITE : 0xFFCBD5E1);
+        binding.btnFilterUsers.setTextColor("user".equals(filter) ? Color.WHITE : 0xFF94A3B8);
 
         binding.btnFilterGuardians.setBackgroundTintList(ColorStateList.valueOf("guardian".equals(filter) ? activeColor : inactiveColor));
-        binding.btnFilterGuardians.setTextColor("guardian".equals(filter) ? Color.WHITE : 0xFFCBD5E1);
+        binding.btnFilterGuardians.setTextColor("guardian".equals(filter) ? Color.WHITE : 0xFF94A3B8);
 
         renderFilteredList();
     }
@@ -232,7 +232,21 @@ public class SuperAdminHomeFragment extends Fragment {
             binding.layoutAdminDistressCard.setVisibility(View.VISIBLE);
             String distName = activeDistress.has("name") ? activeDistress.get("name").getAsString() : "User in Distress";
             String distAddr = activeDistress.has("address") ? activeDistress.get("address").getAsString() : "Live coordinates dispatched";
-            binding.tvAdminSosDesc.setText("🚨 CRITICAL ALERT: " + distName + " has triggered an emergency SOS!\n📍 Last Known Location: " + distAddr);
+            String distPhone = activeDistress.has("phone") ? activeDistress.get("phone").getAsString() : "";
+            double distLat = activeDistress.has("latitude") && !activeDistress.get("latitude").isJsonNull() ? activeDistress.get("latitude").getAsDouble() : 17.4482;
+            double distLng = activeDistress.has("longitude") && !activeDistress.get("longitude").isJsonNull() ? activeDistress.get("longitude").getAsDouble() : 78.3914;
+
+            binding.tvAdminSosDesc.setText("🚨 CRITICAL ALERT: " + distName + " has triggered an emergency SOS!\n📍 Last Known Location: " + distAddr + "\n\n🎞️ Tap to open 24h Location Trail Replay");
+            binding.layoutAdminDistressCard.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putString("WARD_PHONE", distPhone);
+                args.putString("WARD_NAME", distName);
+                args.putDouble("WARD_LAT", distLat);
+                args.putDouble("WARD_LNG", distLng);
+                try {
+                    Navigation.findNavController(v).navigate(R.id.action_superAdminHomeFragment_to_locationReplayFragment, args);
+                } catch (Exception ignored) {}
+            });
         } else {
             binding.layoutAdminDistressCard.setVisibility(View.GONE);
         }
@@ -295,6 +309,7 @@ public class SuperAdminHomeFragment extends Fragment {
             TextView tvBattery = card.findViewById(R.id.tv_admin_user_battery);
             TextView tvLocation = card.findViewById(R.id.tv_admin_user_location);
 
+            MaterialButton btnReplay = card.findViewById(R.id.btn_admin_replay);
             MaterialButton btnChat = card.findViewById(R.id.btn_admin_chat);
             MaterialButton btnCall = card.findViewById(R.id.btn_admin_call);
 
@@ -305,6 +320,8 @@ public class SuperAdminHomeFragment extends Fragment {
             String role = item.has("role") ? item.get("role").getAsString().toLowerCase() : "";
             String rel = item.has("relationship") ? item.get("relationship").getAsString() : "Citizen";
             boolean isSos = item.has("has_active_sos") && item.get("has_active_sos").getAsBoolean();
+            double lat = item.has("latitude") && !item.get("latitude").isJsonNull() ? item.get("latitude").getAsDouble() : 17.4482;
+            double lng = item.has("longitude") && !item.get("longitude").isJsonNull() ? item.get("longitude").getAsDouble() : 78.3914;
 
             tvName.setText(name);
             tvPhone.setText(phone);
@@ -334,6 +351,19 @@ public class SuperAdminHomeFragment extends Fragment {
                 tvBattery.setTextColor(0xFFF59E0B);
             } else {
                 tvBattery.setTextColor(0xFF34D399);
+            }
+
+            if (btnReplay != null) {
+                btnReplay.setOnClickListener(v -> {
+                    Bundle args = new Bundle();
+                    args.putString("WARD_PHONE", phone);
+                    args.putString("WARD_NAME", name);
+                    args.putDouble("WARD_LAT", lat);
+                    args.putDouble("WARD_LNG", lng);
+                    try {
+                        Navigation.findNavController(v).navigate(R.id.action_superAdminHomeFragment_to_locationReplayFragment, args);
+                    } catch (Exception ignored) {}
+                });
             }
 
             btnChat.setOnClickListener(v -> {

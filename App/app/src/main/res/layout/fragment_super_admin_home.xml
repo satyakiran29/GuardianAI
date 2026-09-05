@@ -52,10 +52,9 @@
                     android:id="@+id/tv_admin_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chief SuperAdmin • Platform Telemetry"
-                    android:textColor="#F59E0B"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:text="Platform Safety &amp; Citizen Overview"
+                    android:textColor="#94A3B8"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <ImageButton
@@ -64,7 +63,7 @@
                 android:layout_height="42dp"
                 android:background="@drawable/bg_circle_info"
                 android:src="@drawable/ic_refresh"
-                app:tint="#38BDF8"
+                app:tint="#FFFFFF"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="Refresh" />
 
@@ -74,7 +73,7 @@
                 android:layout_height="42dp"
                 android:background="@drawable/bg_circle_info"
                 android:src="@drawable/ic_profile"
-                app:tint="#C084FC"
+                app:tint="#FFFFFF"
                 android:contentDescription="Profile" />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -136,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="--"
-                        android:textColor="#38BDF8"
+                        android:textColor="#FFFFFF"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -187,7 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="--"
-                        android:textColor="#34D399"
+                        android:textColor="#FFFFFF"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -297,7 +296,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="--"
-                        android:textColor="#F59E0B"
+                        android:textColor="#FFFFFF"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -349,28 +348,32 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_quick_resync"
-                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="4dp"
-                    android:text="🔄 Force Sync"
-                    android:textColor="#38BDF8"
-                    android:textSize="11sp"
-                    app:backgroundTint="#182234"
+                    android:text="🔄 Refresh Data"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11.5sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="#1E293B"
+                    app:strokeColor="#334155"
+                    app:strokeWidth="1dp"
                     app:cornerRadius="20dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_quick_siren"
-                    style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:layout_marginStart="4dp"
                     android:text="🚨 Test Siren"
-                    android:textColor="#EF4444"
-                    android:textSize="11sp"
-                    app:backgroundTint="#2D1A1E"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11.5sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="#1E293B"
+                    app:strokeColor="#334155"
+                    app:strokeWidth="1dp"
                     app:cornerRadius="20dp" />
             </LinearLayout>
 
@@ -419,8 +422,8 @@
                     android:textColor="#FFFFFF"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    app:backgroundTint="#6366F1"
-                    app:strokeColor="#818CF8"
+                    app:backgroundTint="#334155"
+                    app:strokeColor="#475569"
                     app:strokeWidth="1dp"
                     app:cornerRadius="20dp" />
 
