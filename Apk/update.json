@@ -1,12 +1,12 @@
 {
-  "versionCode": 18,
-  "versionName": "1.2.0",
+  "versionCode": 19,
+  "versionName": "1.2.1",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "24h Location History & Movement Trail Replay with Leaflet dark radar",
-    "Emergency SOS Incident Beacon correlation & telemetry timeline review",
-    "Interactive timeline scrubber, play/pause animations & speed toggles",
-    "Humanized UI design with clean 2-tone palette & personalized time-of-day greetings",
-    "Strict guardian-ward data isolation & live battery and GPS telemetry syncing"
+    "Overhauled Guardian Command & Command Center with cohesive slate design and reduced color clutter",
+    "Instant 1-Tap 24h Trail Replay integrated directly into Emergency Distress Alert banners",
+    "24h Location History & Movement Trail Replay with Leaflet dark radar and incident beacon correlation",
+    "Enhanced SuperAdmin platform directory with 24h Trail inspection for all citizens and responders",
+    "Humanized UI copy with warm, reassuring safety phrasing across all screens"
   ]
 }
