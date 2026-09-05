@@ -12,7 +12,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.SeekBar;
 import android.widget.Toast;
-
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -223,6 +228,8 @@ public class LocationReplayFragment extends Fragment {
             }
         });
 
+        binding.btnExportPdf.setOnClickListener(v -> exportForensicPdf());
+
         binding.seekbarReplay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -241,6 +248,59 @@ public class LocationReplayFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+    }
+
+    private void exportForensicPdf() {
+        if (getContext() == null || getActivity() == null) return;
+
+        String guardianPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+        String debriefUrl = ApiClient.getBaseUrl() + "location/debrief/?ward_phone=" + Uri.encode(wardPhone) +
+                "&guardian_phone=" + Uri.encode(guardianPhone) + "&hours=24&format=html";
+
+        Toast.makeText(getContext(), "Generating Forensic PDF Debrief...", Toast.LENGTH_SHORT).show();
+
+        try {
+            PrintManager printManager = (PrintManager) requireActivity().getSystemService(Context.PRINT_SERVICE);
+            if (printManager != null) {
+                WebView printWebView = new WebView(requireContext());
+                printWebView.getSettings().setJavaScriptEnabled(true);
+                printWebView.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onPageFinished(WebView view, String url) {
+                        try {
+                            String safeName = (wardName != null ? wardName.replaceAll("[^a-zA-Z0-9]", "_") : "Ward");
+                            String jobName = "Forensic_Debrief_" + safeName;
+                            PrintDocumentAdapter printAdapter = printWebView.createPrintDocumentAdapter(jobName);
+                            printManager.print(jobName, printAdapter, new PrintAttributes.Builder()
+                                    .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                                    .build());
+                        } catch (Exception e) {
+                            openDebriefInBrowser(debriefUrl);
+                        }
+                    }
+
+                    @Override
+                    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                        openDebriefInBrowser(debriefUrl);
+                    }
+                });
+                printWebView.loadUrl(debriefUrl);
+            } else {
+                openDebriefInBrowser(debriefUrl);
+            }
+        } catch (Exception e) {
+            openDebriefInBrowser(debriefUrl);
+        }
+    }
+
+    private void openDebriefInBrowser(String url) {
+        if (getContext() == null) return;
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Could not open document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void fetchLocationTrail() {

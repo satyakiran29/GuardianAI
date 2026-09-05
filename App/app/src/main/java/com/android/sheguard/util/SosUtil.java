@@ -232,6 +232,10 @@ public class SosUtil {
         }
 
         String message = context.getString(R.string.whatsapp_sos_message, contactName, locationUrl);
+        String tripNote = Prefs.getString("dms_journey_note", "");
+        if (tripNote != null && !tripNote.trim().isEmpty()) {
+            message += "\n📝 *Trip/Ride Note:* " + tripNote.trim();
+        }
         try {
             String encodedMsg = URLEncoder.encode(message, "UTF-8");
             String url = !cleanPhone.isEmpty()
@@ -477,6 +481,10 @@ public class SosUtil {
     private static void sendSMS(Context context, ContactModel contact) {
         if (contact != null && contact.getPhone() != null) {
             String msg = context.getString(R.string.sos_message, contact.getName(), mLocation);
+            String tripNote = Prefs.getString("dms_journey_note", "");
+            if (tripNote != null && !tripNote.trim().isEmpty()) {
+                msg += "\n📝 Trip/Ride Note: " + tripNote.trim();
+            }
             boolean sent = SmsHelper.sendSmsWithFallback(context, contact.getPhone(), msg);
             Log.i("SOS", "sendSMS to " + contact.getName() + " (" + contact.getPhone() + "): " + (sent ? "SUCCESS" : "FAILED"));
         }

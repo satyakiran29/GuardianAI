@@ -25,6 +25,9 @@ public interface BackendApi {
     @POST("auth/profile/update/")
     Call<JsonObject> updateProfile(@Body Map<String, Object> body);
 
+    @POST("auth/delete-account/")
+    Call<JsonObject> deleteAccount(@Body Map<String, Object> body);
+
     @POST("auth/login/")
     Call<JsonObject> loginUser(@Body Map<String, Object> body);
 

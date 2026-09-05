@@ -41,19 +41,38 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.initials.setText(contacts.get(position).getName().substring(0, 1).toUpperCase());
-        holder.contact.setText(contacts.get(position).getName());
-        holder.number.setText(contacts.get(position).getPhone());
+        ContactModel c = contacts.get(position);
+        String name = c.getName();
+        String initial = !name.isEmpty() ? name.substring(0, 1).toUpperCase() : "?";
+        holder.initials.setText(initial);
+        holder.contact.setText(name);
+        holder.number.setText(c.getPhone());
+        holder.tvRelationship.setText(c.getRelationship());
+
+        if (c.isPrimary() || position == 0) {
+            holder.tvPrimaryBadge.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvPrimaryBadge.setVisibility(View.GONE);
+        }
+
+        if (holder.btnCall != null) {
+            holder.btnCall.setOnClickListener(v -> {
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + c.getPhone()));
+                context.startActivity(dialIntent);
+            });
+        }
 
         holder.copy.setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Activity.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("Contact", contacts.get(position).getName() + ": " + contacts.get(position).getPhone());
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+            ClipData clip = ClipData.newPlainText("Contact", c.getName() + ": " + c.getPhone());
+            if (clipboard != null) {
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
+            }
         });
 
         holder.delete.setOnClickListener(v -> ContactsFragment.removeContact(context, position));
-        holder.itemView.setOnClickListener(v -> context.startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + contacts.get(position).getPhone()))));
+        holder.itemView.setOnClickListener(v -> context.startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + c.getPhone()))));
     }
 
     @Override
@@ -63,8 +82,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView initials, contact, number;
-        ImageView copy, delete;
+        TextView initials, contact, number, tvRelationship, tvPrimaryBadge;
+        View copy, delete, btnCall;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +91,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             initials = itemView.findViewById(R.id.initials);
             contact = itemView.findViewById(R.id.name);
             number = itemView.findViewById(R.id.number);
+            tvRelationship = itemView.findViewById(R.id.tv_relationship);
+            tvPrimaryBadge = itemView.findViewById(R.id.tv_primary_badge);
+            btnCall = itemView.findViewById(R.id.btn_call_contact);
             copy = itemView.findViewById(R.id.copy);
             delete = itemView.findViewById(R.id.delete);
         }

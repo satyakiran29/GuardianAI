@@ -200,11 +200,11 @@ public class DeadMansSwitchService extends Service {
         String timeStr = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
 
         String title = warning
-                ? "⚠️ SOS in " + timeStr + " — Check In Now!"
-                : "🛡️ Dead Man's Switch Active";
+                ? "⚠️ Safety Alert: " + timeStr + " — Check In Now!"
+                : "🛡️ Safety Check-In Active";
         String body = warning
-                ? "No check-in received. SOS will auto-fire in " + timeStr + "!"
-                : "Countdown: " + timeStr + " remaining. Tap 'I'm Safe' to cancel.";
+                ? "No check-in received yet. SOS will alert your circle in " + timeStr + "!"
+                : "Countdown: " + timeStr + " remaining. Tap 'I'm Safe' when you arrive.";
 
         // "I'm Safe" action — calls back to service
         Intent cancelIntent = new Intent(this, DeadMansSwitchService.class);

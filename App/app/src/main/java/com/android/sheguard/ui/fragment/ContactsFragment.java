@@ -1,18 +1,24 @@
 package com.android.sheguard.ui.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ConcatAdapter;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.sheguard.R;
@@ -42,10 +48,19 @@ public class ContactsFragment extends Fragment {
     public static ContactsAdapter adapter;
     private FragmentContactsBinding binding;
 
+    private final ActivityResultLauncher<Intent> contactPickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Uri contactUri = result.getData().getData();
+                    extractAndAddContact(contactUri);
+                }
+            });
+
     @SuppressLint("NotifyDataSetChanged")
     public static void removeContact(Context context, int idx) {
         View tvEmptyList = ((AppCompatActivity) context).findViewById(R.id.tv_empty_list);
         new MaterialAlertDialogBuilder(context, R.style.MaterialComponents_MaterialAlertDialog)
+                .setTitle("Remove Contact")
                 .setMessage(context.getString(R.string.remove_contact_confirmation))
                 .setCancelable(false)
                 .setPositiveButton(context.getString(R.string.yes), (dialog, which) -> {
@@ -86,8 +101,8 @@ public class ContactsFragment extends Fragment {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
-            binding.header.collapsingToolbar.setTitle(getString(R.string.activity_contacts_title));
-            binding.header.collapsingToolbar.setSubtitle(getString(R.string.activity_contacts_desc));
+            binding.header.collapsingToolbar.setTitle("Trusted Safety Circle");
+            binding.header.collapsingToolbar.setSubtitle("Emergency Alert Network");
         }
 
         tvEmptyList = view.findViewById(R.id.tv_empty_list);
@@ -112,24 +127,81 @@ public class ContactsFragment extends Fragment {
         }
 
         if (contacts.isEmpty() && Prefs.getBoolean(Constants.IS_DEMO_MODE, false)) {
-            contacts.add(new ContactModel("Mom", "+15552345678"));
-            contacts.add(new ContactModel("Alex (Roommate)", "+15558765432"));
-            contacts.add(new ContactModel("Campus Security", "+15559990000"));
+            contacts.add(new ContactModel("Mom", "+15552345678", "Family", true));
+            contacts.add(new ContactModel("Alex", "+15558765432", "Roommate", false));
+            contacts.add(new ContactModel("Campus Security", "+15559990000", "Security", false));
             Prefs.putString(Constants.CONTACTS_LIST, gson.toJson(contacts));
         }
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new ContactsAdapter(requireContext(), contacts);
         ConcatAdapter concatAdapter = new ConcatAdapter(
-                new NewContactAdapter(requireContext(), view),
+                new NewContactAdapter(requireContext(), view, this::pickContactFromPhonebook),
                 adapter
         );
         binding.recyclerView.setAdapter(concatAdapter);
         binding.recyclerView.setHasFixedSize(false);
-        binding.recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
         binding.tvEmptyList.setVisibility(contacts.size() == 0 ? View.VISIBLE : View.GONE);
 
         return view;
+    }
+
+    private void pickContactFromPhonebook() {
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        try {
+            contactPickerLauncher.launch(pickIntent);
+        } catch (Exception e) {
+            Snackbar.make(binding.getRoot(), "Could not open contacts: " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void extractAndAddContact(Uri contactUri) {
+        if (getContext() == null || contactUri == null) return;
+        String[] projection = new String[]{
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER
+        };
+
+        try (Cursor cursor = requireContext().getContentResolver().query(contactUri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int nameIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+                int numIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+
+                String name = nameIdx != -1 ? cursor.getString(nameIdx) : "Trusted Contact";
+                String number = numIdx != -1 ? cursor.getString(numIdx) : "";
+
+                if (number != null) {
+                    number = number.replaceAll("[\\s\\-\\(\\)]", "");
+                }
+
+                if (number == null || number.isEmpty()) {
+                    Snackbar.make(binding.getRoot(), "Selected contact has no valid phone number", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (isPhoneNumberExists(number)) {
+                    Snackbar.make(binding.getRoot(), "This contact is already in your circle", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (contacts.size() >= 10) {
+                    Snackbar.make(binding.getRoot(), "Safety circle full (maximum 10 contacts)", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+
+                boolean isPrimary = contacts.isEmpty();
+                contacts.add(new ContactModel(name, number, "Family", isPrimary));
+                adapter.notifyDataSetChanged();
+
+                Gson gson = SheGuard.GSON;
+                Prefs.putString(Constants.CONTACTS_LIST, gson.toJson(contacts));
+
+                binding.tvEmptyList.setVisibility(contacts.isEmpty() ? View.VISIBLE : View.GONE);
+                Snackbar.make(binding.getRoot(), "Added " + name + " to your Safety Circle", Snackbar.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Snackbar.make(binding.getRoot(), "Error reading contact: " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
+        }
     }
 }

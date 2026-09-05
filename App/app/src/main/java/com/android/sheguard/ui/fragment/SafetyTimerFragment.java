@@ -13,25 +13,49 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.android.sheguard.R;
+import com.android.sheguard.common.Constants;
+import com.android.sheguard.config.Prefs;
 import com.android.sheguard.databinding.FragmentSafetyTimerBinding;
+import com.android.sheguard.model.ContactModel;
 import com.android.sheguard.service.DeadMansSwitchService;
 import com.android.sheguard.util.SosUtil;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Safety Timer — Dead Man's Switch.
- * Slider 1 min → 3 hr (180 min) + quick-pick chips.
- * Countdown runs as a foreground service, survives app kill.
- * Auto-triggers SOS if user doesn't check in before expiry.
+ * Arrival & Safety Check-In (Dead Man's Switch).
+ * Real-world human scenario presets: Cab Ride (15m), Walking (20m), Solo Run (35m),
+ * Meeting (45m), Late Transit (60m), Custom Time (1m-180m).
+ * Displays active emergency contacts preview and optional trip note.
+ * Auto-triggers SOS if user fails to check in before countdown expiry.
  */
 public class SafetyTimerFragment extends Fragment {
 
+    private enum Scenario {
+        CAB(15, "e.g. Uber White Dzire AP 39 X 1234 to Hitech City"),
+        WALK(20, "e.g. Walking from Metro Gate 2 to Home"),
+        RUN(35, "e.g. Central Park 5km outer trail"),
+        MEETING(45, "e.g. Coffee meetup with Alex at Third Wave"),
+        TRANSIT(60, "e.g. Route 42 Bus / Train Coach B3"),
+        CUSTOM(35, "e.g. Destination, vehicle number, or route note");
+
+        final int durationMinutes;
+        final String defaultHint;
+
+        Scenario(int durationMinutes, String defaultHint) {
+            this.durationMinutes = durationMinutes;
+            this.defaultHint = defaultHint;
+        }
+    }
+
     private FragmentSafetyTimerBinding binding;
-    private int selectedMinutes = 30; // default 30 min
+    private int selectedMinutes = 35; // default 35 min (Solo Run)
+    private Scenario activeScenario = Scenario.RUN;
 
     // ─── BroadcastReceiver — service ticks / events ───────────────────────────
     private final BroadcastReceiver dmsReceiver = new BroadcastReceiver() {
@@ -71,8 +95,9 @@ public class SafetyTimerFragment extends Fragment {
             return insets;
         });
 
+        loadTrustedCirclePreview();
+        setupScenarios();
         setupSlider();
-        setupQuickChips();
 
         binding.btnToggleTimer.setOnClickListener(v -> {
             if (DeadMansSwitchService.isRunning) {
@@ -84,10 +109,125 @@ public class SafetyTimerFragment extends Fragment {
 
         binding.btnCheckInSafe.setOnClickListener(v -> checkInSafe());
 
+        binding.cardTrustedCircle.setOnClickListener(v -> {
+            try {
+                Navigation.findNavController(v).navigate(R.id.action_safetyTimerFragment_to_contactsFragment);
+            } catch (Exception e) {
+                try {
+                    Navigation.findNavController(v).navigate(R.id.contactsFragment);
+                } catch (Exception ignored) {}
+            }
+        });
+
+        // Restore active trip note if service already running
+        String savedNote = Prefs.getString("dms_journey_note", "");
+        if (!savedNote.isEmpty()) {
+            binding.etJourneyNote.setText(savedNote);
+        }
+
         // Sync UI if service already running
-        if (DeadMansSwitchService.isRunning) setRunningState();
+        if (DeadMansSwitchService.isRunning) {
+            setRunningState();
+        } else {
+            setIdleState();
+        }
 
         return view;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Trusted Circle Preview
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void loadTrustedCirclePreview() {
+        if (getContext() == null || binding == null) return;
+        ArrayList<ContactModel> contacts = SosUtil.getStoredContacts(requireContext());
+
+        if (contacts.isEmpty()) {
+            binding.ivCircleBadge.setText("⚠️");
+            binding.tvCircleStatus.setText("No Emergency Contacts Saved");
+            binding.tvCircleStatus.setTextColor(0xFFF59E0B); // Amber
+            binding.tvCircleDetail.setText("Tap to add trusted contacts so GuardianAI knows who to alert.");
+        } else {
+            binding.ivCircleBadge.setText("👥");
+            binding.tvCircleStatus.setText("Alerts Will Notify " + contacts.size() + " Contact" + (contacts.size() > 1 ? "s" : ""));
+            binding.tvCircleStatus.setTextColor(0xFF38BDF8); // Calm sky blue
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < contacts.size(); i++) {
+                ContactModel c = contacts.get(i);
+                if (i > 0) sb.append(" • ");
+                sb.append(c.getName());
+                if (c.isPrimary()) sb.append(" (Primary)");
+            }
+            sb.append(" · Live GPS coordinates & trip note attached");
+            binding.tvCircleDetail.setText(sb.toString());
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Scenario Presets Setup
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void setupScenarios() {
+        binding.cardScenarioCab.setOnClickListener(v -> selectScenario(Scenario.CAB));
+        binding.cardScenarioWalk.setOnClickListener(v -> selectScenario(Scenario.WALK));
+        binding.cardScenarioRun.setOnClickListener(v -> selectScenario(Scenario.RUN));
+        binding.cardScenarioMeeting.setOnClickListener(v -> selectScenario(Scenario.MEETING));
+        binding.cardScenarioTransit.setOnClickListener(v -> selectScenario(Scenario.TRANSIT));
+        binding.cardScenarioCustom.setOnClickListener(v -> selectScenario(Scenario.CUSTOM));
+
+        // Initial selection: RUN (35m)
+        applyScenarioSelection(Scenario.RUN);
+    }
+
+    private void selectScenario(Scenario scenario) {
+        if (DeadMansSwitchService.isRunning) return;
+        applyScenarioSelection(scenario);
+
+        selectedMinutes = scenario.durationMinutes;
+        binding.sliderDuration.setValue(selectedMinutes);
+        updateDurationLabel(selectedMinutes);
+        binding.tvCountdownDigits.setText(formatTime(selectedMinutes * 60 * 1000L));
+    }
+
+    private void applyScenarioSelection(Scenario scenario) {
+        activeScenario = scenario;
+
+        // Reset all backgrounds
+        binding.cardScenarioCab.setBackgroundResource(R.drawable.bg_scenario_card_normal);
+        binding.cardScenarioWalk.setBackgroundResource(R.drawable.bg_scenario_card_normal);
+        binding.cardScenarioRun.setBackgroundResource(R.drawable.bg_scenario_card_normal);
+        binding.cardScenarioMeeting.setBackgroundResource(R.drawable.bg_scenario_card_normal);
+        binding.cardScenarioTransit.setBackgroundResource(R.drawable.bg_scenario_card_normal);
+        binding.cardScenarioCustom.setBackgroundResource(R.drawable.bg_scenario_card_normal);
+
+        // Highlight selected
+        switch (scenario) {
+            case CAB:
+                binding.cardScenarioCab.setBackgroundResource(R.drawable.bg_scenario_card_selected);
+                break;
+            case WALK:
+                binding.cardScenarioWalk.setBackgroundResource(R.drawable.bg_scenario_card_selected);
+                break;
+            case RUN:
+                binding.cardScenarioRun.setBackgroundResource(R.drawable.bg_scenario_card_selected);
+                break;
+            case MEETING:
+                binding.cardScenarioMeeting.setBackgroundResource(R.drawable.bg_scenario_card_selected);
+                break;
+            case TRANSIT:
+                binding.cardScenarioTransit.setBackgroundResource(R.drawable.bg_scenario_card_selected);
+                break;
+            case CUSTOM:
+                binding.cardScenarioCustom.setBackgroundResource(R.drawable.bg_scenario_card_selected);
+                break;
+        }
+
+        // Update hint in journey note
+        if (binding.etJourneyNote.getText() == null || binding.etJourneyNote.getText().toString().trim().isEmpty()) {
+            binding.etJourneyNote.setHint(scenario.defaultHint);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -108,9 +248,14 @@ public class SafetyTimerFragment extends Fragment {
             updateDurationLabel(selectedMinutes);
             // Update countdown preview
             binding.tvCountdownDigits.setText(formatTime(selectedMinutes * 60 * 1000L));
+
+            if (fromUser && activeScenario != Scenario.CUSTOM) {
+                // If user touches slider directly, switch active scenario to CUSTOM
+                applyScenarioSelection(Scenario.CUSTOM);
+            }
         });
 
-        // Show formatted time as slider label
+        // Show formatted time as slider floating label
         binding.sliderDuration.setLabelFormatter(value -> {
             int m = (int) value;
             if (m < 60) return m + " min";
@@ -123,38 +268,15 @@ public class SafetyTimerFragment extends Fragment {
     private void updateDurationLabel(int minutes) {
         String label;
         if (minutes < 60) {
-            label = "Duration: " + minutes + " min";
+            label = "Estimated Arrival: " + minutes + " min";
         } else {
             int h = minutes / 60;
             int m = minutes % 60;
             label = m == 0
-                    ? "Duration: " + h + " hr"
-                    : "Duration: " + h + " hr " + m + " min";
+                    ? "Estimated Arrival: " + h + " hr"
+                    : "Estimated Arrival: " + h + " hr " + m + " min";
         }
         binding.tvSelectedDuration.setText(label);
-    }
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Quick-pick chips
-    // ─────────────────────────────────────────────────────────────────────────
-
-    private void setupQuickChips() {
-        binding.chip5m.setOnClickListener(v -> setFromChip(5));
-        binding.chip15m.setOnClickListener(v -> setFromChip(15));
-        binding.chip30m.setOnClickListener(v -> setFromChip(30));
-        binding.chip45m.setOnClickListener(v -> setFromChip(45));
-        binding.chip60m.setOnClickListener(v -> setFromChip(60));
-        binding.chip90m.setOnClickListener(v -> setFromChip(90));
-        binding.chip120m.setOnClickListener(v -> setFromChip(120));
-        binding.chip180m.setOnClickListener(v -> setFromChip(180));
-    }
-
-    private void setFromChip(int minutes) {
-        if (DeadMansSwitchService.isRunning) return;
-        selectedMinutes = minutes;
-        binding.sliderDuration.setValue(minutes);
-        updateDurationLabel(minutes);
-        binding.tvCountdownDigits.setText(formatTime(minutes * 60 * 1000L));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -162,7 +284,19 @@ public class SafetyTimerFragment extends Fragment {
     // ─────────────────────────────────────────────────────────────────────────
 
     private void startDeadMansSwitch() {
-        if (getContext() == null) return;
+        if (getContext() == null || binding == null) return;
+
+        // Save optional trip / vehicle note
+        String note = binding.etJourneyNote.getText() != null
+                ? binding.etJourneyNote.getText().toString().trim()
+                : "";
+        Prefs.putString("dms_journey_note", note);
+
+        String triggerSource = "Safety Check-In Expired (No Check-In)";
+        if (!note.isEmpty()) {
+            triggerSource += " · Note: " + note;
+        }
+        Prefs.putString(Constants.DMS_TRIGGER_SOURCE, triggerSource);
 
         long durationMs = selectedMinutes * 60 * 1000L;
         Intent intent = new Intent(requireContext(), DeadMansSwitchService.class);
@@ -172,8 +306,7 @@ public class SafetyTimerFragment extends Fragment {
 
         setRunningState();
         Snackbar.make(binding.getRoot(),
-                "💀 Dead Man's Switch armed for " + formatDurationShort(selectedMinutes) +
-                        " — check in before it expires!",
+                "🛡️ Safety Check-In armed for " + formatDurationShort(selectedMinutes) + " — tap 'I Am Safe' when you arrive.",
                 Snackbar.LENGTH_LONG).show();
     }
 
@@ -199,6 +332,7 @@ public class SafetyTimerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadTrustedCirclePreview();
         IntentFilter filter = new IntentFilter();
         filter.addAction(DeadMansSwitchService.BROADCAST_TICK);
         filter.addAction(DeadMansSwitchService.BROADCAST_CANCELLED);
@@ -230,37 +364,45 @@ public class SafetyTimerFragment extends Fragment {
     private void setRunningState() {
         if (binding == null) return;
         binding.btnToggleTimer.setText(getString(R.string.safety_timer_cancel_btn));
+        binding.btnToggleTimer.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.surface_card_stroke));
         binding.btnCheckInSafe.setVisibility(View.VISIBLE);
-        binding.tvTimerStatus.setText(getString(R.string.safety_timer_running));
-        binding.tvTimerStatus.setTextColor(0xFF6366F1);
+        binding.tvTimerStatus.setText("🟢 Check-In Guard Active — Tap below when you arrive safely");
+        binding.tvTimerStatus.setTextColor(0xFF10B981);
         binding.sliderDuration.setEnabled(false);
-        setChipsEnabled(false);
+        binding.etJourneyNote.setEnabled(false);
+        setScenariosEnabled(false);
     }
 
     private void setIdleState() {
         if (binding == null) return;
-        binding.btnToggleTimer.setText(getString(R.string.safety_timer_start_btn));
+        binding.btnToggleTimer.setText("🛡️ Start Safety Check-In");
+        binding.btnToggleTimer.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryDark));
         binding.btnCheckInSafe.setVisibility(View.GONE);
-        binding.tvTimerStatus.setTextColor(0xFF6366F1);
+        binding.tvTimerStatus.setText("Ready · Select a preset or adjust duration below");
+        binding.tvTimerStatus.setTextColor(0xFF38BDF8);
         binding.sliderDuration.setEnabled(true);
-        setChipsEnabled(true);
+        binding.etJourneyNote.setEnabled(true);
+        setScenariosEnabled(true);
+
         // Reset preview to selected duration
         binding.tvCountdownDigits.setText(formatTime(selectedMinutes * 60 * 1000L));
-        if (getContext() != null) {
-            binding.tvCountdownDigits.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.text_color_primary));
-        }
+        binding.tvCountdownDigits.setTextColor(0xFFFFFFFF);
     }
 
-    private void setChipsEnabled(boolean enabled) {
-        binding.chip5m.setEnabled(enabled);
-        binding.chip15m.setEnabled(enabled);
-        binding.chip30m.setEnabled(enabled);
-        binding.chip45m.setEnabled(enabled);
-        binding.chip60m.setEnabled(enabled);
-        binding.chip90m.setEnabled(enabled);
-        binding.chip120m.setEnabled(enabled);
-        binding.chip180m.setEnabled(enabled);
+    private void setScenariosEnabled(boolean enabled) {
+        binding.cardScenarioCab.setEnabled(enabled);
+        binding.cardScenarioWalk.setEnabled(enabled);
+        binding.cardScenarioRun.setEnabled(enabled);
+        binding.cardScenarioMeeting.setEnabled(enabled);
+        binding.cardScenarioTransit.setEnabled(enabled);
+        binding.cardScenarioCustom.setEnabled(enabled);
+        float alpha = enabled ? 1.0f : 0.6f;
+        binding.cardScenarioCab.setAlpha(alpha);
+        binding.cardScenarioWalk.setAlpha(alpha);
+        binding.cardScenarioRun.setAlpha(alpha);
+        binding.cardScenarioMeeting.setAlpha(alpha);
+        binding.cardScenarioTransit.setAlpha(alpha);
+        binding.cardScenarioCustom.setAlpha(alpha);
     }
 
     private void updateCountdownDisplay(long ms) {
@@ -268,39 +410,35 @@ public class SafetyTimerFragment extends Fragment {
         binding.tvCountdownDigits.setText(formatTime(ms));
 
         if (ms <= 30_000L) {
-            // Warning — less than 30s
+            // Escalation warning — less than 30s
             long secs = ms / 1000;
             binding.tvCountdownDigits.setTextColor(0xFFEF4444);
-            binding.tvTimerStatus.setText("⚠️ SOS fires in " + secs + "s — tap I'm Safe!");
+            binding.tvTimerStatus.setText("⚠️ SOS dispatches in " + secs + "s — tap I Am Safe!");
             binding.tvTimerStatus.setTextColor(0xFFEF4444);
         } else {
-            if (getContext() != null) {
-                binding.tvCountdownDigits.setTextColor(
-                        ContextCompat.getColor(requireContext(), R.color.text_color_primary));
-            }
-            binding.tvTimerStatus.setText(getString(R.string.safety_timer_running));
-            binding.tvTimerStatus.setTextColor(0xFF6366F1);
+            binding.tvCountdownDigits.setTextColor(0xFFFFFFFF);
+            binding.tvTimerStatus.setText("🟢 Check-In Guard Active — Tap below when you arrive safely");
+            binding.tvTimerStatus.setTextColor(0xFF10B981);
         }
     }
 
     private void onServiceCancelled() {
         if (binding == null) return;
         if (getContext() != null) SosUtil.vibrateDevice(requireContext());
-        binding.tvTimerStatus.setText(getString(R.string.safety_timer_checked_in));
+        Prefs.remove("dms_journey_note");
+        binding.tvTimerStatus.setText("✨ Glad you're safe! Check-in confirmed.");
         binding.tvTimerStatus.setTextColor(0xFF10B981);
         setIdleState();
-        if (binding != null) {
-            Snackbar.make(binding.getRoot(),
-                    getString(R.string.safety_timer_checked_in),
-                    Snackbar.LENGTH_LONG).show();
-        }
+        Snackbar.make(binding.getRoot(),
+                "✨ Checked in safely! Timer disarmed.",
+                Snackbar.LENGTH_LONG).show();
     }
 
     private void onServiceExpired() {
         if (binding == null) return;
         binding.tvCountdownDigits.setText("00:00");
         binding.tvCountdownDigits.setTextColor(0xFFEF4444);
-        binding.tvTimerStatus.setText("🚨 EXPIRED — SOS AUTO-TRIGGERED");
+        binding.tvTimerStatus.setText("🚨 EXPIRED — EMERGENCY SOS DISPATCHED TO CONTACTS");
         binding.tvTimerStatus.setTextColor(0xFFEF4444);
         setIdleState();
     }
@@ -321,7 +459,7 @@ public class SafetyTimerFragment extends Fragment {
         return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
     }
 
-    /** Short human-readable duration, e.g. "30 min" or "1h 30m" */
+    /** Short human-readable duration, e.g. "35 min" or "1h 30m" */
     private String formatDurationShort(int minutes) {
         if (minutes < 60) return minutes + " min";
         int h = minutes / 60;

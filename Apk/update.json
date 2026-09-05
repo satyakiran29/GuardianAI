@@ -1,12 +1,12 @@
 {
-  "versionCode": 19,
-  "versionName": "1.2.1",
+  "versionCode": 23,
+  "versionName": "1.2.5",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Overhauled Guardian Command & Command Center with cohesive slate design and reduced color clutter",
-    "Instant 1-Tap 24h Trail Replay integrated directly into Emergency Distress Alert banners",
-    "24h Location History & Movement Trail Replay with Leaflet dark radar and incident beacon correlation",
-    "Enhanced SuperAdmin platform directory with 24h Trail inspection for all citizens and responders",
-    "Humanized UI copy with warm, reassuring safety phrasing across all screens"
+    "Permanent Account Deletion: Dedicated Account & Security section with confirmation dialog, server cascade purge, and local session wipe",
+    "Profile Overhaul with Dark Reassuring Look: Glowing pink avatar halo, camera badge overlay, script watermarks, and unified card layout",
+    "Humanized Arrival & Safety Check-In with real-world journey presets (Cab/Auto, Walking Alone, Solo Run, Meeting, Late Transit, Custom)",
+    "Trusted Safety Circle Alert Transparency with live emergency contacts preview and optional trip notes",
+    "Incident Heatmap & 24h Trail Forensic PDF Debrief Exporter with cryptographic SHA-256 seal"
   ]
 }

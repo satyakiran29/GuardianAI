@@ -463,5 +463,28 @@ public class ApiClient {
             }
         });
     }
+
+    public static void deleteAccount(String phone, String email, JsonCallback callback) {
+        Map<String, Object> body = new HashMap<>();
+        if (phone != null && !phone.isEmpty()) body.put("phone", phone);
+        if (email != null && !email.isEmpty()) body.put("email", email);
+
+        getService().deleteAccount(body).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Account deleted successfully");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Failed to delete account on server");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "deleteAccount network error: " + t.getMessage());
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
 }
 

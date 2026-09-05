@@ -204,7 +204,15 @@
         android:id="@+id/safetyTimerFragment"
         android:name="com.android.sheguard.ui.fragment.SafetyTimerFragment"
         android:label="fragment_safety_timer"
-        tools:layout="@layout/fragment_safety_timer" />
+        tools:layout="@layout/fragment_safety_timer">
+        <action
+            android:id="@+id/action_safetyTimerFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
     <fragment
         android:id="@+id/aiAssistantFragment"
         android:name="com.android.sheguard.ui.fragment.AiAssistantFragment"

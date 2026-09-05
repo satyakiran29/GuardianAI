@@ -26,10 +26,16 @@ public class NewContactAdapter extends RecyclerView.Adapter<NewContactAdapter.Vi
 
     Context context;
     View rootView;
+    Runnable onPickPhonebookListener;
 
-    public NewContactAdapter(Context context, View rootView) {
+    public NewContactAdapter(Context context, View rootView, Runnable onPickPhonebookListener) {
         this.context = context;
         this.rootView = rootView;
+        this.onPickPhonebookListener = onPickPhonebookListener;
+    }
+
+    public NewContactAdapter(Context context, View rootView) {
+        this(context, rootView, null);
     }
 
     @NonNull
@@ -42,6 +48,9 @@ public class NewContactAdapter extends RecyclerView.Adapter<NewContactAdapter.Vi
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (holder.btnPickContact != null && onPickPhonebookListener != null) {
+            holder.btnPickContact.setOnClickListener(v -> onPickPhonebookListener.run());
+        }
         holder.btnAddContact.setOnClickListener(v -> {
             String name = Objects.requireNonNull(holder.etAddName.getText()).toString().trim();
             String number = Objects.requireNonNull(holder.etAddNumber.getText()).toString().trim();
@@ -68,7 +77,8 @@ public class NewContactAdapter extends RecyclerView.Adapter<NewContactAdapter.Vi
             holder.etAddName.setText("");
             holder.etAddNumber.setText("");
 
-            ContactsFragment.contacts.add(new ContactModel(name, number));
+            boolean isPrimary = ContactsFragment.contacts.isEmpty();
+            ContactsFragment.contacts.add(new ContactModel(name, number, "Family", isPrimary));
             ContactsFragment.adapter.notifyDataSetChanged();
 
             Gson gson = SheGuard.GSON;
@@ -79,7 +89,7 @@ public class NewContactAdapter extends RecyclerView.Adapter<NewContactAdapter.Vi
                 ContactsFragment.tvEmptyList.setVisibility(ContactsFragment.contacts.size() == 0 ? View.VISIBLE : View.GONE);
             }
 
-            Snackbar.make(rootView, "Contact added successfully", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(rootView, "Added " + name + " to your Safety Circle", Snackbar.LENGTH_SHORT).show();
         });
     }
 
@@ -91,7 +101,7 @@ public class NewContactAdapter extends RecyclerView.Adapter<NewContactAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextInputEditText etAddName, etAddNumber;
-        MaterialButton btnAddContact;
+        MaterialButton btnAddContact, btnPickContact;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -99,6 +109,7 @@ public class NewContactAdapter extends RecyclerView.Adapter<NewContactAdapter.Vi
             etAddName = itemView.findViewById(R.id.et_add_name);
             etAddNumber = itemView.findViewById(R.id.et_add_number);
             btnAddContact = itemView.findViewById(R.id.btn_add_contact);
+            btnPickContact = itemView.findViewById(R.id.btn_pick_contact);
         }
     }
 }

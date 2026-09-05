@@ -240,7 +240,26 @@ def run_tests():
     assert res.status_code == 200
     print(f"✅ SuperAdmin Replay Access Verified: SuperAdmin can inspect any ward's trail")
 
-    print("\n🎉 ALL GUARDIAN SYSTEM & 24H REPLAY TESTS PASSED SUCCESSFULLY!")
+    # 12. Test Forensic Debrief & PDF Exporter (JSON & HTML)
+    res_debrief = client.get(f'/api/location/debrief/?ward_phone={sk_user.phone}&guardian_phone={skdad_guardian.phone}&hours=24')
+    assert res_debrief.status_code == 200, f"Debrief failed: {res_debrief.content}"
+    debrief_json = res_debrief.json()
+    assert debrief_json['status'] == 'success'
+    d_data = debrief_json['debrief']
+    assert 'sha256_checksum' in d_data
+    assert len(d_data['sha256_checksum']) == 64
+    assert 'metrics' in d_data
+    assert d_data['metrics']['total_distance_km'] >= 0.0
+    print(f"✅ Forensic Debrief JSON API Verified: Case {d_data['case_id']}, SHA-256: {d_data['sha256_checksum'][:16]}...")
+
+    # Test HTML printable export
+    res_html = client.get(f'/api/location/debrief/?ward_phone={sk_user.phone}&guardian_phone={skdad_guardian.phone}&hours=24&format=html')
+    assert res_html.status_code == 200, f"HTML debrief failed with {res_html.status_code}: {res_html.content}"
+    assert "GUARDIAN AI — FORENSIC INCIDENT DEBRIEF" in res_html.content.decode('utf-8')
+    assert "SHA-256 HASH:" in res_html.content.decode('utf-8')
+    print(f"✅ Forensic Debrief Printable HTML Document Verified (A4 Print/PDF ready)")
+
+    print("\n🎉 ALL GUARDIAN SYSTEM, 24H REPLAY & FORENSIC DEBRIEF TESTS PASSED SUCCESSFULLY!")
 
 if __name__ == '__main__':
     run_tests()
