@@ -15,26 +15,29 @@
         android:fillViewport="true"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingBottom="48dp" />
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false" />
 
-            <!-- Reassuring Empty State (shown when zero contacts are saved) -->
+            <!-- Reassuring Empty State (shown naturally below Active Safety Circle header when 0 contacts saved) -->
             <LinearLayout
                 android:id="@+id/tv_empty_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="320dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="48dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="24dp"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="20dp"
                 android:visibility="gone">
 
                 <TextView
@@ -62,7 +65,7 @@
                     android:textSize="12.5sp" />
             </LinearLayout>
 
-        </FrameLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <include
