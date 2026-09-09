@@ -2,6 +2,7 @@
 
 [![Django](https://img.shields.io/badge/Django-5.0+-092E20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![Django REST Framework](https://img.shields.io/badge/DRF-3.14+-a30000?style=for-the-badge&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
+[![Google Play](https://img.shields.io/badge/Google%20Play-Coming%20Soon-000000?style=for-the-badge&logo=google-play&logoColor=white)](#)
 [![Supabase](https://img.shields.io/badge/Supabase-Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)

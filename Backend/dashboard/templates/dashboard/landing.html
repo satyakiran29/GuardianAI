@@ -141,6 +141,17 @@
           <span>🤖</span>
           <span>Download APK ({{ apk_size_mb }})</span>
         </a>
+
+        <div class="mobile-playstore-pill" id="drawer-playstore-pill" role="button" tabindex="0" title="Google Play Store — Coming Soon (Click for status)">
+          <svg class="playstore-icon" viewBox="0 0 24 24" width="18" height="18">
+            <path fill="#4285F4" d="M3.609 1.814L13.793 12 3.61 22.186A2.25 2.25 0 0 1 3 20.625V3.375c0-.613.23-1.173.609-1.561z"/>
+            <path fill="#34A853" d="M17.442 8.351l-3.649 3.649 3.649 3.649 4.17-2.383c.72-.411 1.168-1.177 1.168-2.016 0-.84-.448-1.605-1.168-2.016l-4.17-2.383z"/>
+            <path fill="#FBBC04" d="M3.609 1.814c.241-.247.568-.414.945-.414.475 0 .918.232 1.258.426l11.63 6.645-3.649 3.529L3.609 1.814z"/>
+            <path fill="#EA4335" d="M13.793 12l3.649 3.529-11.63 6.645c-.34.194-.783.426-1.258.426-.377 0-.704-.167-.945-.414L13.793 12z"/>
+          </svg>
+          <span style="font-size: 0.86rem; font-weight: 600; color: #e2e8f0;">Google Play Store</span>
+          <span class="playstore-coming-soon-badge" style="margin-left: auto;">Coming Soon</span>
+        </div>
       </div>
     </div>
   </div>
@@ -171,6 +182,21 @@
               <span>Download APK ({{ apk_size_mb }})</span>
             </a>
 
+            <!-- Google Play Store Coming Soon Button -->
+            <div class="btn-playstore-coming-soon" id="hero-playstore-btn" role="button" tabindex="0" title="Google Play Store — Coming Soon (Click for details)">
+              <svg class="playstore-icon" viewBox="0 0 24 24" width="22" height="22">
+                <path fill="#4285F4" d="M3.609 1.814L13.793 12 3.61 22.186A2.25 2.25 0 0 1 3 20.625V3.375c0-.613.23-1.173.609-1.561z"/>
+                <path fill="#34A853" d="M17.442 8.351l-3.649 3.649 3.649 3.649 4.17-2.383c.72-.411 1.168-1.177 1.168-2.016 0-.84-.448-1.605-1.168-2.016l-4.17-2.383z"/>
+                <path fill="#FBBC04" d="M3.609 1.814c.241-.247.568-.414.945-.414.475 0 .918.232 1.258.426l11.63 6.645-3.649 3.529L3.609 1.814z"/>
+                <path fill="#EA4335" d="M13.793 12l3.649 3.529-11.63 6.645c-.34.194-.783.426-1.258.426-.377 0-.704-.167-.945-.414L13.793 12z"/>
+              </svg>
+              <div class="playstore-btn-text">
+                <span class="playstore-sub">GET IT ON</span>
+                <span class="playstore-main">Google Play</span>
+              </div>
+              <span class="playstore-coming-soon-badge">Coming Soon</span>
+            </div>
+
             <button type="button" class="btn-qr-toggle" id="open-qr-modal-btn">
               <span>📱</span>
               <span>Scan QR Code</span>
@@ -186,6 +212,7 @@
 
           <!-- Metadata Badges -->
           <div class="download-meta-chips">
+            <span class="meta-chip chip-playstore"><span>▶️</span> Play Store • Coming Soon</span>
             <span class="meta-chip"><span>🛡️</span> 100% Free &amp; Open Source</span>
             <span class="meta-chip"><span>⚡</span> {{ min_android_version }}</span>
             <span class="meta-chip"><span>🔒</span> SHA-256 Verified</span>
@@ -332,6 +359,33 @@
             quick 6-digit OTP code.
           </p>
         </div>
+      </div>
+
+      <!-- Play Store Notice Callout -->
+      <div class="playstore-notice-card">
+        <div class="playstore-notice-content">
+          <div class="playstore-notice-icon-box">
+            <svg viewBox="0 0 24 24" width="28" height="28">
+              <path fill="#4285F4" d="M3.609 1.814L13.793 12 3.61 22.186A2.25 2.25 0 0 1 3 20.625V3.375c0-.613.23-1.173.609-1.561z"/>
+              <path fill="#34A853" d="M17.442 8.351l-3.649 3.649 3.649 3.649 4.17-2.383c.72-.411 1.168-1.177 1.168-2.016 0-.84-.448-1.605-1.168-2.016l-4.17-2.383z"/>
+              <path fill="#FBBC04" d="M3.609 1.814c.241-.247.568-.414.945-.414.475 0 .918.232 1.258.426l11.63 6.645-3.649 3.529L3.609 1.814z"/>
+              <path fill="#EA4335" d="M13.793 12l3.649 3.529-11.63 6.645c-.34.194-.783.426-1.258.426-.377 0-.704-.167-.945-.414L13.793 12z"/>
+            </svg>
+          </div>
+          <div class="playstore-notice-text">
+            <div class="playstore-notice-title-row">
+              <span class="playstore-notice-heading">Google Play Store Deployment</span>
+              <span class="playstore-coming-soon-badge">Coming Soon</span>
+            </div>
+            <p class="playstore-notice-desc">
+              GuardianAI has been submitted to Google Play Console and is currently undergoing compliance &amp; safety review. Once certified, 1-tap installation and automated updates will be active directly from Google Play.
+            </p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-notice-details" id="notice-playstore-btn">
+          <span>ℹ️</span>
+          <span>View Status</span>
+        </button>
       </div>
     </div>
   </section>
@@ -571,6 +625,16 @@
 
         <div class="faq-item">
           <button class="faq-question">
+            <span>When will GuardianAI be available on the Google Play Store?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            GuardianAI is currently undergoing Google Play Console review and compliance verification. It will be available for direct installation from Google Play soon! In the meantime, you can download and install the verified, cryptographic APK directly from this official portal.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
             <span>Is GuardianAI completely free?</span>
             <span class="faq-icon">+</span>
           </button>
@@ -599,6 +663,7 @@
           <h5>Platform Links</h5>
           <ul>
             <li><a href="{% url 'download-apk' %}">Download APK (v1.2.9)</a></li>
+            <li><a href="javascript:void(0)" id="footer-playstore-link">Google Play Store <span class="playstore-coming-soon-badge" style="font-size: 0.62rem; padding: 2px 6px;">Coming Soon</span></a></li>
             <li><a href="{% url 'dashboard-login' %}">Command Center Login</a></li>
             <li><a href="{% url 'app-version-api' %}">Release Version API</a></li>
             <li><a href="/admin/">Django Administration</a></li>
@@ -629,6 +694,45 @@
       </div>
     </div>
   </footer>
+
+  <!-- Google Play Store Status Modal Dialog -->
+  <div class="qr-modal-backdrop" id="playstore-modal-overlay">
+    <div class="qr-modal-card playstore-modal-card">
+      <button class="qr-close-btn" id="playstore-modal-close-btn" aria-label="Close Play Store Modal">&times;</button>
+      <div class="playstore-modal-header">
+        <svg viewBox="0 0 24 24" width="44" height="44" style="vertical-align: middle;">
+          <path fill="#4285F4" d="M3.609 1.814L13.793 12 3.61 22.186A2.25 2.25 0 0 1 3 20.625V3.375c0-.613.23-1.173.609-1.561z"/>
+          <path fill="#34A853" d="M17.442 8.351l-3.649 3.649 3.649 3.649 4.17-2.383c.72-.411 1.168-1.177 1.168-2.016 0-.84-.448-1.605-1.168-2.016l-4.17-2.383z"/>
+          <path fill="#FBBC04" d="M3.609 1.814c.241-.247.568-.414.945-.414.475 0 .918.232 1.258.426l11.63 6.645-3.649 3.529L3.609 1.814z"/>
+          <path fill="#EA4335" d="M13.793 12l3.649 3.529-11.63 6.645c-.34.194-.783.426-1.258.426-.377 0-.704-.167-.945-.414L13.793 12z"/>
+        </svg>
+        <h3 class="playstore-modal-title">Google Play Store</h3>
+        <span class="playstore-coming-soon-badge" style="font-size: 0.76rem; padding: 4px 10px;">Coming Soon</span>
+      </div>
+
+      <div class="playstore-modal-status-pill">
+        <span class="status-dot-pulse" style="background-color: #fbbf24; box-shadow: 0 0 10px #fbbf24;"></span>
+        <span>Submission Under Review &amp; Certification</span>
+      </div>
+
+      <p class="playstore-modal-desc">
+        GuardianAI v1.2.9 has been submitted to the Google Play Store and is currently undergoing standard policy verification and security audits.
+        <br><br>
+        Once approved, 1-tap installation and automated background updates will be accessible via Google Play. In the meantime, you can install the official standalone APK right now with 100% feature parity.
+      </p>
+
+      <div class="playstore-modal-actions">
+        <a href="{% url 'download-apk' %}" class="btn btn-primary playstore-modal-btn-download">
+          <span>🤖</span>
+          <span>Download Verified APK ({{ apk_size_mb }})</span>
+        </a>
+        <button type="button" class="btn btn-secondary playstore-modal-btn-qr" id="playstore-to-qr-btn">
+          <span>📱</span>
+          <span>Scan QR Code</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- QR Code Modal Dialog -->
   <div class="qr-modal-backdrop" id="qr-modal-overlay">
@@ -790,9 +894,55 @@
       link.addEventListener('click', closeMobileNav);
     });
 
+    // Play Store Modal Logic
+    const playstoreModal = document.getElementById('playstore-modal-overlay');
+    const openPlaystoreBtn = document.getElementById('hero-playstore-btn');
+    const drawerPlaystoreBtn = document.getElementById('drawer-playstore-pill');
+    const noticePlaystoreBtn = document.getElementById('notice-playstore-btn');
+    const footerPlaystoreBtn = document.getElementById('footer-playstore-link');
+    const closePlaystoreBtn = document.getElementById('playstore-modal-close-btn');
+    const playstoreToQrBtn = document.getElementById('playstore-to-qr-btn');
+
+    function openPlaystoreModal() {
+      if (playstoreModal) playstoreModal.classList.add('active');
+    }
+
+    function closePlaystoreModal() {
+      if (playstoreModal) playstoreModal.classList.remove('active');
+    }
+
+    if (openPlaystoreBtn) openPlaystoreBtn.addEventListener('click', openPlaystoreModal);
+    if (drawerPlaystoreBtn) {
+      drawerPlaystoreBtn.addEventListener('click', () => {
+        closeMobileNav();
+        openPlaystoreModal();
+      });
+    }
+    if (noticePlaystoreBtn) noticePlaystoreBtn.addEventListener('click', openPlaystoreModal);
+    if (footerPlaystoreBtn) footerPlaystoreBtn.addEventListener('click', openPlaystoreModal);
+    if (closePlaystoreBtn) closePlaystoreBtn.addEventListener('click', closePlaystoreModal);
+
+    if (playstoreModal) {
+      playstoreModal.addEventListener('click', (e) => {
+        if (e.target === playstoreModal) closePlaystoreModal();
+      });
+    }
+
+    if (playstoreToQrBtn && qrModal) {
+      playstoreToQrBtn.addEventListener('click', () => {
+        closePlaystoreModal();
+        const downloadUrl = window.location.origin + "{% url 'download-apk' %}";
+        const urlBox = document.getElementById('qr-url-display');
+        if (urlBox) urlBox.innerText = downloadUrl;
+        renderQrCode(downloadUrl);
+        qrModal.classList.add('active');
+      });
+    }
+
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (qrModal) qrModal.classList.remove('active');
+        closePlaystoreModal();
         closeMobileNav();
       }
     });

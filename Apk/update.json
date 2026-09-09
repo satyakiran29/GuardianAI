@@ -1,6 +1,7 @@
 {
   "versionCode": 27,
   "versionName": "1.2.9",
+  "playStoreStatus": "Coming Soon (In Review)",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
     "2-Step Verification (2FA): Account security switch in app and web settings requiring 6-digit email OTP verification",
