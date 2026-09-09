@@ -267,7 +267,7 @@
       const alertBox = document.getElementById('otp-alert-box');
 
       if (!phone) {
-        alert('Please enter your phone number first.');
+        alert('Please enter your registered phone number first.');
         return;
       }
 
@@ -285,19 +285,28 @@
         btn.disabled = false;
 
         alertBox.style.display = 'block';
-        alertBox.style.background = 'rgba(16, 185, 129, 0.15)';
-        alertBox.style.border = '1px solid #10b981';
-        alertBox.style.color = '#34d399';
-        alertBox.innerHTML = `✅ Passcode generated: <strong style="color:#fff; font-size:1rem;">${data.otp || '123456'}</strong> (Demo Pass: 123456)`;
-        document.getElementById('otp_code').value = data.otp || '123456';
+        if (res.ok && data.status === 'success') {
+          alertBox.style.background = 'rgba(16, 185, 129, 0.15)';
+          alertBox.style.border = '1px solid #10b981';
+          alertBox.style.color = '#34d399';
+          let emailNote = data.email_sent ? ` • 📧 Passcode dispatched to ${data.email_destination}` : '';
+          alertBox.innerHTML = `✅ Passcode generated: <strong style="color:#fff; font-size:1.05rem; letter-spacing: 2px;">${data.otp}</strong> (Demo: 123456)${emailNote}`;
+          document.getElementById('otp_code').value = data.otp;
+        } else {
+          alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
+          alertBox.style.border = '1px solid #ef4444';
+          alertBox.style.color = '#fca5a5';
+          alertBox.innerHTML = `⚠️ ${data.message || 'Could not send OTP. You can use master passcode: 123456'}`;
+          document.getElementById('otp_code').value = '123456';
+        }
       } catch (e) {
         btn.innerText = 'Request Passcode';
         btn.disabled = false;
         alertBox.style.display = 'block';
         alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
         alertBox.style.border = '1px solid #ef4444';
-        alertBox.style.color = '#f87171';
-        alertBox.innerHTML = 'Using master passcode: <strong>123456</strong>';
+        alertBox.style.color = '#fca5a5';
+        alertBox.innerHTML = '⚡ Network offline. Using master passcode: <strong>123456</strong>';
         document.getElementById('otp_code').value = '123456';
       }
     }

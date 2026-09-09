@@ -7,6 +7,8 @@ from .views import (
     alerts_view,
     otp_view,
     guardian_hub_view,
+    email_management_view,
+    send_test_email_action,
     dispatch_alert_action,
     resolve_alert_action,
     update_user_role_action,
@@ -25,6 +27,8 @@ urlpatterns = [
     path('users/export/csv/', export_users_csv, name='dashboard-export-users-csv'),
     path('alerts/', alerts_view, name='dashboard-alerts'),
     path('otp/', otp_view, name='dashboard-otp'),
+    path('emails/', email_management_view, name='dashboard-emails'),
+    path('emails/test/', send_test_email_action, name='dashboard-send-test-email'),
     
     # Action hooks
     path('alerts/<int:alert_id>/dispatch/', dispatch_alert_action, name='dashboard-dispatch-alert'),

@@ -63,6 +63,12 @@
             <span>OTP &amp; Auth System</span>
           </a>
         </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-emails' %}active{% endif %}">
+          <a href="{% url 'dashboard-emails' %}">
+            <span>📧</span>
+            <span>Email Management</span>
+          </a>
+        </li>
       </ul>
 
       <div class="sidebar-footer">

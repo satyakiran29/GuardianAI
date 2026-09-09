@@ -81,16 +81,34 @@ class EmergencyAlert(models.Model):
         return f"SOS #{self.id} - {self.user.name} ({self.status})"
 
 
+class ExpiredStatus(int):
+    """
+    A boolean-compatible status object that is both callable and evaluates to a boolean directly.
+    Allows:
+      - record.is_expired()
+      - record.is_expired
+      - {% if record.is_expired %} in Django templates
+    """
+    def __call__(self):
+        return bool(self)
+
+
 class OtpRecord(models.Model):
-    target = models.CharField(max_length=100) # Phone number or Email
-    otp_code = models.CharField(max_length=6)
+    target = models.CharField(max_length=100, db_index=True) # Phone number or Email
+    otp_code = models.CharField(max_length=6, db_index=True)
     purpose = models.CharField(max_length=50, default='registration') # registration, login, reset, sos
-    is_verified = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     expires_at = models.DateTimeField()
 
+    @property
     def is_expired(self):
-        return timezone.now() > self.expires_at
+        return ExpiredStatus(1 if timezone.now() > self.expires_at else 0)
+
+    @property
+    def remaining_seconds(self):
+        delta = (self.expires_at - timezone.now()).total_seconds()
+        return max(0, int(delta))
 
     def __str__(self):
         return f"OTP {self.otp_code} for {self.target} ({'Verified' if self.is_verified else 'Pending'})"
@@ -179,3 +197,38 @@ class LocationHistory(models.Model):
 
     def __str__(self):
         return f"{self.user.name} @ ({self.latitude}, {self.longitude}) - {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
+
+
+class EmailLog(models.Model):
+    EMAIL_TYPE_CHOICES = (
+        ('otp', 'OTP Passcode'),
+        ('sos_alert', 'Emergency SOS Alert'),
+        ('test', 'System Diagnostic Test'),
+        ('system', 'System Notification'),
+    )
+
+    STATUS_CHOICES = (
+        ('queued', 'Queued'),
+        ('sent', 'Sent Successfully'),
+        ('failed', 'Delivery Failed'),
+    )
+
+    recipient = models.CharField(max_length=255, db_index=True)
+    subject = models.CharField(max_length=255)
+    email_type = models.CharField(max_length=30, choices=EMAIL_TYPE_CHOICES, default='otp')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='queued', db_index=True)
+    error_message = models.TextField(blank=True, null=True)
+    metadata = models.JSONField(blank=True, default=dict)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    delivered_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['status', '-created_at']),
+            models.Index(fields=['recipient', '-created_at']),
+        ]
+
+    def __str__(self):
+        return f"[{self.get_status_display()}] {self.email_type.upper()} -> {self.recipient} ({self.created_at.strftime('%Y-%m-%d %H:%M')})"
+

@@ -174,11 +174,11 @@ SUPABASE_URL = os.getenv("SUPABASE_URL", "https://jwntzspmzapxablkmqhp.supabase.
 SUPABASE_KEY = os.getenv("SUPABASE_KEY", "sb_publishable_jB5ChDHJa-XPwBPyoHMLNQ_1kZb3AMv")
 
 # Email Configuration (Gmail SMTP)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_TIMEOUT = 3
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 't')
+EMAIL_TIMEOUT = 12
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'satyakiran294@gmail.com')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'tfwaavbdoyxeegnx')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'GuardianAI Safety <satyakiran294@gmail.com>')

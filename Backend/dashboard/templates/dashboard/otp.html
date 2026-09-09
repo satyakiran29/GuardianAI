@@ -6,7 +6,12 @@
 <div class="top-header">
   <div class="header-title">
     <h2>OTP &amp; Security Authentication System</h2>
-    <p>6-Digit dynamic OTP dispatch monitor, verification lifecycle, and cloud security tokens</p>
+    <p>6-Digit dynamic OTP dispatch monitor, cross-format verification, and transactional email sync</p>
+  </div>
+  <div>
+    <a href="{% url 'dashboard-emails' %}" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
+      <span>📧</span> View Dispatched OTP Emails
+    </a>
   </div>
 </div>
 
@@ -32,11 +37,20 @@
 
   <div class="metric-card">
     <div class="metric-header">
-      <span class="metric-title">Pending / Active OTPs</span>
+      <span class="metric-title">Active OTPs</span>
       <div class="metric-icon icon-purple">⏳</div>
     </div>
     <div class="metric-value">{{ pending_count }}</div>
     <div class="metric-subtitle">Awaiting citizen verification</div>
+  </div>
+
+  <div class="metric-card">
+    <div class="metric-header">
+      <span class="metric-title">Expired Unverified</span>
+      <div class="metric-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">⌛</div>
+    </div>
+    <div class="metric-value" style="color: {% if expired_count > 0 %}#f87171{% else %}#fff{% endif %};">{{ expired_count }}</div>
+    <div class="metric-subtitle">Timed out past 10 minutes</div>
   </div>
 </div>
 
@@ -44,15 +58,17 @@
 <div class="glass-panel" style="margin-bottom: 24px; border: 1px solid var(--border-glow-purple);">
   <div class="panel-header">
     <div class="panel-title">
-      <span>⚡</span> Live OTP Dispatch &amp; Verification Simulator
+      <span>⚡</span> Live OTP Dispatch &amp; In-Place Verification Simulator
     </div>
-    <span class="role-badge role-superadmin">Developer Testing Console</span>
+    <span class="role-badge role-superadmin">Interactive Testing Console</span>
   </div>
 
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;">
+    <!-- Column 1: Dispatch -->
     <div>
-      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 14px;">
-        Generate and dispatch a real 6-digit OTP code to any phone or email. This will test the live API and Supabase database sync in real time.
+      <h4 style="margin: 0 0 8px; color: #fff; font-size: 0.95rem;">1. Generate &amp; Dispatch Passcode</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
+        Generate and dispatch a real 6-digit OTP code to any phone or email. Dispatches via Gmail SMTP if target has an email.
       </p>
 
       <div class="form-group">
@@ -60,17 +76,40 @@
         <input type="text" id="test-otp-target" class="form-control" placeholder="e.g. +919876543210 or user@example.com" value="+919876543210">
       </div>
 
-      <button id="btn-send-test-otp" class="btn btn-primary" type="button">
+      <button id="btn-send-test-otp" class="btn btn-primary" type="button" style="width: 100%;">
         ⚡ Dispatch 6-Digit OTP Now
       </button>
+
+      <div id="test-otp-result" style="margin-top: 14px;"></div>
     </div>
 
-    <div>
-      <div id="test-otp-result">
-        <div style="background: rgba(15, 23, 42, 0.6); border: 1px dashed var(--border-color); padding: 20px; border-radius: 12px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
-          Enter target and press dispatch to simulate OTP issuance and view cloud payload.
+    <!-- Column 2: In-Place Verification -->
+    <div style="background: rgba(15, 23, 42, 0.5); border: 1px solid var(--border-color); border-radius: 12px; padding: 18px;">
+      <h4 style="margin: 0 0 8px; color: #fff; font-size: 0.95rem;">2. Test Verification (In-Place)</h4>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;">
+        Verify the generated code or test demo bypass (123456) against the backend with normalized target matching.
+      </p>
+
+      <div class="form-group">
+        <label class="form-label">Verification Target (Phone / Email):</label>
+        <input type="text" id="verify-otp-target" class="form-control" placeholder="Same target phone or email" value="+919876543210">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">6-Digit Code to Verify:</label>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="verify-otp-code" class="form-control" maxlength="6" placeholder="e.g. 123456" style="letter-spacing: 3px; font-weight: bold; font-family: monospace; font-size: 1.1rem; text-align: center;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="fillVerifyDemo()" style="white-space: nowrap;">
+            ⚡ 123456
+          </button>
         </div>
       </div>
+
+      <button id="btn-verify-test-otp" class="btn btn-primary" type="button" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);">
+        ✓ Verify Passcode Now
+      </button>
+
+      <div id="verify-otp-result" style="margin-top: 14px;"></div>
     </div>
   </div>
 </div>
@@ -81,11 +120,23 @@
     <div class="panel-title">
       <span>📜</span> Recent OTP Dispatch Logs
     </div>
-    <button class="btn btn-outline btn-sm" onclick="location.reload()">🔄 Refresh Logs</button>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <input type="text" id="otp-search-input" class="form-control" placeholder="Filter by target..." style="width: 200px; padding: 6px 12px; font-size: 0.82rem;">
+      <button class="btn btn-outline btn-sm" onclick="location.reload()">🔄 Refresh Logs</button>
+      {% if expired_count > 0 %}
+        <form method="POST" style="margin: 0;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="prune_expired">
+          <button type="submit" class="btn btn-outline btn-sm" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
+            🧹 Prune Expired ({{ expired_count }})
+          </button>
+        </form>
+      {% endif %}
+    </div>
   </div>
 
   <div class="table-container">
-    <table class="cyber-table">
+    <table class="cyber-table" id="otp-logs-table">
       <thead>
         <tr>
           <th>Target (Phone / Email)</th>
@@ -94,6 +145,7 @@
           <th>Verification Status</th>
           <th>Dispatched At</th>
           <th>Expiry</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -127,11 +179,16 @@
             <td>
               <span style="font-size: 0.8rem; color: var(--text-muted);">{{ record.expires_at|date:"H:i:s" }}</span>
             </td>
+            <td>
+              <button class="btn btn-outline btn-sm" onclick="quickFillVerify('{{ record.target }}', '{{ record.otp_code }}')" style="padding: 3px 8px; font-size: 0.72rem;">
+                ⚡ Test Verify
+              </button>
+            </td>
           </tr>
         {% empty %}
           <tr>
-            <td colspan="6" style="text-align: center; padding: 30px; color: var(--text-muted);">
-              No OTP records generated yet.
+            <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-muted);">
+              No OTP records generated yet. Use the simulator above to dispatch a test code!
             </td>
           </tr>
         {% endfor %}
@@ -139,4 +196,31 @@
     </table>
   </div>
 </div>
+
+<script>
+function fillVerifyDemo() {
+  document.getElementById('verify-otp-code').value = '123456';
+}
+
+function quickFillVerify(target, code) {
+  document.getElementById('verify-otp-target').value = target;
+  document.getElementById('verify-otp-code').value = code;
+  window.scrollTo({ top: 120, behavior: 'smooth' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('otp-search-input');
+  const table = document.getElementById('otp-logs-table');
+  if (!searchInput || !table) return;
+
+  searchInput.addEventListener('input', () => {
+    const term = searchInput.value.toLowerCase().trim();
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      row.style.display = text.includes(term) ? '' : 'none';
+    });
+  });
+});
+</script>
 {% endblock %}

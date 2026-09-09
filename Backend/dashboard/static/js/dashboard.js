@@ -274,49 +274,127 @@ function initInstantTableFilter() {
 // OTP Simulator helper
 function initOtpSimulator() {
   const btnSendTestOtp = document.getElementById('btn-send-test-otp');
-  if (!btnSendTestOtp) return;
+  const btnVerifyTestOtp = document.getElementById('btn-verify-test-otp');
 
-  btnSendTestOtp.addEventListener('click', async () => {
-    const targetInput = document.getElementById('test-otp-target');
-    const target = targetInput ? targetInput.value.trim() : '';
-    const outputDiv = document.getElementById('test-otp-result');
+  if (btnSendTestOtp) {
+    btnSendTestOtp.addEventListener('click', async () => {
+      const targetInput = document.getElementById('test-otp-target');
+      const target = targetInput ? targetInput.value.trim() : '';
+      const outputDiv = document.getElementById('test-otp-result');
 
-    if (!target) {
-      alert('Please enter a phone number or email address');
-      return;
-    }
-
-    try {
-      btnSendTestOtp.disabled = true;
-      btnSendTestOtp.innerText = 'Dispatching OTP...';
-
-      const res = await fetch('/api/auth/send-otp/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ target: target, purpose: 'dashboard_test' })
-      });
-
-      const json = await res.json();
-      btnSendTestOtp.disabled = false;
-      btnSendTestOtp.innerText = 'Send Test OTP';
-
-      if (outputDiv) {
-        outputDiv.innerHTML = `
-          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 12px; border-radius: 8px; margin-top: 10px; color: #34d399;">
-            <strong>✅ OTP Dispatched!</strong><br>
-            Target: <code>${json.target}</code><br>
-            Generated Code: <strong style="font-size: 1.2rem; color: #fff; letter-spacing: 2px;">${json.otp}</strong><br>
-            Expires in: 10 Minutes
-          </div>
-        `;
+      if (!target) {
+        alert('Please enter a phone number or email address');
+        return;
       }
-    } catch (e) {
-      btnSendTestOtp.disabled = false;
-      btnSendTestOtp.innerText = 'Send Test OTP';
-      alert('Error sending OTP: ' + e);
-    }
-  });
+
+      try {
+        btnSendTestOtp.disabled = true;
+        btnSendTestOtp.innerText = '⚡ Dispatching OTP...';
+
+        const res = await fetch('/api/auth/send-otp/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target: target, purpose: 'dashboard_test' })
+        });
+
+        const json = await res.json();
+        btnSendTestOtp.disabled = false;
+        btnSendTestOtp.innerText = '⚡ Dispatch 6-Digit OTP Now';
+
+        if (res.ok && json.status === 'success') {
+          // Auto-fill verification tester for testing convenience
+          const verifyTarget = document.getElementById('verify-otp-target');
+          const verifyCode = document.getElementById('verify-otp-code');
+          if (verifyTarget) verifyTarget.value = json.target || target;
+          if (verifyCode) verifyCode.value = json.otp || '';
+
+          if (outputDiv) {
+            outputDiv.innerHTML = `
+              <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 14px; border-radius: 10px; color: #34d399;">
+                <strong>✅ OTP Dispatched Successfully!</strong><br>
+                <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 4px;">Target: <code>${json.target}</code></div>
+                <div style="margin: 6px 0;">Generated Code: <strong style="font-size: 1.3rem; color: #fff; letter-spacing: 3px; font-family: monospace;">${json.otp}</strong></div>
+                <div style="font-size: 0.78rem; color: #94a3b8;">
+                  Valid for 10 Minutes (600s)${json.email_sent ? ` • 📧 Email dispatched to ${json.email_destination}` : ''}
+                </div>
+              </div>
+            `;
+          }
+        } else {
+          if (outputDiv) {
+            outputDiv.innerHTML = `
+              <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; padding: 14px; border-radius: 10px; color: #f87171;">
+                <strong>❌ Dispatch Failed</strong><br>
+                <span style="font-size: 0.85rem;">${json.message || 'Unable to generate OTP'}</span>
+              </div>
+            `;
+          }
+        }
+      } catch (e) {
+        btnSendTestOtp.disabled = false;
+        btnSendTestOtp.innerText = '⚡ Dispatch 6-Digit OTP Now';
+        alert('Error sending OTP: ' + e);
+      }
+    });
+  }
+
+  if (btnVerifyTestOtp) {
+    btnVerifyTestOtp.addEventListener('click', async () => {
+      const targetInput = document.getElementById('verify-otp-target');
+      const codeInput = document.getElementById('verify-otp-code');
+      const outputDiv = document.getElementById('verify-otp-result');
+
+      const target = targetInput ? targetInput.value.trim() : '';
+      const otpCode = codeInput ? codeInput.value.trim() : '';
+
+      if (!target || !otpCode) {
+        alert('Please enter both target and 6-digit passcode');
+        return;
+      }
+
+      try {
+        btnVerifyTestOtp.disabled = true;
+        btnVerifyTestOtp.innerText = 'Verifying Passcode...';
+
+        const res = await fetch('/api/auth/verify-otp/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target: target, otp_code: otpCode })
+        });
+
+        const json = await res.json();
+        btnVerifyTestOtp.disabled = false;
+        btnVerifyTestOtp.innerText = '✓ Verify Passcode Now';
+
+        if (res.ok && json.status === 'success') {
+          if (outputDiv) {
+            outputDiv.innerHTML = `
+              <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 14px; border-radius: 10px; color: #34d399;">
+                <strong>✓ VERIFICATION SUCCESSFUL!</strong><br>
+                <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 4px;">Target: <code>${json.target}</code></div>
+                <div style="font-size: 0.82rem; color: #34d399; margin-top: 2px;">${json.message}</div>
+              </div>
+            `;
+          }
+        } else {
+          if (outputDiv) {
+            outputDiv.innerHTML = `
+              <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; padding: 14px; border-radius: 10px; color: #f87171;">
+                <strong>❌ Verification Rejected</strong><br>
+                <span style="font-size: 0.85rem;">${json.message || 'Invalid or expired OTP code'}</span>
+              </div>
+            `;
+          }
+        }
+      } catch (e) {
+        btnVerifyTestOtp.disabled = false;
+        btnVerifyTestOtp.innerText = '✓ Verify Passcode Now';
+        alert('Error verifying OTP: ' + e);
+      }
+    });
+  }
 }
+
 
 // Modal Toggle Helpers
 function openModal(modalId) {

@@ -18,7 +18,9 @@ from .views import (
     GuardianTrackedWardsView,
     ChatMessagesView,
     LocationHistoryView,
-    ForensicDebriefView
+    ForensicDebriefView,
+    TestEmailApiView,
+    EmailLogsApiView
 )
 
 urlpatterns = [
@@ -57,5 +59,9 @@ urlpatterns = [
 
     # Dashboard Telemetry
     path('dashboard/stats/', DashboardStatsApiView.as_view(), name='api-dashboard-stats'),
+
+    # Transactional Email System
+    path('email/test/', TestEmailApiView.as_view(), name='api-email-test'),
+    path('email/logs/', EmailLogsApiView.as_view(), name='api-email-logs'),
 ]
 

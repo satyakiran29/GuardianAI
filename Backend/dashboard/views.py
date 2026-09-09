@@ -9,8 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q, Count
 from django.core.paginator import Paginator
 
-from guardian_api.models import UserProfile, EmergencyAlert, OtpRecord, EmergencyContact, TripLog, GuardianLink, ChatMessage
+from guardian_api.models import UserProfile, EmergencyAlert, OtpRecord, EmergencyContact, TripLog, GuardianLink, ChatMessage, EmailLog
 from guardian_api.supabase_client import sync_user_to_supabase, sync_alert_to_supabase
+from guardian_api.views import get_target_filter, canonicalize_target
+from guardian_api.resend_mailer import check_smtp_health, send_test_email
 
 
 def find_user_by_identifier(identifier, user_id=None):
@@ -147,12 +149,13 @@ def login_view(request):
             if otp_code == '123456':
                 is_valid = True
             else:
+                target_q = get_target_filter(phone)
                 otp_rec = OtpRecord.objects.filter(
-                    target=phone,
+                    target_q,
                     otp_code=otp_code,
                     is_verified=False,
                     expires_at__gte=timezone.now()
-                ).first()
+                ).order_by('-created_at').first()
                 if otp_rec:
                     otp_rec.is_verified = True
                     otp_rec.save()
@@ -169,6 +172,10 @@ def login_view(request):
                         is_verified=True,
                         is_active=True
                     )
+                    sync_user_to_supabase(user)
+                elif not user.is_verified:
+                    user.is_verified = True
+                    user.save(update_fields=['is_verified'])
                     sync_user_to_supabase(user)
 
                 request.session['dashboard_user_id'] = user.id
@@ -573,12 +580,19 @@ def alerts_view(request):
 
 @dashboard_login_required
 def otp_view(request):
-    otps = OtpRecord.objects.all().order_by('-created_at')[:50]
+    if request.method == 'POST' and request.POST.get('action') == 'prune_expired':
+        deleted_count, _ = OtpRecord.objects.filter(is_verified=False, expires_at__lt=timezone.now()).delete()
+        messages.success(request, f"Pruned {deleted_count} expired unverified OTP record(s).")
+        return redirect('dashboard-otp')
+
+    now = timezone.now()
+    otps = OtpRecord.objects.all().order_by('-created_at')[:60]
     
     otp_stats = OtpRecord.objects.aggregate(
         total=Count('id'),
         verified=Count('id', filter=Q(is_verified=True)),
-        pending=Count('id', filter=Q(is_verified=False))
+        pending=Count('id', filter=Q(is_verified=False, expires_at__gte=now)),
+        expired=Count('id', filter=Q(is_verified=False, expires_at__lt=now))
     )
 
     context = {
@@ -587,8 +601,88 @@ def otp_view(request):
         'total_otps': otp_stats.get('total', 0) or 0,
         'verified_count': otp_stats.get('verified', 0) or 0,
         'pending_count': otp_stats.get('pending', 0) or 0,
+        'expired_count': otp_stats.get('expired', 0) or 0,
     }
     return render(request, 'dashboard/otp.html', context)
+
+
+@dashboard_login_required
+def email_management_view(request):
+    if request.method == 'POST' and request.POST.get('action') == 'clear_logs':
+        deleted_count, _ = EmailLog.objects.all().delete()
+        messages.success(request, f"Cleared {deleted_count} email delivery audit log(s).")
+        return redirect('dashboard-emails')
+
+    email_logs = EmailLog.objects.all().order_by('-created_at')[:80]
+    email_stats = EmailLog.objects.aggregate(
+        total=Count('id'),
+        sent=Count('id', filter=Q(status='sent')),
+        failed=Count('id', filter=Q(status='failed')),
+        queued=Count('id', filter=Q(status='queued'))
+    )
+
+    total_dispatched = email_stats.get('total', 0) or 0
+    sent_count = email_stats.get('sent', 0) or 0
+    failed_count = email_stats.get('failed', 0) or 0
+    success_rate = round((sent_count / total_dispatched * 100), 1) if total_dispatched > 0 else 100.0
+
+    smtp_health = check_smtp_health()
+
+    context = {
+        'logged_in_user': getattr(request, 'dashboard_user', None),
+        'email_logs': email_logs,
+        'total_emails': total_dispatched,
+        'sent_count': sent_count,
+        'failed_count': failed_count,
+        'queued_count': email_stats.get('queued', 0) or 0,
+        'success_rate': success_rate,
+        'smtp_health': smtp_health,
+    }
+    return render(request, 'dashboard/emails.html', context)
+
+
+@csrf_exempt
+@dashboard_login_required
+def send_test_email_action(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body) if request.body else request.POST
+        except Exception:
+            body = request.POST
+
+        recipient = body.get('recipient', '').strip().lower()
+        template_type = body.get('template_type', 'diagnostic')
+        note = body.get('note', 'Dashboard Console Test')
+
+        if not recipient or '@' not in recipient:
+            return JsonResponse({'status': 'error', 'message': 'A valid recipient email address is required.'}, status=400)
+
+        from guardian_api.resend_mailer import send_otp_email, send_sos_alert_email
+
+        dispatched = False
+        if template_type == 'otp':
+            dispatched = send_otp_email(recipient, "948271", purpose="Dashboard Diagnostic")
+        elif template_type == 'sos':
+            dispatched = send_sos_alert_email(
+                recipient,
+                "Demo Citizen",
+                "+919876543210",
+                "Hitech City Cyber Towers, Hyderabad",
+                17.4482,
+                78.3914,
+                trigger_source="Dashboard Diagnostic Console"
+            )
+        else:
+            dispatched = send_test_email(recipient, note=note)
+
+        return JsonResponse({
+            'status': 'success' if dispatched else 'error',
+            'message': f'Test email dispatched to {recipient} ({template_type.upper()} template)' if dispatched else 'Failed to dispatch email.',
+            'recipient': recipient,
+            'template_type': template_type
+        })
+
+    return JsonResponse({'status': 'error', 'message': 'POST method required.'}, status=405)
 
 
 @csrf_exempt
