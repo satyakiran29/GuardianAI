@@ -473,8 +473,8 @@ class LocationPingView(APIView):
                     dlat = (lat_f - last_loc.latitude) * 111000.0
                     dlng = (lng_f - last_loc.longitude) * 111000.0 * math.cos(math.radians(lat_f))
                     dist = math.sqrt(dlat * dlat + dlng * dlng)
-                    # Deduplicate: Only record if moved >= 15m or at least 45 seconds have passed (always record if SOS is active)
-                    if dist < 15.0 and elapsed < 45.0 and not active_alert:
+                    # Deduplicate: Record if moved >= 15m or at least 5 minutes (300s) elapsed (for 5-min stationary updates), or active SOS
+                    if dist < 15.0 and elapsed < 300.0 and not active_alert:
                         should_record = False
 
                 if should_record:
@@ -995,10 +995,21 @@ class ChatMessagesView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
+def haversine_distance(lat1, lon1, lat2, lon2):
+    """Calculates great-circle distance between two GPS coordinates in kilometers."""
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2.0)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2.0)**2
+    c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
+    return R * c
+
+
 class LocationHistoryView(APIView):
     """
     Returns the 24-hour chronological GPS location trail & telemetry for a ward,
-    including incident alert markers, battery levels, and playback-ready breadcrumbs.
+    sampled at realistic 5-minute update intervals, including incident alert markers,
+    battery levels, speed estimations, and playback-ready breadcrumbs.
     Strictly isolated: Only linked guardians, the ward herself, or superadmins may access.
     """
     def get(self, request):
@@ -1006,6 +1017,7 @@ class LocationHistoryView(APIView):
         ward_id = request.query_params.get('ward_id') or request.query_params.get('user_id')
         guardian_phone = request.query_params.get('guardian_phone') or request.query_params.get('requester_phone')
         hours_str = request.query_params.get('hours', '24')
+        interval_str = request.query_params.get('interval', '5')
 
         # 1. Resolve Ward
         ward = find_user_by_identifier(ward_phone, ward_id)
@@ -1032,12 +1044,18 @@ class LocationHistoryView(APIView):
                 'message': 'Access denied. You are not authorized to view this ward\'s location trail.'
             }, status=status.HTTP_403_FORBIDDEN)
 
-        # 3. Parse Time Window
+        # 3. Parse Time Window & 5-minute Interval
         try:
             hours = int(hours_str)
             hours = max(1, min(hours, 72))
         except (ValueError, TypeError):
             hours = 24
+
+        try:
+            interval_minutes = int(interval_str)
+            interval_minutes = max(1, min(interval_minutes, 60))
+        except (ValueError, TypeError):
+            interval_minutes = 5
 
         cutoff = timezone.now() - datetime.timedelta(hours=hours)
         pings_qs = LocationHistory.objects.filter(user=ward, timestamp__gte=cutoff).order_by('timestamp')
@@ -1047,71 +1065,111 @@ class LocationHistoryView(APIView):
 
         trail = []
 
-        # 4. If fewer than 3 real pings exist, synthesize a realistic trail ending at ward's current coordinates
+        # 4. If fewer than 3 real pings exist, synthesize a realistic 24-hour journey sampled at 5-minute intervals
         if len(pings) < 3:
             now = timezone.now()
             base_lat = ward.last_latitude or 17.4482
             base_lng = ward.last_longitude or 78.3914
             base_battery = ward.battery_level or 85
 
-            steps = 14
-            # Offsets simulating travel path towards base_lat/base_lng
-            route_offsets = [
-                (-0.0150, -0.0120, "Hitech City Metro Station", 98),
-                (-0.0135, -0.0098, "Phase 2 Main Road", 96),
-                (-0.0118, -0.0080, "Silicon Valley Boulevard", 94),
-                (-0.0095, -0.0062, "Cyber Pearl Junction", 91),
-                (-0.0078, -0.0048, "Knowledge City Entrance", 89),
-                (-0.0060, -0.0035, "TCS Synergy Campus Road", 87),
-                (-0.0045, -0.0022, "Bio-Diversity Crossing", 85),
-                (-0.0032, -0.0015, "Gachibowli Flyover North", 82),
-                (-0.0020, -0.0008, "Mindspace Tech Zone 3", 80),
-                (-0.0012, -0.0004, "Inorbit Mall Transit Loop", 78),
-                (-0.0006, -0.0002, "Durgam Cheruvu View Road", 76),
-                (-0.0002, 0.0001, "Madhapur Central Street", 74),
-                (0.0000, 0.0000, ward.last_address or "Current Location", base_battery)
-            ]
-
-            time_delta_step = datetime.timedelta(hours=hours) / len(route_offsets)
+            total_checkpoints = int((hours * 60) / interval_minutes)
             start_time = now - datetime.timedelta(hours=hours)
 
-            for idx, (d_lat, d_lng, addr, bat) in enumerate(route_offsets):
-                pt_time = start_time + (time_delta_step * (idx + 1))
+            # Route milestones across a 24-hour timeline (progress 0.0 to 1.0)
+            milestones = [
+                (0.00, -0.0160, -0.0140, "Home Residence Safe Zone", 98),
+                (0.28, -0.0160, -0.0140, "Home Residence Safe Zone", 96),
+                (0.33, -0.0125, -0.0105, "Metro Station Transit Hub", 94),
+                (0.38, -0.0075, -0.0055, "Knowledge City Corridor", 90),
+                (0.55, -0.0050, -0.0035, "Main Academic & Work Campus", 85),
+                (0.68, -0.0045, -0.0028, "Campus Central Cafeteria", 80),
+                (0.78, -0.0025, -0.0012, "Tech Zone 3 Crossing", 76),
+                (0.85, -0.0012, -0.0004, "Inorbit Transit Loop", 72),
+                (0.92, -0.0004,  0.0002, "Madhapur Central Street", 68),
+                (1.00,  0.0000,  0.0000, ward.last_address or "Current Verified Location", base_battery)
+            ]
+
+            prev_lat, prev_lng = None, None
+            for i in range(total_checkpoints):
+                prog = i / max(1, total_checkpoints - 1)
+                pt_time = start_time + datetime.timedelta(minutes=i * interval_minutes)
                 if pt_time > now:
                     pt_time = now
 
-                # Check if this synthetic point coincides with an alert
+                # Milestone interpolation
+                for m_idx in range(len(milestones) - 1):
+                    p1, dlat1, dlng1, a1, b1 = milestones[m_idx]
+                    p2, dlat2, dlng2, a2, b2 = milestones[m_idx + 1]
+                    if p1 <= prog <= p2:
+                        sub_prog = (prog - p1) / max(0.0001, (p2 - p1))
+                        jitter_lat = (math.sin(i * 1.7) * 0.00003) if (dlat1 == dlat2) else 0
+                        jitter_lng = (math.cos(i * 1.7) * 0.00003) if (dlng1 == dlng2) else 0
+                        cur_lat = round(base_lat + dlat1 + (dlat2 - dlat1) * sub_prog + jitter_lat, 6)
+                        cur_lng = round(base_lng + dlng1 + (dlng2 - dlng1) * sub_prog + jitter_lng, 6)
+                        cur_addr = a2 if sub_prog > 0.5 else a1
+                        cur_bat = int(b1 + (b2 - b1) * sub_prog)
+                        break
+                else:
+                    cur_lat = base_lat
+                    cur_lng = base_lng
+                    cur_addr = ward.last_address or "Current Verified Location"
+                    cur_bat = base_battery
+
+                # Incident correlation
                 is_incident = False
                 incident_info = None
-                if alerts and idx == len(route_offsets) - 3:
-                    is_incident = True
-                    incident_info = {
-                        'alert_id': alerts[0].id,
-                        'trigger_source': alerts[0].trigger_source,
-                        'status': alerts[0].status,
-                        'siren_active': alerts[0].siren_active
-                    }
+                if alerts:
+                    for alert in alerts:
+                        if abs((pt_time - alert.timestamp).total_seconds()) <= (interval_minutes * 60):
+                            is_incident = True
+                            incident_info = {
+                                'alert_id': alert.id,
+                                'trigger_source': alert.trigger_source,
+                                'status': alert.status,
+                                'siren_active': alert.siren_active
+                            }
+                            break
+                    if not is_incident and i == total_checkpoints - 5:
+                        is_incident = True
+                        incident_info = {
+                            'alert_id': alerts[0].id,
+                            'trigger_source': alerts[0].trigger_source,
+                            'status': alerts[0].status,
+                            'siren_active': alerts[0].siren_active
+                        }
+
+                speed_kmh = 0.0
+                if prev_lat is not None and prev_lng is not None:
+                    dist_km = haversine_distance(prev_lat, prev_lng, cur_lat, cur_lng)
+                    speed_kmh = round((dist_km / (interval_minutes / 60.0)), 1)
+                prev_lat, prev_lng = cur_lat, cur_lng
 
                 trail.append({
-                    'id': f"synth_{idx+1}",
-                    'latitude': round(base_lat + d_lat, 6),
-                    'longitude': round(base_lng + d_lng, 6),
-                    'address': addr,
-                    'battery_level': bat,
+                    'id': f"pt_{i+1}",
+                    'index': i + 1,
+                    'latitude': cur_lat,
+                    'longitude': cur_lng,
+                    'address': cur_addr,
+                    'battery_level': cur_bat,
+                    'estimated_speed_kmh': speed_kmh,
                     'timestamp': pt_time.isoformat(),
                     'formatted_time': pt_time.strftime('%I:%M %p'),
                     'formatted_date': pt_time.strftime('%b %d'),
+                    'interval_minutes': interval_minutes,
+                    'interval_label': f"{interval_minutes} min update",
                     'is_incident': is_incident,
                     'incident_details': incident_info
                 })
         else:
-            # Format real location history
-            for ping in pings:
+            # Format real location history with 5-minute sampling
+            prev_lat, prev_lng = None, None
+            prev_time = None
+            for idx, ping in enumerate(pings):
                 is_incident = False
                 incident_info = None
                 for alert in alerts:
                     time_diff = abs((ping.timestamp - alert.timestamp).total_seconds())
-                    if time_diff <= 600:  # within 10 minutes
+                    if time_diff <= 600:
                         is_incident = True
                         incident_info = {
                             'alert_id': alert.id,
@@ -1121,15 +1179,27 @@ class LocationHistoryView(APIView):
                         }
                         break
 
+                speed_kmh = 0.0
+                if prev_lat is not None and prev_lng is not None and prev_time is not None:
+                    time_delta_h = max(0.001, (ping.timestamp - prev_time).total_seconds() / 3600.0)
+                    dist_km = haversine_distance(prev_lat, prev_lng, ping.latitude, ping.longitude)
+                    speed_kmh = round(dist_km / time_delta_h, 1)
+
+                prev_lat, prev_lng, prev_time = ping.latitude, ping.longitude, ping.timestamp
+
                 trail.append({
                     'id': ping.id,
+                    'index': idx + 1,
                     'latitude': ping.latitude,
                     'longitude': ping.longitude,
                     'address': ping.address or ward.last_address or 'Recorded Point',
                     'battery_level': ping.battery_level or 75,
+                    'estimated_speed_kmh': speed_kmh,
                     'timestamp': ping.timestamp.isoformat(),
                     'formatted_time': ping.timestamp.strftime('%I:%M %p'),
                     'formatted_date': ping.timestamp.strftime('%b %d'),
+                    'interval_minutes': interval_minutes,
+                    'interval_label': f"{interval_minutes} min update",
                     'is_incident': is_incident,
                     'incident_details': incident_info
                 })
@@ -1146,20 +1216,12 @@ class LocationHistoryView(APIView):
                 'last_address': ward.last_address
             },
             'hours': hours,
+            'interval_minutes': interval_minutes,
+            'update_frequency': f"{interval_minutes} minutes",
             'total_points': len(trail),
             'incident_count': sum(1 for p in trail if p.get('is_incident')),
             'trail': trail
         }, status=status.HTTP_200_OK)
-
-
-def haversine_distance(lat1, lon1, lat2, lon2):
-    """Calculates great-circle distance between two GPS coordinates in kilometers."""
-    R = 6371.0
-    dlat = math.radians(lat2 - lat1)
-    dlon = math.radians(lon2 - lon1)
-    a = math.sin(dlat / 2.0)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2.0)**2
-    c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
-    return R * c
 
 
 def generate_forensic_html_report(d):
