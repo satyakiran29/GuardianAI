@@ -1,11 +1,11 @@
 {
-  "versionCode": 26,
-  "versionName": "1.2.8",
+  "versionCode": 27,
+  "versionName": "1.2.9",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Guardian Responder Dashboard Redesign: High-tech cyber-dark UI with live radar status badge, glowing distress banner, and telemetry boxes",
-    "SuperAdmin Command Center Overhaul: Executive KPI grid (Total Users, Guardians, Active SOS, Low Battery), segmented filter pills, and search terminal",
-    "Enhanced Telemetry Ward Cards: Sleek Material3 card containers with live battery status, GPS telemetry badges, 24h Trail Replay, Chat, and Direct Call",
-    "Authentication UI Redesign: Dark slate outlined inputs with illuminated shield emblem and instant 1-click test roles"
+    "2-Step Verification (2FA): Account security switch in app and web settings requiring 6-digit email OTP verification",
+    "Email-Only OTP Verification: Direct OTP dispatch via Gmail SMTP with master bypass code support (123456 and 234456)",
+    "24-Hour Location Trail Replay: Playback timeline and forensic debrief with SHA-256 integrity verification",
+    "Realtime Telemetry & Radar: Material3 telemetry cards with battery tracking, live GPS coordinates, and ward isolations"
   ]
 }
