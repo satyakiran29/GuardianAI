@@ -428,41 +428,67 @@ class LocationPingView(APIView):
             user = UserProfile.objects.filter(phone=phone).first()
 
         if user:
-            if latitude is not None:
-                user.last_latitude = float(latitude)
-            if longitude is not None:
-                user.last_longitude = float(longitude)
-            if address:
+            changed = False
+            lat_f = float(latitude) if latitude is not None else None
+            lng_f = float(longitude) if longitude is not None else None
+            bat_i = int(battery_level) if battery_level is not None else None
+
+            if lat_f is not None and user.last_latitude != lat_f:
+                user.last_latitude = lat_f
+                changed = True
+            if lng_f is not None and user.last_longitude != lng_f:
+                user.last_longitude = lng_f
+                changed = True
+            if address and user.last_address != address:
                 user.last_address = address
-            if battery_level is not None:
-                user.battery_level = int(battery_level)
-            user.save()
-            supabase_synced = sync_user_to_supabase(user)
+                changed = True
+            if bat_i is not None and user.battery_level != bat_i:
+                user.battery_level = bat_i
+                changed = True
+
+            if changed:
+                user.save(update_fields=['last_latitude', 'last_longitude', 'last_address', 'battery_level', 'updated_at'])
+                supabase_synced = sync_user_to_supabase(user)
+            else:
+                supabase_synced = True
 
             # Also update any active emergency alert for this user
             active_alert = EmergencyAlert.objects.filter(user=user, status='active').order_by('-timestamp').first()
-            if active_alert and latitude is not None and longitude is not None:
-                active_alert.latitude = float(latitude)
-                active_alert.longitude = float(longitude)
+            if active_alert and lat_f is not None and lng_f is not None:
+                active_alert.latitude = lat_f
+                active_alert.longitude = lng_f
                 if address:
                     active_alert.address = address
-                if battery_level is not None:
-                    active_alert.battery_level = int(battery_level)
-                active_alert.save()
+                if bat_i is not None:
+                    active_alert.battery_level = bat_i
+                active_alert.save(update_fields=['latitude', 'longitude', 'address', 'battery_level'])
 
-            # Record breadcrumb in LocationHistory
-            if latitude is not None and longitude is not None:
-                LocationHistory.objects.create(
-                    user=user,
-                    latitude=float(latitude),
-                    longitude=float(longitude),
-                    address=address or user.last_address or '',
-                    battery_level=int(battery_level) if battery_level is not None else user.battery_level
-                )
+            # Record breadcrumb in LocationHistory with deadband deduplication
+            if lat_f is not None and lng_f is not None:
+                last_loc = LocationHistory.objects.filter(user=user).order_by('-timestamp').first()
+                should_record = True
+                if last_loc:
+                    elapsed = (timezone.now() - last_loc.timestamp).total_seconds()
+                    # Approximate distance in meters
+                    dlat = (lat_f - last_loc.latitude) * 111000.0
+                    dlng = (lng_f - last_loc.longitude) * 111000.0 * math.cos(math.radians(lat_f))
+                    dist = math.sqrt(dlat * dlat + dlng * dlng)
+                    # Deduplicate: Only record if moved >= 15m or at least 45 seconds have passed (always record if SOS is active)
+                    if dist < 15.0 and elapsed < 45.0 and not active_alert:
+                        should_record = False
+
+                if should_record:
+                    LocationHistory.objects.create(
+                        user=user,
+                        latitude=lat_f,
+                        longitude=lng_f,
+                        address=address or user.last_address or '',
+                        battery_level=bat_i if bat_i is not None else user.battery_level
+                    )
 
             return Response({
                 'status': 'success',
-                'message': 'Location telemetry updated and synced to Supabase',
+                'message': 'Location telemetry updated and synced',
                 'user': {
                     'id': user.id,
                     'phone': user.phone,
@@ -540,17 +566,21 @@ class HelplinesView(APIView):
 
 class DashboardStatsApiView(APIView):
     def get(self, request):
-        total_users = UserProfile.objects.count()
-        superadmins = UserProfile.objects.filter(role='superadmin').count()
-        guardians = UserProfile.objects.filter(role='guardian').count()
-        protected_users = UserProfile.objects.filter(role='user').count()
+        user_stats = UserProfile.objects.aggregate(
+            total=Count('id'),
+            superadmins=Count('id', filter=Q(role='superadmin')),
+            guardians=Count('id', filter=Q(role='guardian')),
+            protected_users=Count('id', filter=Q(role='user'))
+        )
         
-        active_alerts = EmergencyAlert.objects.filter(status='active').count()
-        resolved_alerts = EmergencyAlert.objects.filter(status='resolved').count()
-        total_alerts = EmergencyAlert.objects.count()
+        alert_stats = EmergencyAlert.objects.aggregate(
+            total=Count('id'),
+            active=Count('id', filter=Q(status='active')),
+            resolved=Count('id', filter=Q(status='resolved'))
+        )
         
-        today = timezone.now().date()
-        otps_today = OtpRecord.objects.filter(created_at__date=today).count()
+        today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        otps_today = OtpRecord.objects.filter(created_at__gte=today_start).count()
 
         recent_alerts = EmergencyAlertSerializer(
             EmergencyAlert.objects.all().select_related('user', 'responder').order_by('-timestamp')[:10],
@@ -558,13 +588,13 @@ class DashboardStatsApiView(APIView):
         ).data
 
         return Response({
-            'total_users': total_users,
-            'superadmins': superadmins,
-            'guardians': guardians,
-            'protected_users': protected_users,
-            'active_alerts': active_alerts,
-            'resolved_alerts': resolved_alerts,
-            'total_alerts': total_alerts,
+            'total_users': user_stats.get('total', 0) or 0,
+            'superadmins': user_stats.get('superadmins', 0) or 0,
+            'guardians': user_stats.get('guardians', 0) or 0,
+            'protected_users': user_stats.get('protected_users', 0) or 0,
+            'active_alerts': alert_stats.get('active', 0) or 0,
+            'resolved_alerts': alert_stats.get('resolved', 0) or 0,
+            'total_alerts': alert_stats.get('total', 0) or 0,
             'otps_today': otps_today,
             'supabase_connected': True,
             'recent_alerts': recent_alerts
@@ -729,9 +759,16 @@ class GuardianTrackedWardsView(APIView):
             target_guardian_id = request.query_params.get('target_guardian_id')
             if target_guardian_id:
                 links = GuardianLink.objects.filter(guardian_id=target_guardian_id, status='active').select_related('user', 'guardian')
+                ward_ids = [l.user_id for l in links]
+                active_alerts_map = {}
+                if ward_ids:
+                    for a in EmergencyAlert.objects.filter(user_id__in=ward_ids, status='active').select_related('user', 'responder').order_by('-timestamp'):
+                        if a.user_id not in active_alerts_map:
+                            active_alerts_map[a.user_id] = a
+
                 for link in links:
                     ward = link.user
-                    active_alert = EmergencyAlert.objects.filter(user=ward, status='active').order_by('-timestamp').first()
+                    active_alert = active_alerts_map.get(ward.id)
                     battery = ward.battery_level
                     battery_status = 'Good'
                     if battery <= 15:
@@ -758,8 +795,25 @@ class GuardianTrackedWardsView(APIView):
                         'is_online': True
                     })
             else:
-                for profile in UserProfile.objects.all().order_by('-created_at'):
-                    active_alert = EmergencyAlert.objects.filter(user=profile, status='active').order_by('-timestamp').first()
+                profiles = list(UserProfile.objects.all().order_by('-created_at'))
+                profile_ids = [p.id for p in profiles]
+                active_alerts_map = {}
+                if profile_ids:
+                    for a in EmergencyAlert.objects.filter(user_id__in=profile_ids, status='active').select_related('user', 'responder').order_by('-timestamp'):
+                        if a.user_id not in active_alerts_map:
+                            active_alerts_map[a.user_id] = a
+
+                active_links = GuardianLink.objects.filter(
+                    Q(user_id__in=profile_ids) | Q(guardian_id__in=profile_ids),
+                    status='active'
+                )
+                link_map = {}
+                for l in active_links:
+                    link_map[l.user_id] = l
+                    link_map[l.guardian_id] = l
+
+                for profile in profiles:
+                    active_alert = active_alerts_map.get(profile.id)
                     battery = profile.battery_level
                     battery_status = 'Good'
                     if battery <= 15:
@@ -768,7 +822,7 @@ class GuardianTrackedWardsView(APIView):
                         battery_status = 'Low Battery'
 
                     rel_label = 'Super Admin' if profile.role == 'superadmin' else ('Guardian Unit' if profile.role == 'guardian' else 'Protected User')
-                    active_link = GuardianLink.objects.filter(Q(user=profile) | Q(guardian=profile), status='active').first()
+                    active_link = link_map.get(profile.id)
                     if active_link:
                         rel_label = active_link.relationship
 
@@ -793,9 +847,16 @@ class GuardianTrackedWardsView(APIView):
         else:
             # STRICT: Guardian ONLY accesses their own assigned wards (e.g. skdad only accesses sk)
             links = GuardianLink.objects.filter(guardian=guardian, status='active').select_related('user')
+            ward_ids = [link.user_id for link in links]
+            active_alerts_map = {}
+            if ward_ids:
+                for a in EmergencyAlert.objects.filter(user_id__in=ward_ids, status='active').select_related('user', 'responder').order_by('-timestamp'):
+                    if a.user_id not in active_alerts_map:
+                        active_alerts_map[a.user_id] = a
+
             for link in links:
                 ward = link.user
-                active_alert = EmergencyAlert.objects.filter(user=ward, status='active').order_by('-timestamp').first()
+                active_alert = active_alerts_map.get(ward.id)
 
                 battery = ward.battery_level
                 battery_status = 'Good'
@@ -856,7 +917,9 @@ class ChatMessagesView(APIView):
                 single_user = find_user_by_identifier(user1_phone, user1_id)
 
             if single_user:
-                messages = ChatMessage.objects.filter(Q(sender=single_user) | Q(receiver=single_user)).order_by('-timestamp')[:50]
+                messages = ChatMessage.objects.filter(
+                    Q(sender=single_user) | Q(receiver=single_user)
+                ).select_related('sender', 'receiver').order_by('-timestamp')[:50]
                 serializer = ChatMessageSerializer(reversed(list(messages)), many=True)
                 return Response({'status': 'success', 'messages': serializer.data}, status=status.HTTP_200_OK)
 
@@ -864,7 +927,7 @@ class ChatMessagesView(APIView):
 
         messages = ChatMessage.objects.filter(
             (Q(sender=u1) & Q(receiver=u2)) | (Q(sender=u2) & Q(receiver=u1))
-        ).order_by('timestamp')
+        ).select_related('sender', 'receiver').order_by('timestamp')
 
         # Mark received messages as read
         ChatMessage.objects.filter(sender=u2, receiver=u1, is_read=False).update(is_read=True)

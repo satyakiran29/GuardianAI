@@ -3,6 +3,6 @@
 __pycache__/
 *.py[cod]
 /staticfiles
-/guardian_api/migrations
+/guardian_api/migrations/__pycache__
 /guardian_api/__pycache__
-/guardian_api/__pycache__
+

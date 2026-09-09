@@ -1,7 +1,10 @@
 """
 Supabase Cloud Integration Client for GuardianAI
+Dispatches telemetry and incident synchronizations asynchronously
+to guarantee zero HTTP worker blocking and high resilience.
 """
 import logging
+import threading
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
@@ -24,14 +27,33 @@ def get_supabase_client():
         return None
 
 
-def sync_user_to_supabase(user_profile):
+def _run_in_background(target, *args):
     """
-    Sync user profile data to Supabase database.
+    Spawns target in a daemon thread so the main Django request finishes immediately.
     """
+    try:
+        t = threading.Thread(target=target, args=args, daemon=True)
+        t.start()
+        return True
+    except Exception as e:
+        logger.warning(f"Failed to spawn background task: {e}")
+        return False
+
+
+def _do_sync_user(payload):
     client = get_supabase_client()
     if not client:
-        return False
-    
+        return
+    try:
+        client.table("guardian_users").upsert(payload, on_conflict="phone").execute()
+    except Exception as e:
+        logger.debug(f"Supabase async user sync notice: {e}")
+
+
+def sync_user_to_supabase(user_profile):
+    """
+    Sync user profile data to Supabase database asynchronously.
+    """
     try:
         payload = {
             "name": user_profile.name,
@@ -43,24 +65,28 @@ def sync_user_to_supabase(user_profile):
             "last_longitude": user_profile.last_longitude,
             "last_address": user_profile.last_address,
             "battery_level": user_profile.battery_level,
-            "updated_at": user_profile.updated_at.isoformat() if hasattr(user_profile, 'updated_at') else None
+            "updated_at": user_profile.updated_at.isoformat() if hasattr(user_profile, 'updated_at') and user_profile.updated_at else None
         }
-        # Upsert by phone/email
-        res = client.table("guardian_users").upsert(payload, on_conflict="phone").execute()
-        return True
+        return _run_in_background(_do_sync_user, payload)
     except Exception as e:
-        logger.info(f"Supabase user sync notice: {e}")
+        logger.debug(f"sync_user_to_supabase error: {e}")
         return False
+
+
+def _do_sync_alert(payload):
+    client = get_supabase_client()
+    if not client:
+        return
+    try:
+        client.table("emergency_alerts").insert(payload).execute()
+    except Exception as e:
+        logger.debug(f"Supabase async alert sync notice: {e}")
 
 
 def sync_alert_to_supabase(alert):
     """
-    Broadcast emergency SOS alert to Supabase real-time table.
+    Broadcast emergency SOS alert to Supabase real-time table asynchronously.
     """
-    client = get_supabase_client()
-    if not client:
-        return False
-    
     try:
         payload = {
             "user_name": alert.user.name,
@@ -73,33 +99,37 @@ def sync_alert_to_supabase(alert):
             "status": alert.status,
             "siren_active": alert.siren_active,
             "battery_level": alert.battery_level,
-            "timestamp": alert.timestamp.isoformat() if hasattr(alert, 'timestamp') else None,
+            "timestamp": alert.timestamp.isoformat() if hasattr(alert, 'timestamp') and alert.timestamp else None,
         }
-        res = client.table("emergency_alerts").insert(payload).execute()
-        return True
+        return _run_in_background(_do_sync_alert, payload)
     except Exception as e:
-        logger.info(f"Supabase alert sync notice: {e}")
+        logger.debug(f"sync_alert_to_supabase error: {e}")
         return False
+
+
+def _do_sync_otp(payload):
+    client = get_supabase_client()
+    if not client:
+        return
+    try:
+        client.table("otp_records").insert(payload).execute()
+    except Exception as e:
+        logger.debug(f"Supabase async OTP sync notice: {e}")
 
 
 def sync_otp_to_supabase(otp_record):
     """
-    Sync OTP record to Supabase.
+    Sync OTP record to Supabase asynchronously.
     """
-    client = get_supabase_client()
-    if not client:
-        return False
-    
     try:
         payload = {
             "target": otp_record.target,
             "otp_code": otp_record.otp_code,
             "purpose": otp_record.purpose,
             "is_verified": otp_record.is_verified,
-            "expires_at": otp_record.expires_at.isoformat()
+            "expires_at": otp_record.expires_at.isoformat() if hasattr(otp_record, 'expires_at') and otp_record.expires_at else None
         }
-        res = client.table("otp_records").insert(payload).execute()
-        return True
+        return _run_in_background(_do_sync_otp, payload)
     except Exception as e:
-        logger.info(f"Supabase OTP sync notice: {e}")
+        logger.debug(f"sync_otp_to_supabase error: {e}")
         return False

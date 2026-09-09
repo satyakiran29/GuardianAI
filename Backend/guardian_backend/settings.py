@@ -89,7 +89,7 @@ if DATABASE_URL:
         DATABASES = {
             'default': dj_database_url.parse(
                 DATABASE_URL,
-                conn_max_age=0,
+                conn_max_age=60,
                 ssl_require=True
             )
         }
@@ -170,3 +170,42 @@ EMAIL_TIMEOUT = 3
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'satyakiran294@gmail.com')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'tfwaavbdoyxeegnx')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'GuardianAI Safety <satyakiran294@gmail.com>')
+
+# Structured Logging for Production & Render
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] [{levelname}] {name}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'guardian_api': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'dashboard': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

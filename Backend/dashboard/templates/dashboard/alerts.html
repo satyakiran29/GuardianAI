@@ -92,7 +92,7 @@
                 <div style="display: flex; gap: 6px;">
                   <form method="POST" action="{% url 'dashboard-dispatch-alert' alert.id %}">
                     {% csrf_token %}
-                    <input type="hidden" name="responder_id" value="{% if first_guardian %}{{ first_guardian.id }}{% elif guardians.first %}{{ guardians.first.id }}{% endif %}">
+                    <input type="hidden" name="responder_id" value="{{ first_guardian.id|default:'' }}">
                     <button type="submit" class="btn btn-primary btn-sm">Dispatch</button>
                   </form>
                   <form method="POST" action="{% url 'dashboard-resolve-alert' alert.id %}">

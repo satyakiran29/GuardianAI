@@ -43,6 +43,14 @@ class UserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['role', 'is_active']),
+            models.Index(fields=['phone']),
+            models.Index(fields=['email']),
+        ]
+
     def __str__(self):
         return f"{self.name} ({self.get_role_display()}) - {self.phone}"
 
@@ -60,6 +68,14 @@ class EmergencyAlert(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     resolved_at = models.DateTimeField(null=True, blank=True)
     notes = models.TextField(blank=True, default='')
+
+    class Meta:
+        ordering = ['-timestamp']
+        indexes = [
+            models.Index(fields=['status', '-timestamp']),
+            models.Index(fields=['user', 'status']),
+            models.Index(fields=['-timestamp']),
+        ]
 
     def __str__(self):
         return f"SOS #{self.id} - {self.user.name} ({self.status})"
@@ -116,6 +132,10 @@ class GuardianLink(models.Model):
 
     class Meta:
         unique_together = ('user', 'guardian')
+        indexes = [
+            models.Index(fields=['guardian', 'status']),
+            models.Index(fields=['user', 'status']),
+        ]
 
     def __str__(self):
         return f"{self.guardian.name} (Guardian) -> {self.user.name} (Protected User) [{self.relationship}]"
@@ -134,6 +154,10 @@ class ChatMessage(models.Model):
 
     class Meta:
         ordering = ['timestamp']
+        indexes = [
+            models.Index(fields=['sender', 'receiver', 'timestamp']),
+            models.Index(fields=['receiver', 'is_read']),
+        ]
 
     def __str__(self):
         return f"[{self.timestamp.strftime('%H:%M')}] {self.sender.name} -> {self.receiver.name}: {self.message[:30]}"

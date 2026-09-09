@@ -59,39 +59,44 @@ def dashboard_login_required(view_func):
     return _wrapped_view
 
 
+_demo_accounts_seeded = False
+
 def login_view(request):
+    global _demo_accounts_seeded
     next_url = request.GET.get('next', '')
 
-    # Ensure standard default demo accounts exist
-    try:
-        UserProfile.objects.get_or_create(
-            email='admin@sheguard.app',
-            defaults={
-                'name': 'Chief SuperAdmin',
-                'phone': '+919876500000',
-                'role': 'superadmin',
-                'password': 'admin123',
-                'is_verified': True,
-                'is_active': True
-            }
-        )
-        UserProfile.objects.get_or_create(
-            email='guardian@sheguard.app',
-            defaults={
-                'name': 'Rajesh Sharma (Guardian Unit)',
-                'phone': '+919988776655',
-                'role': 'guardian',
-                'password': 'guardian123',
-                'battery_level': 95,
-                'last_latitude': 17.4490,
-                'last_longitude': 78.3920,
-                'last_address': 'Cyber Towers, Hyderabad',
-                'is_verified': True,
-                'is_active': True
-            }
-        )
-    except Exception:
-        pass
+    # Ensure standard default demo accounts exist once per worker lifecycle
+    if not _demo_accounts_seeded:
+        try:
+            UserProfile.objects.get_or_create(
+                email='admin@sheguard.app',
+                defaults={
+                    'name': 'Chief SuperAdmin',
+                    'phone': '+919876500000',
+                    'role': 'superadmin',
+                    'password': 'admin123',
+                    'is_verified': True,
+                    'is_active': True
+                }
+            )
+            UserProfile.objects.get_or_create(
+                email='guardian@sheguard.app',
+                defaults={
+                    'name': 'Rajesh Sharma (Guardian Unit)',
+                    'phone': '+919988776655',
+                    'role': 'guardian',
+                    'password': 'guardian123',
+                    'battery_level': 95,
+                    'last_latitude': 17.4490,
+                    'last_longitude': 78.3920,
+                    'last_address': 'Cyber Towers, Hyderabad',
+                    'is_verified': True,
+                    'is_active': True
+                }
+            )
+            _demo_accounts_seeded = True
+        except Exception:
+            pass
 
     # If already logged in, redirect based on role
     current_uid = request.session.get('dashboard_user_id')
@@ -560,15 +565,18 @@ def alerts_view(request):
 def otp_view(request):
     otps = OtpRecord.objects.all().order_by('-created_at')[:50]
     
-    verified_count = OtpRecord.objects.filter(is_verified=True).count()
-    pending_count = OtpRecord.objects.filter(is_verified=False).count()
+    otp_stats = OtpRecord.objects.aggregate(
+        total=Count('id'),
+        verified=Count('id', filter=Q(is_verified=True)),
+        pending=Count('id', filter=Q(is_verified=False))
+    )
 
     context = {
         'logged_in_user': getattr(request, 'dashboard_user', None),
         'otps': otps,
-        'total_otps': OtpRecord.objects.count(),
-        'verified_count': verified_count,
-        'pending_count': pending_count,
+        'total_otps': otp_stats.get('total', 0) or 0,
+        'verified_count': otp_stats.get('verified', 0) or 0,
+        'pending_count': otp_stats.get('pending', 0) or 0,
     }
     return render(request, 'dashboard/otp.html', context)
 
@@ -698,7 +706,9 @@ def chat_ajax_action(request):
         
         messages_qs = ChatMessage.objects.filter(
             (Q(sender_id=u1_id) & Q(receiver_id=u2_id)) | (Q(sender_id=u2_id) & Q(receiver_id=u1_id))
-        ).order_by('timestamp')
+        ).select_related('sender', 'receiver').order_by('-timestamp')[:100]
+
+        messages = list(reversed(messages_qs))
 
         data = [{
             'id': m.id,
@@ -710,7 +720,7 @@ def chat_ajax_action(request):
             'is_sos': m.is_sos,
             'time': m.timestamp.strftime('%I:%M %p'),
             'battery': m.battery_level
-        } for m in messages_qs]
+        } for m in messages]
 
         return JsonResponse({'status': 'success', 'messages': data})
 
