@@ -282,24 +282,24 @@ function initOtpSimulator() {
       const target = targetInput ? targetInput.value.trim() : '';
       const outputDiv = document.getElementById('test-otp-result');
 
-      if (!target) {
-        alert('Please enter a phone number or email address');
+      if (!target || !target.includes('@')) {
+        alert('Please enter a valid email address for OTP delivery');
         return;
       }
 
       try {
         btnSendTestOtp.disabled = true;
-        btnSendTestOtp.innerText = '⚡ Dispatching OTP...';
+        btnSendTestOtp.innerText = '⚡ Dispatching to Email...';
 
         const res = await fetch('/api/auth/send-otp/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ target: target, purpose: 'dashboard_test' })
+          body: JSON.stringify({ target: target, email: target, purpose: 'dashboard_test' })
         });
 
         const json = await res.json();
         btnSendTestOtp.disabled = false;
-        btnSendTestOtp.innerText = '⚡ Dispatch 6-Digit OTP Now';
+        btnSendTestOtp.innerText = '⚡ Dispatch 6-Digit Email OTP Now';
 
         if (res.ok && json.status === 'success') {
           // Auto-fill verification tester for testing convenience
@@ -311,11 +311,11 @@ function initOtpSimulator() {
           if (outputDiv) {
             outputDiv.innerHTML = `
               <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 14px; border-radius: 10px; color: #34d399;">
-                <strong>✅ OTP Dispatched Successfully!</strong><br>
-                <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 4px;">Target: <code>${json.target}</code></div>
+                <strong>✅ Email OTP Dispatched Successfully!</strong><br>
+                <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 4px;">Recipient: <code>${json.target}</code></div>
                 <div style="margin: 6px 0;">Generated Code: <strong style="font-size: 1.3rem; color: #fff; letter-spacing: 3px; font-family: monospace;">${json.otp}</strong></div>
                 <div style="font-size: 0.78rem; color: #94a3b8;">
-                  Valid for 10 Minutes (600s)${json.email_sent ? ` • 📧 Email dispatched to ${json.email_destination}` : ''}
+                  Valid for 10 Minutes (600s)${json.email_sent ? ` • 📧 Delivered via Gmail SMTP` : ''}
                 </div>
               </div>
             `;
@@ -332,7 +332,7 @@ function initOtpSimulator() {
         }
       } catch (e) {
         btnSendTestOtp.disabled = false;
-        btnSendTestOtp.innerText = '⚡ Dispatch 6-Digit OTP Now';
+        btnSendTestOtp.innerText = '⚡ Dispatch 6-Digit Email OTP Now';
         alert('Error sending OTP: ' + e);
       }
     });
@@ -348,7 +348,7 @@ function initOtpSimulator() {
       const otpCode = codeInput ? codeInput.value.trim() : '';
 
       if (!target || !otpCode) {
-        alert('Please enter both target and 6-digit passcode');
+        alert('Please enter both email address and 6-digit passcode');
         return;
       }
 

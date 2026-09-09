@@ -160,7 +160,7 @@
     <!-- Auth Mode Tabs -->
     <div class="tab-nav">
       <button type="button" class="tab-btn active" id="tab-pass-btn" onclick="switchTab('pass')">Password Sign-In</button>
-      <button type="button" class="tab-btn" id="tab-otp-btn" onclick="switchTab('otp')">Phone OTP Access</button>
+      <button type="button" class="tab-btn" id="tab-otp-btn" onclick="switchTab('otp')">Email OTP Access</button>
     </div>
 
     <!-- Form 1: Password Login -->
@@ -184,7 +184,7 @@
       </button>
     </form>
 
-    <!-- Form 2: Phone OTP Login -->
+    <!-- Form 2: Email OTP Login -->
     <form method="POST" id="form-otp" style="display: none;">
       {% csrf_token %}
       <input type="hidden" name="auth_type" value="otp">
@@ -200,15 +200,15 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label">Registered Phone Number</label>
-        <input type="tel" name="phone" id="otp_phone" required placeholder="e.g. +919988776655" class="form-control">
+        <label class="form-label">Registered Email Address</label>
+        <input type="email" name="email" id="otp_email" required placeholder="e.g. guardian@sheguard.app or satyakiran294@gmail.com" class="form-control">
       </div>
 
       <div class="form-group">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <label class="form-label" style="margin: 0;">6-Digit OTP Passcode</label>
           <button type="button" onclick="sendDashboardOtp()" id="btn-request-otp" style="background: transparent; border: none; color: #60a5fa; font-size: 0.78rem; font-weight: 600; cursor: pointer;">
-            ⚡ Request Passcode
+            ⚡ Send Passcode to Email
           </button>
         </div>
         <input type="text" name="otp_code" id="otp_code" required maxlength="6" placeholder="Enter 6-digit OTP" class="form-control" style="letter-spacing: 4px; font-weight: bold; font-size: 1.1rem; text-align: center;">
@@ -262,23 +262,25 @@
     }
 
     async function sendDashboardOtp() {
-      const phone = document.getElementById('otp_phone').value.trim();
+      const emailInput = document.getElementById('otp_email');
+      const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
       const btn = document.getElementById('btn-request-otp');
       const alertBox = document.getElementById('otp-alert-box');
 
-      if (!phone) {
-        alert('Please enter your registered phone number first.');
+      if (!email || !email.includes('@')) {
+        alert('Please enter your registered email address first.');
+        if (emailInput) emailInput.focus();
         return;
       }
 
-      btn.innerText = 'Dispatching...';
+      btn.innerText = 'Dispatching to Inbox...';
       btn.disabled = true;
 
       try {
         const res = await fetch('/api/auth/send-otp/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ target: phone, purpose: 'dashboard_login' })
+          body: JSON.stringify({ target: email, email: email, purpose: 'dashboard_login' })
         });
         const data = await res.json();
         btn.innerText = 'Resend Code';
@@ -290,7 +292,7 @@
           alertBox.style.border = '1px solid #10b981';
           alertBox.style.color = '#34d399';
           let emailNote = data.email_sent ? ` • 📧 Passcode dispatched to ${data.email_destination}` : '';
-          alertBox.innerHTML = `✅ Passcode generated: <strong style="color:#fff; font-size:1.05rem; letter-spacing: 2px;">${data.otp}</strong> (Demo: 123456)${emailNote}`;
+          alertBox.innerHTML = `✅ Passcode sent to your inbox: <strong style="color:#fff; font-size:1.05rem; letter-spacing: 2px;">${data.otp}</strong> (Demo: 123456)${emailNote}`;
           document.getElementById('otp_code').value = data.otp;
         } else {
           alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
@@ -300,7 +302,7 @@
           document.getElementById('otp_code').value = '123456';
         }
       } catch (e) {
-        btn.innerText = 'Request Passcode';
+        btn.innerText = 'Send Passcode to Email';
         btn.disabled = false;
         alertBox.style.display = 'block';
         alertBox.style.background = 'rgba(239, 68, 68, 0.15)';

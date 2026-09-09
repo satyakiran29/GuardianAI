@@ -141,17 +141,20 @@ def login_view(request):
                 messages.error(request, f"Login Notice: {str(e)[:120]}")
 
         elif auth_type == 'otp':
-            phone = request.POST.get('phone', '').strip()
+            email = (request.POST.get('email', '') or request.POST.get('phone', '')).strip().lower()
             otp_code = request.POST.get('otp_code', '').strip()
             role_type = request.POST.get('role_type', 'guardian')
+
+            if not email or '@' not in email:
+                messages.error(request, "A valid email address is required for Email OTP sign-in. Phone SMS OTP is disabled.")
+                return render(request, 'dashboard/login.html', {'next': next_url})
 
             is_valid = False
             if otp_code == '123456':
                 is_valid = True
             else:
-                target_q = get_target_filter(phone)
                 otp_rec = OtpRecord.objects.filter(
-                    target_q,
+                    Q(target__iexact=email),
                     otp_code=otp_code,
                     is_verified=False,
                     expires_at__gte=timezone.now()
@@ -162,12 +165,12 @@ def login_view(request):
                     is_valid = True
 
             if is_valid:
-                user = find_user_by_identifier(phone)
+                user = UserProfile.objects.filter(email__iexact=email).first() or find_user_by_identifier(email)
                 if not user:
                     user = UserProfile.objects.create(
                         name="Verified Responder" if role_type == 'guardian' else "Protected User",
-                        phone=phone,
-                        email=f"{phone}@guardianai.app",
+                        phone=f"+91{random.randint(7000000000, 9999999999)}",
+                        email=email,
                         role=role_type,
                         is_verified=True,
                         is_active=True
@@ -181,7 +184,7 @@ def login_view(request):
                 request.session['dashboard_user_id'] = user.id
                 request.session['dashboard_user_name'] = user.name
                 request.session['dashboard_user_role'] = user.role
-                messages.success(request, f"Authenticated via 6-Digit OTP! Welcome, {user.name} ({user.get_role_display()}).")
+                messages.success(request, f"Authenticated via 6-Digit Email OTP! Welcome, {user.name} ({user.get_role_display()}).")
 
                 if next_url and next_url != '/':
                     return redirect(next_url)

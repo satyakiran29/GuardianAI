@@ -112,22 +112,38 @@ def find_user_by_identifier(identifier, user_id=None):
 
 class SendOtpView(APIView):
     def post(self, request):
-        target = request.data.get('target', '').strip()
+        target = request.data.get('target', '').strip() or request.data.get('email', '').strip()
         purpose = request.data.get('purpose', 'registration').strip()
 
         if not target:
-            return Response({'status': 'error', 'message': 'Target phone or email is required'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'error', 'message': 'Email address is required for OTP dispatch.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Resolve target to an email address (phone number SMS OTP is disabled)
+        target_email = None
+        if '@' in target:
+            target_email = target.lower()
+        else:
+            user = find_user_by_identifier(target)
+            if user and user.email and '@' in user.email:
+                target_email = user.email.lower()
+            else:
+                return Response({
+                    'status': 'error',
+                    'message': 'Valid email address required. Phone number SMS OTP is disabled; please provide your registered email address.'
+                }, status=status.HTTP_400_BAD_REQUEST)
 
         # Generate 6-digit OTP
         otp_code = f"{random.randint(100000, 999999)}"
         expires_at = timezone.now() + datetime.timedelta(minutes=10)
-        canonical_target = canonicalize_target(target)
 
-        # Invalidate previous unverified OTPs for same target across all format variations
-        OtpRecord.objects.filter(get_target_filter(target), is_verified=False).delete()
+        # Invalidate previous unverified OTPs for this email address
+        OtpRecord.objects.filter(
+            Q(target__iexact=target_email) | get_target_filter(target),
+            is_verified=False
+        ).delete()
 
         otp_record = OtpRecord.objects.create(
-            target=canonical_target,
+            target=target_email,
             otp_code=otp_code,
             purpose=purpose,
             expires_at=expires_at
@@ -136,23 +152,14 @@ class SendOtpView(APIView):
         # Sync to Supabase
         sync_otp_to_supabase(otp_record)
 
-        # Dispatch via Resend / Gmail SMTP Email if email is provided or linked
-        email_dispatched = False
-        target_email = None
-        if '@' in target:
-            target_email = target.strip().lower()
-        else:
-            user = find_user_by_identifier(target)
-            if user and user.email and '@' in user.email:
-                target_email = user.email
-
-        if target_email:
-            email_dispatched = send_otp_email(target_email, otp_code, purpose)
+        # Dispatch via Gmail SMTP
+        email_dispatched = send_otp_email(target_email, otp_code, purpose)
 
         return Response({
             'status': 'success',
-            'message': f'6-digit OTP dispatched to {canonical_target}',
-            'target': canonical_target,
+            'message': f'6-digit OTP dispatched to {target_email}',
+            'target': target_email,
+            'email': target_email,
             'otp': otp_code,  # Sent in payload for test/demo convenience
             'email_sent': email_dispatched,
             'email_destination': target_email,
@@ -163,15 +170,23 @@ class SendOtpView(APIView):
 
 class VerifyOtpView(APIView):
     def post(self, request):
-        target = request.data.get('target', '').strip()
+        target = request.data.get('target', '').strip() or request.data.get('email', '').strip()
         otp_code = request.data.get('otp_code', '').strip()
 
         if not target or not otp_code:
-            return Response({'status': 'error', 'message': 'Target and OTP code are required'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'error', 'message': 'Email address and 6-digit OTP code are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        target_email = target.lower() if '@' in target else None
+        if not target_email:
+            user = find_user_by_identifier(target)
+            if user and user.email and '@' in user.email:
+                target_email = user.email.lower()
+            else:
+                target_email = target
 
         # Master demo OTP bypass
         if otp_code == '123456':
-            user = find_user_by_identifier(target)
+            user = find_user_by_identifier(target_email) or UserProfile.objects.filter(email__iexact=target_email).first()
             if user and not user.is_verified:
                 user.is_verified = True
                 user.save(update_fields=['is_verified'])
@@ -179,15 +194,16 @@ class VerifyOtpView(APIView):
             return Response({
                 'status': 'success',
                 'message': 'OTP verified successfully (Demo Passcode: 123456)',
-                'target': target,
+                'target': target_email,
+                'email': target_email,
                 'is_verified': True
             }, status=status.HTTP_200_OK)
 
-        target_q = get_target_filter(target)
+        target_q = Q(target__iexact=target_email) | get_target_filter(target)
         record = OtpRecord.objects.filter(target_q, otp_code=otp_code, is_verified=False).order_by('-created_at').first()
 
         if not record:
-            return Response({'status': 'error', 'message': 'Invalid OTP code. Please check and try again or use 123456.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'error', 'message': 'Invalid OTP code. Please check your inbox and try again or use 123456.'}, status=status.HTTP_400_BAD_REQUEST)
 
         if record.is_expired():
             return Response({'status': 'error', 'message': 'OTP passcode has expired (valid for 10 minutes). Please request a new one.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -197,7 +213,7 @@ class VerifyOtpView(APIView):
         sync_otp_to_supabase(record)
 
         # Update UserProfile if exists
-        user = find_user_by_identifier(target)
+        user = find_user_by_identifier(target_email) or UserProfile.objects.filter(email__iexact=target_email).first()
         if user:
             user.is_verified = True
             user.save(update_fields=['is_verified'])
@@ -206,7 +222,8 @@ class VerifyOtpView(APIView):
         return Response({
             'status': 'success',
             'message': 'OTP verified successfully!',
-            'target': target,
+            'target': target_email,
+            'email': target_email,
             'is_verified': True
         }, status=status.HTTP_200_OK)
 

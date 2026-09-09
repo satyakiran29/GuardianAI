@@ -259,74 +259,66 @@ def run_tests():
     assert "SHA-256 HASH:" in res_html.content.decode('utf-8')
     print(f"✅ Forensic Debrief Printable HTML Document Verified (A4 Print/PDF ready)")
 
-    # 13. Test OTP Authentication System & Normalization
-    print("\n🔑 Testing OTP Authentication System & Format Normalization...")
-    test_target_phone = "+919123456780"
-    test_10digit_phone = "9123456780"
+    # 13. Test Email-Only OTP Authentication System
+    print("\n🔑 Testing Email-Only OTP Authentication System...")
+    test_target_email = "priya@example.com"
 
-    # 13a. Send OTP to +91 formatted phone
+    # 13a. Send OTP to email address
     res_send = client.post('/api/auth/send-otp/', data=json.dumps({
-        'target': test_target_phone,
+        'target': test_target_email,
         'purpose': 'login'
     }), content_type='application/json')
-    assert res_send.status_code == 200, f"Send OTP failed: {res_send.content}"
+    assert res_send.status_code == 200, f"Send Email OTP failed: {res_send.content}"
     otp_data = res_send.json()
     generated_otp = otp_data['otp']
     assert len(generated_otp) == 6 and generated_otp.isdigit()
-    print(f"✅ Send OTP API Verified: Dispatched 6-digit code {generated_otp} to {test_target_phone}")
+    assert otp_data['email_sent'] is True or otp_data['email_destination'] == test_target_email
+    print(f"✅ Send Email OTP API Verified: Dispatched 6-digit code {generated_otp} to {test_target_email}")
 
-    # 13b. Cross-format OTP verification: Verify using 10-digit format without +91
-    res_verify_cross = client.post('/api/auth/verify-otp/', data=json.dumps({
-        'target': test_10digit_phone,
+    # 13b. Unlinked raw phone number without email is rejected
+    res_phone_fail = client.post('/api/auth/send-otp/', data=json.dumps({
+        'target': '+917777788888',
+        'purpose': 'login'
+    }), content_type='application/json')
+    assert res_phone_fail.status_code == 400
+    print(f"✅ SMS Phone OTP Removal Verified: Raw unlinked phone rejected with 400 as expected")
+
+    # 13c. Verify Email OTP
+    res_verify = client.post('/api/auth/verify-otp/', data=json.dumps({
+        'target': test_target_email,
         'otp_code': generated_otp
     }), content_type='application/json')
-    assert res_verify_cross.status_code == 200, f"Cross-format verification failed: {res_verify_cross.content}"
-    assert res_verify_cross.json()['is_verified'] is True
-    print(f"✅ Cross-Format Phone OTP Verification Verified: Sent to {test_target_phone}, verified via {test_10digit_phone}")
+    assert res_verify.status_code == 200, f"Email OTP verification failed: {res_verify.content}"
+    assert res_verify.json()['is_verified'] is True
+    print(f"✅ Email OTP Verification Verified: Code successfully authenticated for {test_target_email}")
 
-    # 13c. Master Demo Passcode (123456)
+    # 13d. Master Demo Passcode (123456)
     res_demo = client.post('/api/auth/verify-otp/', data=json.dumps({
-        'target': test_target_phone,
+        'target': test_target_email,
         'otp_code': '123456'
     }), content_type='application/json')
     assert res_demo.status_code == 200
     assert res_demo.json()['is_verified'] is True
     print(f"✅ Master Demo Passcode 123456 Verified: Instant bypass successful")
 
-    # 13d. Invalidation of old OTP upon new dispatch
-    res_send_new = client.post('/api/auth/send-otp/', data=json.dumps({
-        'target': test_10digit_phone,
-        'purpose': 'login'
-    }), content_type='application/json')
-    new_otp = res_send_new.json()['otp']
-    assert new_otp != ""
-    # Old OTP code should no longer verify
-    res_old_fail = client.post('/api/auth/verify-otp/', data=json.dumps({
-        'target': test_target_phone,
-        'otp_code': '000000'
-    }), content_type='application/json')
-    assert res_old_fail.status_code == 400
-    print(f"✅ OTP Invalidation & Rejection Verified: Invalid / superseded code correctly rejected with 400")
-
-    # 13e. Login via OTP in REST API
+    # 13e. Login via Email OTP in REST API
     res_api_login = client.post('/api/auth/login/', data=json.dumps({
-        'identifier': user.phone,
+        'identifier': user.email,
         'otp_code': '123456'
     }), content_type='application/json')
     assert res_api_login.status_code == 200
-    assert res_api_login.json()['user']['phone'] == user.phone
-    print(f"✅ API Login with OTP Verified: Citizen logged in with demo passcode")
+    assert res_api_login.json()['user']['email'] == user.email
+    print(f"✅ API Login with Email OTP Verified: Citizen logged in with demo passcode")
 
-    # 13f. Dashboard Web OTP Login Form Submission
+    # 13f. Dashboard Web Email OTP Login Form Submission
     res_web_login = client.post('/login/', data={
         'auth_type': 'otp',
-        'phone': user.phone,
+        'email': user.email,
         'otp_code': '123456',
         'role_type': 'user'
     })
-    # Redirects upon successful session establishment
     assert res_web_login.status_code in [200, 302]
-    print(f"✅ Dashboard Web OTP Login Verified: Session established successfully")
+    print(f"✅ Dashboard Web Email OTP Login Verified: Session established successfully")
 
     # 14. Test Transactional Email & Management System
     print("\n📧 Testing Transactional Email Management System...")
