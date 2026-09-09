@@ -67,7 +67,7 @@ public class OtpVerificationDialog {
 
         binding.btnResendOtp.setOnClickListener(v -> {
             startTimer(60000);
-            Toast.makeText(context, "New 6-digit OTP sent to " + currentTarget, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "📧 New 6-digit OTP sent to your email (" + currentTarget + ")", Toast.LENGTH_SHORT).show();
             // Call backend send-otp
             ApiClient.sendOtp(currentTarget, "verification", null);
         });
@@ -95,11 +95,7 @@ public class OtpVerificationDialog {
         this.currentTarget = target;
         this.listener = listener;
 
-        if (target != null && target.contains("@")) {
-            binding.tvOtpSubtitle.setText(String.format("Enter the 6-digit code sent from security@psatyakiran.in to %s", target));
-        } else {
-            binding.tvOtpSubtitle.setText(String.format("Enter the 6-digit verification code sent to %s", target));
-        }
+        binding.tvOtpSubtitle.setText(String.format("Enter the 6-digit passcode sent to your email (%s)", target));
         clearOtpBoxes();
         startTimer(60000);
 
@@ -107,8 +103,7 @@ public class OtpVerificationDialog {
         ApiClient.sendOtp(target, purpose != null ? purpose : "verification", (success, otpCode) -> {
             if (success && otpCode != null && !otpCode.isEmpty()) {
                 // Hint demo users
-                String prefix = (target != null && target.contains("@")) ? "📧 Email OTP sent to " : "📱 SMS OTP sent to ";
-                Toast.makeText(context, prefix + target + " (Code: " + otpCode + ")", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "📧 6-Digit Email OTP sent to " + target + " (Code: " + otpCode + ")", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -160,7 +155,7 @@ public class OtpVerificationDialog {
             binding.btnVerifyOtp.setText("Verify & Continue");
 
             if (success || "123456".equals(code)) {
-                Toast.makeText(context, "✅ OTP Verified Successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "✅ Email OTP Verified Successfully!", Toast.LENGTH_SHORT).show();
                 dismiss();
                 if (listener != null) {
                     listener.onVerified(currentTarget, code);

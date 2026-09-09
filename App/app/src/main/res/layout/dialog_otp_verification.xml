@@ -50,7 +50,7 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="Enter the 6-digit verification code sent to your phone or email"
+            android:text="Enter the 6-digit passcode sent to your email address"
             android:textColor="@color/text_color_secondary"
             android:textSize="14sp" />
 

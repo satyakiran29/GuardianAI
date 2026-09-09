@@ -45,11 +45,11 @@ public class LoginFragment extends Fragment {
 
         binding.btnRegister.setOnClickListener(v -> NavHostFragment.findNavController(this).navigate(R.id.action_loginFragment_to_registerFragment));
 
-        // Email / Phone OTP Sign-In
+        // Email OTP Sign-In
         binding.btnLoginOtp.setOnClickListener(v -> {
             String target = Objects.requireNonNull(binding.etEmail.getText()).toString().trim();
-            if (target.isEmpty()) {
-                binding.etEmailLayout.setError("Enter your email or phone to receive an OTP");
+            if (target.isEmpty() || !target.contains("@")) {
+                binding.etEmailLayout.setError("Enter your registered email address to receive an OTP");
                 binding.etEmail.requestFocus();
                 return;
             }
@@ -65,15 +65,11 @@ public class LoginFragment extends Fragment {
                         loadingDialog.hide();
                         if (success) {
                             Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
-                            if (verifiedTarget.contains("@")) {
-                                Prefs.putString(Constants.PREFS_USER_EMAIL, verifiedTarget);
-                            } else {
-                                Prefs.putString(Constants.PREFS_USER_PHONE, verifiedTarget);
-                            }
+                            Prefs.putString(Constants.PREFS_USER_EMAIL, verifiedTarget);
                             Prefs.putString("USER_ROLE", role != null ? role : "user");
 
                             if (getContext() != null) {
-                                Toast.makeText(getContext(), "🎉 Signed in with OTP successfully!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "🎉 Signed in with Email OTP successfully!", Toast.LENGTH_SHORT).show();
                             }
 
                             Intent mainIntent = new Intent(getActivity(), MainActivity.class);

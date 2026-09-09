@@ -237,10 +237,10 @@ The Admin Dashboard provides full CRUD data controls at **[`/users/`](http://127
 
 | Endpoint | Method | Description | Sample Payload |
 | :--- | :---: | :--- | :--- |
-| `/api/auth/send-otp/` | `POST` | Generate & dispatch 6-digit OTP | `{"target": "+919876543210", "purpose": "login"}` |
-| `/api/auth/verify-otp/` | `POST` | Validate 6-digit passcode | `{"target": "+919876543210", "otp_code": "123456"}` |
-| `/api/auth/register/` | `POST` | Create account with role & cloud sync | `{"name": "Sneha", "phone": "+919876543210", "role": "user"}` |
-| `/api/auth/login/` | `POST` | Sign in via password or phone OTP | `{"identifier": "+919876543210", "otp_code": "123456"}` |
+| `/api/auth/send-otp/` | `POST` | Generate & dispatch 6-digit Email OTP | `{"email": "user@example.com", "purpose": "login"}` |
+| `/api/auth/verify-otp/` | `POST` | Validate 6-digit Email passcode | `{"email": "user@example.com", "otp_code": "123456"}` |
+| `/api/auth/register/` | `POST` | Create account with role & cloud sync | `{"name": "Sneha", "email": "sneha@example.com", "phone": "+919876543210", "role": "user"}` |
+| `/api/auth/login/` | `POST` | Sign in via password or email OTP | `{"identifier": "user@example.com", "otp_code": "123456"}` |
 | `/api/sos/trigger/` | `POST` | Broadcast emergency distress beacon | `{"phone": "+919876543210", "latitude": 17.425, "longitude": 78.452}` |
 | `/api/sos/resolve/` | `POST` | Mark alert resolved | `{"alert_id": 1, "notes": "Safely resolved"}` |
 | `/api/location/ping/` | `POST` | Update victim live GPS telemetry | `{"phone": "+919876543210", "latitude": 17.425, "longitude": 78.452}` |

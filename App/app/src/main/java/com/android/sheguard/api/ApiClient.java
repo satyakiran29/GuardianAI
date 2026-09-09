@@ -69,6 +69,9 @@ public class ApiClient {
     public static void sendOtp(String target, String purpose, OtpSendCallback callback) {
         Map<String, Object> body = new HashMap<>();
         body.put("target", target);
+        if (target != null && target.contains("@")) {
+            body.put("email", target);
+        }
         body.put("purpose", purpose);
 
         Log.d(TAG, "POST /auth/send-otp/ -> " + body + " to " + BASE_URL);
@@ -105,6 +108,9 @@ public class ApiClient {
 
         Map<String, Object> body = new HashMap<>();
         body.put("target", target);
+        if (target != null && target.contains("@")) {
+            body.put("email", target);
+        }
         body.put("otp_code", otpCode);
 
         Log.d(TAG, "POST /auth/verify-otp/ -> " + body);
