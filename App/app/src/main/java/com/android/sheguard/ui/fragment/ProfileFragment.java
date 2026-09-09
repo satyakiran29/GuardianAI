@@ -104,6 +104,29 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        // 2-Step Verification (2FA) Switch
+        boolean is2fa = Prefs.getBoolean("TWO_FACTOR_ENABLED", false);
+        binding.switchTwoFactor.setChecked(is2fa);
+        updateTwoFactorLabel(is2fa);
+
+        binding.switchTwoFactor.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Prefs.putBoolean("TWO_FACTOR_ENABLED", isChecked);
+            updateTwoFactorLabel(isChecked);
+
+            String userIdentifier = Prefs.getString(Constants.PREFS_USER_EMAIL, "");
+            if (userIdentifier.isEmpty()) {
+                userIdentifier = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+            }
+
+            ApiClient.toggleTwoFactor(userIdentifier, isChecked, (success, state, message) -> {
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), isChecked ? "🔒 2-Step Verification enabled!" : "🔓 2-Step Verification disabled", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        binding.rowTwoFactor.setOnClickListener(v -> binding.switchTwoFactor.toggle());
+
         // Delete Account (User Requested Feature)
         binding.rowDeleteAccount.setOnClickListener(v -> showDeleteAccountDialog());
 
@@ -131,6 +154,16 @@ public class ProfileFragment extends Fragment {
         binding.tvName.setText(name + " (" + role.toUpperCase() + ")");
         binding.tvEmail.setText(email);
         binding.tvPhone.setText(phone);
+        boolean is2fa = Prefs.getBoolean("TWO_FACTOR_ENABLED", false);
+        binding.switchTwoFactor.setChecked(is2fa);
+        updateTwoFactorLabel(is2fa);
+    }
+
+    private void updateTwoFactorLabel(boolean enabled) {
+        if (binding != null && binding.tvTwoFactorStatus != null) {
+            binding.tvTwoFactorStatus.setText(enabled ? "🟢 Enabled • Email OTP required at sign-in" : "⚪ Disabled • Password only");
+            binding.tvTwoFactorStatus.setTextColor(enabled ? Color.parseColor("#34D399") : Color.parseColor("#94A3B8"));
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────

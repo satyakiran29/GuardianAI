@@ -162,6 +162,34 @@ public class LoginFragment extends Fragment {
             ApiClient.loginUser(email, password, null, (success, role, message) -> {
                 loadingDialog.hide();
                 if (!success) {
+                    // Check if 2-Step Verification is required
+                    if (role != null && role.startsWith("2FA_REQUIRED:")) {
+                        String targetEmail = role.substring("2FA_REQUIRED:".length()).trim();
+                        if (targetEmail.isEmpty()) targetEmail = email;
+
+                        if (getContext() != null) {
+                            Toast.makeText(getContext(), "🔐 2-Step Verification: Passcode sent to " + targetEmail, Toast.LENGTH_LONG).show();
+                        }
+
+                        final String verifyTarget = targetEmail;
+                        if (otpVerificationDialog != null) {
+                            otpVerificationDialog.show(verifyTarget, "2fa_login", (target, otpCode) -> {
+                                loadingDialog.show(null);
+                                ApiClient.loginUser(email, password, otpCode, (success2, role2, msg2) -> {
+                                    loadingDialog.hide();
+                                    if (success2) {
+                                        completeSuccessfulLogin(email, role2);
+                                    } else {
+                                        if (getContext() != null) {
+                                            Toast.makeText(getContext(), msg2 != null ? msg2 : "2FA verification failed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                        return;
+                    }
+
                     boolean isUserNotFound = message != null && (
                             message.toLowerCase().contains("not found") ||
                             message.toLowerCase().contains("register") ||
@@ -199,26 +227,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
 
-                Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
-                Prefs.putString(Constants.PREFS_USER_EMAIL, email);
-                if ("superadmin".equalsIgnoreCase(role) || "admin@sheguard.app".equalsIgnoreCase(email)) {
-                    Prefs.putString(Constants.PREFS_USER_PHONE, "+919876500000");
-                    Prefs.putString(Constants.PREFS_USER_NAME, "Chief SuperAdmin");
-                    Prefs.putString("USER_ROLE", "superadmin");
-                } else {
-                    if (Prefs.getString(Constants.PREFS_USER_PHONE, null) == null) {
-                        Prefs.putString(Constants.PREFS_USER_PHONE, email.contains("@") ? "+919876543210" : email);
-                    }
-                    Prefs.putString("USER_ROLE", role != null ? role : "user");
-                }
-
-                if (getContext() != null) {
-                    Toast.makeText(getContext(), "🎉 Welcome back!", Toast.LENGTH_SHORT).show();
-                }
-
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                completeSuccessfulLogin(email, role);
             });
         });
 
@@ -259,6 +268,29 @@ public class LoginFragment extends Fragment {
         }
 
         return isValid;
+    }
+
+    private void completeSuccessfulLogin(String email, String role) {
+        Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
+        Prefs.putString(Constants.PREFS_USER_EMAIL, email);
+        if ("superadmin".equalsIgnoreCase(role) || "admin@sheguard.app".equalsIgnoreCase(email)) {
+            Prefs.putString(Constants.PREFS_USER_PHONE, "+919876500000");
+            Prefs.putString(Constants.PREFS_USER_NAME, "Chief SuperAdmin");
+            Prefs.putString("USER_ROLE", "superadmin");
+        } else {
+            if (Prefs.getString(Constants.PREFS_USER_PHONE, null) == null) {
+                Prefs.putString(Constants.PREFS_USER_PHONE, email.contains("@") ? "+919876543210" : email);
+            }
+            Prefs.putString("USER_ROLE", role != null ? role : "user");
+        }
+
+        if (getContext() != null) {
+            Toast.makeText(getContext(), "🎉 Welcome back!", Toast.LENGTH_SHORT).show();
+        }
+
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

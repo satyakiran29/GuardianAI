@@ -6,6 +6,7 @@ from .views import (
     UpdateProfileView,
     DeleteAccountView,
     LoginView,
+    ToggleTwoFactorView,
     SosTriggerView,
     SosResolveView,
     LocationPingView,
@@ -35,6 +36,7 @@ urlpatterns = [
     path('auth/profile/update/', UpdateProfileView.as_view(), name='api-profile-update'),
     path('auth/delete-account/', DeleteAccountView.as_view(), name='api-delete-account'),
     path('auth/login/', LoginView.as_view(), name='api-login'),
+    path('auth/two-factor/toggle/', ToggleTwoFactorView.as_view(), name='api-toggle-2fa'),
 
     # SOS & Emergency Telemetry
     path('sos/trigger/', SosTriggerView.as_view(), name='api-sos-trigger'),

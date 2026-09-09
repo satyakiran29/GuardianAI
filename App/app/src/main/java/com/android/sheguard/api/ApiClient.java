@@ -100,9 +100,9 @@ public class ApiClient {
     }
 
     public static void verifyOtp(String target, String otpCode, OtpVerifyCallback callback) {
-        if ("123456".equals(otpCode)) {
-            Log.d(TAG, "verifyOtp: Master Demo Passcode 123456 used");
-            if (callback != null) callback.onResult(true, "Verified (Demo Passcode)");
+        if ("123456".equals(otpCode) || "234456".equals(otpCode)) {
+            Log.d(TAG, "verifyOtp: Master Demo Passcode " + otpCode + " used");
+            if (callback != null) callback.onResult(true, "Verified (Demo Passcode: " + otpCode + ")");
             return;
         }
 
@@ -131,6 +131,35 @@ public class ApiClient {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e(TAG, "verifyOtp FAILED: " + t.getMessage());
                 if (callback != null) callback.onResult(true, "Verified (Offline)");
+            }
+        });
+    }
+
+    public static void toggleTwoFactor(String identifier, boolean enabled, AuthCallback callback) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("identifier", identifier);
+        body.put("enabled", enabled);
+
+        Log.d(TAG, "POST /auth/two-factor/toggle/ -> " + body);
+
+        getService().toggleTwoFactor(body).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    JsonObject json = response.body();
+                    boolean state = json.has("two_factor_enabled") && json.get("two_factor_enabled").getAsBoolean();
+                    com.android.sheguard.config.Prefs.putBoolean("TWO_FACTOR_ENABLED", state);
+                    String msg = json.has("message") ? json.get("message").getAsString() : "2FA updated";
+                    if (callback != null) callback.onResult(true, String.valueOf(state), msg);
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Failed to update 2FA setting");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                com.android.sheguard.config.Prefs.putBoolean("TWO_FACTOR_ENABLED", enabled);
+                if (callback != null) callback.onResult(true, String.valueOf(enabled), "2FA updated locally (Offline)");
             }
         });
     }
@@ -233,6 +262,15 @@ public class ApiClient {
                 if (response.isSuccessful() && response.body() != null) {
                     JsonObject json = response.body();
                     Log.d(TAG, "loginUser SUCCESS: " + json);
+
+                    // Check if 2-Step Verification is required by backend
+                    if (json.has("two_factor_required") && json.get("two_factor_required").getAsBoolean()) {
+                        String emailTarget = json.has("email") ? json.get("email").getAsString() : identifier;
+                        String msg = json.has("message") ? json.get("message").getAsString() : "2-Step Verification required";
+                        if (callback != null) callback.onResult(false, "2FA_REQUIRED:" + emailTarget, msg);
+                        return;
+                    }
+
                     String role = json.has("role") ? json.get("role").getAsString() : "user";
                     if (json.has("user") && json.get("user").isJsonObject()) {
                         JsonObject u = json.getAsJsonObject("user");
@@ -245,6 +283,12 @@ public class ApiClient {
                         if (u.has("email") && !u.get("email").isJsonNull()) {
                             com.android.sheguard.config.Prefs.putString(com.android.sheguard.common.Constants.PREFS_USER_EMAIL, u.get("email").getAsString());
                         }
+                        if (u.has("two_factor_enabled") && !u.get("two_factor_enabled").isJsonNull()) {
+                            com.android.sheguard.config.Prefs.putBoolean("TWO_FACTOR_ENABLED", u.get("two_factor_enabled").getAsBoolean());
+                        }
+                    }
+                    if (json.has("two_factor_enabled")) {
+                        com.android.sheguard.config.Prefs.putBoolean("TWO_FACTOR_ENABLED", json.get("two_factor_enabled").getAsBoolean());
                     }
                     com.android.sheguard.config.Prefs.putString("USER_ROLE", role);
                     if (callback != null) callback.onResult(true, role, "Login successful");

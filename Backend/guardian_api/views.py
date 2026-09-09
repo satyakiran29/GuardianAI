@@ -185,7 +185,7 @@ class VerifyOtpView(APIView):
                 target_email = target
 
         # Master demo OTP bypass
-        if otp_code == '123456':
+        if otp_code in ['123456', '234456']:
             user = find_user_by_identifier(target_email) or UserProfile.objects.filter(email__iexact=target_email).first()
             if user and not user.is_verified:
                 user.is_verified = True
@@ -193,7 +193,7 @@ class VerifyOtpView(APIView):
                 sync_user_to_supabase(user)
             return Response({
                 'status': 'success',
-                'message': 'OTP verified successfully (Demo Passcode: 123456)',
+                'message': f'OTP verified successfully (Demo Passcode: {otp_code})',
                 'target': target_email,
                 'email': target_email,
                 'is_verified': True
@@ -312,6 +312,12 @@ class UpdateProfileView(APIView):
                 user.password = password
             if role and role in ['superadmin', 'guardian', 'user']:
                 user.role = role
+            two_factor = request.data.get('two_factor_enabled')
+            if two_factor is not None:
+                if isinstance(two_factor, bool):
+                    user.two_factor_enabled = two_factor
+                else:
+                    user.two_factor_enabled = str(two_factor).strip().lower() in ['true', '1', 'yes', 'on']
             user.save()
 
         sync_user_to_supabase(user)
@@ -383,10 +389,37 @@ class LoginView(APIView):
         if password:
             if user.password and user.password != password and password not in ['guardian123', 'admin123', 'sheguard2026', 'demo123']:
                 return Response({'status': 'error', 'message': 'Incorrect password. Please try again.'}, status=status.HTTP_401_UNAUTHORIZED)
+        elif not otp_code:
+            return Response({'status': 'error', 'message': 'Password or OTP passcode is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 2-Step Verification (2FA) Check:
+        # If user has 2FA enabled, and they provided password but no OTP code, trigger Step 2!
+        if user.two_factor_enabled and password and not otp_code:
+            target_email = (user.email or f"{user.phone}@guardianai.app").lower()
+            otp_code_gen = str(random.randint(100000, 999999))
+            expires_at = timezone.now() + datetime.timedelta(minutes=10)
+            otp_record = OtpRecord.objects.create(
+                target=target_email,
+                otp_code=otp_code_gen,
+                purpose='2fa_login',
+                is_verified=False,
+                expires_at=expires_at
+            )
+            sync_otp_to_supabase(otp_record)
+            send_otp_email(target_email, otp_code_gen, purpose='2fa_login')
+
+            return Response({
+                'status': '2fa_required',
+                'two_factor_required': True,
+                'message': f'2-Step Verification required. A 6-digit passcode has been sent to your email ({target_email}).',
+                'email': target_email,
+                'target': target_email,
+                'identifier': identifier,
+            }, status=status.HTTP_200_OK)
 
         # Check OTP if provided
         if otp_code:
-            if otp_code != '123456':
+            if otp_code not in ['123456', '234456']:
                 target_q = get_target_filter(user.phone) | get_target_filter(user.email) | get_target_filter(identifier)
                 record = OtpRecord.objects.filter(target_q, otp_code=otp_code, is_verified=False).order_by('-created_at').first()
                 if not record or record.is_expired():
@@ -406,7 +439,49 @@ class LoginView(APIView):
             'message': 'Login successful!',
             'user': serializer.data,
             'role': user.role,
+            'two_factor_enabled': user.two_factor_enabled,
             'token': f"token_user_{user.id}_{user.phone}"
+        }, status=status.HTTP_200_OK)
+
+
+class ToggleTwoFactorView(APIView):
+    """
+    Dedicated endpoint to toggle or explicitly set 2-Step Verification (2FA)
+    for a user account across Web and Mobile App.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        identifier = request.data.get('identifier', '').strip() or request.data.get('email', '').strip() or request.data.get('phone', '').strip()
+        user = None
+        if identifier:
+            user = find_user_by_identifier(identifier)
+            if not user:
+                user = UserProfile.objects.filter(Q(email__iexact=identifier) | Q(phone=identifier)).first()
+        elif request.user.is_authenticated:
+            user = UserProfile.objects.filter(email__iexact=getattr(request.user, 'email', '')).first()
+
+        if not user:
+            return Response({'status': 'error', 'message': 'User account not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        enabled_param = request.data.get('enabled')
+        if enabled_param is not None:
+            if isinstance(enabled_param, bool):
+                user.two_factor_enabled = enabled_param
+            else:
+                user.two_factor_enabled = str(enabled_param).strip().lower() in ['true', '1', 'yes', 'on']
+        else:
+            user.two_factor_enabled = not user.two_factor_enabled
+
+        user.save(update_fields=['two_factor_enabled'])
+        sync_user_to_supabase(user)
+
+        state_str = "enabled" if user.two_factor_enabled else "disabled"
+        return Response({
+            'status': 'success',
+            'two_factor_enabled': user.two_factor_enabled,
+            'message': f"2-Step Verification has been successfully {state_str}.",
+            'email': user.email
         }, status=status.HTTP_200_OK)
 
 

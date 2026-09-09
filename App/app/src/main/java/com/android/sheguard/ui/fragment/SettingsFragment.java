@@ -66,6 +66,28 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        // 2-Step Verification (2FA) Switch
+        boolean is2fa = Prefs.getBoolean("TWO_FACTOR_ENABLED", false);
+        binding.switchSettingsTwoFactor.setChecked(is2fa);
+        binding.tvSettingsTwoFactorDesc.setText(is2fa ? "🟢 Enabled • Email OTP required at every login" : "⚪ Disabled • Password only");
+
+        binding.switchSettingsTwoFactor.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            Prefs.putBoolean("TWO_FACTOR_ENABLED", isChecked);
+            binding.tvSettingsTwoFactorDesc.setText(isChecked ? "🟢 Enabled • Email OTP required at every login" : "⚪ Disabled • Password only");
+
+            String userIdentifier = Prefs.getString(Constants.PREFS_USER_EMAIL, "");
+            if (userIdentifier.isEmpty()) {
+                userIdentifier = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+            }
+
+            ApiClient.toggleTwoFactor(userIdentifier, isChecked, (success, state, message) -> {
+                if (getContext() != null) {
+                    Toast.makeText(getContext(), isChecked ? "🔒 2-Step Verification enabled!" : "🔓 2-Step Verification disabled", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+        binding.twoFactorContainer.setOnClickListener(v -> binding.switchSettingsTwoFactor.toggle());
+
         // Shake Detection
         binding.switchShakeDetection.setChecked(Prefs.getBoolean(Constants.SETTINGS_SHAKE_DETECTION, false));
         binding.switchShakeDetection.setOnCheckedChangeListener((buttonView, isChecked) -> {

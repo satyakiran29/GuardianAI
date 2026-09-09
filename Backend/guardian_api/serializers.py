@@ -58,6 +58,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = [
             'id', 'name', 'email', 'phone', 'role', 'is_verified', 'is_active',
+            'two_factor_enabled',
             'last_latitude', 'last_longitude', 'last_address', 'battery_level',
             'fcm_token', 'created_at', 'updated_at', 'contacts', 'contact_count',
             'guardian_count', 'ward_count'

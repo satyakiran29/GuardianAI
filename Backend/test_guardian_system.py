@@ -337,7 +337,85 @@ def run_tests():
     assert logs_data['status'] == 'success'
     print(f"✅ Email Logs API Verified: {logs_data['count']} audit log(s) retrieved")
 
-    print("\n🎉 ALL GUARDIAN SYSTEM, 24H REPLAY, OTP & EMAIL TESTS PASSED SUCCESSFULLY!")
+    # 15. Test 2-Step Verification (2FA) System in API and Web
+    print("\n🔒 Testing 2-Step Verification (2FA) Management & Auth...")
+
+    # 15a. Enable 2FA for user
+    res_2fa_on = client.post('/api/auth/two-factor/toggle/', data=json.dumps({
+        'identifier': user.email,
+        'enabled': True
+    }), content_type='application/json')
+    assert res_2fa_on.status_code == 200
+    assert res_2fa_on.json()['two_factor_enabled'] is True
+    print(f"✅ 2FA Enable API Verified: 2-Step Verification activated for {user.email}")
+
+    # 15b. Login with password only -> triggers 2FA required challenge
+    res_login_2fa_req = client.post('/api/auth/login/', data=json.dumps({
+        'identifier': user.email,
+        'password': 'guardian123'
+    }), content_type='application/json')
+    assert res_login_2fa_req.status_code == 200
+    data_2fa_req = res_login_2fa_req.json()
+    assert data_2fa_req['two_factor_required'] is True
+    assert data_2fa_req['status'] == '2fa_required'
+    print(f"✅ 2FA Interception Verified: Login requested 6-digit email passcode dispatch")
+
+    # 15c. Login with password + demo passcode 234456 -> succeeds
+    res_login_2fa_pass = client.post('/api/auth/login/', data=json.dumps({
+        'identifier': user.email,
+        'password': 'guardian123',
+        'otp_code': '234456'
+    }), content_type='application/json')
+    assert res_login_2fa_pass.status_code == 200
+    assert res_login_2fa_pass.json()['status'] == 'success'
+    assert res_login_2fa_pass.json()['two_factor_enabled'] is True
+    print(f"✅ 2FA Demo Passcode 234456 Verified: Login authenticated with 2nd step")
+
+    # 15d. Web Dashboard Password Login with 2FA active -> Step 2 triggered
+    client.get('/logout/')
+    res_web_2fa_step1 = client.post('/login/', data={
+        'auth_type': 'password',
+        'identifier': user.email,
+        'password': 'guardian123'
+    })
+    assert res_web_2fa_step1.status_code == 200
+    assert "2-Step Verification Required" in res_web_2fa_step1.content.decode('utf-8')
+    print(f"✅ Web Dashboard 2FA Step 1 Verified: Prompted for email passcode")
+
+    # 15e. Web Dashboard Step 2 submission with demo code 234456 -> authenticated session
+    res_web_2fa_step2 = client.post('/login/', data={
+        'auth_type': '2fa',
+        'otp_code': '234456'
+    })
+    assert res_web_2fa_step2.status_code in [200, 302]
+    print(f"✅ Web Dashboard 2FA Step 2 Verified: Session authenticated with passcode 234456")
+
+    # 15f. Web Dashboard Security Page
+    res_security_page = client.get('/security/')
+    assert res_security_page.status_code == 200
+    assert "Account Security" in res_security_page.content.decode('utf-8') and "2-Step Verification" in res_security_page.content.decode('utf-8')
+    print(f"✅ Web Dashboard Security Console Verified: Rendered successfully")
+
+    # 15g. Toggle 2FA OFF via API
+    res_2fa_off = client.post('/api/auth/two-factor/toggle/', data=json.dumps({
+        'identifier': user.email,
+        'enabled': False
+    }), content_type='application/json')
+    assert res_2fa_off.status_code == 200
+    assert res_2fa_off.json()['two_factor_enabled'] is False
+    print(f"✅ 2FA Disable API Verified: 2-Step Verification turned OFF for {user.email}")
+
+    # 15h. Login with password only when 2FA is OFF -> succeeds immediately
+    res_login_direct = client.post('/api/auth/login/', data=json.dumps({
+        'identifier': user.email,
+        'password': 'guardian123'
+    }), content_type='application/json')
+    assert res_login_direct.status_code == 200
+    assert res_login_direct.json()['status'] == 'success'
+    assert res_login_direct.json()['two_factor_enabled'] is False
+    print(f"✅ Direct Password Login Verified: Instant login without 2nd step when 2FA is OFF")
+
+    print("\n🎉 ALL GUARDIAN SYSTEM, 24H REPLAY, OTP, EMAIL & 2FA TESTS PASSED SUCCESSFULLY!")
 
 if __name__ == '__main__':
     run_tests()

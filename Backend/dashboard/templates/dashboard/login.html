@@ -157,6 +157,42 @@
       </div>
     {% endif %}
 
+    {% if step_2fa %}
+    <!-- 2-Step Verification (2FA) Container -->
+    <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 16px; margin-bottom: 20px; text-align: center;">
+      <div style="font-size: 2.2rem; margin-bottom: 6px;">🔐</div>
+      <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">2-Step Verification Required</div>
+      <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
+        A 6-digit verification passcode has been dispatched to your email:<br>
+        <span style="color: #38bdf8; font-weight: 600;">{{ target_email }}</span>
+      </div>
+    </div>
+
+    <form method="POST" id="form-2fa">
+      {% csrf_token %}
+      <input type="hidden" name="auth_type" value="2fa">
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <div class="form-group">
+        <label class="form-label" style="text-align: center; display: block;">Enter 6-Digit Email Passcode</label>
+        <input type="text" name="otp_code" id="twofa_otp_code" required maxlength="6" autofocus placeholder="• • • • • •" class="form-control" style="letter-spacing: 6px; font-weight: bold; font-size: 1.3rem; text-align: center;">
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 0.95rem;">
+        🛡️ Verify Passcode &amp; Sign In
+      </button>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+        <button type="button" onclick="resend2faOtp('{{ target_email }}')" id="btn-resend-2fa" style="background: transparent; border: none; color: #38bdf8; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
+          🔄 Resend Code to Email
+        </button>
+        <a href="{% url 'dashboard-login' %}" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none;">
+          ← Back to Login
+        </a>
+      </div>
+      <div id="twofa-alert-box" style="display: none; font-size: 0.8rem; padding: 8px 12px; border-radius: 8px; margin-top: 10px;"></div>
+    </form>
+    {% else %}
     <!-- Auth Mode Tabs -->
     <div class="tab-nav">
       <button type="button" class="tab-btn active" id="tab-pass-btn" onclick="switchTab('pass')">Password Sign-In</button>
@@ -220,6 +256,7 @@
         🔑 Verify &amp; Sign In
       </button>
     </form>
+    {% endif %}
 
     <!-- Quick 1-Click Role Accounts -->
     <div class="demo-accounts">
@@ -308,8 +345,50 @@
         alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
         alertBox.style.border = '1px solid #ef4444';
         alertBox.style.color = '#fca5a5';
-        alertBox.innerHTML = '⚡ Network offline. Using master passcode: <strong>123456</strong>';
+        alertBox.innerHTML = '⚡ Network offline. Using master passcode: <strong>123456</strong> or <strong>234456</strong>';
         document.getElementById('otp_code').value = '123456';
+      }
+    }
+
+    async function resend2faOtp(email) {
+      const btn = document.getElementById('btn-resend-2fa');
+      const alertBox = document.getElementById('twofa-alert-box');
+      btn.disabled = true;
+      btn.innerText = 'Dispatching...';
+
+      try {
+        const res = await fetch('/api/auth/send-otp/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, purpose: '2fa_login' })
+        });
+        const data = await res.json();
+        btn.disabled = false;
+        btn.innerText = '🔄 Resend Code';
+
+        alertBox.style.display = 'block';
+        if (data.status === 'success') {
+          alertBox.style.background = 'rgba(16, 185, 129, 0.15)';
+          alertBox.style.border = '1px solid #10b981';
+          alertBox.style.color = '#34d399';
+          alertBox.innerHTML = `✅ New passcode dispatched! (Demo: ${data.otp || '234456'})`;
+          if (data.otp) {
+            document.getElementById('twofa_otp_code').value = data.otp;
+          }
+        } else {
+          alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
+          alertBox.style.border = '1px solid #ef4444';
+          alertBox.style.color = '#fca5a5';
+          alertBox.innerHTML = `⚠️ ${data.message || 'Error resending code. Use demo code: 123456 or 234456'}`;
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerText = '🔄 Resend Code';
+        alertBox.style.display = 'block';
+        alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
+        alertBox.style.border = '1px solid #ef4444';
+        alertBox.style.color = '#fca5a5';
+        alertBox.innerHTML = '⚡ Offline. Use demo passcode: <strong>123456</strong> or <strong>234456</strong>';
       }
     }
   </script>

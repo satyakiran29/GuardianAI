@@ -69,6 +69,12 @@
             <span>Email Management</span>
           </a>
         </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-security' %}active{% endif %}">
+          <a href="{% url 'dashboard-security' %}">
+            <span>🔒</span>
+            <span>Security &amp; 2FA</span>
+          </a>
+        </li>
       </ul>
 
       <div class="sidebar-footer">
@@ -83,9 +89,14 @@
             <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px;">
               {{ logged_in_user.email }}
             </div>
-            <a href="{% url 'dashboard-logout' %}" style="display: inline-flex; align-items: center; gap: 4px; color: #f87171; font-size: 0.75rem; text-decoration: none; font-weight: 600;">
-              <span>🚪</span> Sign Out
-            </a>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <a href="{% url 'dashboard-security' %}" style="display: inline-flex; align-items: center; gap: 4px; color: #38bdf8; font-size: 0.75rem; text-decoration: none; font-weight: 600;">
+                <span>🔒</span> Security &amp; 2FA
+              </a>
+              <a href="{% url 'dashboard-logout' %}" style="display: inline-flex; align-items: center; gap: 4px; color: #f87171; font-size: 0.75rem; text-decoration: none; font-weight: 600;">
+                <span>🚪</span> Sign Out
+              </a>
+            </div>
           </div>
         {% endif %}
 

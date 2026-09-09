@@ -31,6 +31,9 @@ public interface BackendApi {
     @POST("auth/login/")
     Call<JsonObject> loginUser(@Body Map<String, Object> body);
 
+    @POST("auth/two-factor/toggle/")
+    Call<JsonObject> toggleTwoFactor(@Body Map<String, Object> body);
+
     @POST("sos/trigger/")
     Call<JsonObject> triggerSos(@Body Map<String, Object> body);
 

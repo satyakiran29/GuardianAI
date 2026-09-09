@@ -154,14 +154,14 @@ public class OtpVerificationDialog {
             binding.btnVerifyOtp.setEnabled(true);
             binding.btnVerifyOtp.setText("Verify & Continue");
 
-            if (success || "123456".equals(code)) {
+            if (success || "123456".equals(code) || "234456".equals(code)) {
                 Toast.makeText(context, "✅ Email OTP Verified Successfully!", Toast.LENGTH_SHORT).show();
                 dismiss();
                 if (listener != null) {
                     listener.onVerified(currentTarget, code);
                 }
             } else {
-                Toast.makeText(context, message != null ? message : "Invalid OTP Code. Use 123456 for demo.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, message != null ? message : "Invalid OTP Code. Use 123456 or 234456 for demo.", Toast.LENGTH_SHORT).show();
             }
         });
     }

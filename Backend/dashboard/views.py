@@ -1,5 +1,7 @@
 import json
 import csv
+import random
+import datetime
 from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
@@ -10,9 +12,9 @@ from django.db.models import Q, Count
 from django.core.paginator import Paginator
 
 from guardian_api.models import UserProfile, EmergencyAlert, OtpRecord, EmergencyContact, TripLog, GuardianLink, ChatMessage, EmailLog
-from guardian_api.supabase_client import sync_user_to_supabase, sync_alert_to_supabase
+from guardian_api.supabase_client import sync_user_to_supabase, sync_alert_to_supabase, sync_otp_to_supabase
 from guardian_api.views import get_target_filter, canonicalize_target
-from guardian_api.resend_mailer import check_smtp_health, send_test_email
+from guardian_api.resend_mailer import check_smtp_health, send_test_email, send_otp_email
 
 
 def find_user_by_identifier(identifier, user_id=None):
@@ -100,13 +102,14 @@ def login_view(request):
         except Exception:
             pass
 
-    # If already logged in, redirect based on role
+    # If already logged in, redirect based on role (GET only so POST login attempts can re-authenticate)
     current_uid = request.session.get('dashboard_user_id')
-    if current_uid:
+    if current_uid and request.method == 'GET':
         role = request.session.get('dashboard_user_role')
         if role == 'guardian':
             return redirect('dashboard-guardian-hub')
-        return redirect('dashboard-index')
+        else:
+            return redirect('dashboard-index')
 
     if request.method == 'POST':
         auth_type = request.POST.get('auth_type', 'password')
@@ -124,6 +127,31 @@ def login_view(request):
                     ).first()
 
                 if user and (user.password == password or password in ['admin123', 'guardian123', 'sheguard2026', 'demo123']):
+                    # Check 2-Step Verification
+                    if user.two_factor_enabled:
+                        request.session['pending_2fa_user_id'] = user.id
+                        request.session['pending_2fa_next'] = next_url
+                        otp_code_gen = str(random.randint(100000, 999999))
+                        target_email = (user.email or f"{user.phone}@guardianai.app").lower()
+                        expires_at = timezone.now() + datetime.timedelta(minutes=10)
+                        otp_rec = OtpRecord.objects.create(
+                            target=target_email,
+                            otp_code=otp_code_gen,
+                            purpose='2fa_login',
+                            is_verified=False,
+                            expires_at=expires_at
+                        )
+                        sync_otp_to_supabase(otp_rec)
+                        send_otp_email(target_email, otp_code_gen, purpose='2fa_login')
+
+                        messages.info(request, f"🔐 2-Step Verification: A 6-digit passcode has been sent to your email ({target_email}).")
+                        return render(request, 'dashboard/login.html', {
+                            'step_2fa': True,
+                            'target_email': target_email,
+                            'next': next_url,
+                            'identifier': identifier
+                        })
+
                     request.session['dashboard_user_id'] = user.id
                     request.session['dashboard_user_name'] = user.name
                     request.session['dashboard_user_role'] = user.role
@@ -140,6 +168,60 @@ def login_view(request):
             except Exception as e:
                 messages.error(request, f"Login Notice: {str(e)[:120]}")
 
+        elif auth_type == '2fa':
+            pending_uid = request.session.get('pending_2fa_user_id')
+            otp_code = request.POST.get('otp_code', '').strip()
+            stored_next = request.session.get('pending_2fa_next', next_url)
+
+            if not pending_uid:
+                messages.error(request, "2FA Session expired. Please sign in with your credentials again.")
+                return redirect('dashboard-login')
+
+            user = UserProfile.objects.filter(id=pending_uid, is_active=True).first()
+            if not user:
+                messages.error(request, "User account not found. Please log in again.")
+                return redirect('dashboard-login')
+
+            is_valid = False
+            if otp_code in ['123456', '234456']:
+                is_valid = True
+            else:
+                target_email = user.email.lower()
+                otp_rec = OtpRecord.objects.filter(
+                    Q(target__iexact=target_email),
+                    otp_code=otp_code,
+                    is_verified=False,
+                    expires_at__gte=timezone.now()
+                ).order_by('-created_at').first()
+                if otp_rec:
+                    otp_rec.is_verified = True
+                    otp_rec.save()
+                    sync_otp_to_supabase(otp_rec)
+                    is_valid = True
+
+            if is_valid:
+                request.session.pop('pending_2fa_user_id', None)
+                request.session.pop('pending_2fa_next', None)
+
+                request.session['dashboard_user_id'] = user.id
+                request.session['dashboard_user_name'] = user.name
+                request.session['dashboard_user_role'] = user.role
+                messages.success(request, f"🎉 2-Step Verification verified! Welcome back, {user.name} ({user.get_role_display()}).")
+
+                if stored_next and stored_next != '/':
+                    return redirect(stored_next)
+                elif user.role == 'guardian':
+                    return redirect('dashboard-guardian-hub')
+                else:
+                    return redirect('dashboard-index')
+            else:
+                messages.error(request, "Invalid or expired OTP passcode. Use the code sent to your email or 123456 / 234456.")
+                return render(request, 'dashboard/login.html', {
+                    'step_2fa': True,
+                    'target_email': user.email,
+                    'next': stored_next
+                })
+
         elif auth_type == 'otp':
             email = (request.POST.get('email', '') or request.POST.get('phone', '')).strip().lower()
             otp_code = request.POST.get('otp_code', '').strip()
@@ -150,7 +232,7 @@ def login_view(request):
                 return render(request, 'dashboard/login.html', {'next': next_url})
 
             is_valid = False
-            if otp_code == '123456':
+            if otp_code in ['123456', '234456']:
                 is_valid = True
             else:
                 otp_rec = OtpRecord.objects.filter(
@@ -193,7 +275,7 @@ def login_view(request):
                 else:
                     return redirect('dashboard-index')
             else:
-                messages.error(request, "Invalid or expired OTP passcode. Try demo code 123456.")
+                messages.error(request, "Invalid or expired OTP passcode. Try demo code 123456 or 234456.")
 
     return render(request, 'dashboard/login.html', {'next': next_url})
 
@@ -202,6 +284,61 @@ def logout_view(request):
     request.session.flush()
     messages.success(request, "You have been safely signed out of GuardianAI Command Center.")
     return redirect('dashboard-login')
+
+
+@dashboard_login_required
+def security_view(request):
+    """
+    User Account Security & 2-Step Verification Console
+    """
+    user = request.dashboard_user
+    active_alerts_count = EmergencyAlert.objects.filter(status='active').count()
+
+    context = {
+        'logged_in_user': user,
+        'user': user,
+        'active_alerts_count': active_alerts_count,
+        'two_factor_enabled': user.two_factor_enabled,
+    }
+    return render(request, 'dashboard/security.html', context)
+
+
+@csrf_exempt
+@dashboard_login_required
+def toggle_2fa_action(request):
+    """
+    AJAX action to toggle 2-Step Verification ON or OFF for the user account.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'status': 'error', 'message': 'POST method required'}, status=405)
+
+    user = request.dashboard_user
+    enabled_val = request.POST.get('enabled')
+    if enabled_val is None and request.body:
+        try:
+            body_json = json.loads(request.body.decode('utf-8'))
+            enabled_val = body_json.get('enabled')
+        except Exception:
+            pass
+
+    if enabled_val is not None:
+        if isinstance(enabled_val, bool):
+            user.two_factor_enabled = enabled_val
+        else:
+            user.two_factor_enabled = str(enabled_val).strip().lower() in ['true', '1', 'yes', 'on']
+    else:
+        user.two_factor_enabled = not user.two_factor_enabled
+
+    user.save(update_fields=['two_factor_enabled'])
+    sync_user_to_supabase(user)
+
+    state_str = "Enabled (Active)" if user.two_factor_enabled else "Disabled (Inactive)"
+    return JsonResponse({
+        'status': 'success',
+        'two_factor_enabled': user.two_factor_enabled,
+        'message': f"2-Step Verification has been successfully {state_str} for your account.",
+        'email': user.email
+    })
 
 
 @dashboard_login_required

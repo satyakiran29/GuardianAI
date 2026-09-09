@@ -9,6 +9,8 @@ from .views import (
     guardian_hub_view,
     email_management_view,
     send_test_email_action,
+    security_view,
+    toggle_2fa_action,
     dispatch_alert_action,
     resolve_alert_action,
     update_user_role_action,
@@ -29,6 +31,8 @@ urlpatterns = [
     path('otp/', otp_view, name='dashboard-otp'),
     path('emails/', email_management_view, name='dashboard-emails'),
     path('emails/test/', send_test_email_action, name='dashboard-send-test-email'),
+    path('security/', security_view, name='dashboard-security'),
+    path('security/toggle-2fa/', toggle_2fa_action, name='dashboard-toggle-2fa'),
     
     # Action hooks
     path('alerts/<int:alert_id>/dispatch/', dispatch_alert_action, name='dashboard-dispatch-alert'),

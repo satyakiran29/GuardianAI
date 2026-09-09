@@ -32,6 +32,7 @@ class UserProfile(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
     is_verified = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
+    two_factor_enabled = models.BooleanField(default=False, db_index=True)
     
     # Telemetry / Live Status
     last_latitude = models.FloatField(null=True, blank=True, default=17.3850)
