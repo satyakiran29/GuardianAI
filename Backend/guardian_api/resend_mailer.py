@@ -60,7 +60,7 @@ def _send_via_smtp(to_email, subject, html_content, from_email):
 
     # Attempt 1: Port 587 STARTTLS (Standard Gmail SMTP)
     try:
-        server = smtplib.SMTP(connect_host, preferred_port, timeout=12)
+        server = smtplib.SMTP(connect_host, preferred_port, timeout=5)
         if use_tls:
             server.starttls()
         if user and pwd:
@@ -76,7 +76,7 @@ def _send_via_smtp(to_email, subject, html_content, from_email):
     if preferred_port != 465:
         try:
             logger.info("🔄 Retrying email dispatch via SMTP SSL on port 465...")
-            server_ssl = smtplib.SMTP_SSL(connect_host, 465, timeout=12)
+            server_ssl = smtplib.SMTP_SSL(connect_host, 465, timeout=5)
             if user and pwd:
                 server_ssl.login(user, pwd)
             server_ssl.sendmail(from_email, recipients, raw_message)
