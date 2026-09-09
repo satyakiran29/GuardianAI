@@ -182,6 +182,10 @@ EMAIL_TIMEOUT = 12
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'satyakiran294@gmail.com')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'tfwaavbdoyxeegnx')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'GuardianAI Safety <satyakiran294@gmail.com>')
+GMAIL_WEBHOOK_URL = os.getenv(
+    'GMAIL_WEBHOOK_URL',
+    'https://script.google.com/macros/s/AKfycbxwv8yIBqCb7C4W-FzGJJH-01wniN0dHcPF8-QPniM9UgYvbPaxKHz9P5kcirA1PpQ/exec'
+)
 
 # Structured Logging for Production & Render
 LOGGING = {
