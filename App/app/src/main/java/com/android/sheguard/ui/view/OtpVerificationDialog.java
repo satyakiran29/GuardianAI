@@ -67,9 +67,13 @@ public class OtpVerificationDialog {
 
         binding.btnResendOtp.setOnClickListener(v -> {
             startTimer(60000);
-            Toast.makeText(context, "📧 New 6-digit OTP sent to your email (" + currentTarget + ")", Toast.LENGTH_SHORT).show();
-            // Call backend send-otp
-            ApiClient.sendOtp(currentTarget, "verification", null);
+            Toast.makeText(context, "📧 Requesting new 6-digit OTP for " + currentTarget + "...", Toast.LENGTH_SHORT).show();
+            ApiClient.sendOtp(currentTarget, "verification", (success, otpCode) -> {
+                if (success && otpCode != null && !otpCode.isEmpty()) {
+                    fillOtp(otpCode);
+                    Toast.makeText(context, "🔐 Passcode: " + otpCode + " (Autofilled)", Toast.LENGTH_LONG).show();
+                }
+            });
         });
     }
 
@@ -102,8 +106,8 @@ public class OtpVerificationDialog {
         // Async trigger backend OTP dispatch
         ApiClient.sendOtp(target, purpose != null ? purpose : "verification", (success, otpCode) -> {
             if (success && otpCode != null && !otpCode.isEmpty()) {
-                // Hint demo users
-                Toast.makeText(context, "📧 6-Digit Email OTP sent to " + target + " (Code: " + otpCode + ")", Toast.LENGTH_LONG).show();
+                fillOtp(otpCode);
+                Toast.makeText(context, "🔐 Passcode: " + otpCode + " (Autofilled)", Toast.LENGTH_LONG).show();
             }
         });
 
