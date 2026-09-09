@@ -6,7 +6,8 @@ from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Q
+from django.db.models import Q, Count
+from django.core.paginator import Paginator
 
 from guardian_api.models import UserProfile, EmergencyAlert, OtpRecord, EmergencyContact, TripLog, GuardianLink, ChatMessage
 from guardian_api.supabase_client import sync_user_to_supabase, sync_alert_to_supabase
@@ -197,20 +198,20 @@ def index(request):
     guardians_count = UserProfile.objects.filter(role='guardian').count()
     users_count = UserProfile.objects.filter(role='user').count()
     
-    active_alerts = EmergencyAlert.objects.filter(status='active').order_by('-timestamp')
-    dispatched_alerts = EmergencyAlert.objects.filter(status='dispatched').order_by('-timestamp')
-    resolved_alerts = EmergencyAlert.objects.filter(status='resolved').order_by('-timestamp')[:5]
+    active_alerts = EmergencyAlert.objects.filter(status='active').select_related('user', 'responder').order_by('-timestamp')[:25]
+    dispatched_alerts = EmergencyAlert.objects.filter(status='dispatched').select_related('user', 'responder').order_by('-timestamp')[:25]
+    resolved_alerts = EmergencyAlert.objects.filter(status='resolved').select_related('user', 'responder').order_by('-timestamp')[:5]
     
-    recent_alerts = EmergencyAlert.objects.all().order_by('-timestamp')[:8]
+    recent_alerts = EmergencyAlert.objects.all().select_related('user', 'responder').order_by('-timestamp')[:8]
     recent_users = UserProfile.objects.all().order_by('-created_at')[:6]
     guardians = UserProfile.objects.filter(role='guardian', is_active=True)
     
     today = timezone.now().date()
     otps_today = OtpRecord.objects.filter(created_at__date=today).count()
     
-    # Map markers data
+    # Map markers data (select_related eliminates ~300 individual queries)
     map_markers = []
-    for alert in EmergencyAlert.objects.filter(status__in=['active', 'dispatched']):
+    for alert in EmergencyAlert.objects.filter(status__in=['active', 'dispatched']).select_related('user', 'responder'):
         map_markers.append({
             'id': alert.id,
             'type': 'alert',
@@ -241,6 +242,13 @@ def index(request):
                 'battery': guard.battery_level
             })
 
+    status_counts = EmergencyAlert.objects.aggregate(
+        active=Count('id', filter=Q(status='active')),
+        dispatched=Count('id', filter=Q(status='dispatched')),
+        resolved=Count('id', filter=Q(status='resolved'))
+    )
+    first_guardian = guardians.first()
+
     context = {
         'logged_in_user': getattr(request, 'dashboard_user', None),
         'current_role_view': current_role_view,
@@ -248,15 +256,16 @@ def index(request):
         'superadmins_count': superadmins_count,
         'guardians_count': guardians_count,
         'users_count': users_count,
-        'active_alerts_count': active_alerts.count(),
-        'dispatched_alerts_count': dispatched_alerts.count(),
-        'resolved_alerts_count': EmergencyAlert.objects.filter(status='resolved').count(),
+        'active_alerts_count': status_counts.get('active', 0) or 0,
+        'dispatched_alerts_count': status_counts.get('dispatched', 0) or 0,
+        'resolved_alerts_count': status_counts.get('resolved', 0) or 0,
         'otps_today': otps_today,
         'active_alerts': active_alerts,
         'dispatched_alerts': dispatched_alerts,
         'recent_alerts': recent_alerts,
         'recent_users': recent_users,
         'guardians': guardians,
+        'first_guardian': first_guardian,
         'map_markers_json': json.dumps(map_markers),
         'supabase_url': 'https://jwntzspmzapxablkmqhp.supabase.co',
     }
@@ -268,19 +277,30 @@ def users_view(request):
     current_user = getattr(request, 'dashboard_user', None)
     role_filter = request.GET.get('role', '')
     search_query = request.GET.get('q', '').strip()
+    page_number = request.GET.get('page', 1)
     
     if current_user and current_user.role == 'user':
         # Protected user login: Access own profile and assigned guardians (My Guardians)
-        users = UserProfile.objects.filter(
+        users_qs = UserProfile.objects.filter(
             Q(id=current_user.id) | Q(ward_links__user=current_user)
-        ).distinct().prefetch_related('guardian_links__guardian', 'ward_links__user')
+        ).distinct().prefetch_related(
+            'guardian_links__guardian',
+            'ward_links__user'
+        ).annotate(
+            contacts_count=Count('contacts', distinct=True)
+        )
     else:
-        users = UserProfile.objects.all().prefetch_related('guardian_links__guardian', 'ward_links__user').order_by('-created_at')
+        users_qs = UserProfile.objects.all().prefetch_related(
+            'guardian_links__guardian',
+            'ward_links__user'
+        ).annotate(
+            contacts_count=Count('contacts', distinct=True)
+        ).order_by('-created_at')
     
     if role_filter:
-        users = users.filter(role=role_filter)
+        users_qs = users_qs.filter(role=role_filter)
     if search_query:
-        users = users.filter(
+        users_qs = users_qs.filter(
             Q(name__icontains=search_query) |
             Q(email__icontains=search_query) |
             Q(phone__icontains=search_query) |
@@ -289,6 +309,9 @@ def users_view(request):
 
     all_guardians = UserProfile.objects.filter(role='guardian', is_active=True).order_by('name')
     all_users = UserProfile.objects.filter(role='user', is_active=True).order_by('name')
+
+    paginator = Paginator(users_qs, 40)
+    page_obj = paginator.get_page(page_number)
 
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -370,12 +393,13 @@ def users_view(request):
 
     context = {
         'logged_in_user': getattr(request, 'dashboard_user', None),
-        'users': users,
+        'users': page_obj,
+        'page_obj': page_obj,
         'all_guardians': all_guardians,
         'all_users': all_users,
         'role_filter': role_filter,
         'search_query': search_query,
-        'total_count': users.count(),
+        'total_count': paginator.count,
         'superadmin_count': UserProfile.objects.filter(role='superadmin').count(),
         'guardian_count': UserProfile.objects.filter(role='guardian').count(),
         'user_count': UserProfile.objects.filter(role='user').count(),
@@ -417,20 +441,26 @@ def guardian_hub_view(request):
     else:
         links = GuardianLink.objects.filter(status='active').select_related('user', 'guardian')
 
+    ward_ids = [link.user_id for link in links]
+    active_alerts_map = {}
+    if ward_ids:
+        for alert in EmergencyAlert.objects.filter(user_id__in=ward_ids, status='active').order_by('-timestamp'):
+            if alert.user_id not in active_alerts_map:
+                active_alerts_map[alert.user_id] = alert
+
     tracked_wards = []
     map_markers = []
 
     for link in links:
         ward = link.user
-        active_alert = EmergencyAlert.objects.filter(user=ward, status='active').order_by('-timestamp').first()
-        recent_chat_count = ChatMessage.objects.filter(Q(sender=ward) | Q(receiver=ward)).count()
+        active_alert = active_alerts_map.get(ward.id)
 
         ward_data = {
             'link_id': link.id,
             'ward': ward,
             'relationship': link.relationship,
             'active_alert': active_alert,
-            'chat_count': recent_chat_count,
+            'chat_count': 0,
             'battery_percentage': ward.battery_level,
             'is_critical_battery': ward.battery_level <= 15,
             'is_low_battery': ward.battery_level <= 30,
@@ -490,24 +520,38 @@ def guardian_hub_view(request):
 def alerts_view(request):
     status_filter = request.GET.get('status', '')
     source_filter = request.GET.get('source', '')
+    page_number = request.GET.get('page', 1)
     
-    alerts = EmergencyAlert.objects.all().order_by('-timestamp')
+    alerts_qs = EmergencyAlert.objects.all().select_related('user', 'responder').order_by('-timestamp')
     if status_filter:
-        alerts = alerts.filter(status=status_filter)
+        alerts_qs = alerts_qs.filter(status=status_filter)
     if source_filter:
-        alerts = alerts.filter(trigger_source=source_filter)
+        alerts_qs = alerts_qs.filter(trigger_source=source_filter)
         
+    paginator = Paginator(alerts_qs, 40)
+    page_obj = paginator.get_page(page_number)
+    
     guardians = UserProfile.objects.filter(role='guardian', is_active=True)
+    first_guardian = guardians.first()
+
+    status_counts = EmergencyAlert.objects.aggregate(
+        active=Count('id', filter=Q(status='active')),
+        dispatched=Count('id', filter=Q(status='dispatched')),
+        resolved=Count('id', filter=Q(status='resolved'))
+    )
 
     context = {
         'logged_in_user': getattr(request, 'dashboard_user', None),
-        'alerts': alerts,
+        'alerts': page_obj,
+        'page_obj': page_obj,
+        'total_count': paginator.count,
         'status_filter': status_filter,
         'source_filter': source_filter,
         'guardians': guardians,
-        'active_count': EmergencyAlert.objects.filter(status='active').count(),
-        'dispatched_count': EmergencyAlert.objects.filter(status='dispatched').count(),
-        'resolved_count': EmergencyAlert.objects.filter(status='resolved').count(),
+        'first_guardian': first_guardian,
+        'active_count': status_counts.get('active', 0) or 0,
+        'dispatched_count': status_counts.get('dispatched', 0) or 0,
+        'resolved_count': status_counts.get('resolved', 0) or 0,
     }
     return render(request, 'dashboard/alerts.html', context)
 

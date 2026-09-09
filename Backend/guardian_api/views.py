@@ -552,7 +552,10 @@ class DashboardStatsApiView(APIView):
         today = timezone.now().date()
         otps_today = OtpRecord.objects.filter(created_at__date=today).count()
 
-        recent_alerts = EmergencyAlertSerializer(EmergencyAlert.objects.all().order_by('-timestamp')[:10], many=True).data
+        recent_alerts = EmergencyAlertSerializer(
+            EmergencyAlert.objects.all().select_related('user', 'responder').order_by('-timestamp')[:10],
+            many=True
+        ).data
 
         return Response({
             'total_users': total_users,

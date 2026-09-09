@@ -144,7 +144,7 @@
                 <span style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 0.78rem; background: {% if user.battery_level <= 15 %}rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444;{% elif user.battery_level <= 30 %}rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b;{% else %}rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981;{% endif %}">
                   🔋 {{ user.battery_level }}%
                 </span>
-                <span style="font-size: 0.72rem; color: var(--text-muted);">{{ user.contacts.count }} contacts</span>
+                <span style="font-size: 0.72rem; color: var(--text-muted);">{{ user.contacts_count|default:user.contacts.count }} contacts</span>
               </div>
               <div style="font-size: 0.78rem; color: var(--text-secondary);">
                 {% if user.last_latitude and user.last_longitude %}
@@ -192,6 +192,26 @@
       </tbody>
     </table>
   </div>
+
+  {% if page_obj and page_obj.paginator.num_pages > 1 %}
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid var(--border-color); flex-wrap: wrap; gap: 12px;">
+      <span style="font-size: 0.85rem; color: var(--text-muted);">
+        Showing Page <strong>{{ page_obj.number }}</strong> of <strong>{{ page_obj.paginator.num_pages }}</strong> (Total: {{ total_count }} Users)
+      </span>
+      <div style="display: flex; gap: 8px;">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}{% if role_filter %}&role={{ role_filter }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-outline btn-sm">
+            ← Previous
+          </a>
+        {% endif %}
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}{% if role_filter %}&role={{ role_filter }}{% endif %}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-primary btn-sm">
+            Next →
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
 </div>
 
 <!-- Modal: Add New User -->

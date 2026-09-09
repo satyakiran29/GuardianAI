@@ -14,7 +14,7 @@
 <div class="glass-panel" style="margin-bottom: 24px; padding: 16px 24px;">
   <div style="display: flex; gap: 10px; flex-wrap: wrap;">
     <a href="{% url 'dashboard-alerts' %}" class="btn {% if not status_filter %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
-      All Incidents ({{ alerts.count }})
+      All Incidents ({{ total_count|default:alerts.count }})
     </a>
     <a href="{% url 'dashboard-alerts' %}?status=active" class="btn {% if status_filter == 'active' %}btn-sos{% else %}btn-outline{% endif %} btn-sm">
       🚨 Active Emergencies ({{ active_count }})
@@ -92,7 +92,7 @@
                 <div style="display: flex; gap: 6px;">
                   <form method="POST" action="{% url 'dashboard-dispatch-alert' alert.id %}">
                     {% csrf_token %}
-                    <input type="hidden" name="responder_id" value="{% if guardians.first %}{{ guardians.first.id }}{% endif %}">
+                    <input type="hidden" name="responder_id" value="{% if first_guardian %}{{ first_guardian.id }}{% elif guardians.first %}{{ guardians.first.id }}{% endif %}">
                     <button type="submit" class="btn btn-primary btn-sm">Dispatch</button>
                   </form>
                   <form method="POST" action="{% url 'dashboard-resolve-alert' alert.id %}">
@@ -120,5 +120,25 @@
       </tbody>
     </table>
   </div>
+
+  {% if page_obj and page_obj.paginator.num_pages > 1 %}
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-top: 1px solid var(--border-color); flex-wrap: wrap; gap: 12px;">
+      <span style="font-size: 0.85rem; color: var(--text-muted);">
+        Showing Page <strong>{{ page_obj.number }}</strong> of <strong>{{ page_obj.paginator.num_pages }}</strong> (Total: {{ total_count }} Incidents)
+      </span>
+      <div style="display: flex; gap: 8px;">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if source_filter %}&source={{ source_filter }}{% endif %}" class="btn btn-outline btn-sm">
+            ← Previous
+          </a>
+        {% endif %}
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if source_filter %}&source={{ source_filter }}{% endif %}" class="btn btn-primary btn-sm">
+            Next →
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
 </div>
 {% endblock %}
