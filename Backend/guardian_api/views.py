@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.renderers import JSONRenderer, StaticHTMLRenderer
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from .models import UserProfile, EmergencyAlert, OtpRecord, EmergencyContact, TripLog, GuardianLink, ChatMessage, LocationHistory, EmailLog
 from .serializers import (

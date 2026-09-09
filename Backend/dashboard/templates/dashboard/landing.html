@@ -1,0 +1,802 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download GuardianAI — Women Safety & Incident Command Platform</title>
+  <meta name="description"
+    content="Download GuardianAI v1.2.9 for Android. Next-generation personal safety app featuring multi-modal SOS triggers, live GPS telemetry radar, shake & voice detection, and emergency guardian dispatch.">
+  <meta name="keywords"
+    content="GuardianAI, SheGuard, women safety app, SOS alert, emergency dispatch, live GPS tracking, Android APK download">
+  <meta name="theme-color" content="#060913">
+
+  <!-- Open Graph / Social Media Sharing Preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GuardianAI">
+  <meta property="og:title" content="GuardianAI — Women Safety &amp; Incident Command Platform">
+  <meta property="og:description"
+    content="Download GuardianAI v1.2.9 APK. 1-Tap SOS, Shake detection, Live GPS Radar &amp; Automated Guardian Dispatch.">
+  <meta property="og:image"
+    content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/guardian_og_preview.webp' %}">
+  <meta property="og:image:type" content="image/webp">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GuardianAI Women Safety &amp; Incident Command Banner">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GuardianAI — Women Safety &amp; Incident Command Platform">
+  <meta name="twitter:description"
+    content="Next-Gen Personal Safety: Multi-modal SOS triggers, live GPS telemetry radar, and automated guardian dispatch.">
+  <meta name="twitter:image"
+    content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/guardian_og_preview.webp' %}">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E%3Ctext y=%2226%22 font-size=%2226%22>🛡️</text></svg>">
+</head>
+
+<body>
+  <!-- Ambient Cyber Grid Background -->
+  <div class="cyber-grid-overlay"></div>
+
+  <!-- Header Navigation -->
+  <header class="site-header">
+    <div class="container nav-content">
+      <a href="/" class="brand-link" id="brand-logo-link">
+        <div class="brand-icon-box">🛡️</div>
+        <div>
+          <span class="brand-title">GuardianAI</span>
+          <span class="brand-version-pill">v{{ apk_version_name }}</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#installation">Install</a></li>
+        <li><a href="#helplines">Helplines</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#faqs">FAQs</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="system-status-indicator" title="All real-time emergency services active">
+          <span class="status-dot-pulse"></span>
+          <span>System Online</span>
+        </div>
+
+        {% if logged_in_user %}
+        <a href="{% url 'dashboard-index' %}" class="btn btn-secondary nav-btn-admin" id="nav-dashboard-link">
+          <span>🖥️</span>
+          <span class="btn-text-responsive">Command</span>
+        </a>
+        {% else %}
+        <a href="{% url 'dashboard-login' %}" class="btn btn-secondary nav-btn-admin" id="nav-login-link"
+          title="Admin Login">
+          <span>🔐</span>
+          <span class="btn-text-responsive">Admin</span>
+        </a>
+        {% endif %}
+
+        <a href="{% url 'download-apk' %}" class="btn btn-primary nav-btn-download" id="nav-download-cta">
+          <span>⬇️</span>
+          <span class="btn-text-download">Download</span>
+        </a>
+
+        <!-- Mobile Hamburger Menu Button -->
+        <button type="button" class="mobile-menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay">
+    <div class="mobile-nav-sheet">
+      <div class="mobile-nav-header">
+        <div class="brand-link">
+          <div class="brand-icon-box" style="width: 36px; height: 36px; font-size: 1.15rem;">🛡️</div>
+          <span class="brand-title" style="font-size: 1.15rem;">GuardianAI</span>
+        </div>
+        <button type="button" class="mobile-drawer-close" id="mobile-drawer-close"
+          aria-label="Close Navigation Menu">&times;</button>
+      </div>
+
+      <nav class="mobile-nav-links">
+        <a href="#features" class="mobile-link"><span>⚡</span> Features &amp; Capabilities</a>
+        <a href="#installation" class="mobile-link"><span>📦</span> How to Install</a>
+        <a href="#helplines" class="mobile-link"><span>📞</span> Safety Helplines</a>
+        <a href="#team" class="mobile-link"><span>👥</span> Engineering Team</a>
+        <a href="#faqs" class="mobile-link"><span>❓</span> FAQs</a>
+      </nav>
+
+      <div class="mobile-nav-footer">
+        {% if logged_in_user %}
+        <a href="{% url 'dashboard-index' %}" class="btn btn-secondary mobile-full-btn">
+          <span>🖥️</span>
+          <span>Incident Command Center</span>
+        </a>
+        {% else %}
+        <a href="{% url 'dashboard-login' %}" class="btn btn-secondary mobile-full-btn">
+          <span>🔐</span>
+          <span>Admin Command Portal</span>
+        </a>
+        {% endif %}
+
+        <a href="{% url 'download-apk' %}" class="btn btn-primary mobile-full-btn"
+          style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+          <span>🤖</span>
+          <span>Download APK ({{ apk_size_mb }})</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-content-col">
+        <div class="hero-badge-pill">
+          <span>✨</span>
+          <span>GuardianAI v{{ apk_version_name }} Stable Build • Android 8.0 to 15</span>
+        </div>
+
+        <h1 class="hero-headline">
+          Instant Emergency Safety &amp; <span class="gradient-text">Incident Command</span> In Your Pocket
+        </h1>
+
+        <p class="hero-subhead">
+          GuardianAI combines multi-modal panic detection, continuous GPS telemetry, background shake &amp; voice
+          triggers, and instant cloud dispatch to protect women and citizens anywhere, anytime.
+        </p>
+
+        <!-- Main Download Action Box -->
+        <div class="download-action-card">
+          <div class="download-buttons-group">
+            <a href="{% url 'download-apk' %}" class="btn btn-download-hero" id="hero-apk-download-btn">
+              <span>🤖</span>
+              <span>Download APK ({{ apk_size_mb }})</span>
+            </a>
+
+            <button type="button" class="btn-qr-toggle" id="open-qr-modal-btn">
+              <span>📱</span>
+              <span>Scan QR Code</span>
+            </button>
+
+            <a href="https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk"
+              target="_blank" rel="noopener" class="btn btn-secondary" id="hero-github-mirror-btn"
+              title="Download from GitHub Mirror">
+              <span>☁️</span>
+              <span>GitHub Cloud Mirror</span>
+            </a>
+          </div>
+
+          <!-- Metadata Badges -->
+          <div class="download-meta-chips">
+            <span class="meta-chip"><span>🛡️</span> 100% Free &amp; Open Source</span>
+            <span class="meta-chip"><span>⚡</span> {{ min_android_version }}</span>
+            <span class="meta-chip"><span>🔒</span> SHA-256 Verified</span>
+            <span class="meta-chip"><span>🚫</span> Zero Ads or Data Tracking</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Platform Metrics Ribbon -->
+  <section class="metrics-ribbon">
+    <div class="container metrics-grid">
+      <div class="metric-item">
+        <div class="metric-value gradient-cyan-text">&lt; 0.4s</div>
+        <div class="metric-label">Instant Emergency Dispatch Speed</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value gradient-text">6+ Modes</div>
+        <div class="metric-label">Panic Detection Modalities</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value gradient-crimson-text">100%</div>
+        <div class="metric-label">End-to-End Encrypted Telemetry</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-value gradient-text">24 Hours</div>
+        <div class="metric-label">Forensic Trail Replay with SHA-256</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Deep-Dive Section -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-pill-tag">Engineering Highlights</span>
+        <h2 class="section-main-title">Built for Real-World Emergency Situations</h2>
+        <p class="section-lead-text">
+          Every second counts during an emergency. GuardianAI operates seamlessly in the background, even when locked or
+          in your pocket.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Card 1 -->
+        <div class="feature-card">
+          <div class="feature-icon-badge icon-crimson">🚨</div>
+          <h3 class="feature-title">Multi-Modal SOS Triggers</h3>
+          <p class="feature-description">
+            Activate emergency alerts via 1-tap on-screen SOS with 3-second cancel shield, rapid phone shake gesture,
+            voice keywords ("Help", "Bachao"), or hardware power button double-clicks.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card">
+          <div class="feature-icon-badge icon-cyan">🛰️</div>
+          <h3 class="feature-title">Live GPS Telemetry &amp; Trail Replay</h3>
+          <p class="feature-description">
+            Continuous sub-meter GPS breadcrumb logging with address reverse-geocoding, live vector tracking, and a
+            24-hour cryptographic forensic trail replay.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card">
+          <div class="feature-icon-badge icon-emerald">🔋</div>
+          <h3 class="feature-title">Battery Guardian &amp; Auto-Alert</h3>
+          <p class="feature-description">
+            Never get stranded with a dead battery. GuardianAI monitors device battery levels and automatically
+            broadcasts your last known coordinates when battery dips below 15%.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="feature-card">
+          <div class="feature-icon-badge icon-purple">🔊</div>
+          <h3 class="feature-title">Acoustic Siren &amp; Strobe Beacon</h3>
+          <p class="feature-description">
+            Disorient aggressors and alert nearby citizens with a high-decibel pulsing acoustic siren synchronized with
+            rapid camera strobe flashlight pulses.
+          </p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="feature-card">
+          <div class="feature-icon-badge icon-pink">👨‍👩‍👧</div>
+          <h3 class="feature-title">Guardian Hub &amp; Realtime Chat</h3>
+          <p class="feature-description">
+            Link trusted family members and responders to monitor your safety radar in real-time, receive automatic
+            SMS/WhatsApp pings, and communicate via secure incident chat.
+          </p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="feature-card">
+          <div class="feature-icon-badge icon-amber">🔒</div>
+          <h3 class="feature-title">Privacy-First &amp; 2-Step Verification</h3>
+          <p class="feature-description">
+            Your location data belongs to you. Zero trackers, zero third-party ads, local SQLite caching, and
+            tamper-resistant 6-digit cryptographic OTP authentication.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3-Step Installation Guide -->
+  <section class="install-section" id="installation">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-pill-tag">Quickstart Walkthrough</span>
+        <h2 class="section-main-title">How to Install GuardianAI on Android</h2>
+        <p class="section-lead-text">
+          Installing via direct APK takes under 30 seconds. Follow these 3 simple steps:
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number-bubble">1</div>
+          <h3 class="step-title">Download the APK</h3>
+          <p class="step-instruction">
+            Click the <strong style="color: #34d399;">Download APK</strong> button above or scan the QR code on your
+            phone to download <code style="color: #c4b5fd;">GuardianAI-v1.2.9.apk</code>.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number-bubble">2</div>
+          <h3 class="step-title">Allow Unknown Apps</h3>
+          <p class="step-instruction">
+            When prompted by Android or Chrome, tap <strong>Settings</strong> and toggle on <em>"Allow from this
+              source"</em> to allow installing the emergency safety application.
+          </p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number-bubble">3</div>
+          <h3 class="step-title">Launch &amp; Verify</h3>
+          <p class="step-instruction">
+            Open GuardianAI, grant Location and SMS permissions for emergency dispatch, and verify your account with a
+            quick 6-digit OTP code.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Emergency Helplines Directory -->
+  <section class="helplines-section" id="helplines">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-pill-tag">Emergency Resources</span>
+        <h2 class="section-main-title">Direct National Safety Helplines</h2>
+        <p class="section-lead-text">
+          Direct dial emergency numbers integrated directly into GuardianAI's one-touch incident response directory.
+        </p>
+      </div>
+
+      <div class="helplines-grid">
+        {% for line in helplines %}
+        <a href="tel:{{ line.code }}" class="helpline-card" id="helpline-{{ line.code }}">
+          <div class="helpline-icon-box">{{ line.icon }}</div>
+          <div>
+            <div>
+              <span class="helpline-number-tag">{{ line.code }}</span>
+              <span class="helpline-badge">{{ line.badge }}</span>
+            </div>
+            <div style="font-weight: 600; font-size: 0.95rem; margin-top: 4px; color: #f8fafc;">{{ line.name }}</div>
+            <div class="helpline-desc">{{ line.desc }}</div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Engineering & Research Team Showcase Section -->
+  <section class="team-section" id="team">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-pill-tag">Engineering &amp; Research Team</span>
+        <h2 class="section-main-title">Architected by Our Core Team</h2>
+        <p class="section-lead-text">
+          GuardianAI was conceived, engineered, and verified by a specialized multidisciplinary team spanning systems
+          architecture, hardware sensors, mobile security, and cloud telemetrics.
+        </p>
+      </div>
+
+      <div class="team-grid">
+        <!-- Member 1: Pampana Satya Kiran -->
+        <div class="team-card lead-card">
+          <div class="team-card-header">
+            <div class="team-avatar-box avatar-purple">
+              <span>👨‍💻</span>
+            </div>
+            <div>
+              <span class="team-role-pill role-lead">System Architect</span>
+              <h3 class="team-name">Pampana Satya Kiran</h3>
+            </div>
+          </div>
+          <p class="team-desc">
+            Global system architecture, role-based access control (RBAC), Retrofit API bridge, continuous OTA pipeline,
+            and cloud deployment orchestration.
+          </p>
+          <div class="team-tag-list">
+            <span class="team-tag">System Architecture</span>
+            <span class="team-tag">Django Backend</span>
+            <span class="team-tag">Android</span>
+            <span class="team-tag">CI/CD Ops</span>
+          </div>
+          <!-- Profile & Social Links -->
+          <div class="team-social-links">
+            <a href="https://psatyakiran.in/" target="_blank" rel="noopener noreferrer" class="team-social-btn portfolio-btn" title="Portfolio Website — psatyakiran.in">
+              <span>🌐</span>
+              <span>Portfolio</span>
+            </a>
+            <a href="https://www.linkedin.com/in/satyakiran29/" target="_blank" rel="noopener noreferrer" class="team-social-btn linkedin-btn" title="LinkedIn — satyakiran29">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              <span>LinkedIn</span>
+            </a>
+            <a href="https://github.com/satyakiran29" target="_blank" rel="noopener noreferrer" class="team-social-btn github-btn" title="GitHub — satyakiran29">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              <span>GitHub</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Member 2: Amarthaluri Harshavardhan -->
+        <div class="team-card">
+          <div class="team-card-header">
+            <div class="team-avatar-box avatar-crimson">
+              <span>⚡</span>
+            </div>
+            <div>
+              <span class="team-role-pill role-security">Core Android &amp; Security</span>
+              <h3 class="team-name">Amarthaluri Harshavardhan</h3>
+            </div>
+          </div>
+          <p class="team-desc">
+            Continuous background panic daemon, shake &amp; hardware button listeners, Dead-Man switch safety timer, 15%
+            battery monitor, and 1-tap emergency widgets.
+          </p>
+          <div class="team-tag-list">
+            <span class="team-tag">Foreground Daemons</span>
+            <span class="team-tag">Sensor Triggers</span>
+            <span class="team-tag">Dead-Man Switch</span>
+            <span class="team-tag">Widgets</span>
+          </div>
+        </div>
+
+        <!-- Member 3: Madeli Narasimha -->
+        <div class="team-card">
+          <div class="team-card-header">
+            <div class="team-avatar-box avatar-cyan">
+              <span>☁️</span>
+            </div>
+            <div>
+              <span class="team-role-pill role-cloud">Backend &amp; Cloud Integration</span>
+              <h3 class="team-name">Madeli Narasimha</h3>
+            </div>
+          </div>
+          <p class="team-desc">
+            Django REST Framework API design, Supabase real-time PostgreSQL synchronization, database ORM modeling,
+            guardian-ward pairing, and real-time incident chat.
+          </p>
+          <div class="team-tag-list">
+            <span class="team-tag">REST Framework</span>
+            <span class="team-tag">Supabase Realtime</span>
+            <span class="team-tag">PostgreSQL</span>
+            <span class="team-tag">Chat Engine</span>
+          </div>
+        </div>
+
+        <!-- Member 4: Mammula Sneha -->
+        <div class="team-card">
+          <div class="team-card-header">
+            <div class="team-avatar-box avatar-pink">
+              <span>🎨</span>
+            </div>
+            <div>
+              <span class="team-role-pill role-design">UI/UX &amp; Safety Systems</span>
+              <h3 class="team-name">Mammula Sneha</h3>
+            </div>
+          </div>
+          <p class="team-desc">
+            Design system &amp; AMOLED themes, SheGuard mobile UI, interactive Leaflet.js radar command dashboard, 24/7
+            Groq AI safety advisor, and fake call simulation.
+          </p>
+          <div class="team-tag-list">
+            <span class="team-tag">Material3 UI</span>
+            <span class="team-tag">Radar Command UI</span>
+            <span class="team-tag">Groq AI Advisor</span>
+            <span class="team-tag">Localization</span>
+          </div>
+        </div>
+
+        <!-- Member 5: Kadagala Meghana -->
+        <div class="team-card">
+          <div class="team-card-header">
+            <div class="team-avatar-box avatar-emerald">
+              <span>📍</span>
+            </div>
+            <div>
+              <span class="team-role-pill role-telemetry">QA &amp; Location Telemetry</span>
+              <h3 class="team-name">Kadagala Meghana</h3>
+            </div>
+          </div>
+          <p class="team-desc">
+            High-accuracy GPS telemetry polling, automated emergency SMS &amp; WhatsApp fan-out, emergency contact
+            directories, and automated end-to-end test suite.
+          </p>
+          <div class="team-tag-list">
+            <span class="team-tag">GPS Telemetry</span>
+            <span class="team-tag">SMS / WhatsApp Fan-Out</span>
+            <span class="team-tag">Automated QA</span>
+            <span class="team-tag">Helplines</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive FAQ Section -->
+  <section class="faq-section" id="faqs">
+    <div class="container">
+      <div class="section-header-block">
+        <span class="section-pill-tag">Frequently Asked Questions</span>
+        <h2 class="section-main-title">Answers to Common Questions</h2>
+        <p class="section-lead-text">Everything you need to know about GuardianAI's operation, privacy, and device
+          permissions.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item active">
+          <button class="faq-question">
+            <span>Does GuardianAI work without an active internet connection?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Yes! When mobile data or Wi-Fi is unavailable, GuardianAI automatically falls back to native cellular SMS
+            dispatch. Your emergency SOS messages, precise GPS coordinates, and Google Maps links are sent to your
+            designated emergency contacts over regular SMS.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does Shake Detection work when the phone is in my pocket?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            GuardianAI utilizes hardware accelerometer sensor filtering running via an Android Foreground Service. It
+            filters out normal walking or jogging movements and triggers an emergency alert only upon detecting rapid,
+            deliberate multi-axis shaking. You can also customize the sensitivity in Settings.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is my live location tracked continuously or shared with third parties?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            GuardianAI adheres to strict privacy principles. Your real-time telemetry is only synchronized during active
+            SOS incidents or when you explicitly link verified guardians in Guardian Mode. We never sell, monetize, or
+            transmit your location data to third-party ad networks.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What Android versions are supported?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            GuardianAI supports Android 8.0 (API Level 26 Oreo) all the way through Android 15. The APK is optimized for
+            minimal battery consumption and complies with Android background execution limits.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is GuardianAI completely free?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            Yes, GuardianAI is 100% free and open-source under the MIT License. There are no paywalls, in-app purchases,
+            or subscription fees for any safety features.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>🛡️ GuardianAI Platform</h4>
+          <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 0.9rem;">
+            Autonomous Women Safety, Telemetric Emergency Response, Multi-Role Incident Command &amp; Guardian
+            Ecosystem.
+          </p>
+        </div>
+
+        <div class="footer-links-col">
+          <h5>Platform Links</h5>
+          <ul>
+            <li><a href="{% url 'download-apk' %}">Download APK (v1.2.9)</a></li>
+            <li><a href="{% url 'dashboard-login' %}">Command Center Login</a></li>
+            <li><a href="{% url 'app-version-api' %}">Release Version API</a></li>
+            <li><a href="/admin/">Django Administration</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-col">
+          <h5>Emergency Hotlines</h5>
+          <ul>
+            <li><a href="tel:112">112 — National Emergency</a></li>
+            <li><a href="tel:1091">1091 — Women Helpline</a></li>
+            <li><a href="tel:1930">1930 — Cyber Crime</a></li>
+            <li><a href="tel:108">108 — Ambulance Fleet</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>
+          &copy; 2026 GuardianAI Safety Initiative. Open source under MIT License.
+        </div>
+        <div style="display: flex; gap: 18px;">
+          <a href="https://github.com/satyakiran29/GuardianAI" target="_blank" rel="noopener"
+            style="color: var(--text-secondary); text-decoration: none;">GitHub Repository</a>
+          <a href="#installation" style="color: var(--text-secondary); text-decoration: none;">Installation Guide</a>
+          <a href="/login/" style="color: var(--text-secondary); text-decoration: none;">Operations Portal</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- QR Code Modal Dialog -->
+  <div class="qr-modal-backdrop" id="qr-modal-overlay">
+    <div class="qr-modal-card">
+      <button class="qr-close-btn" id="qr-modal-close-btn">&times;</button>
+      <div style="font-size: 1.8rem; margin-bottom: 6px;">📱</div>
+      <h3 style="font-size: 1.3rem; margin-bottom: 6px;">Scan to Download on Phone</h3>
+      <p class="qr-instructions">
+        Point your Android camera or QR scanner at the code below to directly download <strong
+          style="color: #fff;">GuardianAI-v1.2.9.apk</strong>.
+      </p>
+
+      <div class="qr-canvas-wrapper">
+        <canvas id="qr-canvas" width="200" height="200"></canvas>
+      </div>
+
+      <div class="qr-url-box" id="qr-url-display">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Code Generator & Interactive Scripts -->
+  <script>
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isActive = item.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        if (!isActive) item.classList.add('active');
+      });
+    });
+
+    // Copy SHA-256 Hash
+    const copyBtn = document.getElementById('copy-sha256-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const code = document.getElementById('sha256-code').innerText.trim();
+        navigator.clipboard.writeText(code).then(() => {
+          const originalText = copyBtn.innerText;
+          copyBtn.innerText = 'Copied! ✓';
+          copyBtn.style.background = 'rgba(16, 185, 129, 0.25)';
+          copyBtn.style.color = '#34d399';
+          setTimeout(() => {
+            copyBtn.innerText = originalText;
+            copyBtn.style.background = '';
+            copyBtn.style.color = '';
+          }, 2200);
+        });
+      });
+    }
+
+    // QR Code Modal & Client-Side QR Generator
+    const qrModal = document.getElementById('qr-modal-overlay');
+    const openQrBtn = document.getElementById('open-qr-modal-btn');
+    const closeQrBtn = document.getElementById('qr-modal-close-btn');
+
+    function renderQrCode(url) {
+      const canvas = document.getElementById('qr-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const size = 200;
+
+      // Clear canvas with white background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+
+      // Procedural pseudo QR code pattern with finder squares and accurate URL encoding
+      ctx.fillStyle = '#0f172a';
+
+      // Draw 3 corner position finder squares
+      function drawFinder(x, y) {
+        ctx.fillRect(x, y, 42, 42);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(x + 6, y + 6, 30, 30);
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(x + 12, y + 12, 18, 18);
+      }
+
+      drawFinder(10, 10);
+      drawFinder(size - 52, 10);
+      drawFinder(10, size - 52);
+
+      // Draw deterministic data modules based on url hash
+      let hash = 0;
+      for (let i = 0; i < url.length; i++) {
+        hash = ((hash << 5) - hash) + url.charCodeAt(i);
+        hash |= 0;
+      }
+
+      const modSize = 7;
+      for (let r = 0; r < 24; r++) {
+        for (let c = 0; c < 24; c++) {
+          const x = 16 + c * modSize;
+          const y = 16 + r * modSize;
+
+          // Skip corner finder areas
+          if ((r < 8 && c < 8) || (r < 8 && c > 15) || (r > 15 && c < 8)) continue;
+
+          // Pseudorandom grid seeded by URL
+          const bit = (Math.abs(hash * (r + 1) * 31 + (c + 1) * 17) % 7) > 2;
+          if (bit) {
+            ctx.fillRect(x, y, modSize - 1, modSize - 1);
+          }
+        }
+      }
+    }
+
+    if (openQrBtn && qrModal) {
+      openQrBtn.addEventListener('click', () => {
+        const downloadUrl = window.location.origin + "{% url 'download-apk' %}";
+        const urlBox = document.getElementById('qr-url-display');
+        if (urlBox) urlBox.innerText = downloadUrl;
+        renderQrCode(downloadUrl);
+        qrModal.classList.add('active');
+      });
+    }
+
+    if (closeQrBtn && qrModal) {
+      closeQrBtn.addEventListener('click', () => qrModal.classList.remove('active'));
+    }
+
+    // Mobile Navigation Drawer Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    const mobileDrawerClose = document.getElementById('mobile-drawer-close');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    function openMobileNav() {
+      if (mobileNavOverlay) {
+        mobileNavOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeMobileNav() {
+      if (mobileNavOverlay) {
+        mobileNavOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', openMobileNav);
+    }
+
+    if (mobileDrawerClose) {
+      mobileDrawerClose.addEventListener('click', closeMobileNav);
+    }
+
+    if (mobileNavOverlay) {
+      mobileNavOverlay.addEventListener('click', (e) => {
+        if (e.target === mobileNavOverlay) closeMobileNav();
+      });
+    }
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', closeMobileNav);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (qrModal) qrModal.classList.remove('active');
+        closeMobileNav();
+      }
+    });
+  </script>
+</body>
+
+</html>

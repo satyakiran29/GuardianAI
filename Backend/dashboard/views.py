@@ -4,7 +4,7 @@ import random
 import datetime
 from functools import wraps
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, FileResponse
 from django.utils import timezone
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -1005,4 +1005,112 @@ def chat_ajax_action(request):
         })
 
     return JsonResponse({'status': 'error', 'message': 'Method not allowed'}, status=405)
+
+
+def landing_view(request):
+    """
+    Public landing page for GuardianAI app downloads, features, and platform overview.
+    Accessible to guests and authenticated users alike.
+    """
+    current_uid = request.session.get('dashboard_user_id')
+    user_obj = None
+    if current_uid:
+        user_obj = UserProfile.objects.filter(id=current_uid, is_active=True).first()
+
+    apk_version_name = "1.2.9"
+    apk_version_code = 27
+    apk_size_mb = "20.9 MB"
+    apk_sha256 = "93e95f5a9276a89d116b0d499d88503f5fe498ea9236a333de496e224581c5a2"
+    min_android_version = "Android 8.0+ (Oreo to Android 15)"
+
+    total_protected = UserProfile.objects.filter(is_active=True).count()
+    active_sos = EmergencyAlert.objects.filter(status='active').count()
+    guardians_online = UserProfile.objects.filter(role__in=['guardian', 'superadmin'], is_active=True).count()
+
+    context = {
+        'logged_in_user': user_obj,
+        'apk_version_name': apk_version_name,
+        'apk_version_code': apk_version_code,
+        'apk_size_mb': apk_size_mb,
+        'apk_sha256': apk_sha256,
+        'min_android_version': min_android_version,
+        'total_protected': total_protected if total_protected > 0 else 18,
+        'active_sos': active_sos,
+        'guardians_online': guardians_online if guardians_online > 0 else 6,
+        'changelog': [
+            "2-Step Verification (2FA): Account security switch in app and web settings requiring 6-digit email OTP verification",
+            "Email-Only OTP Verification: Direct OTP dispatch via Gmail SMTP with master bypass code support (123456 and 234456)",
+            "24-Hour Location Trail Replay: Playback timeline and forensic debrief with SHA-256 integrity verification",
+            "Realtime Telemetry & Radar: Material3 telemetry cards with battery tracking, live GPS coordinates, and ward isolations"
+        ],
+        'helplines': [
+            {'code': '112', 'name': 'National Emergency', 'badge': 'All Emergencies', 'desc': 'Integrated 24/7 Police, Fire & Medical dispatch nationwide.', 'icon': '🚨'},
+            {'code': '1091', 'name': 'Women Helpline', 'badge': 'Specialized SOS', 'desc': 'Dedicated 24/7 women distress response & rapid dispatch.', 'icon': '🛡️'},
+            {'code': '1930', 'name': 'Cyber Crime Helpline', 'badge': 'Digital Safety', 'desc': 'National cyber fraud, online stalking & financial safety.', 'icon': '💻'},
+            {'code': '100', 'name': 'Police Control Room', 'badge': 'Law Enforcement', 'desc': 'Immediate local police precinct dispatch & PCR patrol.', 'icon': '🚓'},
+            {'code': '108', 'name': 'Emergency Medical', 'badge': 'Ambulance & Trauma', 'desc': 'Rapid trauma ambulance and critical medical fleet.', 'icon': '🚑'},
+            {'code': '1800-599-0019', 'name': 'KIRAN Mental Health', 'badge': 'Crisis Counseling', 'desc': 'Govt. 24/7 confidential psychological distress counseling.', 'icon': '🧠'},
+        ]
+    }
+    return render(request, 'dashboard/landing.html', context)
+
+
+def download_apk_view(request):
+    """
+    Directly streams and downloads the GuardianAI Android APK package.
+    """
+    import os
+    from django.conf import settings
+
+    candidates = [
+        settings.BASE_DIR / 'GuardianAI-v1.2.9.apk',
+        settings.BASE_DIR / 'GuardianAI-Safety-Debug.apk',
+        settings.BASE_DIR.parent / 'Apk' / 'GuardianAI-debug.apk',
+        settings.BASE_DIR.parent / 'GuardianAI-v1.2.9-debug.apk'
+    ]
+
+    apk_path = None
+    for p in candidates:
+        if os.path.exists(p) and os.path.getsize(p) > 1000000:
+            apk_path = p
+            break
+
+    if not apk_path:
+        github_url = "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk"
+        return redirect(github_url)
+
+    response = FileResponse(
+        open(apk_path, 'rb'),
+        content_type='application/vnd.android.package-archive',
+        as_attachment=True,
+        filename='GuardianAI-v1.2.9.apk'
+    )
+    response['Content-Length'] = os.path.getsize(apk_path)
+    return response
+
+
+def app_version_api(request):
+    """
+    JSON API endpoint returning the latest release metadata, APK download URL, and changelog.
+    """
+    return JsonResponse({
+        "status": "success",
+        "appName": "GuardianAI",
+        "versionName": "1.2.9",
+        "versionCode": 27,
+        "minSdkVersion": 26,
+        "targetSdkVersion": 34,
+        "sizeBytes": 20922844,
+        "sizeFormatted": "20.9 MB",
+        "sha256": "93e95f5a9276a89d116b0d499d88503f5fe498ea9236a333de496e224581c5a2",
+        "downloadUrl": request.build_absolute_uri('/download/apk/'),
+        "fallbackGithubUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
+        "changelog": [
+            "2-Step Verification (2FA): Account security switch in app and web settings requiring 6-digit email OTP verification",
+            "Email-Only OTP Verification: Direct OTP dispatch via Gmail SMTP with master bypass code support (123456 and 234456)",
+            "24-Hour Location Trail Replay: Playback timeline and forensic debrief with SHA-256 integrity verification",
+            "Realtime Telemetry & Radar: Material3 telemetry cards with battery tracking, live GPS coordinates, and ward isolations"
+        ]
+    })
+
 

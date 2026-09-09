@@ -17,13 +17,20 @@ from .views import (
     delete_user_action,
     unlink_guardian_action,
     chat_ajax_action,
-    export_users_csv
+    export_users_csv,
+    landing_view,
+    download_apk_view,
+    app_version_api
 )
 
 urlpatterns = [
+    path('', landing_view, name='landing-page'),
+    path('download/', landing_view, name='dashboard-download'),
+    path('download/apk/', download_apk_view, name='download-apk'),
+    path('api/app/version/', app_version_api, name='app-version-api'),
+    path('dashboard/', index, name='dashboard-index'),
     path('login/', login_view, name='dashboard-login'),
     path('logout/', logout_view, name='dashboard-logout'),
-    path('', index, name='dashboard-index'),
     path('guardian-hub/', guardian_hub_view, name='dashboard-guardian-hub'),
     path('users/', users_view, name='dashboard-users'),
     path('users/export/csv/', export_users_csv, name='dashboard-export-users-csv'),

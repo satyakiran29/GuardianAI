@@ -75,6 +75,12 @@
             <span>Security &amp; 2FA</span>
           </a>
         </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-download' or request.resolver_match.url_name == 'landing-page' %}active{% endif %}">
+          <a href="{% url 'dashboard-download' %}" target="_blank">
+            <span>📱</span>
+            <span>Download Mobile App</span>
+          </a>
+        </li>
       </ul>
 
       <div class="sidebar-footer">
