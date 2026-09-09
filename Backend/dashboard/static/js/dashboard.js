@@ -1,17 +1,55 @@
-// GuardianAI Dashboard Interactive Logic with OpenFreeMap Integration
+// GuardianAI High-Performance Dashboard & Live Telemetry Engine
 let liveMap = null;
 let markersLayer = null;
+let isMapMounted = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-  initLiveMap();
+  initLazyLiveMap();
   initAutoRefresh();
   initOtpSimulator();
+  initInstantTableFilter();
 });
 
-// Initialize Leaflet Interactive Map using OpenFreeMap (100% Free, Zero Key, Fast Vector & Raster Tiles)
-function initLiveMap() {
+// Lazy-Load and Mount Leaflet Map using IntersectionObserver
+function initLazyLiveMap() {
   const mapElement = document.getElementById('live-map');
   if (!mapElement) return;
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !isMapMounted) {
+          isMapMounted = true;
+          // Use requestIdleCallback or small delay to yield to main thread for 60FPS UI
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => mountLiveMap());
+          } else {
+            setTimeout(mountLiveMap, 60);
+          }
+          obs.disconnect();
+        }
+      });
+    }, { rootMargin: '150px 0px' });
+    observer.observe(mapElement);
+  } else {
+    // Fallback for older browsers
+    setTimeout(mountLiveMap, 100);
+  }
+}
+
+// Manual or Programmatic Recenter
+function initLiveMap() {
+  if (!isMapMounted) {
+    mountLiveMap();
+  } else if (liveMap) {
+    renderMapMarkers();
+  }
+}
+
+// Mount and configure Leaflet map with tile throttling
+function mountLiveMap() {
+  const mapElement = document.getElementById('live-map');
+  if (!mapElement || typeof L === 'undefined') return;
 
   if (liveMap) {
     liveMap.remove();
@@ -21,26 +59,36 @@ function initLiveMap() {
   // Center on default city coordinates (Hyderabad / India)
   liveMap = L.map('live-map', {
     zoomControl: true,
-    attributionControl: true
+    attributionControl: true,
+    preferCanvas: true // Use HTML5 Canvas for high-performance marker rendering
   }).setView([17.4065, 78.4772], 12);
 
-  // CartoDB Dark Matter (Sleek Dark Theme - 100% Free / No Key)
+  // CartoDB Dark Matter with lazy tile loading & throttling
   const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
     subdomains: 'abcd',
+    updateWhenIdle: true,     // Only loads new tiles when user stops panning/zooming
+    updateWhenZooming: false,  // Saves network requests during zoom transitions
+    keepBuffer: 1,             // Reduces in-memory tile cache to keep memory lightweight
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
   });
 
-  // CartoDB Voyager (Clean High-Contrast Street View)
+  // CartoDB Voyager
   const cartoVoyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
     subdomains: 'abcd',
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 1,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
   });
 
   // OpenStreetMap Standard Street Layer
   const osmStandard = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 1,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   });
 
@@ -58,6 +106,12 @@ function initLiveMap() {
   markersLayer = L.layerGroup().addTo(liveMap);
 
   renderMapMarkers();
+
+  // Smoothly fade out skeleton loader placeholder
+  const skeletonEl = document.getElementById('live-map-skeleton');
+  if (skeletonEl) {
+    skeletonEl.classList.add('fade-out');
+  }
 }
 
 function renderMapMarkers() {
@@ -151,9 +205,18 @@ function renderMapMarkers() {
   }
 }
 
-// Live Polling for Telemetry & Alert Feed
+// Live Polling for Telemetry & Alert Feed with Tab-Visibility Power Savings
 function initAutoRefresh() {
-  setInterval(async () => {
+  let isTabActive = true;
+  document.addEventListener('visibilitychange', () => {
+    isTabActive = !document.hidden;
+    if (isTabActive) {
+      pollDashboardStats();
+    }
+  });
+
+  async function pollDashboardStats() {
+    if (!isTabActive) return;
     try {
       const response = await fetch('/api/dashboard/stats/');
       if (response.ok) {
@@ -169,7 +232,43 @@ function initAutoRefresh() {
     } catch (e) {
       console.debug('Polling tick notice:', e);
     }
-  }, 10000);
+  }
+
+  setInterval(pollDashboardStats, 10000);
+}
+
+// Instant 0ms Client-Side Live Filter for Table Rows
+function initInstantTableFilter() {
+  const searchInput = document.getElementById('instant-search-input');
+  if (!searchInput) return;
+
+  const tableBody = document.querySelector('.cyber-table tbody');
+  if (!tableBody) return;
+
+  let debounceTimer = null;
+  searchInput.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const term = e.target.value.toLowerCase().trim();
+      const rows = tableBody.querySelectorAll('tr');
+      let matchCount = 0;
+
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (!term || text.includes(term)) {
+          row.style.display = '';
+          matchCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      const countBadge = document.getElementById('filter-match-count');
+      if (countBadge) {
+        countBadge.innerText = term ? `${matchCount} found` : '';
+      }
+    }, 120);
+  });
 }
 
 // OTP Simulator helper

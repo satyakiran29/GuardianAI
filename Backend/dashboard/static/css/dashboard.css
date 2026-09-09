@@ -723,3 +723,70 @@ body {
   0% { transform: translate(-50%, -50%) scale(0.4); opacity: 1; }
   100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
 }
+
+/* ====================================================================
+   ⚡ Lazy Loading & High-Performance Rendering Acceleration
+   ==================================================================== */
+.map-skeleton-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 440px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #080c14;
+}
+
+.map-skeleton-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: radial-gradient(circle at center, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 20;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.map-skeleton-placeholder.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.map-shimmer-radar {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(139, 92, 246, 0.25);
+  border-top-color: #8b5cf6;
+  border-radius: 50%;
+  animation: radar-spin 0.9s linear infinite;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+@keyframes radar-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Rendering performance containment for large feeds & tables */
+.cyber-table tbody tr,
+.incident-card,
+.metric-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 54px;
+}
+
+/* Instant Filter Live Input Highlight */
+.instant-filter-highlight {
+  animation: filter-pulse 0.4s ease;
+}
+
+@keyframes filter-pulse {
+  0% { background: rgba(139, 92, 246, 0.2); }
+  100% { background: transparent; }
+}
+

@@ -198,10 +198,16 @@ def logout_view(request):
 def index(request):
     current_role_view = request.GET.get('role_view', request.dashboard_user.role if hasattr(request, 'dashboard_user') else 'superadmin')
     
-    total_users = UserProfile.objects.count()
-    superadmins_count = UserProfile.objects.filter(role='superadmin').count()
-    guardians_count = UserProfile.objects.filter(role='guardian').count()
-    users_count = UserProfile.objects.filter(role='user').count()
+    user_counts = UserProfile.objects.aggregate(
+        total=Count('id'),
+        superadmins=Count('id', filter=Q(role='superadmin')),
+        guardians=Count('id', filter=Q(role='guardian')),
+        users=Count('id', filter=Q(role='user'))
+    )
+    total_users = user_counts.get('total', 0) or 0
+    superadmins_count = user_counts.get('superadmins', 0) or 0
+    guardians_count = user_counts.get('guardians', 0) or 0
+    users_count = user_counts.get('users', 0) or 0
     
     active_alerts = EmergencyAlert.objects.filter(status='active').select_related('user', 'responder').order_by('-timestamp')[:25]
     dispatched_alerts = EmergencyAlert.objects.filter(status='dispatched').select_related('user', 'responder').order_by('-timestamp')[:25]
@@ -211,12 +217,16 @@ def index(request):
     recent_users = UserProfile.objects.all().order_by('-created_at')[:6]
     guardians = UserProfile.objects.filter(role='guardian', is_active=True)
     
-    today = timezone.now().date()
-    otps_today = OtpRecord.objects.filter(created_at__date=today).count()
+    today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    otps_today = OtpRecord.objects.filter(created_at__gte=today_start).count()
     
-    # Map markers data (select_related eliminates ~300 individual queries)
+    # Map markers data (select_related eliminates individual queries, capped to 50 latest)
     map_markers = []
-    for alert in EmergencyAlert.objects.filter(status__in=['active', 'dispatched']).select_related('user', 'responder'):
+    active_alerts_for_map = EmergencyAlert.objects.filter(
+        status__in=['active', 'dispatched']
+    ).select_related('user', 'responder').order_by('-timestamp')[:50]
+
+    for alert in active_alerts_for_map:
         map_markers.append({
             'id': alert.id,
             'type': 'alert',

@@ -25,6 +25,8 @@
     <a href="{% url 'dashboard-alerts' %}?status=resolved" class="btn {% if status_filter == 'resolved' %}btn-emerald{% else %}btn-outline{% endif %} btn-sm">
       ✓ Resolved Safe ({{ resolved_count }})
     </a>
+    <input type="text" id="instant-search-input" placeholder="⚡ Live Filter..." class="form-control" style="width: 170px; padding: 4px 10px; font-size: 0.8rem; margin-left: auto;" autocomplete="off">
+    <span id="filter-match-count" style="font-size: 0.72rem; color: #38bdf8; font-weight: 600; align-self: center;"></span>
   </div>
 </div>
 

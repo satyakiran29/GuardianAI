@@ -38,10 +38,11 @@
       </a>
     </div>
 
-    <!-- Search Form -->
-    <form method="GET" style="display: flex; gap: 8px;">
-      <input type="text" name="q" value="{{ search_query }}" placeholder="Search by name, phone, email, address..." class="form-control" style="width: 280px; padding: 6px 12px; font-size: 0.85rem;">
+    <!-- Search Form with Instant 0ms Filter -->
+    <form method="GET" style="display: flex; gap: 8px; align-items: center;">
+      <input type="text" name="q" id="instant-search-input" value="{{ search_query }}" placeholder="Search by name, phone, email, address..." class="form-control" style="width: 280px; padding: 6px 12px; font-size: 0.85rem;" autocomplete="off">
       <button type="submit" class="btn btn-outline btn-sm">Search</button>
+      <span id="filter-match-count" style="font-size: 0.75rem; color: #38bdf8; font-weight: 600;"></span>
       {% if search_query or role_filter %}
         <a href="{% url 'dashboard-users' %}" class="btn btn-outline btn-sm" style="color: var(--text-muted);">Clear</a>
       {% endif %}
