@@ -17,8 +17,13 @@ import math
 import json
 import logging
 import datetime
+import warnings
 from pathlib import Path
 from math import radians, cos, sin, asin, sqrt
+
+# Suppress joblib/parallel UserWarnings from scikit-learn on Python 3.14
+warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
+warnings.filterwarnings('ignore', message='.*parallel.*')
 
 import numpy as np
 import pandas as pd
@@ -139,7 +144,8 @@ class SafetyRouteService:
                 ("clf", RandomForestClassifier(
                     n_estimators=100,
                     max_depth=12,
-                    random_state=42
+                    random_state=42,
+                    n_jobs=1
                 ))
             ])
 
