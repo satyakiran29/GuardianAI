@@ -21,13 +21,13 @@ import warnings
 from pathlib import Path
 from math import radians, cos, sin, asin, sqrt
 
-# Suppress joblib/parallel UserWarnings from scikit-learn on Python 3.14
-warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
-warnings.filterwarnings('ignore', message='.*parallel.*')
+# Suppress any external UserWarnings
+warnings.filterwarnings('ignore', category=UserWarning)
+warnings.filterwarnings('ignore', message='.*delayed.*')
 
 import numpy as np
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
@@ -141,16 +141,15 @@ class SafetyRouteService:
 
             self.ml_model = Pipeline([
                 ("prep", preprocessor),
-                ("clf", RandomForestClassifier(
-                    n_estimators=100,
-                    max_depth=12,
-                    random_state=42,
-                    n_jobs=1
+                ("clf", GradientBoostingClassifier(
+                    n_estimators=60,
+                    max_depth=5,
+                    random_state=42
                 ))
             ])
 
             self.ml_model.fit(X, y)
-            logger.info("SafetyRouteService ML Random Forest model trained successfully.")
+            logger.info("SafetyRouteService ML Gradient Boosting model trained successfully.")
         except Exception as e:
             logger.exception(f"Error training SafetyRoute ML model: {e}")
 

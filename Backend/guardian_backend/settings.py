@@ -4,6 +4,11 @@ Django settings for guardian_backend project.
 
 from pathlib import Path
 import os
+import warnings
+
+# Suppress sklearn parallel/joblib UserWarnings
+warnings.filterwarnings('ignore', category=UserWarning, module='.*sklearn.*')
+warnings.filterwarnings('ignore', message='.*delayed.*')
 
 try:
     from dotenv import load_dotenv
