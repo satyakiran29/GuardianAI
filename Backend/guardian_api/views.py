@@ -1783,4 +1783,160 @@ class EmailLogsApiView(APIView):
         }, status=status.HTTP_200_OK)
 
 
+# =====================================================================
+# WOMEN SAFETY ROUTE PREDICTION & CORRIDOR INTELLIGENCE
+# Based on: https://github.com/alitntali99/Women-Safety-Route-Prediction
+# =====================================================================
+
+class SafeRoutePredictView(APIView):
+    """
+    POST /api/safe-route/predict/
+    Evaluates safety score and risk classification for a point or batch of points.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        try:
+            from .safety_route_service import safety_service
+            data = request.data
+            lat = data.get('lat') or data.get('latitude')
+            lon = data.get('lon') or data.get('lng') or data.get('longitude')
+
+            if lat is None or lon is None:
+                return Response({
+                    'status': 'error',
+                    'message': 'latitude and longitude are required'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            lat = float(lat)
+            lon = float(lon)
+            time_of_day = data.get('time_of_day')
+            area_type = data.get('area_type')
+            street_lighting = data.get('street_lighting')
+            cctv_nearby = data.get('cctv_nearby')
+            police_distance_km = data.get('police_distance_km')
+
+            if street_lighting is not None:
+                street_lighting = int(street_lighting)
+            if cctv_nearby is not None:
+                cctv_nearby = int(cctv_nearby)
+            if police_distance_km is not None:
+                police_distance_km = float(police_distance_km)
+
+            prediction = safety_service.predict_safety(
+                lat=lat,
+                lon=lon,
+                time_of_day=time_of_day,
+                area_type=area_type,
+                street_lighting=street_lighting,
+                cctv_nearby=cctv_nearby,
+                police_distance_km=police_distance_km
+            )
+
+            return Response({
+                'status': 'success',
+                'res': prediction['safety_level'],
+                'data': prediction
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                'status': 'error',
+                'message': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class SafeRoutePlanView(APIView):
+    """
+    POST /api/safe-route/plan/
+    Generates multi-route navigation candidates, scores each segment for safety,
+    and identifies the safest corridor for Women Safety Mode.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        try:
+            from .safety_route_service import safety_service
+            data = request.data
+
+            src_lat = data.get('src_lat') or data.get('origin_lat') or data.get('latitude')
+            src_lon = data.get('src_lon') or data.get('src_lng') or data.get('origin_lon') or data.get('origin_lng') or data.get('longitude')
+            dst_lat = data.get('dst_lat') or data.get('dest_lat') or data.get('destination_lat')
+            dst_lon = data.get('dst_lon') or data.get('dst_lng') or data.get('dest_lon') or data.get('destination_lng')
+
+            if src_lat is None or src_lon is None or dst_lat is None or dst_lon is None:
+                return Response({
+                    'status': 'error',
+                    'message': 'Origin and destination coordinates are required (src_lat, src_lon, dst_lat, dst_lon)'
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            src_lat = float(src_lat)
+            src_lon = float(src_lon)
+            dst_lat = float(dst_lat)
+            dst_lon = float(dst_lon)
+
+            women_safety_mode = data.get('women_safety_mode', True)
+            if isinstance(women_safety_mode, str):
+                women_safety_mode = women_safety_mode.lower() in ('true', '1', 'yes')
+
+            time_of_day = data.get('time_of_day')
+
+            plan = safety_service.plan_routes(
+                src_lat=src_lat,
+                src_lon=src_lon,
+                dst_lat=dst_lat,
+                dst_lon=dst_lon,
+                women_safety_mode=women_safety_mode,
+                time_of_day=time_of_day
+            )
+
+            return Response({
+                'status': 'success',
+                'data': plan
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                'status': 'error',
+                'message': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class SafeRouteHotspotsView(APIView):
+    """
+    GET /api/safe-route/hotspots/?lat=...&lng=...&radius=...
+    Retrieves danger zones and safe haven markers (police stations, transit hubs) within radius.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        try:
+            from .safety_route_service import safety_service
+            lat = request.query_params.get('lat') or request.query_params.get('latitude')
+            lon = request.query_params.get('lng') or request.query_params.get('lon') or request.query_params.get('longitude')
+            radius = request.query_params.get('radius') or request.query_params.get('radius_km') or 10.0
+
+            if lat is None or lon is None:
+                # Default to central Chennai / Hyderabad reference coords if not given
+                lat, lon = 13.0827, 80.2707
+
+            lat = float(lat)
+            lon = float(lon)
+            radius = float(radius)
+
+            hotspots = safety_service.get_safety_hotspots(lat, lon, radius)
+
+            return Response({
+                'status': 'success',
+                'count': len(hotspots),
+                'hotspots': hotspots
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                'status': 'error',
+                'message': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 

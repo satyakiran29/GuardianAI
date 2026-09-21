@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/surface_background"
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
 
         <!-- Top Header Card -->
         <com.google.android.material.card.MaterialCardView
@@ -26,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -40,32 +41,207 @@
                         android:src="@drawable/ic_safe_route"
                         app:tint="#10B981" />
 
-                    <TextView
-                        style="@style/TextAppearance.Material3.TitleLarge"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="@string/safe_route_title"
-                        android:textColor="@color/text_color_primary"
-                        android:textStyle="bold" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextAppearance.Material3.TitleLarge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/safe_route_title"
+                            android:textColor="@color/textColorPrimary"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AI Spatial Risk Modeling &amp; Safe Corridors"
+                            android:textColor="#10B981"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_open_google_maps"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:paddingHorizontal="10dp"
+                        android:text="🗺️ Maps"
+                        android:textSize="12sp"
+                        app:cornerRadius="12dp" />
                 </LinearLayout>
 
                 <TextView
-                    style="@style/TextAppearance.Material3.BodyMedium"
+                    style="@style/TextAppearance.Material3.BodySmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/safe_route_desc"
-                    android:textColor="@color/text_color_secondary" />
+                    android:textColor="@color/textColorSecondary" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Live GPS Location Card -->
+        <!-- Interactive Map Card with Floating Mode Controls -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            android:layout_marginTop="14dp"
+            app:cardBackgroundColor="#0B0F19"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp"
+            app:strokeColor="#252F48"
+            app:strokeWidth="1dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- Embedded Leaflet WebView Map -->
+                <WebView
+                    android:id="@+id/web_view_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <!-- Map Loading Progress -->
+                <ProgressBar
+                    android:id="@+id/pb_map_loading"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminateTint="#10B981"
+                    android:visibility="gone" />
+
+                <!-- Floating Top Controls Bar (Women Safety Mode, Day/Night, Hotspots) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:background="#B307090E"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="8dp">
+
+                    <!-- Women Safety Mode Toggle -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🛡️ Safe Mode"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/sw_women_safety_mode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:checked="true" />
+                    </LinearLayout>
+
+                    <!-- Day/Night Toggle Chip -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/chip_day_night"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="6dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="🌙 Night"
+                        android:textColor="#FFFFFF"
+                        android:textSize="11sp"
+                        app:cornerRadius="16dp" />
+
+                    <!-- Hotspots Toggle Chip -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/chip_hotspots"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="⚠️ Hotspots"
+                        android:textColor="#F59E0B"
+                        android:textSize="11sp"
+                        app:cornerRadius="16dp" />
+
+                </LinearLayout>
+
+                <!-- Floating Legend & Quick Actions at Bottom of Map -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="#D907090E"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🟢 Safe Corridor"
+                        android:textColor="#10B981"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="🟡 Caution"
+                        android:textColor="#F59E0B"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="🔴 Risk Area"
+                        android:textColor="#EF4444"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💡 Tap map to set destination"
+                        android:textColor="#94A3B8"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Live GPS Origin & Destination Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="14dp"
             app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="24dp"
             app:cardElevation="3dp">
@@ -74,98 +250,189 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="16dp">
 
+                <!-- Origin Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:src="@drawable/ic_navigation"
-                        app:tint="#10B981" />
-
                     <TextView
-                        style="@style/TextAppearance.Material3.TitleMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🟢"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:text="📍 Live Location Telemetry"
-                        android:textColor="@color/text_color_primary"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_current_address"
+                            style="@style/TextAppearance.Material3.BodyMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Acquiring real-time GPS coordinates..."
+                            android:textColor="@color/textColorPrimary"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_current_coords"
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="GPS: 0.00000, 0.00000"
+                            android:textColor="#10B981"
+                            android:textSize="11sp" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_gps_badge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_card_material"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="3dp"
                         android:text="GPS READY"
                         android:textColor="#10B981"
-                        android:textSize="11sp"
+                        android:textSize="10sp"
                         android:textStyle="bold" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_current_address"
-                    style="@style/TextAppearance.Material3.BodyMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Acquiring real-time GPS coordinates..."
-                    android:textColor="@color/text_color_secondary" />
-
-                <TextView
-                    android:id="@+id/tv_current_coords"
-                    style="@style/TextAppearance.Material3.BodySmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Coordinates: 0.00000, 0.00000"
-                    android:textColor="#10B981"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_refresh_location"
-                        style="@style/Widget.Material3.Button.TonalButton"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:text="📍 Locate Me"
-                        app:cornerRadius="14dp" />
+                        style="@style/Widget.Material3.Button.IconButton"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="4dp"
+                        app:icon="@drawable/ic_navigation"
+                        app:iconTint="#10B981" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_open_google_maps"
-                        style="@style/Widget.Material3.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="#10B981"
-                        android:text="🗺️ Open Maps"
-                        app:cornerRadius="14dp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="#15000000" />
+
+                <!-- Destination Input -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/safe_arrival_destination"
+                    app:boxCornerRadiusBottomEnd="14dp"
+                    app:boxCornerRadiusBottomStart="14dp"
+                    app:boxCornerRadiusTopEnd="14dp"
+                    app:boxCornerRadiusTopStart="14dp"
+                    app:endIconMode="clear_text"
+                    app:startIconDrawable="@drawable/ic_location_on"
+                    app:startIconTint="#FF2E93">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_destination"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPostalAddress"
+                        android:text="Central Metro Station &amp; Women Hub"
+                        android:textColor="@color/textColorPrimary" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Quick Destination Preset Chips -->
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_preset_police"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="6dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="10dp"
+                            android:text="🚓 Police Station"
+                            android:textSize="11sp"
+                            app:cornerRadius="16dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_preset_home"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="6dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="10dp"
+                            android:text="🏠 Home"
+                            android:textSize="11sp"
+                            app:cornerRadius="16dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_preset_metro"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_marginEnd="6dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="10dp"
+                            android:text="🚇 Metro Hub"
+                            android:textSize="11sp"
+                            app:cornerRadius="16dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/chip_preset_hospital"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:paddingHorizontal="10dp"
+                            android:text="🏥 Hospital"
+                            android:textSize="11sp"
+                            app:cornerRadius="16dp" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <!-- Calculate Safe Routes Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_calculate_route"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="#10B981"
+                    android:text="⚡ Calculate Safest Route"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="14dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Destination Input & Safe Corridors -->
+        <!-- Route Comparison & Safety Intelligence Card -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_route_comparison"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="14dp"
             app:cardBackgroundColor="@color/surface_card"
             app:cardCornerRadius="24dp"
             app:cardElevation="3dp">
@@ -174,96 +441,224 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="16dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/safe_arrival_destination"
-                    app:boxCornerRadiusBottomEnd="16dp"
-                    app:boxCornerRadiusBottomStart="16dp"
-                    app:boxCornerRadiusTopEnd="16dp"
-                    app:boxCornerRadiusTopStart="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_destination"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Home • 124 Park Avenue" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Route Safety Rating -->
+                <!-- Route Selector Tabs -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/bg_card_material"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_select_route_1"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_width="0dp"
+                        android:layout_height="38dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="#10B981"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="🛡️ Safest Route"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="12dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_select_route_2"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="0dp"
+                        android:layout_height="38dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:text="⏱️ Fastest Route"
+                        android:textSize="11sp"
+                        app:cornerRadius="12dp" />
+                </LinearLayout>
+
+                <!-- Safety Score Header & Distance -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tv_route_title"
                             style="@style/TextAppearance.Material3.TitleMedium"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Safety Score: 96% (High)"
+                            android:text="Safe Corridor (Well-Lit Avenue)"
+                            android:textColor="@color/textColorPrimary"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_route_stats"
+                            style="@style/TextAppearance.Material3.BodySmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="4.8 km • 12 mins travel time"
+                            android:textColor="@color/textColorSecondary" />
+                    </LinearLayout>
+
+                    <!-- Safety Score Badge -->
+                    <TextView
+                        android:id="@+id/tv_safety_score_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card_material"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="6dp"
+                        android:text="🛡️ 94% SAFE"
+                        android:textColor="#10B981"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <!-- Corridor Attributes Breakdown Bar -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_card_material"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_lighting_stat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="92%"
                             android:textColor="#10B981"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="💡 Well-Lit Corridor"
-                            android:textColor="@color/text_color_secondary"
-                            android:textSize="12sp" />
+                            android:text="💡 Lighting"
+                            android:textColor="@color/textColorSecondary"
+                            android:textSize="10sp" />
                     </LinearLayout>
 
-                    <TextView
-                        style="@style/TextAppearance.Material3.BodySmall"
-                        android:layout_width="wrap_content"
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="24dp"
+                        android:background="#20000000" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="✅ 3 Police Assistance Booths on Route • High CCTV Coverage • Active Patrols"
-                        android:textColor="@color/text_color_secondary" />
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_cctv_stat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="86%"
+                            android:textColor="#10B981"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="📹 CCTV"
+                            android:textColor="@color/textColorSecondary"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="24dp"
+                        android:background="#20000000" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_police_stat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2 Booths"
+                            android:textColor="#10B981"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🚓 Police"
+                            android:textColor="@color/textColorSecondary"
+                            android:textSize="10sp" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
+                <!-- Intelligent Corridor Insights Banner -->
+                <TextView
+                    android:id="@+id/tv_corridor_insight"
+                    style="@style/TextAppearance.Material3.BodySmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="✅ Recommended: Navigates well-lit commercial avenue • Avoids 2 dark industrial alleys • Police presence along 75% of route."
+                    android:textColor="@color/textColorSecondary" />
+
+                <!-- Action Buttons -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_start_navigation"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="14dp"
                     android:text="🧭 Navigate via Google Maps"
-                    app:cornerRadius="16dp" />
+                    app:cornerRadius="14dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_start_arrival_shield"
                     style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="10dp"
                     android:backgroundTint="#10B981"
                     android:text="@string/safe_arrival_start_monitoring"
-                    app:cornerRadius="16dp" />
+                    app:cornerRadius="14dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_simulate_arrival"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
                     android:text="📍 Check In: Arrived at Destination"
                     android:textColor="#10B981"
                     android:visibility="gone"
-                    app:cornerRadius="16dp" />
+                    app:cornerRadius="14dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

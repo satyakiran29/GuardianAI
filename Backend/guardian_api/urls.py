@@ -21,7 +21,10 @@ from .views import (
     LocationHistoryView,
     ForensicDebriefView,
     TestEmailApiView,
-    EmailLogsApiView
+    EmailLogsApiView,
+    SafeRoutePredictView,
+    SafeRoutePlanView,
+    SafeRouteHotspotsView
 )
 
 urlpatterns = [
@@ -65,5 +68,11 @@ urlpatterns = [
     # Transactional Email System
     path('email/test/', TestEmailApiView.as_view(), name='api-email-test'),
     path('email/logs/', EmailLogsApiView.as_view(), name='api-email-logs'),
+
+    # Women Safety Route Intelligence & Prediction (alitntali99/Women-Safety-Route-Prediction)
+    path('safe-route/predict/', SafeRoutePredictView.as_view(), name='api-safe-route-predict'),
+    path('predict_route', SafeRoutePredictView.as_view(), name='api-predict-route-compat'), # Direct compatibility alias
+    path('safe-route/plan/', SafeRoutePlanView.as_view(), name='api-safe-route-plan'),
+    path('safe-route/hotspots/', SafeRouteHotspotsView.as_view(), name='api-safe-route-hotspots'),
 ]
 

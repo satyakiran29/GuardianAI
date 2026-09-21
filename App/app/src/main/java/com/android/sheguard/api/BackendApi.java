@@ -65,5 +65,19 @@ public interface BackendApi {
             @Query("guardian_phone") String guardianPhone,
             @Query("hours") int hours
     );
+
+    // Women Safety Route Intelligence (alitntali99/Women-Safety-Route-Prediction)
+    @POST("safe-route/predict/")
+    Call<JsonObject> predictSafeRoutePoint(@Body Map<String, Object> body);
+
+    @POST("safe-route/plan/")
+    Call<JsonObject> planSafeRoute(@Body Map<String, Object> body);
+
+    @GET("safe-route/hotspots/")
+    Call<JsonObject> getSafetyHotspots(
+            @Query("lat") double lat,
+            @Query("lng") double lng,
+            @Query("radius") double radius
+    );
 }
 

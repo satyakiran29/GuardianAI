@@ -37,84 +37,105 @@ public class GroqAiUtil {
         }
 
         executor.execute(() -> {
-            HttpURLConnection conn = null;
-            try {
-                URL url = new URL(Constants.GROQ_API_URL);
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Authorization", "Bearer " + Constants.GROQ_API_KEY);
-                conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-                conn.setConnectTimeout(15000);
-                conn.setReadTimeout(20000);
-                conn.setDoOutput(true);
+            String[] candidateModels = new String[]{
+                    Constants.GROQ_MODEL,
+                    "qwen/qwen3.8-27b",
+                    "openai/gpt-oss-120b",
+                    "openai/gpt-oss-20b"
+            };
 
-                String systemPrompt = "You are GuardianAI, an advanced, empathetic, and ultra-responsive personal safety & emergency defense AI. "
-                        + "Your mission is to protect the user from danger, harassment, stalking, unsafe cab rides, and medical/physical threats. "
-                        + "Always provide clear, actionable, high-priority step-by-step guidance. Use bullet points and appropriate emojis for readability. "
-                        + "Always reply in the user's requested language (" + (languageCode != null ? languageCode : "English") + ").";
+            String lastErrorMessage = null;
+            for (String modelToUse : candidateModels) {
+                if (modelToUse == null || modelToUse.trim().isEmpty()) continue;
+                HttpURLConnection conn = null;
+                try {
+                    URL url = new URL(Constants.GROQ_API_URL);
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Authorization", "Bearer " + Constants.GROQ_API_KEY);
+                    conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+                    conn.setConnectTimeout(15000);
+                    conn.setReadTimeout(20000);
+                    conn.setDoOutput(true);
 
-                JSONObject systemMessage = new JSONObject();
-                systemMessage.put("role", "system");
-                systemMessage.put("content", systemPrompt);
+                    String systemPrompt = "You are GuardianAI, an advanced, empathetic, and ultra-responsive personal safety & emergency defense AI. "
+                            + "Your mission is to protect the user from danger, harassment, stalking, unsafe cab rides, and medical/physical threats. "
+                            + "Always provide clear, actionable, high-priority step-by-step guidance. Use bullet points and appropriate emojis for readability. "
+                            + "Always reply in the user's requested language (" + (languageCode != null ? languageCode : "English") + ").";
 
-                JSONObject userMessage = new JSONObject();
-                userMessage.put("role", "user");
-                userMessage.put("content", userPrompt);
+                    JSONObject systemMessage = new JSONObject();
+                    systemMessage.put("role", "system");
+                    systemMessage.put("content", systemPrompt);
 
-                JSONArray messages = new JSONArray();
-                messages.put(systemMessage);
-                messages.put(userMessage);
+                    JSONObject userMessage = new JSONObject();
+                    userMessage.put("role", "user");
+                    userMessage.put("content", userPrompt);
 
-                JSONObject jsonBody = new JSONObject();
-                jsonBody.put("model", Constants.GROQ_MODEL);
-                jsonBody.put("messages", messages);
-                jsonBody.put("temperature", 0.6);
-                jsonBody.put("max_tokens", 850);
+                    JSONArray messages = new JSONArray();
+                    messages.put(systemMessage);
+                    messages.put(userMessage);
 
-                byte[] postData = jsonBody.toString().getBytes(StandardCharsets.UTF_8);
-                try (OutputStream os = conn.getOutputStream()) {
-                    os.write(postData);
-                    os.flush();
-                }
+                    JSONObject jsonBody = new JSONObject();
+                    jsonBody.put("model", modelToUse);
+                    jsonBody.put("messages", messages);
+                    jsonBody.put("temperature", 0.6);
+                    jsonBody.put("max_tokens", 850);
 
-                int responseCode = conn.getResponseCode();
-                InputStream is = (responseCode >= 200 && responseCode < 300)
-                        ? conn.getInputStream()
-                        : conn.getErrorStream();
-
-                StringBuilder responseBuilder = new StringBuilder();
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        responseBuilder.append(line);
+                    byte[] postData = jsonBody.toString().getBytes(StandardCharsets.UTF_8);
+                    try (OutputStream os = conn.getOutputStream()) {
+                        os.write(postData);
+                        os.flush();
                     }
-                }
 
-                if (responseCode >= 200 && responseCode < 300) {
-                    JSONObject responseJson = new JSONObject(responseBuilder.toString());
-                    JSONArray choices = responseJson.getJSONArray("choices");
-                    if (choices.length() > 0) {
-                        JSONObject firstChoice = choices.getJSONObject(0);
-                        JSONObject messageObj = firstChoice.getJSONObject("message");
-                        String aiContent = messageObj.getString("content").trim();
+                    int responseCode = conn.getResponseCode();
+                    InputStream is = (responseCode >= 200 && responseCode < 300)
+                            ? conn.getInputStream()
+                            : conn.getErrorStream();
 
-                        mainHandler.post(() -> callback.onSuccess(aiContent));
-                        return;
+                    StringBuilder responseBuilder = new StringBuilder();
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            responseBuilder.append(line);
+                        }
                     }
-                }
 
-                String errMessage = "Groq HTTP " + responseCode + ": " + responseBuilder;
-                Log.e(TAG, errMessage);
-                mainHandler.post(() -> callback.onError(errMessage));
+                    if (responseCode >= 200 && responseCode < 300) {
+                        JSONObject responseJson = new JSONObject(responseBuilder.toString());
+                        JSONArray choices = responseJson.getJSONArray("choices");
+                        if (choices.length() > 0) {
+                            JSONObject firstChoice = choices.getJSONObject(0);
+                            JSONObject messageObj = firstChoice.getJSONObject("message");
+                            String aiContent = messageObj.getString("content").trim();
 
-            } catch (Exception e) {
-                Log.e(TAG, "Groq API error: " + e.getMessage(), e);
-                mainHandler.post(() -> callback.onError(e.getMessage()));
-            } finally {
-                if (conn != null) {
-                    conn.disconnect();
+                            mainHandler.post(() -> callback.onSuccess(aiContent));
+                            return;
+                        }
+                    }
+
+                    lastErrorMessage = "Groq HTTP " + responseCode + ": " + responseBuilder;
+                    Log.w(TAG, "Model " + modelToUse + " error: " + lastErrorMessage);
+
+                    // If error is 404 or 400 (e.g. model decommissioned/not found), try next model
+                    if (responseCode == 404 || responseCode == 400) {
+                        continue;
+                    } else {
+                        break;
+                    }
+
+                } catch (Exception e) {
+                    lastErrorMessage = "Groq API error: " + e.getMessage();
+                    Log.e(TAG, lastErrorMessage, e);
+                    break;
+                } finally {
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
                 }
             }
+
+            final String finalErr = lastErrorMessage != null ? lastErrorMessage : "Unknown Groq error";
+            mainHandler.post(() -> callback.onError(finalErr));
         });
     }
 

@@ -45,9 +45,9 @@ public class Constants {
     public static final String DEMO_USER_PHONE = "+1 (555) 019-2834";
     public static final String EMERGENCY_NUMBER = "999";
     public static final String UPDATE_JSON_URL = "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/update.json";
-    public static final String GROQ_API_KEY = "";
+    public static final String GROQ_API_KEY = "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";
     public static final String GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
-    public static final String GROQ_MODEL = "llama-3.3-70b-versatile";
+    public static final String GROQ_MODEL = "qwen/qwen3.8-27b";
 
     // Hardware Buttons SOS Triggers
     public static final String SETTINGS_HARDWARE_BUTTON_SOS = "hardware_button_sos";

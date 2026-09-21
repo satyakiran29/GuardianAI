@@ -54,7 +54,7 @@ public class AiAssistantFragment extends Fragment {
         addUserBubble(query);
 
         // Add temporary loading indicator bubble
-        MaterialCardView loadingCard = addAiBubble("⚡ GuardianAI (Groq LLaMA 3.3) is analyzing your safety situation...");
+        MaterialCardView loadingCard = addAiBubble("⚡ GuardianAI (Groq AI) is analyzing your safety situation...");
 
         String lang = com.android.sheguard.util.LocaleUtil.getLanguage();
         String languageName = com.android.sheguard.util.LocaleUtil.getLanguageName(requireContext());
