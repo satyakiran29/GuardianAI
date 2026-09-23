@@ -148,7 +148,7 @@ public class SafeRouteFragment extends Fragment {
             "<body>\n" +
             "    <div id=\"map\"></div>\n" +
             "    <script>\n" +
-            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([13.0827, 80.2707], 13);\n" +
+            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([%.5f, %.5f], 14);\n" +
             "        let tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);\n" +
             "\n" +
             "        let originMarker = null;\n" +
@@ -405,7 +405,10 @@ public class SafeRouteFragment extends Fragment {
         });
 
         binding.pbMapLoading.setVisibility(View.VISIBLE);
-        binding.webViewMap.loadDataWithBaseURL("https://guardianai.local", LEAFLET_ROUTE_HTML, "text/html", "UTF-8", null);
+        String mapHtml = String.format(Locale.US, LEAFLET_ROUTE_HTML,
+                currentLatitude != 0.0 ? currentLatitude : 17.4482,
+                currentLongitude != 0.0 ? currentLongitude : 78.3914);
+        binding.webViewMap.loadDataWithBaseURL("https://guardianai.local", mapHtml, "text/html", "UTF-8", null);
     }
 
     private void setupListeners() {
@@ -539,6 +542,7 @@ public class SafeRouteFragment extends Fragment {
     }
 
     private LocationHelper.LocationTrackingListener trackingListener;
+    private long lastTelemetryPingTime = 0;
 
     private void startLiveGpsTracking() {
         if (!isAdded() || getContext() == null) return;
@@ -555,6 +559,22 @@ public class SafeRouteFragment extends Fragment {
 
                     currentLatitude = latitude;
                     currentLongitude = longitude;
+
+                    // Periodic telemetry ping (at least every 8s) to backend & Supabase
+                    long nowMs = System.currentTimeMillis();
+                    if (nowMs - lastTelemetryPingTime >= 8000) {
+                        lastTelemetryPingTime = nowMs;
+                        String phone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+                        if (phone.isEmpty()) {
+                            phone = Prefs.getString(Constants.PREFS_USER_EMAIL, Constants.DEMO_USER_PHONE);
+                        }
+                        int battery = Prefs.getInt(Constants.PREFS_BATTERY_LEVEL, 85);
+                        try {
+                            android.os.BatteryManager bm = (android.os.BatteryManager) requireContext().getSystemService(Context.BATTERY_SERVICE);
+                            if (bm != null) battery = bm.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY);
+                        } catch (Exception ignored) {}
+                        ApiClient.pingLocation(phone, latitude, longitude, currentAddressText, battery);
+                    }
 
                     binding.tvGpsBadge.setText(String.format(Locale.US, "LIVE GPS • ±%.0fm", accuracy));
                     binding.tvGpsBadge.setTextColor(accuracy <= 30.0f ? 0xFF10B981 : 0xFFF59E0B);

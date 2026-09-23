@@ -84,8 +84,8 @@ public class SosService extends Service implements SensorEventListener {
     // 5-Second Background Telemetry & Supabase Live Stream
     private com.google.android.gms.location.FusedLocationProviderClient fusedLocationClient = null;
     private com.google.android.gms.location.LocationCallback locationStreamCallback = null;
-    private double currentLatitude = 17.3850;
-    private double currentLongitude = 78.4867;
+    private double currentLatitude = 0.0;
+    private double currentLongitude = 0.0;
     private final android.os.Handler telemetryStreamHandler = new android.os.Handler(Looper.getMainLooper());
     private boolean isTelemetryStreamActive = false;
 
@@ -275,9 +275,17 @@ public class SosService extends Service implements SensorEventListener {
         if (isTelemetryStreamActive) return;
         isTelemetryStreamActive = true;
 
-        // Populate initial coordinate from best available last known fix
+        // Populate initial coordinate from best available last known fix or cached prefs
+        float cachedLat = Prefs.getFloat(Constants.PREFS_LAST_LATITUDE, 0f);
+        float cachedLng = Prefs.getFloat(Constants.PREFS_LAST_LONGITUDE, 0f);
+        if (cachedLat != 0f && cachedLng != 0f) {
+            currentLatitude = cachedLat;
+            currentLongitude = cachedLng;
+            mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
+        }
+
         android.location.Location best = com.android.sheguard.util.LocationHelper.getBestLastKnownLocation(this);
-        if (best != null) {
+        if (best != null && (best.getLatitude() != 0.0 || best.getLongitude() != 0.0)) {
             currentLatitude = best.getLatitude();
             currentLongitude = best.getLongitude();
             mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
@@ -366,7 +374,19 @@ public class SosService extends Service implements SensorEventListener {
     }
 
     private void sendLiveTelemetryPing() {
-        String userPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "+919876543210");
+        if (currentLatitude == 0.0 || currentLongitude == 0.0) {
+            Log.d("SosService", "Awaiting valid GPS fix before sending telemetry ping...");
+            return;
+        }
+
+        String userPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+        if (userPhone == null || userPhone.trim().isEmpty()) {
+            userPhone = Prefs.getString(Constants.PREFS_USER_EMAIL, "");
+        }
+        if (userPhone.trim().isEmpty()) {
+            userPhone = Constants.DEMO_USER_PHONE;
+        }
+
         int batteryLevel = 85;
         try {
             android.os.BatteryManager bm = (android.os.BatteryManager) getSystemService(Context.BATTERY_SERVICE);
@@ -376,7 +396,7 @@ public class SosService extends Service implements SensorEventListener {
         } catch (Exception ignored) {}
 
         String address = mLocation;
-        if (address.isEmpty()) {
+        if (address == null || address.isEmpty()) {
             address = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
         }
 

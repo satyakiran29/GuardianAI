@@ -597,7 +597,7 @@ class LocationPingView(APIView):
         if user_id:
             user = UserProfile.objects.filter(id=user_id).first()
         if not user and phone:
-            user = UserProfile.objects.filter(get_target_filter(phone)).first()
+            user = find_user_by_identifier(phone)
         if not user and phone:
             clean_digits = ''.join(c for c in phone if c.isdigit())
             if len(clean_digits) >= 10:
@@ -657,8 +657,8 @@ class LocationPingView(APIView):
                     dlat = (lat_f - last_loc.latitude) * 111000.0
                     dlng = (lng_f - last_loc.longitude) * 111000.0 * math.cos(math.radians(lat_f))
                     dist = math.sqrt(dlat * dlat + dlng * dlng)
-                    # Deduplicate: Record if moved >= 15m or at least 5 minutes (300s) elapsed (for 5-min stationary updates), or active SOS
-                    if dist < 15.0 and elapsed < 300.0 and not active_alert:
+                    # Deduplicate: Record if moved >= 5m or at least 30 seconds elapsed, or active SOS
+                    if dist < 5.0 and elapsed < 30.0 and not active_alert:
                         should_record = False
 
                 if should_record:
@@ -1214,10 +1214,10 @@ class LocationHistoryView(APIView):
         # 2. Security & Authorization Check
         requester = find_user_by_identifier(guardian_phone)
         authorized = False
-        if requester:
-            if requester.id == ward.id:
-                authorized = True
-            elif requester.role == 'superadmin':
+        if not guardian_phone or guardian_phone == ward_phone or (requester and requester.id == ward.id):
+            authorized = True
+        elif requester:
+            if requester.role == 'superadmin':
                 authorized = True
             elif GuardianLink.objects.filter(user=ward, guardian=requester, status='active').exists():
                 authorized = True
@@ -1249,8 +1249,8 @@ class LocationHistoryView(APIView):
 
         trail = []
 
-        # 4. If fewer than 3 real pings exist, synthesize a realistic 24-hour journey sampled at 5-minute intervals
-        if len(pings) < 3:
+        # 4. If no real pings exist in window, synthesize a realistic journey sampled at 5-minute intervals
+        if not pings:
             now = timezone.now()
             base_lat = ward.last_latitude or 17.4482
             base_lng = ward.last_longitude or 78.3914
@@ -1582,8 +1582,10 @@ class ForensicDebriefView(APIView):
 
         requester = find_user_by_identifier(guardian_phone)
         authorized = False
-        if requester:
-            if requester.id == ward.id or requester.role == 'superadmin':
+        if not guardian_phone or guardian_phone == ward_phone or (requester and requester.id == ward.id):
+            authorized = True
+        elif requester:
+            if requester.role == 'superadmin':
                 authorized = True
             elif GuardianLink.objects.filter(user=ward, guardian=requester, status='active').exists():
                 authorized = True
@@ -1604,7 +1606,7 @@ class ForensicDebriefView(APIView):
         ward_has_active_sos = EmergencyAlert.objects.filter(user=ward, status='active').exists()
 
         trail = []
-        if len(pings) < 3:
+        if not pings:
             base_lat = ward.last_latitude or 17.4482
             base_lng = ward.last_longitude or 78.3914
             base_battery = ward.battery_level or 85

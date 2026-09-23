@@ -7,6 +7,7 @@ import com.android.sheguard.config.Prefs;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -344,12 +345,20 @@ public class ApiClient {
     }
 
     public static void pingLocation(String phone, double lat, double lng, String address, int battery) {
+        if (lat == 0.0 && lng == 0.0) return;
+        if (phone == null || phone.trim().isEmpty()) {
+            phone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+            if (phone.isEmpty()) {
+                phone = Prefs.getString(Constants.PREFS_USER_EMAIL, Constants.DEMO_USER_PHONE);
+            }
+        }
+
         Map<String, Object> body = new HashMap<>();
         body.put("phone", phone);
         body.put("latitude", lat);
         body.put("longitude", lng);
-        body.put("address", address);
-        body.put("battery_level", battery);
+        body.put("address", address != null && !address.isEmpty() ? address : String.format(Locale.US, "GPS: %.4f, %.4f", lat, lng));
+        body.put("battery_level", battery > 0 ? battery : 85);
 
         Log.d(TAG, "POST /location/ping/ -> " + body);
 

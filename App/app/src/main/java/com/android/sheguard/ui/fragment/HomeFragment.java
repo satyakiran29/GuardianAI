@@ -432,9 +432,18 @@ public class HomeFragment extends Fragment {
             } else if (id == R.id.menu_location_replay) {
                 Bundle args = new Bundle();
                 String myPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+                if (myPhone.isEmpty()) {
+                    myPhone = Prefs.getString(Constants.PREFS_USER_EMAIL, Constants.DEMO_USER_PHONE);
+                }
                 String myName = Prefs.getString(Constants.PREFS_USER_NAME, "My Trail");
+                float lastLat = Prefs.getFloat(Constants.PREFS_LAST_LATITUDE, 0f);
+                float lastLng = Prefs.getFloat(Constants.PREFS_LAST_LONGITUDE, 0f);
                 args.putString("WARD_PHONE", myPhone);
                 args.putString("WARD_NAME", myName);
+                if (lastLat != 0f && lastLng != 0f) {
+                    args.putDouble("WARD_LAT", (double) lastLat);
+                    args.putDouble("WARD_LNG", (double) lastLng);
+                }
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_locationReplayFragment, args);
                 return true;
             } else if (id == R.id.menu_settings) {
@@ -490,6 +499,9 @@ public class HomeFragment extends Fragment {
                 public void onLocationReceived(double latitude, double longitude, String addressName) {
                     if (getContext() == null) return;
                     String phone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+                    if (phone.isEmpty()) {
+                        phone = Prefs.getString(Constants.PREFS_USER_EMAIL, Constants.DEMO_USER_PHONE);
+                    }
                     int battery = 85;
                     try {
                         android.os.BatteryManager bm = (android.os.BatteryManager) requireContext().getSystemService(Context.BATTERY_SERVICE);
@@ -497,9 +509,7 @@ public class HomeFragment extends Fragment {
                             battery = bm.getIntProperty(android.os.BatteryManager.BATTERY_PROPERTY_CAPACITY);
                         }
                     } catch (Exception ignored) {}
-                    if (!phone.isEmpty()) {
-                        com.android.sheguard.api.ApiClient.pingLocation(phone, latitude, longitude, addressName, battery);
-                    }
+                    com.android.sheguard.api.ApiClient.pingLocation(phone, latitude, longitude, addressName, battery);
                 }
 
                 @Override

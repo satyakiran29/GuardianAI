@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import java.util.Locale;
 
 import com.android.sheguard.R;
 import com.android.sheguard.api.ApiClient;
@@ -58,84 +59,131 @@ public class LocationReplayFragment extends Fragment {
             "    <style>\n" +
             "        html, body, #map { height: 100%; width: 100%; margin: 0; padding: 0; background: #07090e; }\n" +
             "        .ward-marker {\n" +
-            "            width: 20px;\n" +
-            "            height: 20px;\n" +
+            "            width: 22px;\n" +
+            "            height: 22px;\n" +
             "            border-radius: 50%;\n" +
             "            background: #FF2E93;\n" +
             "            border: 3px solid #FFFFFF;\n" +
-            "            box-shadow: 0 0 16px #FF2E93;\n" +
+            "            box-shadow: 0 0 16px #FF2E93, 0 0 32px rgba(255, 46, 147, 0.6);\n" +
+            "            animation: pulseWard 2s infinite;\n" +
+            "        }\n" +
+            "        @keyframes pulseWard {\n" +
+            "            0% { transform: scale(1); }\n" +
+            "            50% { transform: scale(1.15); }\n" +
+            "            100% { transform: scale(1); }\n" +
             "        }\n" +
             "        .incident-marker {\n" +
-            "            width: 24px;\n" +
-            "            height: 24px;\n" +
+            "            width: 26px;\n" +
+            "            height: 26px;\n" +
             "            border-radius: 50%;\n" +
             "            background: #EF4444;\n" +
             "            border: 3px solid #FFFFFF;\n" +
             "            box-shadow: 0 0 20px #EF4444;\n" +
+            "            display: flex;\n" +
+            "            align-items: center;\n" +
+            "            justify-content: center;\n" +
+            "            font-size: 14px;\n" +
             "        }\n" +
+            "        .leaflet-popup-content-wrapper {\n" +
+            "            background: #131A2B !important; color: #FFFFFF !important;\n" +
+            "            border: 1px solid #2A3650; border-radius: 12px;\n" +
+            "            box-shadow: 0 4px 20px rgba(0,0,0,0.6);\n" +
+            "        }\n" +
+            "        .leaflet-popup-tip { background: #131A2B !important; }\n" +
             "    </style>\n" +
             "</head>\n" +
             "<body>\n" +
             "    <div id=\"map\"></div>\n" +
             "    <script>\n" +
-            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([17.4482, 78.3914], 14);\n" +
+            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([%.5f, %.5f], 14);\n" +
             "        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);\n" +
             "\n" +
             "        let trail = [];\n" +
             "        let polyline = null;\n" +
             "        let movingMarker = null;\n" +
             "        let incidentMarkers = [];\n" +
+            "        let breadcrumbCircles = [];\n" +
+            "\n" +
+            "        window.initDefaultLocation = function(lat, lng, name) {\n" +
+            "            if (movingMarker) map.removeLayer(movingMarker);\n" +
+            "            const wardIcon = L.divIcon({ className: 'ward-marker', iconSize: [22, 22], iconAnchor: [11, 11] });\n" +
+            "            movingMarker = L.marker([lat, lng], { icon: wardIcon, zIndexOffset: 1000 }).addTo(map);\n" +
+            "            movingMarker.bindPopup('<b>' + (name || 'Current Position') + '</b><br>Live GPS Anchor').openPopup();\n" +
+            "            map.setView([lat, lng], 15);\n" +
+            "        };\n" +
             "\n" +
             "        window.initReplayMap = function(data) {\n" +
-            "            trail = data;\n" +
-            "            if (polyline) map.removeLayer(polyline);\n" +
-            "            if (movingMarker) map.removeLayer(movingMarker);\n" +
+            "            trail = data || [];\n" +
+            "            if (polyline) { map.removeLayer(polyline); polyline = null; }\n" +
+            "            if (movingMarker) { map.removeLayer(movingMarker); movingMarker = null; }\n" +
             "            incidentMarkers.forEach(m => map.removeLayer(m));\n" +
             "            incidentMarkers = [];\n" +
+            "            breadcrumbCircles.forEach(c => map.removeLayer(c));\n" +
+            "            breadcrumbCircles = [];\n" +
             "\n" +
-            "            if (!trail || trail.length === 0) return;\n" +
+            "            if (!trail || trail.length === 0) {\n" +
+            "                window.initDefaultLocation(%.5f, %.5f, 'Protected User');\n" +
+            "                return;\n" +
+            "            }\n" +
             "\n" +
             "            const latlngs = trail.map(pt => [pt.latitude, pt.longitude]);\n" +
-            "            polyline = L.polyline(latlngs, {\n" +
-            "                color: '#FF2E93',\n" +
-            "                weight: 4,\n" +
-            "                opacity: 0.85,\n" +
-            "                dashArray: '8, 6'\n" +
-            "            }).addTo(map);\n" +
+            "            if (latlngs.length > 1) {\n" +
+            "                polyline = L.polyline(latlngs, {\n" +
+            "                    color: '#FF2E93',\n" +
+            "                    weight: 4,\n" +
+            "                    opacity: 0.85,\n" +
+            "                    dashArray: '8, 6'\n" +
+            "                }).addTo(map);\n" +
+            "            }\n" +
             "\n" +
-            "            trail.forEach(pt => {\n" +
+            "            trail.forEach((pt, idx) => {\n" +
             "                if (pt.is_incident) {\n" +
-            "                    const incIcon = L.divIcon({ className: 'incident-marker', iconSize: [24, 24], iconAnchor: [12, 12] });\n" +
-            "                    const m = L.marker([pt.latitude, pt.longitude], { icon: incIcon }).addTo(map);\n" +
+            "                    const incIcon = L.divIcon({ className: 'incident-marker', html: '🚨', iconSize: [26, 26], iconAnchor: [13, 13] });\n" +
+            "                    const m = L.marker([pt.latitude, pt.longitude], { icon: incIcon, zIndexOffset: 900 }).addTo(map);\n" +
+            "                    m.bindPopup('<b>🚨 SOS Incident Point</b><br>' + (pt.formatted_time || '') + '<br>' + (pt.address || ''));\n" +
             "                    incidentMarkers.push(m);\n" +
             "                } else {\n" +
-            "                    L.circleMarker([pt.latitude, pt.longitude], {\n" +
-            "                        radius: 4,\n" +
+            "                    const c = L.circleMarker([pt.latitude, pt.longitude], {\n" +
+            "                        radius: 5,\n" +
             "                        color: '#FF2E93',\n" +
             "                        fillColor: '#FF65A7',\n" +
-            "                        fillOpacity: 0.7,\n" +
-            "                        weight: 1\n" +
+            "                        fillOpacity: 0.75,\n" +
+            "                        weight: 1.5\n" +
             "                    }).addTo(map);\n" +
+            "                    c.bindPopup('<b>Point ' + (idx + 1) + '</b><br>' + (pt.formatted_time || '') + '<br>' + (pt.address || ''));\n" +
+            "                    breadcrumbCircles.push(c);\n" +
             "                }\n" +
             "            });\n" +
             "\n" +
-            "            const wardIcon = L.divIcon({ className: 'ward-marker', iconSize: [20, 20], iconAnchor: [10, 10] });\n" +
-            "            movingMarker = L.marker([trail[0].latitude, trail[0].longitude], { icon: wardIcon }).addTo(map);\n" +
+            "            const wardIcon = L.divIcon({ className: 'ward-marker', iconSize: [22, 22], iconAnchor: [11, 11] });\n" +
+            "            movingMarker = L.marker([trail[0].latitude, trail[0].longitude], { icon: wardIcon, zIndexOffset: 1000 }).addTo(map);\n" +
+            "            movingMarker.bindPopup('<b>' + (trail[0].formatted_time || 'Starting Point') + '</b><br>' + (trail[0].address || ''));\n" +
             "\n" +
-            "            map.fitBounds(polyline.getBounds(), { padding: [50, 50] });\n" +
+            "            if (polyline && latlngs.length > 1) {\n" +
+            "                map.fitBounds(polyline.getBounds(), { padding: [50, 50] });\n" +
+            "            } else if (trail.length === 1) {\n" +
+            "                map.setView([trail[0].latitude, trail[0].longitude], 16);\n" +
+            "            }\n" +
             "        };\n" +
             "\n" +
             "        window.seekToPoint = function(idx) {\n" +
             "            if (!trail || !trail[idx] || !movingMarker) return;\n" +
             "            const pt = trail[idx];\n" +
             "            movingMarker.setLatLng([pt.latitude, pt.longitude]);\n" +
+            "            movingMarker.bindPopup('<b>' + (pt.formatted_time || '') + '</b><br>' + (pt.address || '')).openPopup();\n" +
             "            if (!map.getBounds().contains([pt.latitude, pt.longitude])) {\n" +
             "                map.panTo([pt.latitude, pt.longitude], { animate: true });\n" +
             "            }\n" +
             "        };\n" +
             "\n" +
             "        window.recenterMap = function() {\n" +
-            "            if (polyline) map.fitBounds(polyline.getBounds(), { padding: [50, 50] });\n" +
+            "            if (polyline && trail && trail.length > 1) {\n" +
+            "                map.fitBounds(polyline.getBounds(), { padding: [50, 50] });\n" +
+            "            } else if (trail && trail.length >= 1) {\n" +
+            "                map.setView([trail[0].latitude, trail[0].longitude], 16);\n" +
+            "            } else {\n" +
+            "                map.setView([%.5f, %.5f], 16);\n" +
+            "            }\n" +
             "        };\n" +
             "    </script>\n" +
             "</body>\n" +
@@ -156,8 +204,32 @@ public class LocationReplayFragment extends Fragment {
         if (getArguments() != null) {
             wardPhone = getArguments().getString("WARD_PHONE", "");
             wardName = getArguments().getString("WARD_NAME", "Protected User");
-            wardLat = getArguments().getDouble("WARD_LAT", 17.4482);
-            wardLng = getArguments().getDouble("WARD_LNG", 78.3914);
+            wardLat = getArguments().getDouble("WARD_LAT", 0.0);
+            wardLng = getArguments().getDouble("WARD_LNG", 0.0);
+        }
+
+        // If ward coordinates not passed or are 0, use user's local GPS cache or best last known
+        if (wardLat == 0.0 || wardLng == 0.0) {
+            wardLat = Prefs.getFloat(Constants.PREFS_LAST_LATITUDE, 0f);
+            wardLng = Prefs.getFloat(Constants.PREFS_LAST_LONGITUDE, 0f);
+        }
+        if (wardLat == 0.0 || wardLng == 0.0) {
+            if (getContext() != null) {
+                android.location.Location best = com.android.sheguard.util.LocationHelper.getBestLastKnownLocation(requireContext());
+                if (best != null && (best.getLatitude() != 0.0 || best.getLongitude() != 0.0)) {
+                    wardLat = best.getLatitude();
+                    wardLng = best.getLongitude();
+                } else {
+                    wardLat = 17.4482;
+                    wardLng = 78.3914;
+                }
+            }
+        }
+        if (wardPhone == null || wardPhone.trim().isEmpty()) {
+            wardPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+            if (wardPhone.isEmpty()) {
+                wardPhone = Prefs.getString(Constants.PREFS_USER_EMAIL, "+919876543210");
+            }
         }
 
         binding.tvReplayTitle.setText(wardName);
@@ -185,11 +257,18 @@ public class LocationReplayFragment extends Fragment {
                 isMapReady = true;
                 if (trailData != null && trailData.size() > 0) {
                     injectTrailToMap();
+                } else if (binding != null) {
+                    binding.webViewMap.evaluateJavascript(
+                            String.format(Locale.US, "window.initDefaultLocation(%.5f, %.5f, '%s');",
+                                    wardLat, wardLng, wardName.replace("'", "\\'")),
+                            null
+                    );
                 }
             }
         });
 
-        binding.webViewMap.loadDataWithBaseURL("https://guardianai.app", LEAFLET_HTML, "text/html", "UTF-8", null);
+        String mapHtml = String.format(Locale.US, LEAFLET_HTML, wardLat, wardLng, wardLat, wardLng, wardLat, wardLng);
+        binding.webViewMap.loadDataWithBaseURL("https://guardianai.app", mapHtml, "text/html", "UTF-8", null);
     }
 
     private void setupControls() {
@@ -254,6 +333,9 @@ public class LocationReplayFragment extends Fragment {
         if (getContext() == null || getActivity() == null) return;
 
         String guardianPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+        if (guardianPhone.isEmpty()) {
+            guardianPhone = wardPhone;
+        }
         String debriefUrl = ApiClient.getBaseUrl() + "location/debrief/?ward_phone=" + Uri.encode(wardPhone) +
                 "&guardian_phone=" + Uri.encode(guardianPhone) + "&hours=24&format=html";
 
@@ -272,7 +354,7 @@ public class LocationReplayFragment extends Fragment {
                             String jobName = "Forensic_Debrief_" + safeName;
                             PrintDocumentAdapter printAdapter = printWebView.createPrintDocumentAdapter(jobName);
                             printManager.print(jobName, printAdapter, new PrintAttributes.Builder()
-                                    .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
+                                     .setMediaSize(PrintAttributes.MediaSize.ISO_A4)
                                     .build());
                         } catch (Exception e) {
                             openDebriefInBrowser(debriefUrl);
@@ -305,6 +387,16 @@ public class LocationReplayFragment extends Fragment {
 
     private void fetchLocationTrail() {
         String guardianPhone = Prefs.getString(Constants.PREFS_USER_PHONE, "");
+        if (guardianPhone.isEmpty()) {
+            guardianPhone = wardPhone;
+        }
+        if (wardPhone.isEmpty()) {
+            wardPhone = guardianPhone;
+        }
+        if (wardPhone.isEmpty()) {
+            wardPhone = Constants.DEMO_USER_PHONE;
+            guardianPhone = Constants.DEMO_USER_PHONE;
+        }
         binding.pbLoading.setVisibility(View.VISIBLE);
 
         ApiClient.getLocationHistory(wardPhone, guardianPhone, 24, (success, data, message) -> {
@@ -317,7 +409,11 @@ public class LocationReplayFragment extends Fragment {
                 binding.tvPointsBadge.setText(totalPoints + " Checkpoints");
 
                 if (totalPoints > 0) {
-                    binding.seekbarReplay.setMax(totalPoints - 1);
+                    binding.seekbarReplay.setEnabled(totalPoints > 1);
+                    binding.btnPlayPause.setEnabled(totalPoints > 1);
+                    binding.btnStepPrev.setEnabled(totalPoints > 1);
+                    binding.btnStepNext.setEnabled(totalPoints > 1);
+                    binding.seekbarReplay.setMax(Math.max(1, totalPoints - 1));
                     binding.seekbarReplay.setProgress(0);
 
                     JsonObject firstPt = trailData.get(0).getAsJsonObject();
@@ -335,6 +431,24 @@ public class LocationReplayFragment extends Fragment {
 
                     if (isMapReady) {
                         injectTrailToMap();
+                    }
+                } else {
+                    binding.tvTelemetryTime.setText("No movement in last 24h");
+                    binding.tvTelemetryBattery.setText(Prefs.getInt(Constants.PREFS_BATTERY_LEVEL, 85) + "%");
+                    binding.tvTelemetryAddress.setText("Showing last known GPS coordinates");
+                    binding.tvTelemetryCheckpoint.setText("0 Checkpoints");
+                    binding.tvTimeStart.setText("--");
+                    binding.tvTimeEnd.setText("Now");
+                    binding.seekbarReplay.setEnabled(false);
+                    binding.btnPlayPause.setEnabled(false);
+                    binding.btnStepPrev.setEnabled(false);
+                    binding.btnStepNext.setEnabled(false);
+                    if (isMapReady && binding.webViewMap != null) {
+                        binding.webViewMap.evaluateJavascript(
+                                String.format(Locale.US, "window.initDefaultLocation(%.5f, %.5f, '%s');",
+                                        wardLat, wardLng, wardName.replace("'", "\\'")),
+                                null
+                        );
                     }
                 }
             } else {
