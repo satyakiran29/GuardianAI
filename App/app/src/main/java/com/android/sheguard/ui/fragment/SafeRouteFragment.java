@@ -62,6 +62,8 @@ public class SafeRouteFragment extends Fragment {
     private boolean isHotspotsVisible = false;
     private boolean isMonitoring = false;
     private boolean isMapReady = false;
+    private boolean isFirstFix = true;
+    private boolean isCustomDestinationSelected = false;
 
     private JsonArray currentRoutes = new JsonArray();
     private int selectedRouteIndex = 0;
@@ -155,13 +157,17 @@ public class SafeRouteFragment extends Fragment {
             "        let userAccuracyCircle = null;\n" +
             "        let routeLayers = [];\n" +
             "        let hotspotLayers = [];\n" +
+            "        let hasCenteredOnUser = false;\n" +
             "\n" +
             "        window.initOrigin = function(lat, lng, title) {\n" +
             "            if (originMarker) map.removeLayer(originMarker);\n" +
             "            const icon = L.divIcon({ className: 'origin-marker', iconSize: [18, 18], iconAnchor: [9, 9] });\n" +
             "            originMarker = L.marker([lat, lng], { icon }).addTo(map);\n" +
             "            originMarker.bindPopup('<b>📍 My Origin</b><br>' + (title || 'Origin'));\n" +
-            "            if (!destMarker) map.setView([lat, lng], 14);\n" +
+            "            if (!hasCenteredOnUser) {\n" +
+            "                map.setView([lat, lng], 15);\n" +
+            "                hasCenteredOnUser = true;\n" +
+            "            }\n" +
             "        };\n" +
             "\n" +
             "        window.updateUserLocation = function(lat, lng, accuracy, followUser) {\n" +
@@ -188,18 +194,21 @@ public class SafeRouteFragment extends Fragment {
             "                }\n" +
             "            }\n" +
             "\n" +
-            "            if (followUser) {\n" +
+            "            if (!hasCenteredOnUser) {\n" +
+            "                map.setView([lat, lng], 15, { animate: true });\n" +
+            "                hasCenteredOnUser = true;\n" +
+            "            } else if (followUser) {\n" +
             "                map.panTo([lat, lng], { animate: true, duration: 0.5 });\n" +
             "            }\n" +
             "        };\n" +
             "\n" +
             "        window.recenterMap = function(lat, lng) {\n" +
             "            if (lat && lng) {\n" +
-            "                map.setView([lat, lng], 15, { animate: true });\n" +
+            "                map.setView([lat, lng], 16, { animate: true });\n" +
             "            } else if (userMarker) {\n" +
-            "                map.setView(userMarker.getLatLng(), 15, { animate: true });\n" +
+            "                map.setView(userMarker.getLatLng(), 16, { animate: true });\n" +
             "            } else if (originMarker) {\n" +
-            "                map.setView(originMarker.getLatLng(), 15, { animate: true });\n" +
+            "                map.setView(originMarker.getLatLng(), 16, { animate: true });\n" +
             "            }\n" +
             "        };\n" +
             "\n" +
@@ -304,6 +313,7 @@ public class SafeRouteFragment extends Fragment {
         @JavascriptInterface
         public void onMapDestinationSelected(double lat, double lng) {
             mainHandler.post(() -> {
+                isCustomDestinationSelected = true;
                 destLatitude = lat;
                 destLongitude = lng;
                 destAddressText = String.format(Locale.US, "GPS: %.4f, %.4f", lat, lng);
@@ -337,6 +347,15 @@ public class SafeRouteFragment extends Fragment {
             return insets;
         });
 
+        // Check locally cached coordinates to avoid default fallback
+        float savedLat = Prefs.getFloat(Constants.PREFS_LAST_LATITUDE, 0f);
+        float savedLng = Prefs.getFloat(Constants.PREFS_LAST_LONGITUDE, 0f);
+        if (savedLat != 0f && savedLng != 0f) {
+            currentLatitude = savedLat;
+            currentLongitude = savedLng;
+            currentAddressText = String.format(Locale.US, "GPS: %.4f, %.4f", currentLatitude, currentLongitude);
+        }
+
         // Initialize Day/Night mode based on current hour
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         isNightMode = (hour < 6 || hour >= 18);
@@ -366,14 +385,21 @@ public class SafeRouteFragment extends Fragment {
                 isMapReady = true;
                 if (binding != null) {
                     binding.pbMapLoading.setVisibility(View.GONE);
-                    // Initialize origin on map
+                    // Initialize origin and user location on map
                     binding.webViewMap.evaluateJavascript(
-                            String.format(Locale.US, "window.initOrigin(%.5f, %.5f, '%s');",
-                                    currentLatitude, currentLongitude, currentAddressText.replace("'", "\\'")),
+                            String.format(Locale.US, "window.initOrigin(%.5f, %.5f, '%s'); window.updateUserLocation(%.5f, %.5f, 25, true);",
+                                    currentLatitude, currentLongitude, currentAddressText.replace("'", "\\'"),
+                                    currentLatitude, currentLongitude),
                             null
                     );
-                    // Auto-plan initial route to preset destination
-                    calculateSafeRoute();
+                    // Only plan initial route if destination is already set or if we have saved location
+                    if (destLatitude != 0.0 && destLongitude != 0.0) {
+                        calculateSafeRoute();
+                    } else if (currentLatitude != 0.0 && currentLongitude != 0.0 && !isCustomDestinationSelected) {
+                        destLatitude = currentLatitude + 0.015;
+                        destLongitude = currentLongitude + 0.012;
+                        calculateSafeRoute();
+                    }
                 }
             }
         });
@@ -396,13 +422,18 @@ public class SafeRouteFragment extends Fragment {
                 LocationHelper.promptEnableLocation(requireActivity());
                 return;
             }
-            fetchCurrentLocation();
+            Location loc = LocationHelper.getBestLastKnownLocation(requireContext());
+            if (loc != null) {
+                currentLatitude = loc.getLatitude();
+                currentLongitude = loc.getLongitude();
+            }
             if (isMapReady && binding != null) {
                 binding.webViewMap.evaluateJavascript(
                         String.format(Locale.US, "window.recenterMap(%.5f, %.5f);", currentLatitude, currentLongitude),
                         null
                 );
             }
+            fetchCurrentLocation();
             Toast.makeText(requireContext(), "📍 Re-centering on Live GPS...", Toast.LENGTH_SHORT).show();
         });
 
@@ -519,6 +550,9 @@ public class SafeRouteFragment extends Fragment {
                 public void onLocationUpdated(Location location, double latitude, double longitude, float accuracy, float speed, float bearing) {
                     if (binding == null || !isAdded()) return;
 
+                    boolean wasFirstFix = isFirstFix;
+                    isFirstFix = false;
+
                     currentLatitude = latitude;
                     currentLongitude = longitude;
 
@@ -529,9 +563,23 @@ public class SafeRouteFragment extends Fragment {
                     if (isMapReady && binding != null) {
                         binding.webViewMap.evaluateJavascript(
                                 String.format(Locale.US, "window.updateUserLocation(%.5f, %.5f, %.1f, %s);",
-                                        latitude, longitude, accuracy, String.valueOf(isMonitoring)),
+                                        latitude, longitude, accuracy, String.valueOf(isMonitoring || wasFirstFix)),
                                 null
                         );
+
+                        if (wasFirstFix) {
+                            binding.webViewMap.evaluateJavascript(
+                                    String.format(Locale.US, "window.initOrigin(%.5f, %.5f, 'My Current Location');", latitude, longitude),
+                                    null
+                            );
+                            if (!isCustomDestinationSelected) {
+                                destLatitude = latitude + 0.015;
+                                destLongitude = longitude + 0.012;
+                                resolveAndPlanRoute("Nearby Safe Destination", destLatitude, destLongitude);
+                            } else {
+                                calculateSafeRoute();
+                            }
+                        }
                     }
 
                     // If corridor arrival shield is active, monitor progress to destination
@@ -615,8 +663,9 @@ public class SafeRouteFragment extends Fragment {
 
                 if (isMapReady && binding != null) {
                     binding.webViewMap.evaluateJavascript(
-                            String.format(Locale.US, "window.initOrigin(%.5f, %.5f, '%s');",
-                                    currentLatitude, currentLongitude, addressName.replace("'", "\\'")),
+                            String.format(Locale.US, "window.initOrigin(%.5f, %.5f, '%s'); window.updateUserLocation(%.5f, %.5f, 15, true);",
+                                    currentLatitude, currentLongitude, addressName.replace("'", "\\'"),
+                                    currentLatitude, currentLongitude),
                             null
                     );
                 }
@@ -624,6 +673,10 @@ public class SafeRouteFragment extends Fragment {
                 // If destination exists, refresh route
                 if (destLatitude != 0.0 && destLongitude != 0.0) {
                     calculateSafeRoute();
+                } else if (!isCustomDestinationSelected) {
+                    destLatitude = currentLatitude + 0.015;
+                    destLongitude = currentLongitude + 0.012;
+                    resolveAndPlanRoute("Nearby Safe Destination", destLatitude, destLongitude);
                 }
             }
 
@@ -646,6 +699,7 @@ public class SafeRouteFragment extends Fragment {
     }
 
     private void resolveAndPlanRoute(String label, double fallbackLat, double fallbackLon) {
+        isCustomDestinationSelected = true;
         destLatitude = fallbackLat;
         destLongitude = fallbackLon;
         destAddressText = label;

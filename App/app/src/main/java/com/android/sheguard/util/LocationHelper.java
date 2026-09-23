@@ -27,6 +27,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
+import com.android.sheguard.common.Constants;
+import com.android.sheguard.config.Prefs;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
@@ -142,14 +144,14 @@ public class LocationHelper {
         FusedLocationProviderClient fusedClient = LocationServices.getFusedLocationProviderClient(context);
         LocationManager nativeLm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        // 1. Check last known location for freshness (< 45s old and accuracy < 60m)
+        // 1. Fast-path: Check fusedClient.getLastLocation() for fresh fix (< 90s)
         try {
             fusedClient.getLastLocation().addOnSuccessListener(loc -> {
                 if (loc != null && !isResolved.get()) {
                     long age = System.currentTimeMillis() - loc.getTime();
-                    if (age < 45000 && loc.getAccuracy() <= 60.0f) {
+                    if (age < 90000 && loc.getAccuracy() <= 100.0f) {
                         if (isResolved.compareAndSet(false, true)) {
-                            Log.d(TAG, "Fast fresh last-known fix: " + loc.getLatitude() + ", " + loc.getLongitude() + " (age " + (age / 1000) + "s)");
+                            Log.d(TAG, "Fast fresh last-known fix: " + loc.getLatitude() + ", " + loc.getLongitude());
                             resolveAddressAndNotify(context, loc.getLatitude(), loc.getLongitude(), listener, mainHandler);
                         }
                     }
@@ -157,23 +159,23 @@ public class LocationHelper {
             });
         } catch (Exception ignored) {}
 
-        // 2. Request fresh high-accuracy satellite update via FusedClient
-        LocationRequest freshRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1500)
+        // 2. Request fresh high-accuracy satellite update via FusedClient (0m threshold)
+        LocationRequest freshRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
                 .setWaitForAccurateLocation(false)
-                .setMaxUpdates(1)
+                .setMinUpdateIntervalMillis(500)
+                .setMinUpdateDistanceMeters(0f)
                 .build();
 
         LocationCallback fusedCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
-                try {
-                    fusedClient.removeLocationUpdates(this);
-                } catch (Exception ignored) {}
-
                 if (!locationResult.getLocations().isEmpty()) {
                     Location loc = locationResult.getLastLocation();
                     if (loc != null && isResolved.compareAndSet(false, true)) {
-                        Log.d(TAG, "Fresh Fused fix: " + loc.getLatitude() + ", " + loc.getLongitude() + " (acc " + loc.getAccuracy() + "m)");
+                        try {
+                            fusedClient.removeLocationUpdates(this);
+                        } catch (Exception ignored) {}
+                        Log.d(TAG, "Fresh Fused fix: " + loc.getLatitude() + ", " + loc.getLongitude());
                         resolveAddressAndNotify(context, loc.getLatitude(), loc.getLongitude(), listener, mainHandler);
                     }
                 }
@@ -186,7 +188,7 @@ public class LocationHelper {
             Log.w(TAG, "Fused location request failed: " + e.getMessage());
         }
 
-        // 3. Concurrently register native LocationManager listener as hardware fallback
+        // 3. Concurrently register native LocationManager listener (GPS + NETWORK) as hardware fallback (0m threshold)
         LocationListener nativeListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location loc) {
@@ -203,39 +205,35 @@ public class LocationHelper {
                     resolveAddressAndNotify(context, loc.getLatitude(), loc.getLongitude(), listener, mainHandler);
                 }
             }
-            @Override public void onStatusChanged(String provider, int status, Bundle extras) {}
-            @Override public void onProviderEnabled(@NonNull String provider) {}
-            @Override public void onProviderDisabled(@NonNull String provider) {}
         };
 
         if (nativeLm != null) {
             try {
                 if (nativeLm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    nativeLm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1.0f, nativeListener, Looper.getMainLooper());
+                    nativeLm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0f, nativeListener, Looper.getMainLooper());
                 }
                 if (nativeLm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                    nativeLm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1.0f, nativeListener, Looper.getMainLooper());
+                    nativeLm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0f, nativeListener, Looper.getMainLooper());
                 }
             } catch (Exception ignored) {}
         }
 
-        // 4. 8-Second Safety Watchdog: If GPS fix takes longer, fall back to best known or notify
+        // 4. 6-Second Safety Watchdog: If GPS fix takes longer, fall back to best known
         mainHandler.postDelayed(() -> {
             if (!isResolved.get()) {
-                try {
-                    fusedClient.removeLocationUpdates(fusedCallback);
-                } catch (Exception ignored) {}
-                if (nativeLm != null) {
-                    try {
-                        nativeLm.removeUpdates(nativeListener);
-                    } catch (Exception ignored) {}
-                }
-
                 Location bestKnown = getBestLastKnownLocation(context);
                 if (bestKnown != null && isResolved.compareAndSet(false, true)) {
+                    try {
+                        fusedClient.removeLocationUpdates(fusedCallback);
+                        if (nativeLm != null) nativeLm.removeUpdates(nativeListener);
+                    } catch (Exception ignored) {}
                     Log.w(TAG, "Watchdog timeout: utilizing best available location: " + bestKnown.getLatitude() + ", " + bestKnown.getLongitude());
                     resolveAddressAndNotify(context, bestKnown.getLatitude(), bestKnown.getLongitude(), listener, mainHandler);
                 } else if (isResolved.compareAndSet(false, true)) {
+                    try {
+                        fusedClient.removeLocationUpdates(fusedCallback);
+                        if (nativeLm != null) nativeLm.removeUpdates(nativeListener);
+                    } catch (Exception ignored) {}
                     if (!isLocationEnabled(context)) {
                         listener.onLocationError("GPS/Location is turned off on your device. Please enable Location in Settings.");
                     } else {
@@ -243,7 +241,7 @@ public class LocationHelper {
                     }
                 }
             }
-        }, 8000);
+        }, 6000);
     }
 
     /**
@@ -262,7 +260,7 @@ public class LocationHelper {
         FusedLocationProviderClient fusedClient = LocationServices.getFusedLocationProviderClient(context);
         LocationManager nativeLm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        // Immediate initial fix if available
+        // Immediate initial fix if available (from cache or prefs)
         Location initialLoc = getBestLastKnownLocation(context);
         if (initialLoc != null) {
             listener.onLocationUpdated(
@@ -275,10 +273,27 @@ public class LocationHelper {
             );
         }
 
-        LocationRequest continuousRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2500)
+        // Query fused client last location fast-path
+        try {
+            fusedClient.getLastLocation().addOnSuccessListener(loc -> {
+                if (loc != null) {
+                    listener.onLocationUpdated(
+                            loc,
+                            loc.getLatitude(),
+                            loc.getLongitude(),
+                            loc.getAccuracy(),
+                            loc.getSpeed(),
+                            loc.getBearing()
+                    );
+                }
+            });
+        } catch (Exception ignored) {}
+
+        // High accuracy real-time request (0m distance threshold allows stationary updates)
+        LocationRequest continuousRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2000)
                 .setWaitForAccurateLocation(false)
-                .setMinUpdateIntervalMillis(1500)
-                .setMinUpdateDistanceMeters(1.0f)
+                .setMinUpdateIntervalMillis(1000)
+                .setMinUpdateDistanceMeters(0f)
                 .build();
 
         LocationCallback fusedCallback = new LocationCallback() {
@@ -287,6 +302,10 @@ public class LocationHelper {
                 if (!locationResult.getLocations().isEmpty()) {
                     Location loc = locationResult.getLastLocation();
                     if (loc != null) {
+                        try {
+                            Prefs.putFloat(Constants.PREFS_LAST_LATITUDE, (float) loc.getLatitude());
+                            Prefs.putFloat(Constants.PREFS_LAST_LONGITUDE, (float) loc.getLongitude());
+                        } catch (Exception ignored) {}
                         listener.onLocationUpdated(
                                 loc,
                                 loc.getLatitude(),
@@ -307,10 +326,14 @@ public class LocationHelper {
             Log.w(TAG, "Error starting fused tracking: " + e.getMessage());
         }
 
-        // Native LocationManager backup stream
+        // Native LocationManager dual-provider backup stream (GPS + NETWORK)
         LocationListener nativeListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location loc) {
+                try {
+                    Prefs.putFloat(Constants.PREFS_LAST_LATITUDE, (float) loc.getLatitude());
+                    Prefs.putFloat(Constants.PREFS_LAST_LONGITUDE, (float) loc.getLongitude());
+                } catch (Exception ignored) {}
                 listener.onLocationUpdated(
                         loc,
                         loc.getLatitude(),
@@ -320,17 +343,17 @@ public class LocationHelper {
                         loc.getBearing()
                 );
             }
-            @Override public void onStatusChanged(String provider, int status, Bundle extras) {}
-            @Override public void onProviderEnabled(@NonNull String provider) {}
-            @Override public void onProviderDisabled(@NonNull String provider) {}
         };
 
         if (nativeLm != null) {
             try {
                 if (nativeLm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    nativeLm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2500, 1.0f, nativeListener, Looper.getMainLooper());
-                    activeNativeListeners.put(listener, nativeListener);
+                    nativeLm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0f, nativeListener, Looper.getMainLooper());
                 }
+                if (nativeLm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                    nativeLm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0f, nativeListener, Looper.getMainLooper());
+                }
+                activeNativeListeners.put(listener, nativeListener);
             } catch (Exception ignored) {}
         }
     }
@@ -375,31 +398,56 @@ public class LocationHelper {
                 if (passLoc != null && (best == null || passLoc.getTime() > best.getTime())) best = passLoc;
             } catch (Exception ignored) {}
         }
+
+        // Fallback to locally persisted last known location
+        if (best == null && context != null) {
+            try {
+                float savedLat = Prefs.getFloat(Constants.PREFS_LAST_LATITUDE, 0f);
+                float savedLng = Prefs.getFloat(Constants.PREFS_LAST_LONGITUDE, 0f);
+                if (savedLat != 0f && savedLng != 0f) {
+                    Location loc = new Location("cached_prefs");
+                    loc.setLatitude(savedLat);
+                    loc.setLongitude(savedLng);
+                    loc.setTime(System.currentTimeMillis());
+                    loc.setAccuracy(50.0f);
+                    best = loc;
+                }
+            } catch (Exception ignored) {}
+        }
         return best;
     }
 
     private static void resolveAddressAndNotify(Context context, double lat, double lng, LocationResultListener listener, Handler mainHandler) {
+        // Save to prefs immediately
+        try {
+            Prefs.putFloat(Constants.PREFS_LAST_LATITUDE, (float) lat);
+            Prefs.putFloat(Constants.PREFS_LAST_LONGITUDE, (float) lng);
+        } catch (Exception ignored) {}
+
+        // Immediate callback with coordinates so UI updates instantly without network latency
+        String fallbackAddress = String.format(Locale.US, "GPS: %.4f, %.4f", lat, lng);
+        mainHandler.post(() -> listener.onLocationReceived(lat, lng, fallbackAddress));
+
+        // Resolve reverse geocode asynchronously in background
         Executors.newSingleThreadExecutor().execute(() -> {
-            String addressText = "Lat: " + String.format(Locale.US, "%.5f", lat) + ", Lng: " + String.format(Locale.US, "%.5f", lng);
             try {
                 Geocoder geocoder = new Geocoder(context, Locale.getDefault());
                 List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
                 if (addresses != null && !addresses.isEmpty()) {
                     Address addr = addresses.get(0);
                     StringBuilder sb = new StringBuilder();
-                    if (addr.getFeatureName() != null) sb.append(addr.getFeatureName()).append(", ");
+                    if (addr.getFeatureName() != null && !addr.getFeatureName().matches("\\d+")) sb.append(addr.getFeatureName()).append(", ");
+                    if (addr.getThoroughfare() != null) sb.append(addr.getThoroughfare()).append(", ");
                     if (addr.getLocality() != null) sb.append(addr.getLocality()).append(", ");
                     if (addr.getAdminArea() != null) sb.append(addr.getAdminArea());
-                    if (sb.length() > 0) {
-                        addressText = sb.toString();
+                    String resolved = sb.length() > 0 ? sb.toString() : addr.getAddressLine(0);
+                    if (resolved != null && !resolved.isEmpty()) {
+                        mainHandler.post(() -> listener.onLocationReceived(lat, lng, resolved));
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.w(TAG, "Geocoder notice: " + e.getMessage());
             }
-
-            final String finalAddress = addressText;
-            mainHandler.post(() -> listener.onLocationReceived(lat, lng, finalAddress));
         });
     }
 

@@ -302,11 +302,11 @@ public class SosService extends Service implements SensorEventListener {
             } catch (SecurityException ignored) {}
         }
 
-        // High accuracy 5-second continuous GPS stream
-        LocationRequest continuousRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000)
+        // High accuracy 4-second continuous GPS stream (0m distance threshold)
+        LocationRequest continuousRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 4000)
                 .setWaitForAccurateLocation(false)
-                .setMinUpdateIntervalMillis(3000)
-                .setMaxUpdateDelayMillis(5000)
+                .setMinUpdateIntervalMillis(2000)
+                .setMinUpdateDistanceMeters(0f)
                 .build();
 
         locationStreamCallback = new LocationCallback() {
@@ -318,7 +318,11 @@ public class SosService extends Service implements SensorEventListener {
                         currentLatitude = loc.getLatitude();
                         currentLongitude = loc.getLongitude();
                         mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
-                        Log.d("SosService", "Fresh 5s GPS location: " + currentLatitude + ", " + currentLongitude);
+                        try {
+                            Prefs.putFloat(Constants.PREFS_LAST_LATITUDE, (float) currentLatitude);
+                            Prefs.putFloat(Constants.PREFS_LAST_LONGITUDE, (float) currentLongitude);
+                        } catch (Exception ignored) {}
+                        Log.d("SosService", "Fresh GPS location: " + currentLatitude + ", " + currentLongitude);
                     }
                 }
             }
@@ -330,19 +334,27 @@ public class SosService extends Service implements SensorEventListener {
                 fusedLocationClient.requestLocationUpdates(continuousRequest, locationStreamCallback, Looper.getMainLooper());
             } catch (SecurityException ignored) {}
 
-            // Native LocationManager backup updates
+            // Native LocationManager dual-provider backup updates (GPS + NETWORK, 0m threshold)
             LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if (lm != null) {
+                LocationListener nativeListener = new LocationListener() {
+                    @Override
+                    public void onLocationChanged(@NonNull Location loc) {
+                        currentLatitude = loc.getLatitude();
+                        currentLongitude = loc.getLongitude();
+                        mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
+                        try {
+                            Prefs.putFloat(Constants.PREFS_LAST_LATITUDE, (float) currentLatitude);
+                            Prefs.putFloat(Constants.PREFS_LAST_LONGITUDE, (float) currentLongitude);
+                        } catch (Exception ignored) {}
+                    }
+                };
                 try {
                     if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 2.0f, new LocationListener() {
-                            @Override
-                            public void onLocationChanged(@NonNull Location loc) {
-                                currentLatitude = loc.getLatitude();
-                                currentLongitude = loc.getLongitude();
-                                mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
-                            }
-                        }, Looper.getMainLooper());
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0f, nativeListener, Looper.getMainLooper());
+                    }
+                    if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0f, nativeListener, Looper.getMainLooper());
                     }
                 } catch (Exception ignored) {}
             }
