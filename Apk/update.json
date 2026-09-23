@@ -7,6 +7,7 @@
     "Women Safety Route Prediction: AI spatial risk modeling, well-lit safe corridor scoring, and police proximity based on crime data",
     "Interactive Dark Map Navigation: Real-time route polylines color-coded by safety (Safe, Caution, Risk) with Day/Night and Crime Hotspots toggles",
     "2-Step Verification (2FA): Account security switch in app and web settings requiring 6-digit email OTP verification",
+    "Dual-Provider Real-Time GPS Tracking: High-accuracy live telemetry, pulsing location indicator, and satellite re-center on Safe Route map",
     "24-Hour Location Trail Replay: Playback timeline and forensic debrief with SHA-256 integrity verification"
   ]
 }

@@ -244,73 +244,35 @@ public class ProfileFragment extends Fragment {
     // ─────────────────────────────────────────────────────────────────────────
 
     private boolean isGPSEnabled() {
-        if (locationManager == null && getContext() != null) {
-            locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
-        }
-        return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return com.android.sheguard.util.LocationHelper.isLocationEnabled(requireContext());
     }
 
     private void getCurrentLocation() {
-        if (getContext() == null) return;
+        if (getContext() == null || binding == null) return;
 
         if (!isGPSEnabled()) {
             binding.tvLocation.setText(R.string.gps_is_not_enabled);
-            return;
-        } else {
-            binding.tvLocation.setText(R.string.getting_location);
-        }
-
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            binding.tvLocation.setOnClickListener(v -> com.android.sheguard.util.LocationHelper.promptEnableLocation(requireActivity()));
             return;
         }
 
-        final int[] numberOfUpdates = {0};
+        binding.tvLocation.setText(R.string.getting_location);
 
-        LocationServices.getFusedLocationProviderClient(requireContext())
-                .requestLocationUpdates(locationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(@NonNull LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
-                        if (getContext() == null || binding == null) {
-                            return;
-                        }
+        com.android.sheguard.util.LocationHelper.requestSingleLocationUpdate(requireContext(), new com.android.sheguard.util.LocationHelper.LocationResultListener() {
+            @Override
+            public void onLocationReceived(double latitude, double longitude, String addressName) {
+                if (binding != null) {
+                    binding.tvLocation.setText(addressName);
+                }
+            }
 
-                        numberOfUpdates[0]++;
-
-                        if (numberOfUpdates[0] >= 3) {
-                            LocationServices.getFusedLocationProviderClient(getContext())
-                                    .removeLocationUpdates(this);
-
-                            if (locationResult.getLocations().size() > 0) {
-                                int idx = locationResult.getLocations().size() - 1;
-                                double latitude = locationResult.getLocations().get(idx).getLatitude();
-                                double longitude = locationResult.getLocations().get(idx).getLongitude();
-
-                                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-                                try {
-                                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                                    if (addresses != null && !addresses.isEmpty()) {
-                                        StringBuilder address = new StringBuilder();
-                                        for (int i = 0; i <= addresses.get(0).getMaxAddressLineIndex(); i++) {
-                                            address.append(addresses.get(0).getAddressLine(i));
-                                            if (i < addresses.get(0).getMaxAddressLineIndex()) {
-                                                address.append("\n");
-                                            }
-                                        }
-                                        binding.tvLocation.setText(address.toString());
-                                    } else {
-                                        binding.tvLocation.setText(getString(R.string.failed_to_get_location));
-                                    }
-                                } catch (IOException e) {
-                                    if (binding != null) {
-                                        binding.tvLocation.setText(getString(R.string.failed_to_get_location));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }, Looper.getMainLooper());
+            @Override
+            public void onLocationError(String error) {
+                if (binding != null) {
+                    binding.tvLocation.setText(getString(R.string.failed_to_get_location));
+                }
+            }
+        });
     }
 
     @Override

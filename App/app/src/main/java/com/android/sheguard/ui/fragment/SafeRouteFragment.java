@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.widget.Toast;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -95,6 +97,25 @@ public class SafeRouteFragment extends Fragment {
             "            background: #10B981; border: 3px solid #FFFFFF;\n" +
             "            box-shadow: 0 0 14px #10B981;\n" +
             "        }\n" +
+            "        .user-pulse-marker {\n" +
+            "            width: 16px; height: 16px; border-radius: 50%;\n" +
+            "            background: #10B981; border: 2.5px solid #FFFFFF;\n" +
+            "            box-shadow: 0 0 12px #10B981;\n" +
+            "            position: relative;\n" +
+            "        }\n" +
+            "        .user-pulse-marker::after {\n" +
+            "            content: '';\n" +
+            "            position: absolute;\n" +
+            "            width: 32px; height: 32px;\n" +
+            "            top: -10px; left: -10px;\n" +
+            "            border-radius: 50%;\n" +
+            "            background: rgba(16, 185, 129, 0.4);\n" +
+            "            animation: pulse-ring 2s infinite ease-out;\n" +
+            "        }\n" +
+            "        @keyframes pulse-ring {\n" +
+            "            0% { transform: scale(0.5); opacity: 1; }\n" +
+            "            100% { transform: scale(2.4); opacity: 0; }\n" +
+            "        }\n" +
             "        .dest-marker {\n" +
             "            width: 20px; height: 20px; border-radius: 50%;\n" +
             "            background: #FF2E93; border: 3px solid #FFFFFF;\n" +
@@ -130,6 +151,8 @@ public class SafeRouteFragment extends Fragment {
             "\n" +
             "        let originMarker = null;\n" +
             "        let destMarker = null;\n" +
+            "        let userMarker = null;\n" +
+            "        let userAccuracyCircle = null;\n" +
             "        let routeLayers = [];\n" +
             "        let hotspotLayers = [];\n" +
             "\n" +
@@ -137,8 +160,47 @@ public class SafeRouteFragment extends Fragment {
             "            if (originMarker) map.removeLayer(originMarker);\n" +
             "            const icon = L.divIcon({ className: 'origin-marker', iconSize: [18, 18], iconAnchor: [9, 9] });\n" +
             "            originMarker = L.marker([lat, lng], { icon }).addTo(map);\n" +
-            "            originMarker.bindPopup('<b>📍 My Location</b><br>' + (title || 'Origin'));\n" +
+            "            originMarker.bindPopup('<b>📍 My Origin</b><br>' + (title || 'Origin'));\n" +
             "            if (!destMarker) map.setView([lat, lng], 14);\n" +
+            "        };\n" +
+            "\n" +
+            "        window.updateUserLocation = function(lat, lng, accuracy, followUser) {\n" +
+            "            if (!userMarker) {\n" +
+            "                const icon = L.divIcon({ className: 'user-pulse-marker', iconSize: [16, 16], iconAnchor: [8, 8] });\n" +
+            "                userMarker = L.marker([lat, lng], { icon, zIndexOffset: 1000 }).addTo(map);\n" +
+            "                userMarker.bindPopup('<b>📍 Live GPS Position</b>');\n" +
+            "            } else {\n" +
+            "                userMarker.setLatLng([lat, lng]);\n" +
+            "            }\n" +
+            "\n" +
+            "            if (accuracy && accuracy > 0) {\n" +
+            "                if (!userAccuracyCircle) {\n" +
+            "                    userAccuracyCircle = L.circle([lat, lng], {\n" +
+            "                        radius: accuracy,\n" +
+            "                        color: '#10B981',\n" +
+            "                        weight: 1,\n" +
+            "                        fillColor: '#10B981',\n" +
+            "                        fillOpacity: 0.12\n" +
+            "                    }).addTo(map);\n" +
+            "                } else {\n" +
+            "                    userAccuracyCircle.setLatLng([lat, lng]);\n" +
+            "                    userAccuracyCircle.setRadius(accuracy);\n" +
+            "                }\n" +
+            "            }\n" +
+            "\n" +
+            "            if (followUser) {\n" +
+            "                map.panTo([lat, lng], { animate: true, duration: 0.5 });\n" +
+            "            }\n" +
+            "        };\n" +
+            "\n" +
+            "        window.recenterMap = function(lat, lng) {\n" +
+            "            if (lat && lng) {\n" +
+            "                map.setView([lat, lng], 15, { animate: true });\n" +
+            "            } else if (userMarker) {\n" +
+            "                map.setView(userMarker.getLatLng(), 15, { animate: true });\n" +
+            "            } else if (originMarker) {\n" +
+            "                map.setView(originMarker.getLatLng(), 15, { animate: true });\n" +
+            "            }\n" +
             "        };\n" +
             "\n" +
             "        window.setDestination = function(lat, lng, title) {\n" +
@@ -324,6 +386,26 @@ public class SafeRouteFragment extends Fragment {
         // Location locate button
         binding.btnRefreshLocation.setOnClickListener(v -> checkPermissionsAndFetchLocation());
 
+        // Floating GPS Re-center FAB
+        binding.btnRecenterLocation.setOnClickListener(v -> {
+            if (!LocationHelper.hasLocationPermission(requireContext())) {
+                checkPermissionsAndFetchLocation();
+                return;
+            }
+            if (!LocationHelper.isLocationEnabled(requireContext())) {
+                LocationHelper.promptEnableLocation(requireActivity());
+                return;
+            }
+            fetchCurrentLocation();
+            if (isMapReady && binding != null) {
+                binding.webViewMap.evaluateJavascript(
+                        String.format(Locale.US, "window.recenterMap(%.5f, %.5f);", currentLatitude, currentLongitude),
+                        null
+                );
+            }
+            Toast.makeText(requireContext(), "📍 Re-centering on Live GPS...", Toast.LENGTH_SHORT).show();
+        });
+
         // External Google Maps Navigation
         binding.btnOpenGoogleMaps.setOnClickListener(v -> {
             if (currentLatitude != 0.0 && currentLongitude != 0.0) {
@@ -425,10 +507,85 @@ public class SafeRouteFragment extends Fragment {
         }
     }
 
+    private LocationHelper.LocationTrackingListener trackingListener;
+
+    private void startLiveGpsTracking() {
+        if (!isAdded() || getContext() == null) return;
+        if (!LocationHelper.hasLocationPermission(requireContext())) return;
+
+        if (trackingListener == null) {
+            trackingListener = new LocationHelper.LocationTrackingListener() {
+                @Override
+                public void onLocationUpdated(Location location, double latitude, double longitude, float accuracy, float speed, float bearing) {
+                    if (binding == null || !isAdded()) return;
+
+                    currentLatitude = latitude;
+                    currentLongitude = longitude;
+
+                    binding.tvGpsBadge.setText(String.format(Locale.US, "LIVE GPS • ±%.0fm", accuracy));
+                    binding.tvGpsBadge.setTextColor(accuracy <= 30.0f ? 0xFF10B981 : 0xFFF59E0B);
+                    binding.tvCurrentCoords.setText(String.format(Locale.US, "GPS: %.5f, %.5f (Accuracy: ±%.0fm)", latitude, longitude, accuracy));
+
+                    if (isMapReady && binding != null) {
+                        binding.webViewMap.evaluateJavascript(
+                                String.format(Locale.US, "window.updateUserLocation(%.5f, %.5f, %.1f, %s);",
+                                        latitude, longitude, accuracy, String.valueOf(isMonitoring)),
+                                null
+                        );
+                    }
+
+                    // If corridor arrival shield is active, monitor progress to destination
+                    if (isMonitoring && destLatitude != 0.0 && destLongitude != 0.0) {
+                        float[] results = new float[1];
+                        Location.distanceBetween(latitude, longitude, destLatitude, destLongitude, results);
+                        float distRemainingMeters = results[0];
+
+                        if (distRemainingMeters <= 35.0f) {
+                            completeArrival();
+                        } else {
+                            String distStr = distRemainingMeters >= 1000.0f
+                                    ? String.format(Locale.US, "%.2f km", distRemainingMeters / 1000.0f)
+                                    : String.format(Locale.US, "%.0f m", distRemainingMeters);
+                            binding.btnStartArrivalShield.setText("Stop Shield • " + distStr + " Remaining");
+                        }
+                    }
+                }
+
+                @Override
+                public void onLocationError(String error) {
+                    Log.w(TAG, "Tracking notice: " + error);
+                }
+            };
+        }
+
+        LocationHelper.startLocationTracking(requireContext(), trackingListener);
+    }
+
+    private void stopLiveGpsTracking() {
+        if (trackingListener != null && getContext() != null) {
+            LocationHelper.stopLocationTracking(requireContext(), trackingListener);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startLiveGpsTracking();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!isMonitoring) {
+            stopLiveGpsTracking();
+        }
+    }
+
     private void checkPermissionsAndFetchLocation() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fetchCurrentLocation();
+            startLiveGpsTracking();
         } else {
             locationPermissionLauncher.launch(new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -473,9 +630,16 @@ public class SafeRouteFragment extends Fragment {
             @Override
             public void onLocationError(String error) {
                 if (binding == null) return;
-                binding.tvGpsBadge.setText("GPS READY (DEMO)");
-                binding.tvGpsBadge.setTextColor(0xFF10B981);
-                binding.tvCurrentAddress.setText("Central Station, Anna Salai (Default Safe Corridor)");
+                if (!LocationHelper.isLocationEnabled(requireContext())) {
+                    binding.tvGpsBadge.setText("GPS DISABLED");
+                    binding.tvGpsBadge.setTextColor(0xFFEF4444);
+                    binding.tvCurrentAddress.setText("⚠️ Device Location is OFF. Tap to enable GPS.");
+                    binding.tvCurrentAddress.setOnClickListener(v -> LocationHelper.promptEnableLocation(requireActivity()));
+                } else {
+                    binding.tvGpsBadge.setText("ACQUIRING GPS...");
+                    binding.tvGpsBadge.setTextColor(0xFFF59E0B);
+                    binding.tvCurrentAddress.setText("Acquiring GPS fix... Please hold for satellite connection.");
+                }
                 binding.tvCurrentCoords.setText(String.format(Locale.US, "GPS: %.5f, %.5f", currentLatitude, currentLongitude));
             }
         });
@@ -649,6 +813,7 @@ public class SafeRouteFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        stopLiveGpsTracking();
         if (binding != null) {
             binding.webViewMap.destroy();
         }

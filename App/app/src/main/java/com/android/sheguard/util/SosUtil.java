@@ -260,12 +260,7 @@ public class SosUtil {
     }
 
     public static boolean isGPSEnabled(Context context) {
-        if (locationManager == null) {
-            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        }
-
-        Log.i("SOS", "isGPSEnabled: " + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return LocationHelper.isLocationEnabled(context);
     }
 
     public static void turnOnGPS(Context context) {
@@ -473,7 +468,10 @@ public class SosUtil {
         new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (!sentSMS && contacts != null && !contacts.isEmpty()) {
                 Log.w("SOS", "sendLocation: Timeout reached, forcing automatic emergency dispatch");
-                broadcastSosPayload(context, contacts, 0, 0);
+                android.location.Location fallbackLoc = LocationHelper.getBestLastKnownLocation(context);
+                double fLat = fallbackLoc != null ? fallbackLoc.getLatitude() : 0.0;
+                double fLng = fallbackLoc != null ? fallbackLoc.getLongitude() : 0.0;
+                broadcastSosPayload(context, contacts, fLat, fLng);
             }
         }, 3500);
     }

@@ -14,10 +14,13 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.telephony.SmsManager;
@@ -272,6 +275,14 @@ public class SosService extends Service implements SensorEventListener {
         if (isTelemetryStreamActive) return;
         isTelemetryStreamActive = true;
 
+        // Populate initial coordinate from best available last known fix
+        android.location.Location best = com.android.sheguard.util.LocationHelper.getBestLastKnownLocation(this);
+        if (best != null) {
+            currentLatitude = best.getLatitude();
+            currentLongitude = best.getLongitude();
+            mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
+        }
+
         if (fusedLocationClient == null) {
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         }
@@ -318,6 +329,23 @@ public class SosService extends Service implements SensorEventListener {
             try {
                 fusedLocationClient.requestLocationUpdates(continuousRequest, locationStreamCallback, Looper.getMainLooper());
             } catch (SecurityException ignored) {}
+
+            // Native LocationManager backup updates
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (lm != null) {
+                try {
+                    if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 2.0f, new LocationListener() {
+                            @Override
+                            public void onLocationChanged(@NonNull Location loc) {
+                                currentLatitude = loc.getLatitude();
+                                currentLongitude = loc.getLongitude();
+                                mLocation = SosUtil.formatCoordinates(currentLatitude, currentLongitude);
+                            }
+                        }, Looper.getMainLooper());
+                    }
+                } catch (Exception ignored) {}
+            }
         }
 
         // Launch 5s heartbeat loop to backend and Supabase
@@ -521,18 +549,16 @@ public class SosService extends Service implements SensorEventListener {
         new android.os.Handler(Looper.getMainLooper()).postDelayed(() -> {
             if (!sentSMS && contacts != null && !contacts.isEmpty()) {
                 Log.w("SosService", "sendLocation: Timeout reached, forcing automatic emergency dispatch");
-                broadcastSosPayload(contacts, 0, 0);
+                android.location.Location fallbackLoc = com.android.sheguard.util.LocationHelper.getBestLastKnownLocation(this);
+                double fLat = fallbackLoc != null ? fallbackLoc.getLatitude() : currentLatitude;
+                double fLng = fallbackLoc != null ? fallbackLoc.getLongitude() : currentLongitude;
+                broadcastSosPayload(contacts, fLat, fLng);
             }
         }, 3500);
     }
 
     private boolean isGPSEnabled() {
-        if (locationManager == null) {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        }
-
-        Log.i("SosService", "Location: GPS Enabled: " + locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return com.android.sheguard.util.LocationHelper.isLocationEnabled(this);
     }
 
     private void sendSMS(ContactModel contact) {

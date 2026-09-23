@@ -75,7 +75,14 @@ class SafetyRouteService:
         try:
             csv_path = BASE_DIR / "new_crime_dataset.csv"
             if csv_path.exists():
-                self.df = pd.read_csv(csv_path)
+                dtype_spec = {
+                    'latitude': 'float32',
+                    'longitude': 'float32',
+                    'street_lighting': 'int8',
+                    'cctv_nearby': 'int8',
+                    'police_distance_km': 'float32'
+                }
+                self.df = pd.read_csv(csv_path, dtype=dtype_spec)
                 logger.info(f"Loaded {len(self.df)} crime dataset records from {csv_path.name}")
             else:
                 logger.warning(f"Crime dataset not found at {csv_path}. Generating baseline dataset.")
@@ -142,13 +149,15 @@ class SafetyRouteService:
             self.ml_model = Pipeline([
                 ("prep", preprocessor),
                 ("clf", GradientBoostingClassifier(
-                    n_estimators=60,
-                    max_depth=5,
+                    n_estimators=45,
+                    max_depth=4,
                     random_state=42
                 ))
             ])
 
             self.ml_model.fit(X, y)
+            import gc
+            gc.collect()
             logger.info("SafetyRouteService ML Gradient Boosting model trained successfully.")
         except Exception as e:
             logger.exception(f"Error training SafetyRoute ML model: {e}")

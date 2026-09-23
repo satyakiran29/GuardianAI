@@ -597,7 +597,19 @@ class LocationPingView(APIView):
         if user_id:
             user = UserProfile.objects.filter(id=user_id).first()
         if not user and phone:
-            user = UserProfile.objects.filter(phone=phone).first()
+            user = UserProfile.objects.filter(get_target_filter(phone)).first()
+        if not user and phone:
+            clean_digits = ''.join(c for c in phone if c.isdigit())
+            if len(clean_digits) >= 10:
+                user = UserProfile.objects.filter(phone__icontains=clean_digits[-10:]).first()
+
+        if not user:
+            # Gracefully get or create so telemetry stream is never dropped
+            target_phone = canonicalize_target(phone) if phone else "+919876543210"
+            user, _ = UserProfile.objects.get_or_create(
+                phone=target_phone,
+                defaults={'name': 'Protected User', 'email': f'{target_phone}@guardianai.local', 'role': 'user'}
+            )
 
         if user:
             changed = False
