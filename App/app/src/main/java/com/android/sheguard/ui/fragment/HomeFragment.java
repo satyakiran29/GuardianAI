@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
 
         // Bottom Nav Dock Listeners
         binding.navItemHome.setOnClickListener(v -> {});
-        binding.navItemExplore.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safeRouteFragment));
+        binding.navItemExplore.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_exploreFragment));
         binding.navItemSos.setOnClickListener(v -> binding.sosButton.performClick());
         binding.navItemGuardians.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_myGuardiansFragment));
         binding.navItemProfile.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_profileFragment));
@@ -161,7 +161,7 @@ public class HomeFragment extends Fragment {
         binding.cardSafetyTimer.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safetyTimerFragment));
         binding.cardFakeCall.setOnClickListener(v -> showFakeCallLauncherDialog());
         binding.cardAiAssistant.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_aiAssistantFragment));
-        binding.cardSafeRoute.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_safeRouteFragment));
+        binding.cardSafeRoute.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_exploreFragment));
         binding.cardTripMonitor.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_tripMonitorFragment));
         binding.cardVoiceSos.setOnClickListener(v -> Navigation.findNavController(view).navigate(R.id.action_homeFragment_to_voiceSosFragment));
 

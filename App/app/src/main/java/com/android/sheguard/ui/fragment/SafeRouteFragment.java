@@ -363,6 +363,22 @@ public class SafeRouteFragment extends Fragment {
 
         initWebViewMap();
         setupListeners();
+
+        if (getArguments() != null) {
+            double passedLat = getArguments().getDouble("dest_lat", 0.0);
+            double passedLng = getArguments().getDouble("dest_lng", 0.0);
+            String passedName = getArguments().getString("dest_name", "");
+            if (passedLat != 0.0 && passedLng != 0.0) {
+                destLatitude = passedLat;
+                destLongitude = passedLng;
+                destAddressText = passedName;
+                isCustomDestinationSelected = true;
+                if (binding != null && binding.etDestination != null && !passedName.isEmpty()) {
+                    binding.etDestination.setText(passedName);
+                }
+            }
+        }
+
         checkPermissionsAndFetchLocation();
 
         return view;

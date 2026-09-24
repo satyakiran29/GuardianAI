@@ -755,28 +755,66 @@ public class ApiClient {
             com.google.gson.JsonArray list = new com.google.gson.JsonArray();
 
             JsonObject h1 = new JsonObject();
-            h1.addProperty("latitude", lat + 0.006);
-            h1.addProperty("longitude", lng + 0.005);
-            h1.addProperty("title", "Police Assistance Booth #4");
+            h1.addProperty("latitude", lat + 0.0035);
+            h1.addProperty("longitude", lng + 0.0032);
+            h1.addProperty("title", "Central All-Women Police Station & Pink Booth");
             h1.addProperty("type", "police");
+            h1.addProperty("category", "POLICE");
+            h1.addProperty("phone", "1091");
             h1.addProperty("safety_level", "Safe");
-            h1.addProperty("color", "#10B981");
-            h1.addProperty("description", "24/7 Women Helpline & Emergency Police Post");
+            h1.addProperty("color", "#3B82F6");
+            h1.addProperty("description", "24/7 Dedicated Women Patrol Unit & Emergency Desk");
             list.add(h1);
 
             JsonObject h2 = new JsonObject();
-            h2.addProperty("latitude", lat - 0.007);
-            h2.addProperty("longitude", lng - 0.006);
-            h2.addProperty("title", "Caution: Low Lighting Zone");
-            h2.addProperty("type", "crime_hotspot");
-            h2.addProperty("safety_level", "Moderate");
-            h2.addProperty("color", "#F59E0B");
-            h2.addProperty("description", "Poor street lighting reported after 8 PM");
+            h2.addProperty("latitude", lat - 0.0031);
+            h2.addProperty("longitude", lng + 0.0044);
+            h2.addProperty("title", "Apollo 24/7 Emergency Pharmacy & Medical Store");
+            h2.addProperty("type", "pharmacy");
+            h2.addProperty("category", "PHARMACY");
+            h2.addProperty("phone", "1860-500-0101");
+            h2.addProperty("safety_level", "Safe");
+            h2.addProperty("color", "#10B981");
+            h2.addProperty("description", "Main Road Boulevard, Opp. Metro Station Gate #2");
             list.add(h2);
+
+            JsonObject h3 = new JsonObject();
+            h3.addProperty("latitude", lat + 0.0078);
+            h3.addProperty("longitude", lng - 0.0065);
+            h3.addProperty("title", "Care Multi-Speciality Hospital & 24/7 Trauma Center");
+            h3.addProperty("type", "hospital");
+            h3.addProperty("category", "HOSPITAL");
+            h3.addProperty("phone", "108");
+            h3.addProperty("safety_level", "Safe");
+            h3.addProperty("color", "#EF4444");
+            h3.addProperty("description", "Emergency Gate 1 • Casualty & 24/7 Trauma Care");
+            list.add(h3);
+
+            JsonObject h4 = new JsonObject();
+            h4.addProperty("latitude", lat + 0.0092);
+            h4.addProperty("longitude", lng + 0.0075);
+            h4.addProperty("title", "Metro Rail Transit Safe Haven & Security Post");
+            h4.addProperty("type", "transit");
+            h4.addProperty("category", "TRANSIT");
+            h4.addProperty("phone", "112");
+            h4.addProperty("safety_level", "Safe");
+            h4.addProperty("color", "#8B5CF6");
+            h4.addProperty("description", "Concourse Level • CCTV Monitored & CISF Security");
+            list.add(h4);
+
+            JsonObject h5 = new JsonObject();
+            h5.addProperty("latitude", lat - 0.007);
+            h5.addProperty("longitude", lng - 0.006);
+            h5.addProperty("title", "Caution: Low Lighting Zone");
+            h5.addProperty("type", "crime_hotspot");
+            h5.addProperty("safety_level", "Moderate");
+            h5.addProperty("color", "#F59E0B");
+            h5.addProperty("description", "Poor street lighting reported after 8 PM");
+            list.add(h5);
 
             root.addProperty("status", "success");
             root.add("hotspots", list);
-            if (callback != null) callback.onResult(true, root, "Offline Hotspots");
+            if (callback != null) callback.onResult(true, root, "Offline Resilient Safe Havens");
         } catch (Exception e) {
             if (callback != null) callback.onResult(false, null, e.getMessage());
         }

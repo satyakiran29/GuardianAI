@@ -136,6 +136,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_homeFragment_to_exploreFragment"
+            app:destination="@id/exploreFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -350,5 +357,40 @@
         android:name="com.android.sheguard.ui.fragment.LocationReplayFragment"
         android:label="fragment_location_replay"
         tools:layout="@layout/fragment_location_replay" />
+
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.android.sheguard.ui.fragment.ExploreFragment"
+        android:label="fragment_explore"
+        tools:layout="@layout/fragment_explore">
+        <action
+            android:id="@+id/action_exploreFragment_to_safeRouteFragment"
+            app:destination="@id/safeRouteFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_exploreFragment_to_aiAssistantFragment"
+            app:destination="@id/aiAssistantFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_exploreFragment_to_helplineFragment"
+            app:destination="@id/helplineFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_exploreFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
+    </fragment>
 
 </navigation>
