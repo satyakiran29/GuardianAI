@@ -25,6 +25,13 @@ public class Constants {
     public static final String THEME_LIGHT = "light";
     public static final String THEME_DARK = "dark";
     public static final String THEME_AMOLED = "amoled";
+    public static final String SETTINGS_THEME_COLOR = "theme_color_name";
+    public static final String THEME_COLOR_DEFAULT = "default";
+    public static final String THEME_COLOR_BLUE = "blue";
+    public static final String THEME_COLOR_VIOLET = "violet";
+    public static final String THEME_COLOR_EMERALD = "emerald";
+    public static final String SETTINGS_APPLE_GLASS = "apple_glass";
+    public static final String SETTINGS_PURE_BLACK = "pure_black";
     public static final String SETTINGS_APP_LANGUAGE = "settings_app_language";
     public static final String LANG_SYSTEM = "system";
     public static final String LANG_EN = "en";

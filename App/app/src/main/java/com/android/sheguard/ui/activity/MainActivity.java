@@ -27,9 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        com.android.sheguard.util.ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        com.android.sheguard.util.AppleGlassManager.applyGlassToMainActivity(this, com.android.sheguard.util.ThemeUtil.isNightMode(this));
 
         androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.drawerLayout, (v, insets) -> {
             androidx.core.view.ViewCompat.dispatchApplyWindowInsets(binding.fragmentContainerView, insets);

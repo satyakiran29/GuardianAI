@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.SheGuard" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Status bar color. -->
@@ -8,16 +8,131 @@
 
         <!-- Navigation bar color. -->
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
 
         <!-- Material 3 Light Theme Colors -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/accent_pink</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorSecondary">@color/accent_pink</item>
+        <item name="colorAccent">@color/accent_pink</item>
         <item name="android:windowBackground">@color/surface_background</item>
+        <item name="android:colorBackground">@color/surface_background</item>
         <item name="colorSurface">@color/surface_card</item>
         <item name="colorOnSurface">@color/textColorPrimary</item>
+        <item name="colorSurfaceVariant">@color/color_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/textColorSecondary</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+
+        <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Pink</item>
+        <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Pink</item>
+        <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Pink</item>
     </style>
 
+    <!-- 1. Default (Pink Accent) -->
     <style name="Theme.SheGuard" parent="Base.Theme.SheGuard" />
+
+    <!-- 2. Blue Accent -->
+    <style name="Theme.SheGuard.Blue" parent="Base.Theme.SheGuard">
+        <item name="colorPrimary">@color/accent_blue</item>
+        <item name="colorSecondary">@color/accent_blue</item>
+        <item name="colorAccent">@color/accent_blue</item>
+        <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Blue</item>
+        <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Blue</item>
+        <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Blue</item>
+    </style>
+
+    <!-- 3. Violet Accent -->
+    <style name="Theme.SheGuard.Violet" parent="Base.Theme.SheGuard">
+        <item name="colorPrimary">@color/accent_violet</item>
+        <item name="colorSecondary">@color/accent_violet</item>
+        <item name="colorAccent">@color/accent_violet</item>
+        <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Violet</item>
+        <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Violet</item>
+        <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Violet</item>
+    </style>
+
+    <!-- 4. Emerald Accent -->
+    <style name="Theme.SheGuard.Emerald" parent="Base.Theme.SheGuard">
+        <item name="colorPrimary">@color/accent_emerald</item>
+        <item name="colorSecondary">@color/accent_emerald</item>
+        <item name="colorAccent">@color/accent_emerald</item>
+        <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Emerald</item>
+        <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Emerald</item>
+        <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Emerald</item>
+    </style>
+
+    <!-- Component Styles: RadioButtons -->
+    <style name="Widget.SheGuard.RadioButton.Pink" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.SheGuard.RadioButton.Pink</item>
+    </style>
+    <style name="ThemeOverlay.SheGuard.RadioButton.Pink" parent="">
+        <item name="colorOnSurface">@color/accent_pink</item>
+        <item name="colorSecondary">@color/accent_pink</item>
+    </style>
+
+    <style name="Widget.SheGuard.RadioButton.Blue" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.SheGuard.RadioButton.Blue</item>
+    </style>
+    <style name="ThemeOverlay.SheGuard.RadioButton.Blue" parent="">
+        <item name="colorOnSurface">@color/accent_blue</item>
+        <item name="colorSecondary">@color/accent_blue</item>
+    </style>
+
+    <style name="Widget.SheGuard.RadioButton.Violet" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.SheGuard.RadioButton.Violet</item>
+    </style>
+    <style name="ThemeOverlay.SheGuard.RadioButton.Violet" parent="">
+        <item name="colorOnSurface">@color/accent_violet</item>
+        <item name="colorSecondary">@color/accent_violet</item>
+    </style>
+
+    <style name="Widget.SheGuard.RadioButton.Emerald" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.SheGuard.RadioButton.Emerald</item>
+    </style>
+    <style name="ThemeOverlay.SheGuard.RadioButton.Emerald" parent="">
+        <item name="colorOnSurface">@color/accent_emerald</item>
+        <item name="colorSecondary">@color/accent_emerald</item>
+    </style>
+
+    <!-- Component Styles: Material Switches -->
+    <style name="Widget.SheGuard.Switch.Pink" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/accent_pink</item>
+    </style>
+    <style name="Widget.SheGuard.Switch.Blue" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/accent_blue</item>
+    </style>
+    <style name="Widget.SheGuard.Switch.Violet" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/accent_violet</item>
+    </style>
+    <style name="Widget.SheGuard.Switch.Emerald" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/accent_emerald</item>
+    </style>
+
+    <!-- Component Styles: Checkboxes -->
+    <style name="Widget.SheGuard.Checkbox.Pink" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/accent_pink</item>
+    </style>
+    <style name="Widget.SheGuard.Checkbox.Blue" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/accent_blue</item>
+    </style>
+    <style name="Widget.SheGuard.Checkbox.Violet" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/accent_violet</item>
+    </style>
+    <style name="Widget.SheGuard.Checkbox.Emerald" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@color/accent_emerald</item>
+    </style>
+
+    <!-- Theme Overlays -->
+    <style name="ThemeOverlay.PureBlack" parent="">
+        <item name="colorSurface">@color/pure_black_bg</item>
+        <item name="android:windowBackground">@color/pure_black_bg</item>
+        <item name="android:colorBackground">@color/pure_black_bg</item>
+    </style>
+
+    <style name="ThemeOverlay.AppleGlass" parent="">
+        <item name="android:windowBackground">@drawable/bg_apple_glass_canvas_light</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
 </resources>

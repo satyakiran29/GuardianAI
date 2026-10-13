@@ -21,6 +21,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        com.android.sheguard.util.ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = ActivityLoginRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

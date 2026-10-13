@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base deep obsidian space backdrop -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#0D0F18"
+                android:centerColor="#090B11"
+                android:endColor="#0E121E"
+                android:type="linear" />
+        </shape>
+    </item>
+    <!-- Top-right ambient sapphire / violet nebula aura -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="315"
+                android:startColor="#241B203E"
+                android:centerColor="#14141A2E"
+                android:endColor="#00090B11"
+                android:type="linear" />
+        </shape>
+    </item>
+    <!-- Bottom-left ambient indigo / pink glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="45"
+                android:startColor="#1F151B30"
+                android:endColor="#00000000"
+                android:type="linear" />
+        </shape>
+    </item>
+</layer-list>

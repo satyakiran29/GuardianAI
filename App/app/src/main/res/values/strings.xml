@@ -318,6 +318,27 @@
     <string name="theme_amoled">Pure AMOLED Black 🖤</string>
     <string name="choose_theme">Choose App Theme</string>
 
+    <!-- Appearance Screen (Theme System like Anify) -->
+    <string name="appearance_title">Appearance</string>
+    <string name="theme_colour_header">THEME COLOUR</string>
+    <string name="theme_colour_desc">The highlight colour used across buttons, chips, progress and selected items.</string>
+    <string name="theme_color_default">Default</string>
+    <string name="theme_color_blue">Blue</string>
+    <string name="theme_color_violet">Violet</string>
+    <string name="theme_color_emerald">Emerald</string>
+    <string name="theme_mode_header">THEME MODE</string>
+    <string name="theme_mode_system">System Default</string>
+    <string name="theme_mode_light">Light</string>
+    <string name="theme_mode_dark">Dark</string>
+    <string name="apple_glass_header">APPLE GLASS UI</string>
+    <string name="apple_glass_desc">Frosted glassmorphism across cards, navigation bar, and dialogs with specular rim lighting.</string>
+    <string name="apple_glass_title">Apple Glass Mode</string>
+    <string name="apple_glass_badge">GLASS</string>
+    <string name="apple_glass_subtext">Translucent frosted glass with specular edge reflections and ambient depth.</string>
+    <string name="background_header">BACKGROUND</string>
+    <string name="pure_black_title">Pure black background</string>
+    <string name="pure_black_desc">True-black for OLED screens — deeper look, saves battery.</string>
+
     <!-- App Language Selection -->
     <string name="language_setting_title">App Language / భాష / भाषा</string>
     <string name="language_setting_desc">Choose your preferred language (English, తెలుగు, हिन्दी)</string>

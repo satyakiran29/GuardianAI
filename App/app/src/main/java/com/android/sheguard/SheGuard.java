@@ -25,7 +25,6 @@ public class SheGuard extends Application {
         super.onCreate();
         context = getApplicationContext();
         ThemeUtil.applySavedTheme();
-        DynamicColors.applyToActivitiesIfAvailable(this);
 
         try {
             IntentFilter batteryFilter = new IntentFilter();

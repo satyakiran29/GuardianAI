@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base pearl/ice light backdrop with rich ambient contrast -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#E6ECF5"
+                android:centerColor="#DCE4F0"
+                android:endColor="#EAF0F9"
+                android:type="linear" />
+        </shape>
+    </item>
+    <!-- Top-right soft periwinkle / sky ambient glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="315"
+                android:startColor="#30829DFF"
+                android:centerColor="#18B8A8FF"
+                android:endColor="#00FFFFFF"
+                android:type="linear" />
+        </shape>
+    </item>
+    <!-- Bottom-left soft warm pastel glow -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="45"
+                android:startColor="#24FFA38B"
+                android:endColor="#00000000"
+                android:type="linear" />
+        </shape>
+    </item>
+</layer-list>

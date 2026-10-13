@@ -196,8 +196,17 @@ public class SettingsFragment extends Fragment {
         });
 
         // App Theme & Display Mode
-        binding.tvThemeDesc.setText(com.android.sheguard.util.ThemeUtil.getThemeModeName(requireContext()));
-        binding.themeContainer.setOnClickListener(v -> showThemeChooserDialog());
+        binding.tvThemeDesc.setText(com.android.sheguard.util.ThemeUtil.getThemeSummary(requireContext()));
+        binding.themeContainer.setOnClickListener(v -> {
+            try {
+                androidx.navigation.Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_appearanceFragment);
+            } catch (Exception e) {
+                try {
+                    androidx.navigation.Navigation.findNavController(view).navigate(R.id.appearanceFragment);
+                } catch (Exception ignored) {
+                }
+            }
+        });
 
         // App Language Selection
         binding.tvLanguageDesc.setText(com.android.sheguard.util.LocaleUtil.getLanguageName(requireContext()));

@@ -33,6 +33,7 @@ public class FakeCallActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        com.android.sheguard.util.ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
         binding = ActivityFakeCallBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

@@ -186,6 +186,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
+        <action
+            android:id="@+id/action_settingsFragment_to_appearanceFragment"
+            app:destination="@id/appearanceFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_out"
+            app:popExitAnim="@anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -392,5 +399,11 @@
             app:popEnterAnim="@anim/slide_out"
             app:popExitAnim="@anim/fade_in" />
     </fragment>
+
+    <fragment
+        android:id="@+id/appearanceFragment"
+        android:name="com.android.sheguard.ui.fragment.AppearanceFragment"
+        android:label="fragment_appearance"
+        tools:layout="@layout/fragment_appearance" />
 
 </navigation>

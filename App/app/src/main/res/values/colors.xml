@@ -21,6 +21,22 @@
     <color name="colorPinkSubtle">#26FF2E93</color>
     <color name="colorPinkGlow">#4DFF2E93</color>
 
+    <!-- Theme Accent System (Anify style) -->
+    <color name="accent_pink">#FF2E93</color>
+    <color name="accent_blue">#007AFF</color>
+    <color name="accent_violet">#8B5CF6</color>
+    <color name="accent_emerald">#10B981</color>
+
+    <!-- Glass UI Design Tokens -->
+    <color name="chip_unselected_bg">#0F000000</color>
+    <color name="glass_card_bg">#F4FFFFFF</color>
+    <color name="glass_card_stroke">#220F172A</color>
+    <color name="glass_nav_bg">#F2FFFFFF</color>
+    <color name="glass_nav_stroke">#1C000000</color>
+    <color name="glass_badge_bg">#14000000</color>
+    <color name="glass_badge_stroke">#24000000</color>
+    <color name="pure_black_bg">#000000</color>
+
     <!-- Emergency SOS -->
     <color name="color_sos_red">#EF4444</color>
     <color name="color_sos_crimson">#E11D48</color>
