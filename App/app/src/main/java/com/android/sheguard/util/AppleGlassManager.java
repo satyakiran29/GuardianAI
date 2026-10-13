@@ -94,27 +94,39 @@ public class AppleGlassManager {
 
     private static void traverse(View view, Context context, int glassCardBg, int glassCardStroke, float cardElevationPx, int strokeWidthPx, int maxBadgePx, boolean isNightMode) {
         if (view == null) return;
-
         int viewId = view.getId();
+        String entryName = "";
+        if (viewId != View.NO_ID) {
+            try {
+                entryName = context.getResources().getResourceEntryName(viewId).toLowerCase();
+            } catch (Exception ignored) {}
+        }
 
         // 1. Bottom Navigation Dock glass styling
-        if (viewId == R.id.bottom_nav_dock) {
+        if (viewId == R.id.bottom_nav_dock || entryName.equals("bottom_nav_dock")) {
             int navBgRes = isNightMode ? R.drawable.bg_apple_glass_bottom_nav_dark : R.drawable.bg_apple_glass_bottom_nav_light;
             view.setBackgroundResource(navBgRes);
             view.setElevation(dpToPx(context, isNightMode ? 8f : 4f));
         }
 
+        boolean isBadgeOrAvatar = entryName.contains("icon")
+                || entryName.contains("badge")
+                || entryName.contains("avatar")
+                || entryName.contains("category")
+                || entryName.contains("thumb")
+                || entryName.contains("circle")
+                || entryName.contains("dot")
+                || entryName.contains("preview")
+                || entryName.contains("qr");
+
         // 2. Non-MaterialCardView Safety Suite & Trust cards
-        if (viewId == R.id.card_fake_call
-                || viewId == R.id.card_voice_sos
-                || viewId == R.id.card_battery_alert
-                || viewId == R.id.card_safe_haven
-                || viewId == R.id.card_route_safety
-                || viewId == R.id.card_location_replay
-                || viewId == R.id.btn_home_forward_whatsapp
-                || viewId == R.id.btn_home_fake_call
-                || viewId == R.id.btn_home_family_circle
-                || viewId == R.id.btn_home_safe_places) {
+        boolean isContainerCard = entryName.startsWith("card_")
+                || entryName.startsWith("btn_home_")
+                || entryName.equals("btn_safe_check_in")
+                || entryName.contains("suite_card")
+                || entryName.contains("trust_card");
+
+        if (isContainerCard && !isBadgeOrAvatar && !(view instanceof MaterialCardView)) {
             android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
             gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
             gd.setColor(glassCardBg);
@@ -142,23 +154,6 @@ public class AppleGlassManager {
             ViewGroup.LayoutParams lp = card.getLayoutParams();
             boolean isSmallDimension = (card.getWidth() > 0 && card.getWidth() <= maxBadgePx && card.getHeight() > 0 && card.getHeight() <= maxBadgePx)
                     || (lp != null && lp.width > 0 && lp.width <= maxBadgePx && lp.height > 0 && lp.height <= maxBadgePx);
-
-            String entryName = "";
-            if (cardId != View.NO_ID) {
-                try {
-                    entryName = context.getResources().getResourceEntryName(cardId).toLowerCase();
-                } catch (Exception ignored) {}
-            }
-
-            boolean isBadgeOrAvatar = entryName.contains("icon")
-                    || entryName.contains("badge")
-                    || entryName.contains("avatar")
-                    || entryName.contains("category")
-                    || entryName.contains("thumb")
-                    || entryName.contains("circle")
-                    || entryName.contains("dot")
-                    || entryName.contains("preview")
-                    || entryName.contains("qr");
 
             if (isSmallDimension || isBadgeOrAvatar) {
                 for (int i = 0; i < card.getChildCount(); i++) {
