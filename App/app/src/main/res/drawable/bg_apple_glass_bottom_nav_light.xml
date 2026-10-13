@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Frosted translucent milk glass dock with rounded top corners for GuardianAI -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="33dp" />
+            <gradient
+                android:angle="90"
+                android:startColor="#F0F8FAFE"
+                android:centerColor="#E6F2F5FB"
+                android:endColor="#DDFBFCFF"
+                android:type="linear" />
+            <stroke
+                android:width="1.2dp"
+                android:color="#20000000" />
+        </shape>
+    </item>
+</layer-list>

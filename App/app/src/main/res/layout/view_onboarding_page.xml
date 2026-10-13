@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-black"
                         android:text="AI"
-                        android:textColor="#FF2E93"
+                        android:textColor="?attr/themeAccent"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -111,7 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
-        app:dotsColor="#FF2E93"
+        app:dotsColor="?attr/themeAccent"
         app:dotsCornerRadius="8dp"
         app:dotsSize="8dp"
         app:dotsSpacing="8dp"
@@ -156,7 +156,7 @@
             android:layout_height="52dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:backgroundTint="#FF2E93"
+            android:backgroundTint="?attr/themeAccent"
             android:elevation="4dp"
             android:fontFamily="sans-serif-black"
             android:gravity="center"

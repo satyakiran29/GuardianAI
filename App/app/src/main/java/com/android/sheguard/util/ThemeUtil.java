@@ -96,6 +96,69 @@ public class ThemeUtil {
             insetsController.setAppearanceLightStatusBars(!isNightMode);
             insetsController.setAppearanceLightNavigationBars(!isNightMode);
         }
+
+        if (activity instanceof FragmentActivity) {
+            registerFullUiThemeCallbacks((FragmentActivity) activity);
+        }
+
+        View contentView = activity.findViewById(android.R.id.content);
+        if (contentView != null) {
+            contentView.post(() -> applyFullUiTheme(contentView, activity));
+        }
+    }
+
+    public static void registerFullUiThemeCallbacks(FragmentActivity activity) {
+        if (activity == null) return;
+        activity.getSupportFragmentManager().registerFragmentLifecycleCallbacks(
+                new androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks() {
+                    @Override
+                    public void onFragmentViewCreated(androidx.fragment.app.FragmentManager fm, androidx.fragment.app.Fragment f, View v, android.os.Bundle savedInstanceState) {
+                        super.onFragmentViewCreated(fm, f, v, savedInstanceState);
+                        applyFullUiTheme(v, activity);
+                        v.post(() -> applyFullUiTheme(v, activity));
+                    }
+                },
+                true
+        );
+    }
+
+    public static void applyFullUiTheme(View rootView, Context context) {
+        if (rootView == null || context == null) return;
+        int accentColor = getAccentColor(context);
+        traverseAndTintUi(rootView, context, accentColor);
+    }
+
+    private static void traverseAndTintUi(View view, Context context, int accentColor) {
+        if (view == null) return;
+
+        int viewId = view.getId();
+        String entryName = "";
+        if (viewId != View.NO_ID) {
+            try {
+                entryName = context.getResources().getResourceEntryName(viewId).toLowerCase();
+            } catch (Exception ignored) {}
+        }
+
+        if (view instanceof com.google.android.material.button.MaterialButton) {
+            com.google.android.material.button.MaterialButton mb = (com.google.android.material.button.MaterialButton) view;
+            if (entryName.contains("login") || entryName.contains("register") || entryName.contains("next") || entryName.contains("play_pause")) {
+                mb.setBackgroundTintList(android.content.res.ColorStateList.valueOf(accentColor));
+            }
+        } else if (view instanceof com.google.android.material.floatingactionbutton.FloatingActionButton) {
+            com.google.android.material.floatingactionbutton.FloatingActionButton fab = (com.google.android.material.floatingactionbutton.FloatingActionButton) view;
+            fab.setBackgroundTintList(android.content.res.ColorStateList.valueOf(accentColor));
+        } else if (view instanceof android.widget.ProgressBar) {
+            android.widget.ProgressBar pb = (android.widget.ProgressBar) view;
+            pb.setIndeterminateTintList(android.content.res.ColorStateList.valueOf(accentColor));
+            pb.setProgressTintList(android.content.res.ColorStateList.valueOf(accentColor));
+        }
+
+        if (view instanceof android.view.ViewGroup) {
+            android.view.ViewGroup vg = (android.view.ViewGroup) view;
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                traverseAndTintUi(vg.getChildAt(i), context, accentColor);
+            }
+        }
     }
 
     public static void applyNightMode(String mode) {

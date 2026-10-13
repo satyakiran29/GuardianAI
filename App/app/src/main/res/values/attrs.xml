@@ -8,4 +8,7 @@
         <attr name="startScale" format="float" />
         <attr name="endScale" format="float" />
     </declare-styleable>
+
+    <attr name="themeAccent" format="color|reference" />
+    <attr name="themeAccentSubtle" format="color|reference" />
 </resources>

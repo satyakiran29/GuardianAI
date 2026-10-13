@@ -38,7 +38,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_shield_heart_vector"
-                    app:tint="#FF2E93" />
+                    app:tint="?attr/themeAccent" />
             </FrameLayout>
 
             <TextView

@@ -142,7 +142,7 @@
                         android:layout_height="26dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_person_vector"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Profile" />
                 </FrameLayout>
 
@@ -282,7 +282,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_shake_detection"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Shake Detection" />
                 </FrameLayout>
 
@@ -342,7 +342,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_timer"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Hardware Mode" />
                 </FrameLayout>
 
@@ -410,7 +410,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_lightning_shield"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Power Button" />
                 </FrameLayout>
 
@@ -470,7 +470,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_volume_up"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Volume Buttons" />
                 </FrameLayout>
 
@@ -542,7 +542,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_chat_vector"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Send SMS" />
                 </FrameLayout>
 
@@ -602,7 +602,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_notifications"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Send Notification" />
                 </FrameLayout>
 
@@ -659,7 +659,7 @@
                         android:layout_height="22dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_info_circle"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Info" />
                 </FrameLayout>
 
@@ -675,7 +675,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Your safety, your choice"
-                        android:textColor="@color/colorPinkNeon"
+                        android:textColor="?attr/themeAccent"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
@@ -734,7 +734,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_warning"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Siren" />
                 </FrameLayout>
 
@@ -792,7 +792,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_phone_call_emergency"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Call" />
                 </FrameLayout>
 
@@ -850,7 +850,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_shield_safe_mode"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Safe Mode" />
                 </FrameLayout>
 
@@ -908,7 +908,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_whatsapp"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="WhatsApp" />
                 </FrameLayout>
 
@@ -966,7 +966,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_remove"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Stop Apps" />
                 </FrameLayout>
 
@@ -1024,7 +1024,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_battery_alert"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Battery Alert" />
                 </FrameLayout>
 
@@ -1082,7 +1082,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_shake_detection"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Haptics" />
                 </FrameLayout>
 
@@ -1140,7 +1140,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_accessibility"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Accessibility" />
                 </FrameLayout>
 
@@ -1206,7 +1206,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_theme_mode"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Theme" />
                 </FrameLayout>
 
@@ -1273,7 +1273,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_language"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Language" />
                 </FrameLayout>
 
@@ -1340,7 +1340,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_system_update"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Updater" />
                 </FrameLayout>
 
@@ -1407,7 +1407,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_changelog"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="Changelog" />
                 </FrameLayout>
 
@@ -1475,7 +1475,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_people_group_vector"
-                        app:tint="@color/colorPinkNeon"
+                        app:tint="?attr/themeAccent"
                         android:contentDescription="@string/about_us_title" />
                 </FrameLayout>
 

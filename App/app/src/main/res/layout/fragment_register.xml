@@ -38,7 +38,7 @@
                     android:layout_height="38dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_shield_heart_vector"
-                    app:tint="#FF2E93" />
+                    app:tint="?attr/themeAccent" />
             </FrameLayout>
 
             <TextView
@@ -225,7 +225,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:buttonTint="#FF2E93"
+                                android:buttonTint="?attr/themeAccent"
                                 android:checked="true"
                                 android:text="🌸 Protected User"
                                 android:textColor="#FFFFFF"

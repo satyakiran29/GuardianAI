@@ -88,7 +88,7 @@
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
             android:text="24h Radar"
-            android:textColor="@color/colorPinkNeon"
+            android:textColor="?attr/themeAccent"
             android:textSize="11sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -161,7 +161,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/colorPinkNeon"
+            android:indeterminateTint="?attr/themeAccent"
             android:visibility="visible" />
 
         <!-- Recenter FAB -->
@@ -271,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Point 0 of 0"
-                    android:textColor="@color/colorPinkNeon"
+                    android:textColor="?attr/themeAccent"
                     android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -312,8 +312,8 @@
                 android:layout_weight="1"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="6dp"
-                android:progressTint="@color/colorPinkNeon"
-                android:thumbTint="@color/colorPinkNeon"
+                android:progressTint="?attr/themeAccent"
+                android:thumbTint="?attr/themeAccent"
                 android:max="100" />
 
             <TextView
@@ -356,7 +356,7 @@
                 android:textSize="13sp"
                 android:textStyle="bold"
                 app:cornerRadius="10dp"
-                app:backgroundTint="@color/colorPinkNeon" />
+                app:backgroundTint="?attr/themeAccent" />
 
             <!-- Step Forward -->
             <ImageButton

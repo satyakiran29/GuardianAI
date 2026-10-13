@@ -89,10 +89,41 @@ public class AppleGlassManager {
         int strokeWidthPx = Math.max(2, (int) dpToPx(context, 1.2f));
         int maxBadgePx = (int) dpToPx(context, 72f);
 
-        traverse(rootView, context, glassCardBg, glassCardStroke, cardElevationPx, strokeWidthPx, maxBadgePx);
+        traverse(rootView, context, glassCardBg, glassCardStroke, cardElevationPx, strokeWidthPx, maxBadgePx, isNightMode);
     }
 
-    private static void traverse(View view, Context context, int glassCardBg, int glassCardStroke, float cardElevationPx, int strokeWidthPx, int maxBadgePx) {
+    private static void traverse(View view, Context context, int glassCardBg, int glassCardStroke, float cardElevationPx, int strokeWidthPx, int maxBadgePx, boolean isNightMode) {
+        if (view == null) return;
+
+        int viewId = view.getId();
+
+        // 1. Bottom Navigation Dock glass styling
+        if (viewId == R.id.bottom_nav_dock) {
+            int navBgRes = isNightMode ? R.drawable.bg_apple_glass_bottom_nav_dark : R.drawable.bg_apple_glass_bottom_nav_light;
+            view.setBackgroundResource(navBgRes);
+            view.setElevation(dpToPx(context, isNightMode ? 8f : 4f));
+        }
+
+        // 2. Non-MaterialCardView Safety Suite & Trust cards
+        if (viewId == R.id.card_fake_call
+                || viewId == R.id.card_voice_sos
+                || viewId == R.id.card_battery_alert
+                || viewId == R.id.card_safe_haven
+                || viewId == R.id.card_route_safety
+                || viewId == R.id.card_location_replay
+                || viewId == R.id.btn_home_forward_whatsapp
+                || viewId == R.id.btn_home_fake_call
+                || viewId == R.id.btn_home_family_circle
+                || viewId == R.id.btn_home_safe_places) {
+            android.graphics.drawable.GradientDrawable gd = new android.graphics.drawable.GradientDrawable();
+            gd.setShape(android.graphics.drawable.GradientDrawable.RECTANGLE);
+            gd.setColor(glassCardBg);
+            gd.setStroke(strokeWidthPx, glassCardStroke);
+            gd.setCornerRadius(dpToPx(context, 18f));
+            view.setBackground(gd);
+            view.setElevation(cardElevationPx);
+        }
+
         if (view instanceof MaterialCardView) {
             MaterialCardView card = (MaterialCardView) view;
             int cardId = card.getId();
@@ -131,7 +162,7 @@ public class AppleGlassManager {
 
             if (isSmallDimension || isBadgeOrAvatar) {
                 for (int i = 0; i < card.getChildCount(); i++) {
-                    traverse(card.getChildAt(i), context, glassCardBg, glassCardStroke, cardElevationPx, strokeWidthPx, maxBadgePx);
+                    traverse(card.getChildAt(i), context, glassCardBg, glassCardStroke, cardElevationPx, strokeWidthPx, maxBadgePx, isNightMode);
                 }
                 return;
             }
@@ -149,7 +180,7 @@ public class AppleGlassManager {
         if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
             for (int i = 0; i < group.getChildCount(); i++) {
-                traverse(group.getChildAt(i), context, glassCardBg, glassCardStroke, cardElevationPx, strokeWidthPx, maxBadgePx);
+                traverse(group.getChildAt(i), context, glassCardBg, glassCardStroke, cardElevationPx, strokeWidthPx, maxBadgePx, isNightMode);
             }
         }
     }

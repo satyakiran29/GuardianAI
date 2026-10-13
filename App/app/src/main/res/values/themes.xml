@@ -15,6 +15,8 @@
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorSecondary">@color/accent_pink</item>
         <item name="colorAccent">@color/accent_pink</item>
+        <item name="themeAccent">@color/accent_pink</item>
+        <item name="themeAccentSubtle">@color/colorPinkSubtle</item>
         <item name="android:windowBackground">@color/surface_background</item>
         <item name="android:colorBackground">@color/surface_background</item>
         <item name="colorSurface">@color/surface_card</item>
@@ -38,6 +40,8 @@
         <item name="colorPrimary">@color/accent_blue</item>
         <item name="colorSecondary">@color/accent_blue</item>
         <item name="colorAccent">@color/accent_blue</item>
+        <item name="themeAccent">@color/accent_blue</item>
+        <item name="themeAccentSubtle">#26007AFF</item>
         <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Blue</item>
         <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Blue</item>
         <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Blue</item>
@@ -48,6 +52,8 @@
         <item name="colorPrimary">@color/accent_violet</item>
         <item name="colorSecondary">@color/accent_violet</item>
         <item name="colorAccent">@color/accent_violet</item>
+        <item name="themeAccent">@color/accent_violet</item>
+        <item name="themeAccentSubtle">#268B5CF6</item>
         <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Violet</item>
         <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Violet</item>
         <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Violet</item>
@@ -58,6 +64,8 @@
         <item name="colorPrimary">@color/accent_emerald</item>
         <item name="colorSecondary">@color/accent_emerald</item>
         <item name="colorAccent">@color/accent_emerald</item>
+        <item name="themeAccent">@color/accent_emerald</item>
+        <item name="themeAccentSubtle">#2610B981</item>
         <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Emerald</item>
         <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Emerald</item>
         <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Emerald</item>

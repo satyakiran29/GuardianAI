@@ -41,7 +41,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_shield"
-                    app:tint="@color/colorPinkNeon"
+                    app:tint="?attr/themeAccent"
                     android:contentDescription="Category Icon" />
             </FrameLayout>
 
@@ -226,11 +226,11 @@
                 android:layout_weight="1"
                 android:paddingHorizontal="4dp"
                 android:text="🛡️ Safe Route"
-                android:textColor="@color/colorPinkNeon"
+                android:textColor="?attr/themeAccent"
                 android:textSize="11.5sp"
                 android:textStyle="bold"
                 app:cornerRadius="10dp"
-                app:strokeColor="@color/colorPinkNeon"
+                app:strokeColor="?attr/themeAccent"
                 app:strokeWidth="1dp" />
         </LinearLayout>
     </LinearLayout>

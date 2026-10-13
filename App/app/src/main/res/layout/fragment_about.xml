@@ -87,7 +87,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-black"
                             android:text="Team"
-                            android:textColor="#FF2E93"
+                            android:textColor="?attr/themeAccent"
                             android:textSize="28sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -127,7 +127,7 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/img_hero_woman_safe"
                         app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                        app:strokeColor="@color/colorPinkNeon"
+                        app:strokeColor="?attr/themeAccent"
                         app:strokeWidth="1.5dp" />
                 </FrameLayout>
             </RelativeLayout>
@@ -159,7 +159,7 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="3dp"
                     android:text="5 Members"
-                    android:textColor="#FF2E93"
+                    android:textColor="?attr/themeAccent"
                     android:textSize="11sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -378,7 +378,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="Special Thanks"
                             android:src="@drawable/ic_people_group_vector"
-                            app:tint="@color/colorPinkNeon" />
+                            app:tint="?attr/themeAccent" />
                     </FrameLayout>
 
                     <TextView

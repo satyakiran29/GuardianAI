@@ -129,7 +129,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="Protection"
                         android:src="@drawable/ic_shield_check_vector"
-                        app:tint="#FF2E93" />
+                        app:tint="?attr/themeAccent" />
                 </FrameLayout>
 
                 <TextView
@@ -169,7 +169,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="Location Tracking"
                         android:src="@drawable/ic_location_on"
-                        app:tint="#FF2E93" />
+                        app:tint="?attr/themeAccent" />
                 </FrameLayout>
 
                 <TextView
@@ -209,7 +209,7 @@
                         android:layout_gravity="center"
                         android:fontFamily="sans-serif-black"
                         android:text="SOS"
-                        android:textColor="#FF2E93"
+                        android:textColor="?attr/themeAccent"
                         android:textSize="11sp"
                         android:textStyle="bold" />
                 </FrameLayout>
@@ -251,7 +251,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="Contacts"
                         android:src="@drawable/ic_people_group_vector"
-                        app:tint="#FF2E93" />
+                        app:tint="?attr/themeAccent" />
                 </FrameLayout>
 
                 <TextView
@@ -300,7 +300,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="Feature 1"
                         android:src="@drawable/ic_shield_heart_vector"
-                        app:tint="#FF2E93" />
+                        app:tint="?attr/themeAccent" />
                 </FrameLayout>
 
                 <TextView
@@ -342,7 +342,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="Feature 2"
                         android:src="@drawable/ic_settings_gear_vector"
-                        app:tint="#FF2E93" />
+                        app:tint="?attr/themeAccent" />
                 </FrameLayout>
 
                 <TextView
@@ -384,7 +384,7 @@
                         android:layout_gravity="center"
                         android:contentDescription="Feature 3"
                         android:src="@drawable/ic_people_group_vector"
-                        app:tint="#FF2E93" />
+                        app:tint="?attr/themeAccent" />
                 </FrameLayout>
 
                 <TextView

@@ -353,7 +353,7 @@
                     app:boxCornerRadiusTopStart="14dp"
                     app:endIconMode="clear_text"
                     app:startIconDrawable="@drawable/ic_location_on"
-                    app:startIconTint="#FF2E93">
+                    app:startIconTint="?attr/themeAccent">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_destination"

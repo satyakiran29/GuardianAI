@@ -222,7 +222,7 @@
                             android:layout_height="18dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_person_vector"
-                            app:tint="#FF2E93" />
+                            app:tint="?attr/themeAccent" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -285,7 +285,7 @@
                             android:layout_height="18dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_email_small"
-                            app:tint="#FF2E93" />
+                            app:tint="?attr/themeAccent" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -348,7 +348,7 @@
                             android:layout_height="18dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_call_small"
-                            app:tint="#FF2E93" />
+                            app:tint="?attr/themeAccent" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -411,7 +411,7 @@
                             android:layout_height="18dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_location_small"
-                            app:tint="#FF2E93" />
+                            app:tint="?attr/themeAccent" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -757,7 +757,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_heart_pink_vector"
-                        app:tint="#FF2E93" />
+                        app:tint="?attr/themeAccent" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -771,7 +771,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="You are important"
-                        android:textColor="#FF70B5"
+                        android:textColor="?attr/themeAccent"
                         android:textSize="13.5sp"
                         android:textStyle="bold" />
 
