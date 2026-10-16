@@ -14,18 +14,18 @@
 <div class="glass-panel" style="margin-bottom: 24px; padding: 16px 24px;">
   <div style="display: flex; gap: 10px; flex-wrap: wrap;">
     <a href="{% url 'dashboard-alerts' %}" class="btn {% if not status_filter %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
-      All Incidents ({{ total_count|default:alerts.count }})
+      <i class="fa-solid fa-list-ul"></i> All Incidents ({{ total_count|default:alerts.count }})
     </a>
     <a href="{% url 'dashboard-alerts' %}?status=active" class="btn {% if status_filter == 'active' %}btn-sos{% else %}btn-outline{% endif %} btn-sm">
-      🚨 Active Emergencies ({{ active_count }})
+      <i class="fa-solid fa-triangle-exclamation"></i> Active Emergencies ({{ active_count }})
     </a>
     <a href="{% url 'dashboard-alerts' %}?status=dispatched" class="btn {% if status_filter == 'dispatched' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">
-      ⚡ Dispatched Escorts ({{ dispatched_count }})
+      <i class="fa-solid fa-bolt"></i> Dispatched Escorts ({{ dispatched_count }})
     </a>
     <a href="{% url 'dashboard-alerts' %}?status=resolved" class="btn {% if status_filter == 'resolved' %}btn-emerald{% else %}btn-outline{% endif %} btn-sm">
-      ✓ Resolved Safe ({{ resolved_count }})
+      <i class="fa-solid fa-circle-check"></i> Resolved Safe ({{ resolved_count }})
     </a>
-    <input type="text" id="instant-search-input" placeholder="⚡ Live Filter..." class="form-control" style="width: 170px; padding: 4px 10px; font-size: 0.8rem; margin-left: auto;" autocomplete="off">
+    <input type="text" id="instant-search-input" placeholder="Live Filter..." class="form-control" style="width: 170px; padding: 4px 10px; font-size: 0.8rem; margin-left: auto;" autocomplete="off">
     <span id="filter-match-count" style="font-size: 0.72rem; color: #38bdf8; font-weight: 600; align-self: center;"></span>
   </div>
 </div>
@@ -52,7 +52,7 @@
             <td><strong>#{{ alert.id }}</strong></td>
             <td>
               <div style="font-weight: 700; color: #fff;">{{ alert.user.name }}</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">📞 {{ alert.user.phone }}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);"><i class="fa-solid fa-phone"></i> {{ alert.user.phone }}</div>
             </td>
             <td>
               <span class="role-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">
@@ -62,7 +62,7 @@
             <td>
               <div style="font-size: 0.8rem; color: var(--text-secondary);">
                 <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: 500;" title="Open in Google Maps">
-                  📍 {{ alert.address }} ↗
+                  <i class="fa-solid fa-location-dot"></i> {{ alert.address }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
               </div>
               <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">
@@ -71,16 +71,16 @@
             </td>
             <td>
               {% if alert.status == 'active' %}
-                <span class="incident-status-tag tag-active">🚨 ACTIVE</span>
+                <span class="incident-status-tag tag-active"><i class="fa-solid fa-bell"></i> ACTIVE</span>
               {% elif alert.status == 'dispatched' %}
-                <span class="incident-status-tag tag-dispatched">⚡ DISPATCHED</span>
+                <span class="incident-status-tag tag-dispatched"><i class="fa-solid fa-bolt"></i> DISPATCHED</span>
               {% else %}
-                <span class="incident-status-tag tag-resolved">✓ RESOLVED</span>
+                <span class="incident-status-tag tag-resolved"><i class="fa-solid fa-circle-check"></i> RESOLVED</span>
               {% endif %}
             </td>
             <td>
               {% if alert.responder %}
-                <div style="color: #34d399; font-weight: 600; font-size: 0.85rem;">🛡️ {{ alert.responder.name }}</div>
+                <div style="color: #34d399; font-weight: 600; font-size: 0.85rem;"><i class="fa-solid fa-shield-halved"></i> {{ alert.responder.name }}</div>
               {% else %}
                 <span style="color: var(--text-muted); font-size: 0.8rem;">Unassigned</span>
               {% endif %}
@@ -95,17 +95,17 @@
                   <form method="POST" action="{% url 'dashboard-dispatch-alert' alert.id %}">
                     {% csrf_token %}
                     <input type="hidden" name="responder_id" value="{{ first_guardian.id|default:'' }}">
-                    <button type="submit" class="btn btn-primary btn-sm">Dispatch</button>
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-bolt"></i> Dispatch</button>
                   </form>
                   <form method="POST" action="{% url 'dashboard-resolve-alert' alert.id %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-emerald btn-sm">Resolve</button>
+                    <button type="submit" class="btn btn-emerald btn-sm"><i class="fa-solid fa-check"></i> Resolve</button>
                   </form>
                 </div>
               {% elif alert.status == 'dispatched' %}
                 <form method="POST" action="{% url 'dashboard-resolve-alert' alert.id %}">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-emerald btn-sm">Mark Resolved</button>
+                  <button type="submit" class="btn btn-emerald btn-sm"><i class="fa-solid fa-check"></i> Mark Resolved</button>
                 </form>
               {% else %}
                 <span style="font-size: 0.78rem; color: var(--text-muted);">Closed</span>
@@ -131,12 +131,12 @@
       <div style="display: flex; gap: 8px;">
         {% if page_obj.has_previous %}
           <a href="?page={{ page_obj.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if source_filter %}&source={{ source_filter }}{% endif %}" class="btn btn-outline btn-sm">
-            ← Previous
+            <i class="fa-solid fa-arrow-left"></i> Previous
           </a>
         {% endif %}
         {% if page_obj.has_next %}
           <a href="?page={{ page_obj.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if source_filter %}&source={{ source_filter }}{% endif %}" class="btn btn-primary btn-sm">
-            Next →
+            Next <i class="fa-solid fa-arrow-right"></i>
           </a>
         {% endif %}
       </div>

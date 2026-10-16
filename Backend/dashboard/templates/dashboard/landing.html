@@ -40,6 +40,9 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
     rel="stylesheet">
 
+  <!-- Font Awesome 6.5.1 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <!-- Stylesheet -->
   <link rel="stylesheet" href="{% static 'css/landing.css' %}">
   <link rel="icon"
@@ -54,7 +57,7 @@
   <header class="site-header">
     <div class="container nav-content">
       <a href="/" class="brand-link" id="brand-logo-link">
-        <div class="brand-icon-box">🛡️</div>
+        <div class="brand-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
         <div>
           <span class="brand-title">GuardianAI</span>
           <span class="brand-version-pill">v{{ apk_version_name }}</span>
@@ -77,19 +80,19 @@
 
         {% if logged_in_user %}
         <a href="{% url 'dashboard-index' %}" class="btn btn-secondary nav-btn-admin" id="nav-dashboard-link">
-          <span>🖥️</span>
+          <span><i class="fa-solid fa-satellite-dish"></i></span>
           <span class="btn-text-responsive">Command</span>
         </a>
         {% else %}
         <a href="{% url 'dashboard-login' %}" class="btn btn-secondary nav-btn-admin" id="nav-login-link"
           title="Admin Login">
-          <span>🔐</span>
+          <span><i class="fa-solid fa-lock"></i></span>
           <span class="btn-text-responsive">Admin</span>
         </a>
         {% endif %}
 
         <a href="{% url 'download-apk' %}" class="btn btn-primary nav-btn-download" id="nav-download-cta">
-          <span>⬇️</span>
+          <span><i class="fa-solid fa-download"></i></span>
           <span class="btn-text-download">Download</span>
         </a>
 
@@ -108,7 +111,7 @@
     <div class="mobile-nav-sheet">
       <div class="mobile-nav-header">
         <div class="brand-link">
-          <div class="brand-icon-box" style="width: 36px; height: 36px; font-size: 1.15rem;">🛡️</div>
+          <div class="brand-icon-box" style="width: 36px; height: 36px; font-size: 1.15rem;"><i class="fa-solid fa-shield-halved"></i></div>
           <span class="brand-title" style="font-size: 1.15rem;">GuardianAI</span>
         </div>
         <button type="button" class="mobile-drawer-close" id="mobile-drawer-close"
@@ -116,29 +119,29 @@
       </div>
 
       <nav class="mobile-nav-links">
-        <a href="#features" class="mobile-link"><span>⚡</span> Features &amp; Capabilities</a>
-        <a href="#installation" class="mobile-link"><span>📦</span> How to Install</a>
-        <a href="#helplines" class="mobile-link"><span>📞</span> Safety Helplines</a>
-        <a href="#team" class="mobile-link"><span>👥</span> Engineering Team</a>
-        <a href="#faqs" class="mobile-link"><span>❓</span> FAQs</a>
+        <a href="#features" class="mobile-link"><span><i class="fa-solid fa-bolt"></i></span> Features &amp; Capabilities</a>
+        <a href="#installation" class="mobile-link"><span><i class="fa-solid fa-box-archive"></i></span> How to Install</a>
+        <a href="#helplines" class="mobile-link"><span><i class="fa-solid fa-phone"></i></span> Safety Helplines</a>
+        <a href="#team" class="mobile-link"><span><i class="fa-solid fa-users"></i></span> Engineering Team</a>
+        <a href="#faqs" class="mobile-link"><span><i class="fa-solid fa-circle-question"></i></span> FAQs</a>
       </nav>
 
       <div class="mobile-nav-footer">
         {% if logged_in_user %}
         <a href="{% url 'dashboard-index' %}" class="btn btn-secondary mobile-full-btn">
-          <span>🖥️</span>
+          <span><i class="fa-solid fa-satellite-dish"></i></span>
           <span>Incident Command Center</span>
         </a>
         {% else %}
         <a href="{% url 'dashboard-login' %}" class="btn btn-secondary mobile-full-btn">
-          <span>🔐</span>
+          <span><i class="fa-solid fa-lock"></i></span>
           <span>Admin Command Portal</span>
         </a>
         {% endif %}
 
         <a href="{% url 'download-apk' %}" class="btn btn-primary mobile-full-btn"
           style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-          <span>🤖</span>
+          <span><i class="fa-brands fa-android"></i></span>
           <span>Download APK ({{ apk_size_mb }})</span>
         </a>
 
@@ -161,7 +164,7 @@
     <div class="container hero-container">
       <div class="hero-content-col">
         <div class="hero-badge-pill">
-          <span>✨</span>
+          <span><i class="fa-solid fa-wand-magic-sparkles"></i></span>
           <span>GuardianAI v{{ apk_version_name }} Stable Build • Android 8.0 to 15</span>
         </div>
 
@@ -178,7 +181,7 @@
         <div class="download-action-card">
           <div class="download-buttons-group">
             <a href="{% url 'download-apk' %}" class="btn btn-download-hero" id="hero-apk-download-btn">
-              <span>🤖</span>
+              <span><i class="fa-brands fa-android"></i></span>
               <span>Download APK ({{ apk_size_mb }})</span>
             </a>
 
@@ -198,25 +201,25 @@
             </div>
 
             <button type="button" class="btn-qr-toggle" id="open-qr-modal-btn">
-              <span>📱</span>
+              <span><i class="fa-solid fa-qrcode"></i></span>
               <span>Scan QR Code</span>
             </button>
 
             <a href="https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk"
               target="_blank" rel="noopener" class="btn btn-secondary" id="hero-github-mirror-btn"
               title="Download from GitHub Mirror">
-              <span>☁️</span>
+              <span><i class="fa-solid fa-cloud-arrow-down"></i></span>
               <span>GitHub Cloud Mirror</span>
             </a>
           </div>
 
           <!-- Metadata Badges -->
           <div class="download-meta-chips">
-            <span class="meta-chip chip-playstore"><span>▶️</span> Play Store • Coming Soon</span>
-            <span class="meta-chip"><span>🛡️</span> 100% Free &amp; Open Source</span>
-            <span class="meta-chip"><span>⚡</span> {{ min_android_version }}</span>
-            <span class="meta-chip"><span>🔒</span> SHA-256 Verified</span>
-            <span class="meta-chip"><span>🚫</span> Zero Ads or Data Tracking</span>
+            <span class="meta-chip chip-playstore"><span><i class="fa-solid fa-play" style="font-size: 0.72rem;"></i></span> Play Store • Coming Soon</span>
+            <span class="meta-chip"><span><i class="fa-solid fa-shield-halved"></i></span> 100% Free &amp; Open Source</span>
+            <span class="meta-chip"><span><i class="fa-solid fa-bolt"></i></span> {{ min_android_version }}</span>
+            <span class="meta-chip"><span><i class="fa-solid fa-lock"></i></span> SHA-256 Verified</span>
+            <span class="meta-chip"><span><i class="fa-solid fa-ban"></i></span> Zero Ads or Data Tracking</span>
           </div>
         </div>
       </div>
@@ -260,7 +263,7 @@
       <div class="features-grid">
         <!-- Card 1 -->
         <div class="feature-card">
-          <div class="feature-icon-badge icon-crimson">🚨</div>
+          <div class="feature-icon-badge icon-crimson"><i class="fa-solid fa-triangle-exclamation"></i></div>
           <h3 class="feature-title">Multi-Modal SOS Triggers</h3>
           <p class="feature-description">
             Activate emergency alerts via 1-tap on-screen SOS with 3-second cancel shield, rapid phone shake gesture,
@@ -270,7 +273,7 @@
 
         <!-- Card 2 -->
         <div class="feature-card">
-          <div class="feature-icon-badge icon-cyan">🛰️</div>
+          <div class="feature-icon-badge icon-cyan"><i class="fa-solid fa-satellite"></i></div>
           <h3 class="feature-title">Live GPS Telemetry &amp; Trail Replay</h3>
           <p class="feature-description">
             Continuous sub-meter GPS breadcrumb logging with address reverse-geocoding, live vector tracking, and a
@@ -280,7 +283,7 @@
 
         <!-- Card 3 -->
         <div class="feature-card">
-          <div class="feature-icon-badge icon-emerald">🔋</div>
+          <div class="feature-icon-badge icon-emerald"><i class="fa-solid fa-battery-half"></i></div>
           <h3 class="feature-title">Battery Guardian &amp; Auto-Alert</h3>
           <p class="feature-description">
             Never get stranded with a dead battery. GuardianAI monitors device battery levels and automatically
@@ -290,7 +293,7 @@
 
         <!-- Card 4 -->
         <div class="feature-card">
-          <div class="feature-icon-badge icon-purple">🔊</div>
+          <div class="feature-icon-badge icon-purple"><i class="fa-solid fa-volume-high"></i></div>
           <h3 class="feature-title">Acoustic Siren &amp; Strobe Beacon</h3>
           <p class="feature-description">
             Disorient aggressors and alert nearby citizens with a high-decibel pulsing acoustic siren synchronized with
@@ -300,7 +303,7 @@
 
         <!-- Card 5 -->
         <div class="feature-card">
-          <div class="feature-icon-badge icon-pink">👨‍👩‍👧</div>
+          <div class="feature-icon-badge icon-pink"><i class="fa-solid fa-people-roof"></i></div>
           <h3 class="feature-title">Guardian Hub &amp; Realtime Chat</h3>
           <p class="feature-description">
             Link trusted family members and responders to monitor your safety radar in real-time, receive automatic
@@ -310,7 +313,7 @@
 
         <!-- Card 6 -->
         <div class="feature-card">
-          <div class="feature-icon-badge icon-amber">🔒</div>
+          <div class="feature-icon-badge icon-amber"><i class="fa-solid fa-lock"></i></div>
           <h3 class="feature-title">Privacy-First &amp; 2-Step Verification</h3>
           <p class="feature-description">
             Your location data belongs to you. Zero trackers, zero third-party ads, local SQLite caching, and
@@ -383,7 +386,7 @@
           </div>
         </div>
         <button type="button" class="btn btn-secondary btn-notice-details" id="notice-playstore-btn">
-          <span>ℹ️</span>
+          <span><i class="fa-solid fa-circle-info"></i></span>
           <span>View Status</span>
         </button>
       </div>
@@ -404,7 +407,7 @@
       <div class="helplines-grid">
         {% for line in helplines %}
         <a href="tel:{{ line.code }}" class="helpline-card" id="helpline-{{ line.code }}">
-          <div class="helpline-icon-box">{{ line.icon }}</div>
+          <div class="helpline-icon-box"><i class="{{ line.icon }}"></i></div>
           <div>
             <div>
               <span class="helpline-number-tag">{{ line.code }}</span>
@@ -436,7 +439,7 @@
         <div class="team-card lead-card">
           <div class="team-card-header">
             <div class="team-avatar-box avatar-purple">
-              <span>👨‍💻</span>
+              <span><i class="fa-solid fa-code"></i></span>
             </div>
             <div>
               <span class="team-role-pill role-lead">System Architect</span>
@@ -456,7 +459,7 @@
           <!-- Profile & Social Links -->
           <div class="team-social-links">
             <a href="https://psatyakiran.in/" target="_blank" rel="noopener noreferrer" class="team-social-btn portfolio-btn" title="Portfolio Website — psatyakiran.in">
-              <span>🌐</span>
+              <span><i class="fa-solid fa-globe"></i></span>
               <span>Portfolio</span>
             </a>
             <a href="https://www.linkedin.com/in/satyakiran29/" target="_blank" rel="noopener noreferrer" class="team-social-btn linkedin-btn" title="LinkedIn — satyakiran29">
@@ -474,7 +477,7 @@
         <div class="team-card">
           <div class="team-card-header">
             <div class="team-avatar-box avatar-crimson">
-              <span>⚡</span>
+              <span><i class="fa-solid fa-bolt"></i></span>
             </div>
             <div>
               <span class="team-role-pill role-security">Core Android &amp; Security</span>
@@ -497,7 +500,7 @@
         <div class="team-card">
           <div class="team-card-header">
             <div class="team-avatar-box avatar-cyan">
-              <span>☁️</span>
+              <span><i class="fa-solid fa-cloud"></i></span>
             </div>
             <div>
               <span class="team-role-pill role-cloud">Backend &amp; Cloud Integration</span>
@@ -520,7 +523,7 @@
         <div class="team-card">
           <div class="team-card-header">
             <div class="team-avatar-box avatar-pink">
-              <span>🎨</span>
+              <span><i class="fa-solid fa-palette"></i></span>
             </div>
             <div>
               <span class="team-role-pill role-design">UI/UX &amp; Safety Systems</span>
@@ -543,7 +546,7 @@
         <div class="team-card">
           <div class="team-card-header">
             <div class="team-avatar-box avatar-emerald">
-              <span>📍</span>
+              <span><i class="fa-solid fa-location-dot"></i></span>
             </div>
             <div>
               <span class="team-role-pill role-telemetry">QA &amp; Location Telemetry</span>
@@ -652,7 +655,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <h4>🛡️ GuardianAI Platform</h4>
+          <h4><i class="fa-solid fa-shield-halved"></i> GuardianAI Platform</h4>
           <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 0.9rem;">
             Autonomous Women Safety, Telemetric Emergency Response, Multi-Role Incident Command &amp; Guardian
             Ecosystem.
@@ -723,11 +726,11 @@
 
       <div class="playstore-modal-actions">
         <a href="{% url 'download-apk' %}" class="btn btn-primary playstore-modal-btn-download">
-          <span>🤖</span>
+          <span><i class="fa-brands fa-android"></i></span>
           <span>Download Verified APK ({{ apk_size_mb }})</span>
         </a>
         <button type="button" class="btn btn-secondary playstore-modal-btn-qr" id="playstore-to-qr-btn">
-          <span>📱</span>
+          <span><i class="fa-solid fa-qrcode"></i></span>
           <span>Scan QR Code</span>
         </button>
       </div>
@@ -738,7 +741,7 @@
   <div class="qr-modal-backdrop" id="qr-modal-overlay">
     <div class="qr-modal-card">
       <button class="qr-close-btn" id="qr-modal-close-btn">&times;</button>
-      <div style="font-size: 1.8rem; margin-bottom: 6px;">📱</div>
+      <div style="font-size: 1.8rem; margin-bottom: 6px; color: #a78bfa;"><i class="fa-solid fa-qrcode"></i></div>
       <h3 style="font-size: 1.3rem; margin-bottom: 6px;">Scan to Download on Phone</h3>
       <p class="qr-instructions">
         Point your Android camera or QR scanner at the code below to directly download <strong
@@ -774,7 +777,7 @@
         const code = document.getElementById('sha256-code').innerText.trim();
         navigator.clipboard.writeText(code).then(() => {
           const originalText = copyBtn.innerText;
-          copyBtn.innerText = 'Copied! ✓';
+          copyBtn.innerHTML = 'Copied! <i class="fa-solid fa-check"></i>';
           copyBtn.style.background = 'rgba(16, 185, 129, 0.25)';
           copyBtn.style.color = '#34d399';
           setTimeout(() => {

@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="/static/css/dashboard.css">
   
@@ -20,7 +23,7 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
       <div class="brand-wrapper">
-        <div class="brand-icon">🛡️</div>
+        <div class="brand-icon"><i class="fa-solid fa-shield-halved" style="color: #fff; font-size: 20px;"></i></div>
         <div class="brand-text">
           <h1>GuardianAI</h1>
           <span class="brand-badge">Command OS</span>
@@ -30,7 +33,7 @@
       <ul class="nav-menu">
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-index' %}active{% endif %}">
           <a href="{% url 'dashboard-index' %}">
-            <span>🗺️</span>
+            <span><i class="fa-solid fa-satellite-dish"></i></span>
             <span>Live Radar &amp; SOS</span>
             {% if active_alerts_count > 0 %}
               <span class="nav-badge badge-sos" id="stat-active-sos">{{ active_alerts_count }}</span>
@@ -40,44 +43,44 @@
         {% if request.session.dashboard_user_role != 'user' %}
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-guardian-hub' %}active{% endif %}">
           <a href="{% url 'dashboard-guardian-hub' %}">
-            <span>🛡️</span>
+            <span><i class="fa-solid fa-shield-heart"></i></span>
             <span>Guardian Hub &amp; Chat</span>
           </a>
         </li>
         {% endif %}
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-users' %}active{% endif %}">
           <a href="{% url 'dashboard-users' %}">
-            <span>🛡️</span>
+            <span><i class="fa-solid fa-users-gear"></i></span>
             <span>{% if request.session.dashboard_user_role == 'user' %}My Guardians{% else %}User Management{% endif %}</span>
           </a>
         </li>
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-alerts' %}active{% endif %}">
           <a href="{% url 'dashboard-alerts' %}">
-            <span>🚨</span>
+            <span><i class="fa-solid fa-triangle-exclamation"></i></span>
             <span>SOS Incidents Log</span>
           </a>
         </li>
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-otp' %}active{% endif %}">
           <a href="{% url 'dashboard-otp' %}">
-            <span>🔑</span>
+            <span><i class="fa-solid fa-key"></i></span>
             <span>OTP &amp; Auth System</span>
           </a>
         </li>
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-emails' %}active{% endif %}">
           <a href="{% url 'dashboard-emails' %}">
-            <span>📧</span>
+            <span><i class="fa-solid fa-envelope"></i></span>
             <span>Email Management</span>
           </a>
         </li>
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-security' %}active{% endif %}">
           <a href="{% url 'dashboard-security' %}">
-            <span>🔒</span>
+            <span><i class="fa-solid fa-lock"></i></span>
             <span>Security &amp; 2FA</span>
           </a>
         </li>
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-download' or request.resolver_match.url_name == 'landing-page' %}active{% endif %}">
           <a href="{% url 'dashboard-download' %}" target="_blank">
-            <span>📱</span>
+            <span><i class="fa-solid fa-mobile-screen-button"></i></span>
             <span>Download Mobile App</span>
           </a>
         </li>
@@ -96,11 +99,11 @@
               {{ logged_in_user.email }}
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-              <a href="{% url 'dashboard-security' %}" style="display: inline-flex; align-items: center; gap: 4px; color: #38bdf8; font-size: 0.75rem; text-decoration: none; font-weight: 600;">
-                <span>🔒</span> Security &amp; 2FA
+              <a href="{% url 'dashboard-security' %}" style="display: inline-flex; align-items: center; gap: 6px; color: #38bdf8; font-size: 0.75rem; text-decoration: none; font-weight: 600;">
+                <i class="fa-solid fa-lock"></i> Security &amp; 2FA
               </a>
-              <a href="{% url 'dashboard-logout' %}" style="display: inline-flex; align-items: center; gap: 4px; color: #f87171; font-size: 0.75rem; text-decoration: none; font-weight: 600;">
-                <span>🚪</span> Sign Out
+              <a href="{% url 'dashboard-logout' %}" style="display: inline-flex; align-items: center; gap: 6px; color: #f87171; font-size: 0.75rem; text-decoration: none; font-weight: 600;">
+                <i class="fa-solid fa-right-from-bracket"></i> Sign Out
               </a>
             </div>
           </div>

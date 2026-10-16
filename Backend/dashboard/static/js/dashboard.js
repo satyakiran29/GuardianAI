@@ -97,9 +97,9 @@ function mountLiveMap() {
 
   // Add layer controls for switching styles
   const baseMaps = {
-    "🌌 Dark Radar (Default)": cartoDark,
-    "🏙️ Voyager Street Map": cartoVoyager,
-    "🗺️ OpenStreetMap": osmStandard
+    "Dark Radar (Default)": cartoDark,
+    "Voyager Street Map": cartoVoyager,
+    "OpenStreetMap": osmStandard
   };
   L.control.layers(baseMaps, null, { position: 'topright' }).addTo(liveMap);
 
@@ -145,14 +145,14 @@ function renderMapMarkers() {
 
       const popupContent = `
         <div style="color: #0f172a; font-family: sans-serif; min-width: 230px;">
-          <h4 style="margin: 0 0 6px; color: #ef4444; font-size: 14px; font-weight: bold;">🚨 SOS #${item.id} - ${item.status.toUpperCase()}</h4>
+          <h4 style="margin: 0 0 6px; color: #ef4444; font-size: 14px; font-weight: bold;"><i class="fa-solid fa-triangle-exclamation"></i> SOS #${item.id} - ${item.status.toUpperCase()}</h4>
           <p style="margin: 0 0 4px; font-size: 12px;"><strong>Victim:</strong> ${item.user_name} (<code>${item.user_phone}</code>)</p>
           <p style="margin: 0 0 4px; font-size: 12px;"><strong>Trigger:</strong> ${item.trigger_source}</p>
           <p style="margin: 0 0 4px; font-size: 12px;"><strong>Battery:</strong> ${item.battery}%</p>
-          <p style="margin: 0 0 8px; font-size: 11px; color: #475569;">📍 <a href="${googleMapsUrl}" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: none;">${item.address} ↗</a></p>
+          <p style="margin: 0 0 8px; font-size: 11px; color: #475569;"><i class="fa-solid fa-location-dot"></i> <a href="${googleMapsUrl}" target="_blank" style="color: #2563eb; font-weight: 600; text-decoration: none;">${item.address} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px;"></i></a></p>
           <div style="display: flex; gap: 6px; margin-top: 8px;">
-            <a href="/alerts/" style="background: #ef4444; color: #fff; padding: 5px 10px; text-decoration: none; border-radius: 6px; font-size: 11px; font-weight: bold;">⚡ Dispatch Unit</a>
-            <a href="${googleMapsUrl}" target="_blank" style="background: #2563eb; color: #fff; padding: 5px 10px; text-decoration: none; border-radius: 6px; font-size: 11px; font-weight: bold;">🗺️ Google Maps ↗</a>
+            <a href="/alerts/" style="background: #ef4444; color: #fff; padding: 5px 10px; text-decoration: none; border-radius: 6px; font-size: 11px; font-weight: bold;"><i class="fa-solid fa-bolt"></i> Dispatch Unit</a>
+            <a href="${googleMapsUrl}" target="_blank" style="background: #2563eb; color: #fff; padding: 5px 10px; text-decoration: none; border-radius: 6px; font-size: 11px; font-weight: bold;"><i class="fa-solid fa-map-location-dot"></i> Google Maps <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px;"></i></a>
           </div>
         </div>
       `;
@@ -172,7 +172,7 @@ function renderMapMarkers() {
       // Emerald Shield Marker for Guardian Responders
       const guardHtml = `
         <div style="background: #10b981; border: 2px solid #fff; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; box-shadow: 0 0 10px #10b981;">
-          🛡️
+          <i class="fa-solid fa-shield-halved"></i>
         </div>
       `;
 
@@ -187,11 +187,11 @@ function renderMapMarkers() {
 
       const guardPopup = `
         <div style="color: #0f172a; font-family: sans-serif; min-width: 190px;">
-          <h4 style="margin: 0 0 4px; color: #10b981; font-size: 13px; font-weight: bold;">🛡️ Guardian Unit</h4>
+          <h4 style="margin: 0 0 4px; color: #10b981; font-size: 13px; font-weight: bold;"><i class="fa-solid fa-shield-halved"></i> Guardian Unit</h4>
           <p style="margin: 0 0 2px; font-size: 12px;"><strong>${item.name}</strong></p>
-          <p style="margin: 0 0 4px; font-size: 11px; color: #475569;">📞 ${item.phone}</p>
-          <p style="margin: 0 0 6px; font-size: 11px; color: #64748b;">📍 ${item.address || 'Patrol Route'}</p>
-          <a href="${googleMapsUrl}" target="_blank" style="background: #059669; color: #fff; padding: 4px 8px; text-decoration: none; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block;">🗺️ Google Maps ↗</a>
+          <p style="margin: 0 0 4px; font-size: 11px; color: #475569;"><i class="fa-solid fa-phone"></i> ${item.phone}</p>
+          <p style="margin: 0 0 6px; font-size: 11px; color: #64748b;"><i class="fa-solid fa-location-dot"></i> ${item.address || 'Patrol Route'}</p>
+          <a href="${googleMapsUrl}" target="_blank" style="background: #059669; color: #fff; padding: 4px 8px; text-decoration: none; border-radius: 4px; font-size: 10px; font-weight: bold; display: inline-block;"><i class="fa-solid fa-map-location-dot"></i> Google Maps <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 9px;"></i></a>
         </div>
       `;
 
@@ -289,7 +289,7 @@ function initOtpSimulator() {
 
       try {
         btnSendTestOtp.disabled = true;
-        btnSendTestOtp.innerText = '⚡ Dispatching to Email...';
+        btnSendTestOtp.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dispatching to Email...';
 
         const res = await fetch('/api/auth/send-otp/', {
           method: 'POST',
@@ -299,7 +299,7 @@ function initOtpSimulator() {
 
         const json = await res.json();
         btnSendTestOtp.disabled = false;
-        btnSendTestOtp.innerText = '⚡ Dispatch 6-Digit Email OTP Now';
+        btnSendTestOtp.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Dispatch 6-Digit Email OTP Now';
 
         if (res.ok && json.status === 'success') {
           // Auto-fill verification tester for testing convenience
@@ -311,11 +311,11 @@ function initOtpSimulator() {
           if (outputDiv) {
             outputDiv.innerHTML = `
               <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 14px; border-radius: 10px; color: #34d399;">
-                <strong>✅ Email OTP Dispatched Successfully!</strong><br>
+                <strong><i class="fa-solid fa-circle-check"></i> Email OTP Dispatched Successfully!</strong><br>
                 <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 4px;">Recipient: <code>${json.target}</code></div>
                 <div style="margin: 6px 0;">Generated Code: <strong style="font-size: 1.3rem; color: #fff; letter-spacing: 3px; font-family: monospace;">${json.otp}</strong></div>
                 <div style="font-size: 0.78rem; color: #94a3b8;">
-                  Valid for 10 Minutes (600s)${json.email_sent ? ` • 📧 Delivered via Gmail SMTP` : ''}
+                  Valid for 10 Minutes (600s)${json.email_sent ? ` • <i class="fa-solid fa-envelope"></i> Delivered via Gmail SMTP` : ''}
                 </div>
               </div>
             `;
@@ -324,7 +324,7 @@ function initOtpSimulator() {
           if (outputDiv) {
             outputDiv.innerHTML = `
               <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; padding: 14px; border-radius: 10px; color: #f87171;">
-                <strong>❌ Dispatch Failed</strong><br>
+                <strong><i class="fa-solid fa-circle-xmark"></i> Dispatch Failed</strong><br>
                 <span style="font-size: 0.85rem;">${json.message || 'Unable to generate OTP'}</span>
               </div>
             `;
@@ -332,7 +332,7 @@ function initOtpSimulator() {
         }
       } catch (e) {
         btnSendTestOtp.disabled = false;
-        btnSendTestOtp.innerText = '⚡ Dispatch 6-Digit Email OTP Now';
+        btnSendTestOtp.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Dispatch 6-Digit Email OTP Now';
         alert('Error sending OTP: ' + e);
       }
     });
@@ -354,7 +354,7 @@ function initOtpSimulator() {
 
       try {
         btnVerifyTestOtp.disabled = true;
-        btnVerifyTestOtp.innerText = 'Verifying Passcode...';
+        btnVerifyTestOtp.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying Passcode...';
 
         const res = await fetch('/api/auth/verify-otp/', {
           method: 'POST',
@@ -364,13 +364,13 @@ function initOtpSimulator() {
 
         const json = await res.json();
         btnVerifyTestOtp.disabled = false;
-        btnVerifyTestOtp.innerText = '✓ Verify Passcode Now';
+        btnVerifyTestOtp.innerHTML = '<i class="fa-solid fa-check"></i> Verify Passcode Now';
 
         if (res.ok && json.status === 'success') {
           if (outputDiv) {
             outputDiv.innerHTML = `
               <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 14px; border-radius: 10px; color: #34d399;">
-                <strong>✓ VERIFICATION SUCCESSFUL!</strong><br>
+                <strong><i class="fa-solid fa-circle-check"></i> VERIFICATION SUCCESSFUL!</strong><br>
                 <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 4px;">Target: <code>${json.target}</code></div>
                 <div style="font-size: 0.82rem; color: #34d399; margin-top: 2px;">${json.message}</div>
               </div>
@@ -380,7 +380,7 @@ function initOtpSimulator() {
           if (outputDiv) {
             outputDiv.innerHTML = `
               <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; padding: 14px; border-radius: 10px; color: #f87171;">
-                <strong>❌ Verification Rejected</strong><br>
+                <strong><i class="fa-solid fa-circle-xmark"></i> Verification Rejected</strong><br>
                 <span style="font-size: 0.85rem;">${json.message || 'Invalid or expired OTP code'}</span>
               </div>
             `;
@@ -388,7 +388,7 @@ function initOtpSimulator() {
         }
       } catch (e) {
         btnVerifyTestOtp.disabled = false;
-        btnVerifyTestOtp.innerText = '✓ Verify Passcode Now';
+        btnVerifyTestOtp.innerHTML = '<i class="fa-solid fa-check"></i> Verify Passcode Now';
         alert('Error verifying OTP: ' + e);
       }
     });

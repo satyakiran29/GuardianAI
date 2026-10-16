@@ -15,7 +15,7 @@
       </span>
     {% else %}
       <span class="role-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; font-size: 0.82rem; padding: 6px 14px;">
-        ⚠️ SMTP DEGRADED: {{ smtp_health.message|truncatechars:35 }}
+        <i class="fa-solid fa-triangle-exclamation"></i> SMTP DEGRADED: {{ smtp_health.message|truncatechars:35 }}
       </span>
     {% endif %}
   </div>
@@ -26,7 +26,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Total Emails Dispatched</span>
-      <div class="metric-icon icon-cyan">📧</div>
+      <div class="metric-icon icon-cyan"><i class="fa-solid fa-envelope"></i></div>
     </div>
     <div class="metric-value">{{ total_emails }}</div>
     <div class="metric-subtitle">Across OTP, SOS, and system alerts</div>
@@ -35,7 +35,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Successful Deliveries</span>
-      <div class="metric-icon icon-emerald">✓</div>
+      <div class="metric-icon icon-emerald"><i class="fa-solid fa-check"></i></div>
     </div>
     <div class="metric-value">{{ sent_count }}</div>
     <div class="metric-subtitle">{{ success_rate }}% delivery success rate</div>
@@ -44,7 +44,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Failed Transmissions</span>
-      <div class="metric-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">⚠️</div>
+      <div class="metric-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i></div>
     </div>
     <div class="metric-value" style="color: {% if failed_count > 0 %}#f87171{% else %}#fff{% endif %};">{{ failed_count }}</div>
     <div class="metric-subtitle">Rejected or network timeouts</div>
@@ -53,7 +53,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Active Gateway</span>
-      <div class="metric-icon icon-purple">🌐</div>
+      <div class="metric-icon icon-purple"><i class="fa-solid fa-globe"></i></div>
     </div>
     <div class="metric-value" style="font-size: 1.25rem; font-family: monospace; word-break: break-all;">
       Gmail SMTP
@@ -66,7 +66,7 @@
 <div class="glass-panel" style="margin-bottom: 24px; border: 1px solid var(--border-glow-purple);">
   <div class="panel-header">
     <div class="panel-title">
-      <span>⚡</span> Live Transactional Email Dispatch Tester
+      <span><i class="fa-solid fa-bolt"></i></span> Live Transactional Email Dispatch Tester
     </div>
     <span class="role-badge role-superadmin">Diagnostic Console</span>
   </div>
@@ -87,9 +87,9 @@
           <div class="form-group" style="margin: 0;">
             <label class="form-label">Template Preset:</label>
             <select id="test-email-template" class="form-control" style="background:#1e293b; color:#fff;">
-              <option value="otp">🛡️ 6-Digit OTP Passcode Template</option>
-              <option value="sos">🚨 Critical SOS Emergency Alert</option>
-              <option value="diagnostic" selected>⚡ SMTP Health &amp; Diagnostics</option>
+              <option value="otp">6-Digit OTP Passcode Template</option>
+              <option value="sos">Critical SOS Emergency Alert</option>
+              <option value="diagnostic" selected>SMTP Health &amp; Diagnostics</option>
             </select>
           </div>
 
@@ -100,7 +100,7 @@
         </div>
 
         <button type="submit" id="btn-send-email-test" class="btn btn-primary" style="padding: 10px 20px;">
-          🚀 Dispatch Live Email Now
+          <i class="fa-solid fa-paper-plane"></i> Dispatch Live Email Now
         </button>
       </form>
     </div>
@@ -120,17 +120,17 @@
 <div class="glass-panel">
   <div class="panel-header">
     <div class="panel-title">
-      <span>📜</span> Transactional Email Audit Trail
+      <span><i class="fa-solid fa-list-check"></i></span> Transactional Email Audit Trail
     </div>
     <div style="display: flex; gap: 10px; align-items: center;">
       <input type="text" id="email-search-input" class="form-control" placeholder="Filter by recipient or type..." style="width: 260px; padding: 6px 12px; font-size: 0.82rem;">
-      <button class="btn btn-outline btn-sm" onclick="location.reload()">🔄 Refresh</button>
+      <button class="btn btn-outline btn-sm" onclick="location.reload()"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
       {% if email_logs %}
         <form method="POST" onsubmit="return confirm('Are you sure you want to clear all email delivery audit logs?');" style="margin: 0;">
           {% csrf_token %}
           <input type="hidden" name="action" value="clear_logs">
           <button type="submit" class="btn btn-outline btn-sm" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
-            🗑️ Clear Logs
+            <i class="fa-solid fa-trash-can"></i> Clear Logs
           </button>
         </form>
       {% endif %}
@@ -160,15 +160,15 @@
             <td>
               {% if log.email_type == 'otp' %}
                 <span class="role-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 0.72rem;">
-                  🔑 OTP PASSCODE
+                  <i class="fa-solid fa-key"></i> OTP PASSCODE
                 </span>
               {% elif log.email_type == 'sos_alert' %}
                 <span class="role-badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171; font-size: 0.72rem;">
-                  🚨 SOS ALERT
+                  <i class="fa-solid fa-triangle-exclamation"></i> SOS ALERT
                 </span>
               {% elif log.email_type == 'test' %}
                 <span class="role-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 0.72rem;">
-                  ⚡ DIAGNOSTIC
+                  <i class="fa-solid fa-bolt"></i> DIAGNOSTIC
                 </span>
               {% else %}
                 <span class="role-badge" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8; font-size: 0.72rem;">
@@ -178,14 +178,14 @@
             </td>
             <td>
               {% if log.status == 'sent' %}
-                <span class="role-badge role-guardian" style="font-size: 0.72rem;">✓ DELIVERED</span>
+                <span class="role-badge role-guardian" style="font-size: 0.72rem;"><i class="fa-solid fa-check"></i> DELIVERED</span>
               {% elif log.status == 'failed' %}
                 <span class="role-badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171; font-size: 0.72rem;" title="{{ log.error_message }}">
-                  ❌ FAILED
+                  <i class="fa-solid fa-xmark"></i> FAILED
                 </span>
               {% else %}
                 <span class="role-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; font-size: 0.72rem;">
-                  ⏳ QUEUED
+                  <i class="fa-solid fa-hourglass-half"></i> QUEUED
                 </span>
               {% endif %}
             </td>
@@ -246,13 +246,13 @@ async function handleSendTestEmail(e) {
     });
 
     const data = await res.json();
-    btn.innerText = '🚀 Dispatch Live Email Now';
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Dispatch Live Email Now';
     btn.disabled = false;
 
     if (data.status === 'success') {
       resultDiv.innerHTML = `
         <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; padding: 16px; border-radius: 12px; color: #34d399;">
-          <div style="font-weight: 700; margin-bottom: 6px; font-size: 0.95rem;">✅ Email Queued for Delivery!</div>
+          <div style="font-weight: 700; margin-bottom: 6px; font-size: 0.95rem;"><i class="fa-solid fa-circle-check"></i> Email Queued for Delivery!</div>
           <div style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px;"><strong>Recipient:</strong> <code>${data.recipient}</code></div>
           <div style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 6px;"><strong>Template:</strong> ${data.template_type.toUpperCase()}</div>
           <div style="font-size: 0.78rem; color: #94a3b8;">Dispatched asynchronously via Gmail SMTP. Check your inbox or spam folder in 5-15 seconds.</div>
@@ -261,17 +261,17 @@ async function handleSendTestEmail(e) {
     } else {
       resultDiv.innerHTML = `
         <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; padding: 16px; border-radius: 12px; color: #f87171;">
-          <div style="font-weight: 700; margin-bottom: 6px; font-size: 0.95rem;">❌ Dispatch Failed</div>
+          <div style="font-weight: 700; margin-bottom: 6px; font-size: 0.95rem;"><i class="fa-solid fa-circle-xmark"></i> Dispatch Failed</div>
           <div style="font-size: 0.85rem;">${data.message || 'An error occurred'}</div>
         </div>
       `;
     }
   } catch (err) {
-    btn.innerText = '🚀 Dispatch Live Email Now';
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Dispatch Live Email Now';
     btn.disabled = false;
     resultDiv.innerHTML = `
       <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; padding: 16px; border-radius: 12px; color: #f87171;">
-        <div style="font-weight: 700; margin-bottom: 6px;">❌ Network Request Error</div>
+        <div style="font-weight: 700; margin-bottom: 6px;"><i class="fa-solid fa-circle-xmark"></i> Network Request Error</div>
         <div style="font-size: 0.85rem;">${err}</div>
       </div>
     `;

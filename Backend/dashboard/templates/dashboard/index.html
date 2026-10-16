@@ -17,13 +17,13 @@
   <!-- Role View Switcher -->
   <div class="role-switcher">
     <a href="?role_view=superadmin" class="role-tab {% if current_role_view == 'superadmin' %}active-superadmin{% endif %}">
-      <span>👑</span> SuperAdmin
+      <span><i class="fa-solid fa-crown"></i></span> SuperAdmin
     </a>
     <a href="?role_view=guardian" class="role-tab {% if current_role_view == 'guardian' %}active-guardian{% endif %}">
-      <span>🛡️</span> Guardian
+      <span><i class="fa-solid fa-shield-halved"></i></span> Guardian
     </a>
     <a href="?role_view=user" class="role-tab {% if current_role_view == 'user' %}active-user{% endif %}">
-      <span>🌸</span> User Portal
+      <span><i class="fa-solid fa-user-shield"></i></span> User Portal
     </a>
   </div>
 </div>
@@ -33,14 +33,14 @@
   <div class="metric-card {% if active_alerts_count > 0 %}card-sos{% endif %}">
     <div class="metric-header">
       <span class="metric-title">Active SOS Emergencies</span>
-      <div class="metric-icon icon-red">🚨</div>
+      <div class="metric-icon icon-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
     </div>
     <div class="metric-value">{{ active_alerts_count }}</div>
     <div class="metric-subtitle">
       {% if active_alerts_count > 0 %}
         <span style="color: #ef4444; font-weight: 700;">● Critical response required</span>
       {% else %}
-        <span style="color: #10b981;">✓ All sectors peaceful &amp; secured</span>
+        <span style="color: #10b981;"><i class="fa-solid fa-check"></i> All sectors peaceful &amp; secured</span>
       {% endif %}
     </div>
   </div>
@@ -48,7 +48,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Protected Women / Users</span>
-      <div class="metric-icon icon-purple">👥</div>
+      <div class="metric-icon icon-purple"><i class="fa-solid fa-users"></i></div>
     </div>
     <div class="metric-value" id="stat-total-users">{{ total_users }}</div>
     <div class="metric-subtitle">
@@ -59,7 +59,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Guardian Responders</span>
-      <div class="metric-icon icon-emerald">🛡️</div>
+      <div class="metric-icon icon-emerald"><i class="fa-solid fa-shield-halved"></i></div>
     </div>
     <div class="metric-value">{{ guardians_count }}</div>
     <div class="metric-subtitle">
@@ -70,7 +70,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">OTP Authorizations</span>
-      <div class="metric-icon icon-cyan">🔑</div>
+      <div class="metric-icon icon-cyan"><i class="fa-solid fa-key"></i></div>
     </div>
     <div class="metric-value">{{ otps_today }}</div>
     <div class="metric-subtitle">
@@ -85,11 +85,11 @@
   <div class="glass-panel">
     <div class="panel-header">
       <div class="panel-title">
-        <span>📍</span> Live Telemetric Radar <small style="font-size: 0.75rem; color: #60a5fa; margin-left: 8px; font-weight: normal;">(Live CartoDB &amp; OpenStreetMap Radar)</small>
+        <span><i class="fa-solid fa-location-dot"></i></span> Live Telemetric Radar <small style="font-size: 0.75rem; color: #60a5fa; margin-left: 8px; font-weight: normal;">(Live CartoDB &amp; OpenStreetMap Radar)</small>
       </div>
       <div style="display: flex; gap: 8px;">
-        <span class="role-badge role-guardian">🛡️ {{ guardians_count }} Guardians Online</span>
-        <button class="btn btn-outline btn-sm" onclick="initLiveMap()">🔄 Recenter</button>
+        <span class="role-badge role-guardian"><i class="fa-solid fa-shield-halved"></i> {{ guardians_count }} Guardians Online</span>
+        <button class="btn btn-outline btn-sm" onclick="initLiveMap()"><i class="fa-solid fa-arrows-rotate"></i> Recenter</button>
       </div>
     </div>
     <div class="map-skeleton-wrapper">
@@ -100,9 +100,9 @@
       <div id="live-map"></div>
     </div>
     <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 0.8rem; color: var(--text-secondary); flex-wrap: wrap; gap: 6px;">
-      <div>🔴 Pulsing = Active Victim SOS</div>
-      <div>🛡️ Green = Guardian Escort Unit</div>
-      <div>🗺️ Map = <strong>CartoDB Dark Matter / OSM</strong> (Zero Cost / No API Keys)</div>
+      <div><i class="fa-solid fa-circle" style="color: #ef4444; font-size: 9px;"></i> Pulsing = Active Victim SOS</div>
+      <div><i class="fa-solid fa-shield-halved" style="color: #10b981;"></i> Green = Guardian Escort Unit</div>
+      <div><i class="fa-solid fa-map" style="color: #60a5fa;"></i> Map = <strong>CartoDB Dark Matter / OSM</strong> (Zero Cost / No API Keys)</div>
     </div>
   </div>
 
@@ -110,7 +110,7 @@
   <div class="glass-panel">
     <div class="panel-header">
       <div class="panel-title">
-        <span>🚨</span> Live Emergency Stream
+        <span><i class="fa-solid fa-triangle-exclamation"></i></span> Live Emergency Stream
       </div>
       <a href="{% url 'dashboard-alerts' %}" class="btn btn-outline btn-sm">View All ({{ recent_alerts|length }})</a>
     </div>
@@ -120,33 +120,33 @@
         <div class="incident-card status-active">
           <div class="incident-header">
             <div>
-              <div class="victim-name">🚨 {{ alert.user.name }}</div>
-              <div class="victim-meta">📞 {{ alert.user.phone }} • Battery: {{ alert.battery_level }}%</div>
+              <div class="victim-name"><i class="fa-solid fa-triangle-exclamation" style="color: #ef4444;"></i> {{ alert.user.name }}</div>
+              <div class="victim-meta"><i class="fa-solid fa-phone"></i> {{ alert.user.phone }} • Battery: {{ alert.battery_level }}%</div>
             </div>
             <span class="incident-status-tag tag-active">SOS ACTIVE</span>
           </div>
           <div class="incident-location">
             {% if alert.latitude and alert.longitude %}
-              <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: 600;" title="Open in Google Maps">📍 {{ alert.address }} ↗</a>
+              <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: 600;" title="Open in Google Maps"><i class="fa-solid fa-location-dot"></i> {{ alert.address }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
             {% else %}
-              <span>📍</span> {{ alert.address }}
+              <span><i class="fa-solid fa-location-dot"></i></span> {{ alert.address }}
             {% endif %}
           </div>
           <div style="font-size: 0.78rem; color: #f87171; margin-bottom: 10px;">
-            Trigger: <strong>{{ alert.get_trigger_source_display }}</strong> • Siren: {% if alert.siren_active %}🔊 Loud Siren Active{% else %}Silent{% endif %}
+            Trigger: <strong>{{ alert.get_trigger_source_display }}</strong> • Siren: {% if alert.siren_active %}<i class="fa-solid fa-volume-high"></i> Loud Siren Active{% else %}Silent{% endif %}
           </div>
           <div class="incident-actions">
             <form method="POST" action="{% url 'dashboard-dispatch-alert' alert.id %}" style="display: inline;">
               {% csrf_token %}
               <input type="hidden" name="responder_id" value="{{ first_guardian.id|default:'' }}">
-              <button type="submit" class="btn btn-primary btn-sm">⚡ Dispatch Nearest Guardian</button>
+              <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-bolt"></i> Dispatch Nearest Guardian</button>
             </form>
             <form method="POST" action="{% url 'dashboard-resolve-alert' alert.id %}" style="display: inline;">
               {% csrf_token %}
-              <button type="submit" class="btn btn-emerald btn-sm">✓ Mark Safe &amp; Resolved</button>
+              <button type="submit" class="btn btn-emerald btn-sm"><i class="fa-solid fa-check"></i> Mark Safe &amp; Resolved</button>
             </form>
             {% if alert.latitude and alert.longitude %}
-              <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" class="btn btn-outline btn-sm" style="color: #60a5fa; border-color: #3b82f6;">🗺️ Google Maps</a>
+              <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" class="btn btn-outline btn-sm" style="color: #60a5fa; border-color: #3b82f6;"><i class="fa-solid fa-map-location-dot"></i> Google Maps</a>
             {% endif %}
           </div>
         </div>
@@ -156,15 +156,15 @@
             <div class="incident-header">
               <div>
                 <div class="victim-name">{{ alert.user.name }}</div>
-                <div class="victim-meta">📞 {{ alert.user.phone }} • Battery: {{ alert.battery_level }}%</div>
+                <div class="victim-meta"><i class="fa-solid fa-phone"></i> {{ alert.user.phone }} • Battery: {{ alert.battery_level }}%</div>
               </div>
               <span class="incident-status-tag tag-dispatched">DISPATCHED</span>
             </div>
             <div class="incident-location">
               {% if alert.latitude and alert.longitude %}
-                <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: 600;" title="Open in Google Maps">📍 {{ alert.address }} ↗</a>
+                <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" style="color: #60a5fa; text-decoration: none; font-weight: 600;" title="Open in Google Maps"><i class="fa-solid fa-location-dot"></i> {{ alert.address }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
               {% else %}
-                <span>📍</span> {{ alert.address }}
+                <span><i class="fa-solid fa-location-dot"></i></span> {{ alert.address }}
               {% endif %}
             </div>
             <div style="font-size: 0.78rem; color: #fbbf24; margin-bottom: 10px;">
@@ -173,16 +173,16 @@
             <div class="incident-actions" style="display: flex; gap: 8px;">
               <form method="POST" action="{% url 'dashboard-resolve-alert' alert.id %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-emerald btn-sm">✓ Confirm Safe Resolution</button>
+                <button type="submit" class="btn btn-emerald btn-sm"><i class="fa-solid fa-check"></i> Confirm Safe Resolution</button>
               </form>
               {% if alert.latitude and alert.longitude %}
-                <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" class="btn btn-outline btn-sm" style="color: #60a5fa; border-color: #3b82f6;">🗺️ Google Maps</a>
+                <a href="https://www.google.com/maps/search/?api=1&query={{ alert.latitude }},{{ alert.longitude }}" target="_blank" class="btn btn-outline btn-sm" style="color: #60a5fa; border-color: #3b82f6;"><i class="fa-solid fa-map-location-dot"></i> Google Maps</a>
               {% endif %}
             </div>
           </div>
         {% empty %}
           <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-            <div style="font-size: 3rem; margin-bottom: 12px;">🛡️</div>
+            <div style="font-size: 2.8rem; margin-bottom: 12px; color: #10b981;"><i class="fa-solid fa-shield-halved"></i></div>
             <h4 style="color: #fff; margin-bottom: 6px;">Zero Active Emergencies</h4>
             <p style="font-size: 0.85rem;">All monitored users and safe routes are currently secure.</p>
           </div>
@@ -196,9 +196,9 @@
 <div class="glass-panel">
   <div class="panel-header">
     <div class="panel-title">
-      <span>👥</span> Monitored Users &amp; Multi-Role Directory
+      <span><i class="fa-solid fa-users"></i></span> Monitored Users &amp; Multi-Role Directory
     </div>
-    <a href="{% url 'dashboard-users' %}" class="btn btn-primary btn-sm">+ Manage All Users</a>
+    <a href="{% url 'dashboard-users' %}" class="btn btn-primary btn-sm"><i class="fa-solid fa-user-plus"></i> Manage All Users</a>
   </div>
 
   <div class="table-container">
@@ -224,32 +224,32 @@
             <td><code>{{ user.phone }}</code></td>
             <td>
               {% if user.role == 'superadmin' %}
-                <span class="role-badge role-superadmin">👑 SuperAdmin</span>
+                <span class="role-badge role-superadmin"><i class="fa-solid fa-crown"></i> SuperAdmin</span>
               {% elif user.role == 'guardian' %}
-                <span class="role-badge role-guardian">🛡️ Guardian</span>
+                <span class="role-badge role-guardian"><i class="fa-solid fa-shield-halved"></i> Guardian</span>
               {% else %}
-                <span class="role-badge role-user">🌸 Protected User</span>
+                <span class="role-badge role-user"><i class="fa-solid fa-user-shield"></i> Protected User</span>
               {% endif %}
             </td>
             <td>
               {% if user.is_verified %}
-                <span style="color: #10b981; font-weight: 600;">✓ Verified</span>
+                <span style="color: #10b981; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Verified</span>
               {% else %}
-                <span style="color: #f59e0b; font-weight: 600;">⏳ Pending</span>
+                <span style="color: #f59e0b; font-weight: 600;"><i class="fa-solid fa-clock"></i> Pending</span>
               {% endif %}
             </td>
             <td>
               {% if user.last_latitude and user.last_longitude %}
                 <a href="https://www.google.com/maps/search/?api=1&query={{ user.last_latitude }},{{ user.last_longitude }}" target="_blank" style="font-size: 0.82rem; color: #60a5fa; text-decoration: none; font-weight: 500;" title="Open in Google Maps">
-                  📍 {{ user.last_address|default:"View on Map" }} ↗
+                  <i class="fa-solid fa-location-dot"></i> {{ user.last_address|default:"View on Map" }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>
               {% else %}
-                <span style="font-size: 0.82rem; color: var(--text-secondary);">📍 {{ user.last_address|default:"Location Pending" }}</span>
+                <span style="font-size: 0.82rem; color: var(--text-secondary);"><i class="fa-solid fa-location-dot"></i> {{ user.last_address|default:"Location Pending" }}</span>
               {% endif %}
             </td>
             <td>
               <span style="font-weight: 700; {% if user.battery_level <= 15 %}color: #ef4444;{% else %}color: #10b981;{% endif %}">
-                {{ user.battery_percentage }}%
+                <i class="fa-solid fa-battery-half"></i> {{ user.battery_percentage }}%
               </span>
             </td>
             <td>

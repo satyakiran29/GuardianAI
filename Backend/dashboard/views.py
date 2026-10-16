@@ -144,7 +144,7 @@ def login_view(request):
                         sync_otp_to_supabase(otp_rec)
                         send_otp_email(target_email, otp_code_gen, purpose='2fa_login')
 
-                        messages.info(request, f"🔐 2-Step Verification: A 6-digit passcode has been sent to your email ({target_email}).")
+                        messages.info(request, f"2-Step Verification: A 6-digit passcode has been sent to your email ({target_email}).")
                         return render(request, 'dashboard/login.html', {
                             'step_2fa': True,
                             'target_email': target_email,
@@ -206,7 +206,7 @@ def login_view(request):
                 request.session['dashboard_user_id'] = user.id
                 request.session['dashboard_user_name'] = user.name
                 request.session['dashboard_user_role'] = user.role
-                messages.success(request, f"🎉 2-Step Verification verified! Welcome back, {user.name} ({user.get_role_display()}).")
+                messages.success(request, f"2-Step Verification verified! Welcome back, {user.name} ({user.get_role_display()}).")
 
                 if stored_next and stored_next != '/':
                     return redirect(stored_next)
@@ -1044,12 +1044,12 @@ def landing_view(request):
             "Realtime Telemetry & Radar: Material3 telemetry cards with battery tracking, live GPS coordinates, and ward isolations"
         ],
         'helplines': [
-            {'code': '112', 'name': 'National Emergency', 'badge': 'All Emergencies', 'desc': 'Integrated 24/7 Police, Fire & Medical dispatch nationwide.', 'icon': '🚨'},
-            {'code': '1091', 'name': 'Women Helpline', 'badge': 'Specialized SOS', 'desc': 'Dedicated 24/7 women distress response & rapid dispatch.', 'icon': '🛡️'},
-            {'code': '1930', 'name': 'Cyber Crime Helpline', 'badge': 'Digital Safety', 'desc': 'National cyber fraud, online stalking & financial safety.', 'icon': '💻'},
-            {'code': '100', 'name': 'Police Control Room', 'badge': 'Law Enforcement', 'desc': 'Immediate local police precinct dispatch & PCR patrol.', 'icon': '🚓'},
-            {'code': '108', 'name': 'Emergency Medical', 'badge': 'Ambulance & Trauma', 'desc': 'Rapid trauma ambulance and critical medical fleet.', 'icon': '🚑'},
-            {'code': '1800-599-0019', 'name': 'KIRAN Mental Health', 'badge': 'Crisis Counseling', 'desc': 'Govt. 24/7 confidential psychological distress counseling.', 'icon': '🧠'},
+            {'code': '112', 'name': 'National Emergency', 'badge': 'All Emergencies', 'desc': 'Integrated 24/7 Police, Fire & Medical dispatch nationwide.', 'icon': 'fa-solid fa-triangle-exclamation'},
+            {'code': '1091', 'name': 'Women Helpline', 'badge': 'Specialized SOS', 'desc': 'Dedicated 24/7 women distress response & rapid dispatch.', 'icon': 'fa-solid fa-shield-heart'},
+            {'code': '1930', 'name': 'Cyber Crime Helpline', 'badge': 'Digital Safety', 'desc': 'National cyber fraud, online stalking & financial safety.', 'icon': 'fa-solid fa-laptop-code'},
+            {'code': '100', 'name': 'Police Control Room', 'badge': 'Law Enforcement', 'desc': 'Immediate local police precinct dispatch & PCR patrol.', 'icon': 'fa-solid fa-car-on'},
+            {'code': '108', 'name': 'Emergency Medical', 'badge': 'Ambulance & Trauma', 'desc': 'Rapid trauma ambulance and critical medical fleet.', 'icon': 'fa-solid fa-truck-medical'},
+            {'code': '1800-599-0019', 'name': 'KIRAN Mental Health', 'badge': 'Crisis Counseling', 'desc': 'Govt. 24/7 confidential psychological distress counseling.', 'icon': 'fa-solid fa-brain'},
         ]
     }
     return render(request, 'dashboard/landing.html', context)

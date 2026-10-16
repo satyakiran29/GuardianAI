@@ -10,7 +10,7 @@
 <!-- Top Header & Role / Guardian Switcher -->
 <div class="top-header">
   <div class="header-title">
-    <h2>🛡️ Guardian Hub &amp; Live Tracking Radar</h2>
+    <h2><i class="fa-solid fa-shield-halved"></i> Guardian Hub &amp; Live Tracking Radar</h2>
     <p>Track your protected wards in real time, monitor battery health &amp; GPS coordinates, and direct emergency safety chat.</p>
   </div>
 
@@ -21,14 +21,14 @@
         <select name="guardian_id" onchange="this.form.submit()" class="form-control" style="padding: 6px 12px; font-size: 0.85rem; width: auto; background: #1e293b; color: #fff; border: 1px solid var(--border-color); border-radius: 8px;">
           {% for g in all_guardians %}
             <option value="{{ g.id }}" {% if active_guardian and active_guardian.id == g.id %}selected{% endif %}>
-              🛡️ {{ g.name }} ({{ g.phone }})
+              {{ g.name }} ({{ g.phone }})
             </option>
           {% endfor %}
         </select>
       </form>
     {% endif %}
     <button class="btn btn-primary btn-sm" onclick="document.getElementById('link-ward-modal').style.display='flex'">
-      + Link Protected Ward
+      <i class="fa-solid fa-user-plus"></i> Link Protected Ward
     </button>
   </div>
 </div>
@@ -38,20 +38,20 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Active Guardian Unit</span>
-      <div class="metric-icon icon-emerald">🛡️</div>
+      <div class="metric-icon icon-emerald"><i class="fa-solid fa-shield-halved"></i></div>
     </div>
     <div class="metric-value" style="font-size: 1.4rem;">
       {{ active_guardian.name|default:"Command Center" }}
     </div>
     <div class="metric-subtitle">
-      <span>📞 {{ active_guardian.phone }} • Battery: <strong style="color: #10b981;">{{ active_guardian.battery_level }}%</strong></span>
+      <span><i class="fa-solid fa-phone"></i> {{ active_guardian.phone }} • Battery: <strong style="color: #10b981;">{{ active_guardian.battery_level }}%</strong></span>
     </div>
   </div>
 
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Tracked Protected Users</span>
-      <div class="metric-icon icon-purple">👥</div>
+      <div class="metric-icon icon-purple"><i class="fa-solid fa-users"></i></div>
     </div>
     <div class="metric-value">{{ tracked_count }}</div>
     <div class="metric-subtitle">
@@ -62,7 +62,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Live Battery Status</span>
-      <div class="metric-icon icon-cyan">🔋</div>
+      <div class="metric-icon icon-cyan"><i class="fa-solid fa-battery-half"></i></div>
     </div>
     <div class="metric-value" style="font-size: 1.4rem;">
       {% with low_bat=0 %}
@@ -70,14 +70,14 @@
       {% endwith %}
     </div>
     <div class="metric-subtitle">
-      <span style="color: #60a5fa;">Real-time low-battery (<15%) alerts active</span>
+      <span style="color: #60a5fa;">Real-time low-battery (&lt;15%) alerts active</span>
     </div>
   </div>
 
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Safety Chat Channel</span>
-      <div class="metric-icon icon-yellow">💬</div>
+      <div class="metric-icon icon-yellow"><i class="fa-solid fa-comments"></i></div>
     </div>
     <div class="metric-value" style="font-size: 1.4rem;">Encrypted &amp; Live</div>
     <div class="metric-subtitle">
@@ -94,7 +94,7 @@
     <div class="glass-panel" style="margin-bottom: 24px;">
       <div class="panel-header">
         <div class="panel-title">
-          <span>👥</span> Protected Users / Wards ({{ tracked_count }})
+          <span><i class="fa-solid fa-users"></i></span> Protected Users / Wards ({{ tracked_count }})
         </div>
         <span class="role-badge role-guardian">● Live Telemetry Synced</span>
       </div>
@@ -106,14 +106,14 @@
               <div class="incident-header">
                 <div>
                   <div style="font-size: 1.1rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
-                    🌸 {{ item.ward.name }}
+                    <i class="fa-solid fa-user-shield" style="color: #c084fc;"></i> {{ item.ward.name }}
                     <span class="role-badge role-user" style="font-size: 0.7rem;">{{ item.relationship }}</span>
                     {% if item.active_alert %}
-                      <span class="incident-status-tag tag-active" style="animation: pulse 1.5s infinite;">🚨 SOS ACTIVE</span>
+                      <span class="incident-status-tag tag-active" style="animation: pulse 1.5s infinite;"><i class="fa-solid fa-triangle-exclamation"></i> SOS ACTIVE</span>
                     {% endif %}
                   </div>
                   <div class="victim-meta" style="margin-top: 4px;">
-                    📞 {{ item.ward.phone }} • {{ item.ward.email }}
+                    <i class="fa-solid fa-phone"></i> {{ item.ward.phone }} • <i class="fa-solid fa-envelope"></i> {{ item.ward.email }}
                   </div>
                 </div>
 
@@ -121,7 +121,7 @@
                 <div style="text-align: right;">
                   <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px;">Battery Level</div>
                   <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; background: {% if item.is_critical_battery %}rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #f87171;{% elif item.is_low_battery %}rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fbbf24;{% else %}rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399;{% endif %}">
-                    <span>{% if item.is_critical_battery %}🪫 ⚠️{% else %}🔋{% endif %}</span>
+                    <span>{% if item.is_critical_battery %}<i class="fa-solid fa-battery-empty" style="color: #f87171;"></i> <i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i>{% elif item.is_low_battery %}<i class="fa-solid fa-battery-quarter" style="color: #fbbf24;"></i>{% else %}<i class="fa-solid fa-battery-full" style="color: #34d399;"></i>{% endif %}</span>
                     <span>{{ item.battery_percentage }}%</span>
                   </div>
                 </div>
@@ -130,14 +130,14 @@
               <!-- Location Telemetry -->
               <div style="margin: 12px 0; background: rgba(30, 41, 59, 0.5); padding: 10px 14px; border-radius: 10px; font-size: 0.82rem;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                  <span style="color: var(--text-muted);">📍 Last Known GPS Location:</span>
+                  <span style="color: var(--text-muted);"><i class="fa-solid fa-location-dot"></i> Last Known GPS Location:</span>
                   <span style="color: #94a3b8; font-size: 0.75rem;">Updated: {{ item.ward.updated_at|date:"H:i:s" }}</span>
                 </div>
                 <div style="color: #fff; font-weight: 600;">{{ item.ward.last_address|default:"Location Pending" }}</div>
                 {% if item.ward.last_latitude and item.ward.last_longitude %}
                   <div style="margin-top: 6px; display: flex; gap: 12px; align-items: center;">
                     <code style="font-size: 0.75rem; color: #60a5fa;">{{ item.ward.last_latitude|floatformat:4 }}, {{ item.ward.last_longitude|floatformat:4 }}</code>
-                    <a href="https://www.google.com/maps/search/?api=1&query={{ item.ward.last_latitude }},{{ item.ward.last_longitude }}" target="_blank" style="color: #38bdf8; text-decoration: none; font-weight: 600; font-size: 0.78rem;">Open Live Navigation ↗</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query={{ item.ward.last_latitude }},{{ item.ward.last_longitude }}" target="_blank" style="color: #38bdf8; text-decoration: none; font-weight: 600; font-size: 0.78rem;">Open Live Navigation <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.72rem;"></i></a>
                   </div>
                 {% endif %}
               </div>
@@ -145,21 +145,21 @@
               <!-- Quick Actions -->
               <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center; flex-wrap: wrap;">
                 <button type="button" class="btn btn-outline btn-sm" style="color: #f43f5e; border-color: rgba(244,63,94,0.5); font-weight: 600;" onclick="openTrailReplay('{{ item.ward.phone }}', '{{ item.ward.name|escapejs }}')">
-                  🎞️ 24h Replay
+                  <i class="fa-solid fa-film"></i> 24h Replay
                 </button>
                 <a href="/api/location/debrief/?ward_phone={{ item.ward.phone|urlencode }}&guardian_phone={{ active_guardian.phone|urlencode }}&hours=24&format=html" target="_blank" class="btn btn-outline btn-sm" style="color: #38bdf8; border-color: rgba(56,189,248,0.5); font-weight: 600;" title="Export official tamper-evident forensic debrief report (PDF / Print)">
-                  📄 PDF Debrief
+                  <i class="fa-solid fa-file-pdf"></i> PDF Debrief
                 </a>
                 <button class="btn btn-primary btn-sm" onclick="selectChatPartner('{{ item.ward.id }}', '{{ item.ward.name|escapejs }}', '{{ item.battery_percentage }}')">
-                  💬 Chat
+                  <i class="fa-solid fa-comment-dots"></i> Chat
                 </button>
                 <a href="tel:{{ item.ward.phone }}" class="btn btn-outline btn-sm" style="color: #34d399; border-color: #10b981;">
-                  📞 Call
+                  <i class="fa-solid fa-phone"></i> Call
                 </a>
                 <form method="POST" action="{% url 'dashboard-unlink-guardian' item.link_id %}" onsubmit="return confirm('Unlink guardian protection for {{ item.ward.name }}?');" style="display: inline;">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-outline btn-sm" style="color: #f87171; border-color: #ef4444; font-size: 0.72rem;">
-                    ✕ Unlink
+                    <i class="fa-solid fa-xmark"></i> Unlink
                   </button>
                 </form>
               </div>
@@ -168,11 +168,11 @@
         </div>
       {% else %}
         <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-          <div style="font-size: 3rem; margin-bottom: 12px;">🛡️</div>
+          <div style="font-size: 3rem; margin-bottom: 12px; color: var(--text-muted);"><i class="fa-solid fa-shield-halved"></i></div>
           <h4 style="color: #fff; margin-bottom: 6px;">No Wards Linked Yet</h4>
           <p style="font-size: 0.85rem; margin-bottom: 16px;">Link protected users/family members to track their battery % and live GPS location.</p>
           <button class="btn btn-primary btn-sm" onclick="document.getElementById('link-ward-modal').style.display='flex'">
-            + Link First Ward
+            <i class="fa-solid fa-user-plus"></i> Link First Ward
           </button>
         </div>
       {% endif %}
@@ -182,9 +182,9 @@
     <div class="glass-panel">
       <div class="panel-header">
         <div class="panel-title">
-          <span>📍</span> Wards Live Telemetric Radar
+          <span><i class="fa-solid fa-location-dot"></i></span> Wards Live Telemetric Radar
         </div>
-        <button class="btn btn-outline btn-sm" onclick="initLiveMap()">🔄 Recenter Radar</button>
+        <button class="btn btn-outline btn-sm" onclick="initLiveMap()"><i class="fa-solid fa-arrows-rotate"></i> Recenter Radar</button>
       </div>
       <div class="map-skeleton-wrapper" style="min-height: 320px;">
         <div id="live-map-skeleton" class="map-skeleton-placeholder">
@@ -194,9 +194,9 @@
         <div id="live-map" style="height: 320px; border-radius: 12px; border: 1px solid var(--border-color);"></div>
       </div>
       <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.78rem; color: var(--text-muted);">
-        <div>🌸 Purple = Protected Ward</div>
-        <div>🛡️ Green = Guardian Unit</div>
-        <div>🔴 Red = Active Distress Alert</div>
+        <div><i class="fa-solid fa-circle" style="color: #c084fc; font-size: 0.7rem;"></i> Purple = Protected Ward</div>
+        <div><i class="fa-solid fa-shield-halved" style="color: #10b981; font-size: 0.7rem;"></i> Green = Guardian Unit</div>
+        <div><i class="fa-solid fa-circle-exclamation" style="color: #ef4444; font-size: 0.7rem;"></i> Red = Active Distress Alert</div>
       </div>
     </div>
   </div>
@@ -207,7 +207,7 @@
       <div class="panel-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 14px;">
         <div>
           <div style="font-weight: 700; color: #fff; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
-            <span>💬</span> Safety Chat Channel: <span id="chat-partner-name" style="color: #c084fc;">Select Ward</span>
+            <span><i class="fa-solid fa-comments"></i></span> Safety Chat Channel: <span id="chat-partner-name" style="color: #c084fc;">Select Ward</span>
           </div>
           <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">
             Partner Battery: <span id="chat-partner-battery" style="font-weight: 700; color: #34d399;">--</span>
@@ -218,16 +218,16 @@
 
       <!-- Quick Safety Preset Messages -->
       <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 8px;">
-        <button class="preset-chip" onclick="insertPreset('✅ Are you safe and okay?')">"Are you safe?"</button>
-        <button class="preset-chip" onclick="insertPreset('🚗 Guardian escort on the way to your location.')">"On the way"</button>
-        <button class="preset-chip" onclick="insertPreset('🔋 Please charge your phone; battery is low!')">"Low battery reminder"</button>
-        <button class="preset-chip" onclick="insertPreset('📍 Sharing live safe route checkpoint.')">"Safe route"</button>
+        <button class="preset-chip" onclick="insertPreset('Are you safe and okay?')"><i class="fa-solid fa-circle-check"></i> "Are you safe?"</button>
+        <button class="preset-chip" onclick="insertPreset('Guardian escort on the way to your location.')"><i class="fa-solid fa-car-side"></i> "On the way"</button>
+        <button class="preset-chip" onclick="insertPreset('Please charge your phone; battery is low!')"><i class="fa-solid fa-battery-quarter"></i> "Low battery"</button>
+        <button class="preset-chip" onclick="insertPreset('Sharing live safe route checkpoint.')"><i class="fa-solid fa-route"></i> "Safe route"</button>
       </div>
 
       <!-- Message History Stream Container -->
       <div id="chat-messages-container" style="flex: 1; overflow-y: auto; max-height: 480px; padding: 12px; background: rgba(10, 11, 14, 0.6); border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
         <div id="chat-loading-placeholder" style="text-align: center; color: var(--text-muted); padding: 40px 10px;">
-          <div style="font-size: 2.5rem; margin-bottom: 8px;">💬</div>
+          <div style="font-size: 2.5rem; margin-bottom: 8px; color: var(--text-muted);"><i class="fa-solid fa-comments"></i></div>
           <p>Select a ward on the left to start direct safety messaging.</p>
         </div>
       </div>
@@ -240,15 +240,15 @@
 
         <div style="display: flex; gap: 8px;">
           <input type="text" id="chat-message-input" placeholder="Type safety message or emergency instruction..." class="form-control" style="flex: 1; background: #1e293b; color: #fff; border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 14px; font-size: 0.9rem;" required>
-          <button type="submit" class="btn btn-primary" style="padding: 10px 18px; border-radius: 10px; font-weight: 700;">
-            Send ✈️
+          <button type="submit" class="btn btn-primary" style="padding: 10px 18px; border-radius: 10px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+            Send <i class="fa-solid fa-paper-plane"></i>
           </button>
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted);">
           <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
             <input type="checkbox" id="chat-is-sos" style="accent-color: #ef4444;">
-            <span style="color: #f87171; font-weight: 600;">🚨 Flag as Urgent / SOS Check</span>
+            <span style="color: #f87171; font-weight: 600;"><i class="fa-solid fa-triangle-exclamation"></i> Flag as Urgent / SOS Check</span>
           </label>
           <span>Auto-refreshes every 4s</span>
         </div>
@@ -261,8 +261,8 @@
 <div id="link-ward-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 999; justify-content: center; align-items: center;">
   <div class="glass-panel" style="width: 100%; max-width: 480px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 16px; padding: 24px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
-      <h3 style="color: #fff; font-size: 1.2rem; font-weight: 700;">+ Link Protected Ward</h3>
-      <button onclick="document.getElementById('link-ward-modal').style.display='none'" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;">✕</button>
+      <h3 style="color: #fff; font-size: 1.2rem; font-weight: 700;"><i class="fa-solid fa-user-plus"></i> Link Protected Ward</h3>
+      <button onclick="document.getElementById('link-ward-modal').style.display='none'" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
     <form method="POST" action="{% url 'dashboard-users' %}">
@@ -293,7 +293,7 @@
 
       <div style="display: flex; gap: 10px; justify-content: flex-end;">
         <button type="button" class="btn btn-outline" onclick="document.getElementById('link-ward-modal').style.display='none'">Cancel</button>
-        <button type="submit" class="btn btn-primary">Link Ward to Guardian</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-link"></i> Link Ward to Guardian</button>
       </div>
     </form>
   </div>
@@ -306,8 +306,8 @@
     <!-- Modal Header -->
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="background: rgba(244,63,94,0.15); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
-          🎞️
+        <div style="background: rgba(244,63,94,0.15); width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #f43f5e;">
+          <i class="fa-solid fa-film"></i>
         </div>
         <div>
           <h3 id="replay-ward-name" style="color: #fff; font-size: 1.25rem; font-weight: 700; margin: 0;">24h Location History Replay</h3>
@@ -317,12 +317,12 @@
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
-        <span class="role-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-size: 0.72rem;">⏱️ 5-Min Cadence</span>
+        <span class="role-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-size: 0.72rem;"><i class="fa-solid fa-stopwatch"></i> 5-Min Cadence</span>
         <button onclick="exportForensicPdf()" style="background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.45); color: #38bdf8; padding: 6px 13px; border-radius: 9px; font-weight: 600; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" title="Export official tamper-evident forensic debrief report for campus security, university administration, or police complaints">
-          <span>📄</span> Export Forensic PDF
+          <span><i class="fa-solid fa-file-pdf"></i></span> Export Forensic PDF
         </button>
         <span class="role-badge role-guardian" id="replay-point-counter" style="font-size: 0.75rem;">Loading...</span>
-        <button onclick="closeTrailReplay()" style="background: rgba(255,255,255,0.08); border: none; color: #fff; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;">✕</button>
+        <button onclick="closeTrailReplay()" style="background: rgba(255,255,255,0.08); border: none; color: #fff; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-xmark"></i></button>
       </div>
     </div>
 
@@ -333,7 +333,7 @@
       <!-- Incident Beacon Banner (Conditional Overlay) -->
       <div id="replay-incident-alert" style="display: none; position: absolute; top: 12px; left: 12px; right: 12px; background: rgba(239,68,68,0.92); backdrop-filter: blur(4px); color: #fff; padding: 10px 16px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; z-index: 500; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(239,68,68,0.5);">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="font-size: 1.2rem;">🚨</span>
+          <span style="font-size: 1.2rem;"><i class="fa-solid fa-triangle-exclamation"></i></span>
           <span id="replay-incident-text">EMERGENCY SOS TRIGGERED AT THIS CHECKPOINT</span>
         </div>
         <span style="background: rgba(0,0,0,0.3); padding: 3px 8px; border-radius: 6px; font-size: 0.72rem;">Incident Beacon</span>
@@ -356,7 +356,7 @@
       </div>
       <div>
         <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Update Interval</div>
-        <div id="replay-interval" style="font-weight: 700; color: #38bdf8; font-size: 0.95rem; margin-top: 2px;">⏱️ ~5 min update</div>
+        <div id="replay-interval" style="font-weight: 700; color: #38bdf8; font-size: 0.95rem; margin-top: 2px;"><i class="fa-solid fa-clock"></i> ~5 min update</div>
       </div>
     </div>
 
@@ -372,12 +372,12 @@
       <!-- Button Controls -->
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; gap: 8px; align-items: center;">
-          <button id="btn-step-prev" onclick="stepReplay(-1)" class="btn btn-outline btn-sm" style="padding: 6px 12px; font-size: 0.85rem;" title="Previous 5-minute checkpoint">⏮ -5m</button>
+          <button id="btn-step-prev" onclick="stepReplay(-1)" class="btn btn-outline btn-sm" style="padding: 6px 12px; font-size: 0.85rem;" title="Previous 5-minute checkpoint"><i class="fa-solid fa-backward-step"></i> -5m</button>
           <button id="btn-play-pause" onclick="togglePlayPause()" class="btn btn-primary btn-sm" style="padding: 6px 18px; font-weight: 700; background: #f43f5e; border-color: #f43f5e; display: flex; align-items: center; gap: 6px;">
-            <span id="play-icon">▶</span> <span id="play-text">Play Replay</span>
+            <span id="play-icon"><i class="fa-solid fa-play"></i></span> <span id="play-text">Play Replay</span>
           </button>
-          <button id="btn-step-next" onclick="stepReplay(1)" class="btn btn-outline btn-sm" style="padding: 6px 12px; font-size: 0.85rem;" title="Next 5-minute checkpoint">⏭ +5m</button>
-          <button onclick="resetReplay()" class="btn btn-outline btn-sm" style="padding: 6px 12px; font-size: 0.8rem; color: var(--text-muted);">↺ Restart</button>
+          <button id="btn-step-next" onclick="stepReplay(1)" class="btn btn-outline btn-sm" style="padding: 6px 12px; font-size: 0.85rem;" title="Next 5-minute checkpoint">+5m <i class="fa-solid fa-forward-step"></i></button>
+          <button onclick="resetReplay()" class="btn btn-outline btn-sm" style="padding: 6px 12px; font-size: 0.8rem; color: var(--text-muted);"><i class="fa-solid fa-rotate-left"></i> Restart</button>
         </div>
 
         <!-- Playback Speed Chips -->
@@ -500,7 +500,7 @@
     if (!messages || messages.length === 0) {
       container.innerHTML = `
         <div style="text-align: center; color: var(--text-muted); padding: 40px 10px;">
-          <div style="font-size: 2rem; margin-bottom: 6px;">💬</div>
+          <div style="font-size: 2rem; margin-bottom: 6px; color: var(--text-muted);"><i class="fa-solid fa-comments"></i></div>
           <p>No messages yet with this ward. Send a quick check-in below!</p>
         </div>`;
       return;
@@ -512,7 +512,7 @@
       const bubble = document.createElement('div');
       bubble.className = `chat-bubble ${isMe ? 'chat-bubble-sent' : 'chat-bubble-received'}`;
       
-      let sosBadge = m.is_sos ? '<span style="color:#ef4444; font-weight:700; margin-right:4px;">🚨 [URGENT]</span>' : '';
+      let sosBadge = m.is_sos ? '<span style="color:#ef4444; font-weight:700; margin-right:4px;"><i class="fa-solid fa-triangle-exclamation"></i> [URGENT]</span>' : '';
       bubble.innerHTML = `
         <div style="font-size: 0.7rem; opacity: 0.8; margin-bottom: 2px;">
           ${isMe ? 'You (Guardian)' : m.sender_name}
@@ -660,7 +660,7 @@
           fillColor: '#dc2626',
           fillOpacity: 0.9
         }).addTo(replayMap);
-        alertBeacon.bindPopup(`<strong style="color:#ef4444;">🚨 SOS Incident Beacon</strong><br/>${pt.formatted_time} - ${pt.address}`);
+        alertBeacon.bindPopup(`<strong style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> SOS Incident Beacon</strong><br/>${pt.formatted_time} - ${pt.address}`);
         replayIncidentMarkers.push(alertBeacon);
       } else {
         const dot = L.circleMarker([pt.latitude, pt.longitude], {
@@ -709,13 +709,13 @@
     document.getElementById('replay-timestamp').innerText = `${pt.formatted_date || ''} • ${pt.formatted_time}`;
     document.getElementById('replay-battery').innerText = `${pt.battery_level || '--'}%`;
     document.getElementById('replay-address').innerText = pt.address || 'Recorded Coordinates';
-    document.getElementById('replay-point-counter').innerText = `Point ${idx + 1} of ${replayTrailData.length} (⏱️ 5m)`;
+    document.getElementById('replay-point-counter').innerHTML = `Point ${idx + 1} of ${replayTrailData.length} (<i class="fa-solid fa-clock"></i> 5m)`;
     document.getElementById('replay-slider').value = idx;
 
     const intervalEl = document.getElementById('replay-interval');
     if (intervalEl) {
       const spd = pt.estimated_speed_kmh || 0;
-      intervalEl.innerText = spd > 1 ? `⏱️ 5m (${spd} km/h)` : '⏱️ 5m (Stationary)';
+      intervalEl.innerHTML = spd > 1 ? `<i class="fa-solid fa-clock"></i> 5m (${spd} km/h)` : '<i class="fa-solid fa-clock"></i> 5m (Stationary)';
     }
 
     // Update incident beacon
@@ -723,7 +723,7 @@
     if (pt.is_incident) {
       alertBox.style.display = 'flex';
       const trigger = pt.incident_details ? pt.incident_details.trigger_source : 'Manual Button';
-      document.getElementById('replay-incident-text').innerText = `🚨 EMERGENCY SOS TRIGGERED HERE (${trigger.toUpperCase()})`;
+      document.getElementById('replay-incident-text').innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> EMERGENCY SOS TRIGGERED HERE (${trigger.toUpperCase()})`;
     } else {
       alertBox.style.display = 'none';
     }
@@ -766,7 +766,7 @@
       replayCurrentIdx = 0;
     }
     replayIsPlaying = true;
-    document.getElementById('play-icon').innerText = '⏸';
+    document.getElementById('play-icon').innerHTML = '<i class="fa-solid fa-pause"></i>';
     document.getElementById('play-text').innerText = 'Pause';
 
     clearInterval(replayTimer);
@@ -787,7 +787,7 @@
     clearInterval(replayTimer);
     const playIcon = document.getElementById('play-icon');
     const playText = document.getElementById('play-text');
-    if (playIcon) playIcon.innerText = '▶';
+    if (playIcon) playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
     if (playText) playText.innerText = 'Play Replay';
   }
 

@@ -10,7 +10,7 @@
   </div>
   <div>
     <a href="{% url 'dashboard-emails' %}" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 6px;">
-      <span>📧</span> View Dispatched OTP Emails
+      <span><i class="fa-solid fa-envelope"></i></span> View Dispatched OTP Emails
     </a>
   </div>
 </div>
@@ -20,7 +20,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Total OTP Transactions</span>
-      <div class="metric-icon icon-cyan">🔑</div>
+      <div class="metric-icon icon-cyan"><i class="fa-solid fa-key"></i></div>
     </div>
     <div class="metric-value">{{ total_otps }}</div>
     <div class="metric-subtitle">Dispatched across all channels</div>
@@ -29,7 +29,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Verified Passcodes</span>
-      <div class="metric-icon icon-emerald">✓</div>
+      <div class="metric-icon icon-emerald"><i class="fa-solid fa-check"></i></div>
     </div>
     <div class="metric-value">{{ verified_count }}</div>
     <div class="metric-subtitle">Successful user authorizations</div>
@@ -38,7 +38,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Active OTPs</span>
-      <div class="metric-icon icon-purple">⏳</div>
+      <div class="metric-icon icon-purple"><i class="fa-solid fa-hourglass-half"></i></div>
     </div>
     <div class="metric-value">{{ pending_count }}</div>
     <div class="metric-subtitle">Awaiting citizen verification</div>
@@ -47,7 +47,7 @@
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">Expired Unverified</span>
-      <div class="metric-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">⌛</div>
+      <div class="metric-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;"><i class="fa-solid fa-clock-rotate-left"></i></div>
     </div>
     <div class="metric-value" style="color: {% if expired_count > 0 %}#f87171{% else %}#fff{% endif %};">{{ expired_count }}</div>
     <div class="metric-subtitle">Timed out past 10 minutes</div>
@@ -58,7 +58,7 @@
 <div class="glass-panel" style="margin-bottom: 24px; border: 1px solid var(--border-glow-purple);">
   <div class="panel-header">
     <div class="panel-title">
-      <span>⚡</span> Live OTP Dispatch &amp; In-Place Verification Simulator
+      <span><i class="fa-solid fa-bolt"></i></span> Live OTP Dispatch &amp; In-Place Verification Simulator
     </div>
     <span class="role-badge role-superadmin">Interactive Testing Console</span>
   </div>
@@ -77,7 +77,7 @@
       </div>
 
       <button id="btn-send-test-otp" class="btn btn-primary" type="button" style="width: 100%;">
-        ⚡ Dispatch 6-Digit Email OTP Now
+        <i class="fa-solid fa-paper-plane"></i> Dispatch 6-Digit Email OTP Now
       </button>
 
       <div id="test-otp-result" style="margin-top: 14px;"></div>
@@ -100,13 +100,13 @@
         <div style="display: flex; gap: 8px;">
           <input type="text" id="verify-otp-code" class="form-control" maxlength="6" placeholder="e.g. 123456" style="letter-spacing: 3px; font-weight: bold; font-family: monospace; font-size: 1.1rem; text-align: center;">
           <button type="button" class="btn btn-outline btn-sm" onclick="fillVerifyDemo()" style="white-space: nowrap;">
-            ⚡ 123456
+            <i class="fa-solid fa-bolt"></i> 123456
           </button>
         </div>
       </div>
 
       <button id="btn-verify-test-otp" class="btn btn-primary" type="button" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);">
-        ✓ Verify Passcode Now
+        <i class="fa-solid fa-check"></i> Verify Passcode Now
       </button>
 
       <div id="verify-otp-result" style="margin-top: 14px;"></div>
@@ -118,17 +118,17 @@
 <div class="glass-panel">
   <div class="panel-header">
     <div class="panel-title">
-      <span>📜</span> Recent Email OTP Dispatch Logs
+      <span><i class="fa-solid fa-clock-rotate-left"></i></span> Recent Email OTP Dispatch Logs
     </div>
     <div style="display: flex; gap: 10px; align-items: center;">
       <input type="text" id="otp-search-input" class="form-control" placeholder="Filter by email..." style="width: 200px; padding: 6px 12px; font-size: 0.82rem;">
-      <button class="btn btn-outline btn-sm" onclick="location.reload()">🔄 Refresh Logs</button>
+      <button class="btn btn-outline btn-sm" onclick="location.reload()"><i class="fa-solid fa-arrows-rotate"></i> Refresh Logs</button>
       {% if expired_count > 0 %}
         <form method="POST" style="margin: 0;">
           {% csrf_token %}
           <input type="hidden" name="action" value="prune_expired">
           <button type="submit" class="btn btn-outline btn-sm" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4);">
-            🧹 Prune Expired ({{ expired_count }})
+            <i class="fa-solid fa-broom"></i> Prune Expired ({{ expired_count }})
           </button>
         </form>
       {% endif %}
@@ -164,12 +164,12 @@
             </td>
             <td>
               {% if record.is_verified %}
-                <span class="role-badge role-guardian" style="font-size: 0.72rem;">✓ VERIFIED</span>
+                <span class="role-badge role-guardian" style="font-size: 0.72rem;"><i class="fa-solid fa-check"></i> VERIFIED</span>
               {% else %}
                 {% if record.is_expired %}
                   <span class="role-badge" style="background: rgba(239, 68, 68, 0.15); color: #f87171; font-size: 0.72rem;">EXPIRED</span>
                 {% else %}
-                  <span class="role-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; font-size: 0.72rem;">⏳ ACTIVE</span>
+                  <span class="role-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; font-size: 0.72rem;"><i class="fa-solid fa-hourglass-half"></i> ACTIVE</span>
                 {% endif %}
               {% endif %}
             </td>
@@ -181,7 +181,7 @@
             </td>
             <td>
               <button class="btn btn-outline btn-sm" onclick="quickFillVerify('{{ record.target }}', '{{ record.otp_code }}')" style="padding: 3px 8px; font-size: 0.72rem;">
-                ⚡ Test Verify
+                <i class="fa-solid fa-bolt"></i> Test Verify
               </button>
             </td>
           </tr>

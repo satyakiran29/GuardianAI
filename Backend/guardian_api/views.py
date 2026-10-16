@@ -1415,7 +1415,7 @@ def generate_forensic_html_report(d):
     """
     trail_rows = ""
     for pt in d['trail']:
-        status_badge = '<span style="background:#dc2626;color:#fff;padding:2px 6px;border-radius:4px;font-weight:bold;font-size:10px;">🚨 SOS BEACON</span>' if pt.get('is_incident') else '<span style="background:#16a34a;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;">NORMAL</span>'
+        status_badge = '<span style="background:#dc2626;color:#fff;padding:2px 6px;border-radius:4px;font-weight:bold;font-size:10px;"><i class="fa-solid fa-triangle-exclamation"></i> SOS BEACON</span>' if pt.get('is_incident') else '<span style="background:#16a34a;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;">NORMAL</span>'
         spd = f"{pt.get('estimated_speed_kmh', 0)} km/h"
         trail_rows += f"""
         <tr style="border-bottom: 1px solid #e2e8f0; font-size: 11px;">
@@ -1434,7 +1434,7 @@ def generate_forensic_html_report(d):
         incidents_section = f"""
         <div style="background: #fef2f2; border: 2px solid #ef4444; border-radius: 8px; padding: 14px; margin-bottom: 18px;">
             <div style="color: #991b1b; font-weight: bold; font-size: 13px; margin-bottom: 6px;">
-                🚨 EMERGENCY DISTRESS INCIDENT DETECTED ({len(d['incident_points'])} Beacon Checkpoints)
+                <i class="fa-solid fa-triangle-exclamation"></i> EMERGENCY DISTRESS INCIDENT DETECTED ({len(d['incident_points'])} Beacon Checkpoints)
             </div>
             <div style="font-size: 11px; color: #7f1d1d; line-height: 1.5;">
                 Emergency SOS distress signal was broadcasted during this audit cycle. Immediate physical escort or police response was logged. Checkpoint telemetry below details coordinates and elapsed time.
@@ -1447,6 +1447,7 @@ def generate_forensic_html_report(d):
 <head>
     <meta charset="UTF-8">
     <title>GuardianAI Forensic Incident Report - {d['case_id']}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @page {{ size: A4; margin: 15mm; }}
         body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #0f172a; margin: 0; padding: 20px; background: #fff; line-height: 1.4; }}
@@ -1467,8 +1468,8 @@ def generate_forensic_html_report(d):
 </head>
 <body>
     <div class="print-btn-bar">
-        <button onclick="window.print()" style="background: #0f172a; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">🖨️ Print / Save as PDF</button>
-        <button onclick="window.close()" style="background: #e2e8f0; color: #334155; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">✕ Close</button>
+        <button onclick="window.print()" style="background: #0f172a; color: #fff; border: none; padding: 8px 18px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;"><i class="fa-solid fa-print"></i> Print / Save as PDF</button>
+        <button onclick="window.close()" style="background: #e2e8f0; color: #334155; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 12px;"><i class="fa-solid fa-xmark"></i> Close</button>
     </div>
 
     <div class="header-bar">
@@ -1497,7 +1498,7 @@ def generate_forensic_html_report(d):
             <div style="font-weight: bold; color: #0f172a; margin-bottom: 4px;">ASSIGNED GUARDIAN &amp; ESCORT:</div>
             <div><strong>Guardian Name:</strong> {d['guardian']['name']}</div>
             <div><strong>Contact:</strong> {d['guardian']['phone'] or 'Platform Automated Unit'}</div>
-            <div><strong>Status:</strong> {'🚨 ACTIVE SOS EMERGENCY' if d['ward']['has_active_sos'] else '● Normal Patrol Active'}</div>
+            <div><strong>Status:</strong> {'<span style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> ACTIVE SOS EMERGENCY</span>' if d['ward']['has_active_sos'] else '● Normal Patrol Active'}</div>
             <div><strong>Audit Window:</strong> Past {d['metrics']['hours_monitored']} Hours</div>
         </div>
     </div>

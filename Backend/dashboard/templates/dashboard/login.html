@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="/static/css/dashboard.css">
   
@@ -142,7 +145,7 @@
 
   <div class="auth-card">
     <div class="auth-header">
-      <div class="auth-logo">🛡️</div>
+      <div class="auth-logo"><i class="fa-solid fa-shield-halved" style="color: #fff; font-size: 26px;"></i></div>
       <h2 class="auth-title">GuardianAI Command Desk</h2>
       <p class="auth-subtitle">Authorized personnel only • SuperAdmin &amp; Guardian Portal</p>
     </div>
@@ -160,7 +163,7 @@
     {% if step_2fa %}
     <!-- 2-Step Verification (2FA) Container -->
     <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 16px; margin-bottom: 20px; text-align: center;">
-      <div style="font-size: 2.2rem; margin-bottom: 6px;">🔐</div>
+      <div style="font-size: 2rem; margin-bottom: 6px; color: #10b981;"><i class="fa-solid fa-shield-halved"></i></div>
       <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">2-Step Verification Required</div>
       <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
         A 6-digit verification passcode has been dispatched to your email:<br>
@@ -179,15 +182,15 @@
       </div>
 
       <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 0.95rem;">
-        🛡️ Verify Passcode &amp; Sign In
+        <i class="fa-solid fa-shield-halved"></i> Verify Passcode &amp; Sign In
       </button>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
         <button type="button" onclick="resend2faOtp('{{ target_email }}')" id="btn-resend-2fa" style="background: transparent; border: none; color: #38bdf8; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
-          🔄 Resend Code to Email
+          <i class="fa-solid fa-arrows-rotate"></i> Resend Code to Email
         </button>
         <a href="{% url 'dashboard-login' %}" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none;">
-          ← Back to Login
+          <i class="fa-solid fa-arrow-left"></i> Back to Login
         </a>
       </div>
       <div id="twofa-alert-box" style="display: none; font-size: 0.8rem; padding: 8px 12px; border-radius: 8px; margin-top: 10px;"></div>
@@ -216,7 +219,7 @@
       </div>
 
       <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 0.95rem;">
-        🔐 Sign In to Portal
+        <i class="fa-solid fa-lock"></i> Sign In to Portal
       </button>
     </form>
 
@@ -229,9 +232,9 @@
       <div class="form-group">
         <label class="form-label">Role Category</label>
         <select name="role_type" class="form-control" style="background:#1e293b; color:#fff;">
-          <option value="guardian" selected>🛡️ Safety Guardian / Responder</option>
-          <option value="superadmin">👮 SuperAdmin Desk</option>
-          <option value="user">🌸 Protected Citizen</option>
+          <option value="guardian" selected>Safety Guardian / Responder</option>
+          <option value="superadmin">SuperAdmin Desk</option>
+          <option value="user">Protected Citizen</option>
         </select>
       </div>
 
@@ -244,7 +247,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <label class="form-label" style="margin: 0;">6-Digit OTP Passcode</label>
           <button type="button" onclick="sendDashboardOtp()" id="btn-request-otp" style="background: transparent; border: none; color: #60a5fa; font-size: 0.78rem; font-weight: 600; cursor: pointer;">
-            ⚡ Send Passcode to Email
+            <i class="fa-solid fa-paper-plane"></i> Send Passcode to Email
           </button>
         </div>
         <input type="text" name="otp_code" id="otp_code" required maxlength="6" placeholder="Enter 6-digit OTP" class="form-control" style="letter-spacing: 4px; font-weight: bold; font-size: 1.1rem; text-align: center;">
@@ -253,7 +256,7 @@
       <div id="otp-alert-box" style="display: none; font-size: 0.8rem; padding: 8px 12px; border-radius: 8px; margin-bottom: 14px;"></div>
 
       <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px; padding: 12px; font-size: 0.95rem;">
-        🔑 Verify &amp; Sign In
+        <i class="fa-solid fa-key"></i> Verify &amp; Sign In
       </button>
     </form>
     {% endif %}
@@ -261,16 +264,16 @@
     <!-- Quick 1-Click Role Accounts -->
     <div class="demo-accounts">
       <p style="font-size: 0.78rem; color: #94a3b8; margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">
-        ⚡ Instant Role Access (1-Click)
+        <i class="fa-solid fa-bolt"></i> Instant Role Access (1-Click)
       </p>
 
       <button type="button" class="demo-btn" onclick="fillDemo('guardian@sheguard.app', 'guardian123')">
-        <span>🛡️ <strong>Guardian Unit</strong> (Rajesh Sharma)</span>
+        <span><i class="fa-solid fa-shield-halved" style="color: #34d399; margin-right: 6px;"></i> <strong>Guardian Unit</strong> (Rajesh Sharma)</span>
         <span style="font-size: 0.72rem; color: #34d399; background: rgba(16,185,129,0.15); padding: 2px 8px; border-radius: 6px;">Guardian Hub</span>
       </button>
 
       <button type="button" class="demo-btn" onclick="fillDemo('admin@sheguard.app', 'admin123')">
-        <span>👮 <strong>SuperAdmin Desk</strong> (Commander)</span>
+        <span><i class="fa-solid fa-crown" style="color: #c084fc; margin-right: 6px;"></i> <strong>SuperAdmin Desk</strong> (Commander)</span>
         <span style="font-size: 0.72rem; color: #c084fc; background: rgba(139,92,246,0.15); padding: 2px 8px; border-radius: 6px;">SuperAdmin</span>
       </button>
     </div>
@@ -328,14 +331,14 @@
           alertBox.style.background = 'rgba(16, 185, 129, 0.15)';
           alertBox.style.border = '1px solid #10b981';
           alertBox.style.color = '#34d399';
-          let emailNote = data.email_sent ? ` • 📧 Passcode dispatched to ${data.email_destination}` : '';
-          alertBox.innerHTML = `✅ Passcode sent to your inbox: <strong style="color:#fff; font-size:1.05rem; letter-spacing: 2px;">${data.otp}</strong> (Demo: 123456)${emailNote}`;
+          let emailNote = data.email_sent ? ` • <i class="fa-solid fa-envelope"></i> Passcode dispatched to ${data.email_destination}` : '';
+          alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> Passcode sent to your inbox: <strong style="color:#fff; font-size:1.05rem; letter-spacing: 2px;">${data.otp}</strong> (Demo: 123456)${emailNote}`;
           document.getElementById('otp_code').value = data.otp;
         } else {
           alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
           alertBox.style.border = '1px solid #ef4444';
           alertBox.style.color = '#fca5a5';
-          alertBox.innerHTML = `⚠️ ${data.message || 'Could not send OTP. You can use master passcode: 123456'}`;
+          alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${data.message || 'Could not send OTP. You can use master passcode: 123456'}`;
           document.getElementById('otp_code').value = '123456';
         }
       } catch (e) {
@@ -345,7 +348,7 @@
         alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
         alertBox.style.border = '1px solid #ef4444';
         alertBox.style.color = '#fca5a5';
-        alertBox.innerHTML = '⚡ Network offline. Using master passcode: <strong>123456</strong> or <strong>234456</strong>';
+        alertBox.innerHTML = '<i class="fa-solid fa-bolt"></i> Network offline. Using master passcode: <strong>123456</strong> or <strong>234456</strong>';
         document.getElementById('otp_code').value = '123456';
       }
     }
@@ -364,14 +367,14 @@
         });
         const data = await res.json();
         btn.disabled = false;
-        btn.innerText = '🔄 Resend Code';
+        btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Resend Code';
 
         alertBox.style.display = 'block';
         if (data.status === 'success') {
           alertBox.style.background = 'rgba(16, 185, 129, 0.15)';
           alertBox.style.border = '1px solid #10b981';
           alertBox.style.color = '#34d399';
-          alertBox.innerHTML = `✅ New passcode dispatched! (Demo: ${data.otp || '234456'})`;
+          alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> New passcode dispatched! (Demo: ${data.otp || '234456'})`;
           if (data.otp) {
             document.getElementById('twofa_otp_code').value = data.otp;
           }
@@ -379,16 +382,16 @@
           alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
           alertBox.style.border = '1px solid #ef4444';
           alertBox.style.color = '#fca5a5';
-          alertBox.innerHTML = `⚠️ ${data.message || 'Error resending code. Use demo code: 123456 or 234456'}`;
+          alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${data.message || 'Error resending code. Use demo code: 123456 or 234456'}`;
         }
       } catch (err) {
         btn.disabled = false;
-        btn.innerText = '🔄 Resend Code';
+        btn.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Resend Code';
         alertBox.style.display = 'block';
         alertBox.style.background = 'rgba(239, 68, 68, 0.15)';
         alertBox.style.border = '1px solid #ef4444';
         alertBox.style.color = '#fca5a5';
-        alertBox.innerHTML = '⚡ Offline. Use demo passcode: <strong>123456</strong> or <strong>234456</strong>';
+        alertBox.innerHTML = '<i class="fa-solid fa-bolt"></i> Offline. Use demo passcode: <strong>123456</strong> or <strong>234456</strong>';
       }
     }
   </script>

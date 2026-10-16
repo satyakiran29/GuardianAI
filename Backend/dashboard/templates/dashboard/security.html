@@ -10,7 +10,7 @@
   </div>
   <div style="display: flex; gap: 10px; align-items: center;">
     <span id="badge-2fa-status" class="role-badge {% if two_factor_enabled %}role-guardian{% else %}role-superadmin{% endif %}" style="font-size: 0.85rem; padding: 6px 16px;">
-      {% if two_factor_enabled %}🟢 2-STEP VERIFICATION ACTIVE{% else %}⚪ 2-STEP VERIFICATION DISABLED{% endif %}
+      {% if two_factor_enabled %}<i class="fa-solid fa-circle-check"></i> 2-STEP VERIFICATION ACTIVE{% else %}<i class="fa-solid fa-circle-xmark"></i> 2-STEP VERIFICATION DISABLED{% endif %}
     </span>
   </div>
 </div>
@@ -22,7 +22,7 @@
   <div class="dashboard-card" style="margin-bottom: 0;">
     <div class="card-header">
       <div class="card-title">
-        <span>👤</span>
+        <span><i class="fa-solid fa-user"></i></span>
         <span>Account Profile &amp; Role</span>
       </div>
       <span class="role-badge role-{{ user.role }}">{{ user.get_role_display }}</span>
@@ -30,7 +30,7 @@
 
     <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 8px;">
       <div style="display: flex; align-items: center; gap: 14px; padding: 14px; background: rgba(30, 41, 59, 0.4); border: 1px solid var(--border-color); border-radius: 12px;">
-        <div style="font-size: 2rem;">🛡️</div>
+        <div style="font-size: 1.8rem; color: #38bdf8;"><i class="fa-solid fa-shield-halved"></i></div>
         <div>
           <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">{{ user.name }}</div>
           <div style="font-size: 0.82rem; color: var(--text-muted);">{{ user.get_role_display }} • User ID #{{ user.id }}</div>
@@ -52,19 +52,19 @@
         <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 6px;">Authentication Type</div>
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <span style="font-size: 0.75rem; background: rgba(56, 189, 248, 0.15); color: #38bdf8; padding: 4px 10px; border-radius: 6px; font-weight: 600;">
-            🔑 Password Protected
+            <i class="fa-solid fa-key"></i> Password Protected
           </span>
           <span style="font-size: 0.75rem; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 4px 10px; border-radius: 6px; font-weight: 600;">
-            📧 Gmail SMTP Verified
+            <i class="fa-solid fa-envelope"></i> Gmail SMTP Verified
           </span>
           <span id="pill-2fa" style="font-size: 0.75rem; background: {% if two_factor_enabled %}rgba(16, 185, 129, 0.15); color: #10b981;{% else %}rgba(148, 163, 184, 0.15); color: #94a3b8;{% endif %} padding: 4px 10px; border-radius: 6px; font-weight: 600;">
-            {% if two_factor_enabled %}🔒 2FA Enabled{% else %}🔓 2FA Off{% endif %}
+            {% if two_factor_enabled %}<i class="fa-solid fa-lock"></i> 2FA Enabled{% else %}<i class="fa-solid fa-lock-open"></i> 2FA Off{% endif %}
           </span>
         </div>
       </div>
 
       <div style="padding: 14px; background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px;">
-        <div style="font-weight: 600; font-size: 0.82rem; color: #93c5fd; margin-bottom: 4px;">💡 Demo Passcode Notice</div>
+        <div style="font-weight: 600; font-size: 0.82rem; color: #93c5fd; margin-bottom: 4px;"><i class="fa-solid fa-lightbulb"></i> Demo Passcode Notice</div>
         <div style="font-size: 0.78rem; color: #cbd5e1; line-height: 1.4;">
           During testing and offline scenarios, emergency demo passcodes <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: #38bdf8;">123456</code> and <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: #38bdf8;">234456</code> will instantly authenticate 2FA bypass.
         </div>
@@ -76,7 +76,7 @@
   <div class="dashboard-card" style="margin-bottom: 0;">
     <div class="card-header">
       <div class="card-title">
-        <span>🔐</span>
+        <span><i class="fa-solid fa-shield-halved"></i></span>
         <span>2-Step Verification (2FA) Control</span>
       </div>
     </div>
@@ -99,7 +99,7 @@
 
       <!-- Real-time Status Card -->
       <div id="box-2fa-status" style="padding: 12px 16px; border-radius: 10px; background: {% if two_factor_enabled %}rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399;{% else %}rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8;{% endif %} display: flex; align-items: center; gap: 10px; font-size: 0.85rem; font-weight: 600;">
-        <span id="icon-status">{% if two_factor_enabled %}🛡️{% else %}⚠️{% endif %}</span>
+        <span id="icon-status">{% if two_factor_enabled %}<i class="fa-solid fa-shield-halved"></i>{% else %}<i class="fa-solid fa-triangle-exclamation"></i>{% endif %}</span>
         <span id="text-status">
           {% if two_factor_enabled %}
             Your account is strictly protected with 2-Step Verification. Every sign-in requires an email passcode.
@@ -120,10 +120,10 @@
       <div style="display: flex; gap: 12px; margin-bottom: 12px;">
         <input type="text" id="test-otp-input" placeholder="Enter 6-digit code or 234456" maxlength="6" style="flex: 1; padding: 10px 14px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-size: 0.95rem; letter-spacing: 2px; font-family: monospace;">
         <button onclick="sendTestOtp()" id="btn-send-test-otp" class="btn btn-secondary" style="padding: 10px 18px; font-weight: 600;">
-          <span>📧 Send Test Code</span>
+          <span><i class="fa-solid fa-paper-plane"></i> Send Test Code</span>
         </button>
         <button onclick="verifyTestOtp()" id="btn-verify-test-otp" class="btn btn-primary" style="padding: 10px 18px; font-weight: 600;">
-          <span>✓ Verify</span>
+          <span><i class="fa-solid fa-check"></i> Verify</span>
         </button>
       </div>
 
@@ -183,29 +183,29 @@ function update2FAUI(enabled) {
     btn.className = 'btn btn-danger';
     btn.innerText = 'Disable 2FA';
     badge.className = 'role-badge role-guardian';
-    badge.innerText = '🟢 2-STEP VERIFICATION ACTIVE';
+    badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> 2-STEP VERIFICATION ACTIVE';
     pill.style.background = 'rgba(16, 185, 129, 0.15)';
     pill.style.color = '#10b981';
-    pill.innerText = '🔒 2FA Enabled';
+    pill.innerHTML = '<i class="fa-solid fa-lock"></i> 2FA Enabled';
 
     box.style.background = 'rgba(16, 185, 129, 0.12)';
     box.style.borderColor = 'rgba(16, 185, 129, 0.3)';
     box.style.color = '#34d399';
-    icon.innerText = '🛡️';
+    icon.innerHTML = '<i class="fa-solid fa-shield-halved"></i>';
     text.innerText = 'Your account is strictly protected with 2-Step Verification. Every sign-in requires an email passcode.';
   } else {
     btn.className = 'btn btn-primary';
     btn.innerText = 'Enable 2FA';
     badge.className = 'role-badge role-superadmin';
-    badge.innerText = '⚪ 2-STEP VERIFICATION DISABLED';
+    badge.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> 2-STEP VERIFICATION DISABLED';
     pill.style.background = 'rgba(148, 163, 184, 0.15)';
     pill.style.color = '#94a3b8';
-    pill.innerText = '🔓 2FA Off';
+    pill.innerHTML = '<i class="fa-solid fa-lock-open"></i> 2FA Off';
 
     box.style.background = 'rgba(148, 163, 184, 0.1)';
     box.style.borderColor = 'rgba(148, 163, 184, 0.2)';
     box.style.color = '#94a3b8';
-    icon.innerText = '⚠️';
+    icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
     text.innerText = '2-Step Verification is currently turned OFF. Anyone with your password can sign in directly.';
   }
 }
@@ -214,7 +214,7 @@ function sendTestOtp() {
   const btn = document.getElementById('btn-send-test-otp');
   const feedback = document.getElementById('test-feedback');
   btn.disabled = true;
-  btn.innerText = 'Sending...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
 
   fetch('/api/auth/send-otp/', {
     method: 'POST',
@@ -224,28 +224,28 @@ function sendTestOtp() {
   .then(r => r.json())
   .then(data => {
     btn.disabled = false;
-    btn.innerText = '📧 Send Test Code';
+    btn.innerHTML = '<span><i class="fa-solid fa-paper-plane"></i> Send Test Code</span>';
     feedback.style.display = 'block';
     if (data.status === 'success') {
       feedback.style.background = 'rgba(16, 185, 129, 0.15)';
       feedback.style.color = '#34d399';
-      feedback.innerText = `✅ Passcode dispatched to ${userEmail}! (Demo Code: ${data.otp || '123456'})`;
+      feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> Passcode dispatched to ${userEmail}! (Demo Code: ${data.otp || '123456'})`;
       if (data.otp) {
         document.getElementById('test-otp-input').value = data.otp;
       }
     } else {
       feedback.style.background = 'rgba(239, 68, 68, 0.15)';
       feedback.style.color = '#f87171';
-      feedback.innerText = '❌ Failed to send passcode: ' + data.message;
+      feedback.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Failed to send passcode: ' + data.message;
     }
   })
   .catch(err => {
     btn.disabled = false;
-    btn.innerText = '📧 Send Test Code';
+    btn.innerHTML = '<span><i class="fa-solid fa-paper-plane"></i> Send Test Code</span>';
     feedback.style.display = 'block';
     feedback.style.background = 'rgba(239, 68, 68, 0.15)';
     feedback.style.color = '#f87171';
-    feedback.innerText = '❌ Request failed: ' + err;
+    feedback.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Request failed: ' + err;
   });
 }
 
@@ -268,18 +268,18 @@ function verifyTestOtp() {
     if (data.status === 'success') {
       feedback.style.background = 'rgba(16, 185, 129, 0.15)';
       feedback.style.color = '#34d399';
-      feedback.innerText = `🎉 Verification Successful: ${data.message}`;
+      feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> Verification Successful: ${data.message}`;
     } else {
       feedback.style.background = 'rgba(239, 68, 68, 0.15)';
       feedback.style.color = '#f87171';
-      feedback.innerText = `❌ Verification Failed: ${data.message}`;
+      feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Verification Failed: ${data.message}`;
     }
   })
   .catch(err => {
     feedback.style.display = 'block';
     feedback.style.background = 'rgba(239, 68, 68, 0.15)';
     feedback.style.color = '#f87171';
-    feedback.innerText = '❌ Request error: ' + err;
+    feedback.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Request error: ' + err;
   });
 }
 </script>
