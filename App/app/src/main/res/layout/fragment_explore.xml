@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface_background"
-    android:fitsSystemWindows="true">
+    android:background="@color/surface_background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_explore"
@@ -222,7 +221,12 @@
                     android:layout_height="44dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1.2"
-                    android:backgroundTint="#FEE2E2"
+                    android:backgroundTint="@color/siren_button_bg"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="6dp"
                     android:text="🔊 Siren Alarm"
                     android:textColor="#EF4444"
                     android:textSize="12sp"
@@ -240,6 +244,11 @@
                     android:layout_marginStart="3dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight="1"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="6dp"
                     android:text="🚨 Call 112"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="12sp"
@@ -255,6 +264,11 @@
                     android:layout_marginStart="3dp"
                     android:layout_weight="1.2"
                     android:backgroundTint="#10B981"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="6dp"
                     android:text="🗺️ Safe Route"
                     android:textColor="#FFFFFF"
                     android:textSize="12sp"
@@ -356,9 +370,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:minWidth="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="0dp"
                         android:paddingHorizontal="8dp"
                         android:text="1 km"
-                        android:textSize="10.5sp" />
+                        android:textColor="@color/btn_radius_text_selector"
+                        android:textSize="10.5sp"
+                        app:backgroundTint="@color/btn_radius_bg_selector"
+                        app:strokeColor="@color/btn_radius_stroke_selector" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_radius_3km"
@@ -366,9 +386,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:minWidth="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="0dp"
                         android:paddingHorizontal="8dp"
                         android:text="3 km"
-                        android:textSize="10.5sp" />
+                        android:textColor="@color/btn_radius_text_selector"
+                        android:textSize="10.5sp"
+                        app:backgroundTint="@color/btn_radius_bg_selector"
+                        app:strokeColor="@color/btn_radius_stroke_selector" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_radius_5km"
@@ -376,9 +402,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:minWidth="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="0dp"
                         android:paddingHorizontal="8dp"
                         android:text="5 km"
-                        android:textSize="10.5sp" />
+                        android:textColor="@color/btn_radius_text_selector"
+                        android:textSize="10.5sp"
+                        app:backgroundTint="@color/btn_radius_bg_selector"
+                        app:strokeColor="@color/btn_radius_stroke_selector" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_radius_10km"
@@ -386,9 +418,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:minWidth="0dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="0dp"
                         android:paddingHorizontal="8dp"
                         android:text="10 km"
-                        android:textSize="10.5sp" />
+                        android:textColor="@color/btn_radius_text_selector"
+                        android:textSize="10.5sp"
+                        app:backgroundTint="@color/btn_radius_bg_selector"
+                        app:strokeColor="@color/btn_radius_stroke_selector" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
 
@@ -410,7 +448,7 @@
                         android:id="@+id/chip_filter_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_pill_check_in"
+                        android:background="@drawable/bg_haven_chip_selected"
                         android:clickable="true"
                         android:focusable="true"
                         android:paddingHorizontal="14dp"
@@ -425,13 +463,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_scenario_card_normal"
+                        android:background="@drawable/bg_haven_chip_unselected"
                         android:clickable="true"
                         android:focusable="true"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="7dp"
                         android:text="🚓 Police &amp; Pink Booths"
-                        android:textColor="@color/textColorPrimary"
+                        android:textColor="@color/textColorSecondary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -440,13 +478,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_scenario_card_normal"
+                        android:background="@drawable/bg_haven_chip_unselected"
                         android:clickable="true"
                         android:focusable="true"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="7dp"
                         android:text="🏥 Hospitals &amp; ER"
-                        android:textColor="@color/textColorPrimary"
+                        android:textColor="@color/textColorSecondary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -455,13 +493,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_scenario_card_normal"
+                        android:background="@drawable/bg_haven_chip_unselected"
                         android:clickable="true"
                         android:focusable="true"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="7dp"
                         android:text="💊 24/7 Pharmacy"
-                        android:textColor="@color/textColorPrimary"
+                        android:textColor="@color/textColorSecondary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -470,13 +508,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_scenario_card_normal"
+                        android:background="@drawable/bg_haven_chip_unselected"
                         android:clickable="true"
                         android:focusable="true"
                         android:paddingHorizontal="14dp"
                         android:paddingVertical="7dp"
                         android:text="🚇 Transit &amp; Safe Hubs"
-                        android:textColor="@color/textColorPrimary"
+                        android:textColor="@color/textColorSecondary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>

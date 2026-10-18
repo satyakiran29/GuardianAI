@@ -13,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.ColorStateList;
+import android.graphics.drawable.GradientDrawable;
+import android.util.TypedValue;
+import androidx.core.widget.ImageViewCompat;
 import com.android.sheguard.R;
 import com.android.sheguard.model.SafeHavenModel;
 import com.google.android.material.button.MaterialButton;
@@ -66,27 +70,39 @@ public class SafeHavenAdapter extends RecyclerView.Adapter<SafeHavenAdapter.View
         holder.tvStatus.setText(model.getOpenStatus());
         holder.tvCategoryBadge.setText(model.getCategoryBadge());
 
-        // Category Icon & Tint
+        // Category Icon, Tint & Background Glow
         int iconRes = R.drawable.ic_logo_guardian_shield;
         int iconColor = ContextCompat.getColor(context, R.color.colorPinkNeon);
+        int boxBgColor = Color.parseColor("#26FF2E93");
 
         String category = model.getCategory() != null ? model.getCategory().toUpperCase() : "";
         if (SafeHavenModel.CAT_POLICE.equals(category)) {
             iconRes = R.drawable.ic_shield;
             iconColor = Color.parseColor("#3B82F6"); // Bright Blue
+            boxBgColor = Color.parseColor("#263B82F6"); // Translucent Blue
         } else if (SafeHavenModel.CAT_HOSPITAL.equals(category)) {
             iconRes = R.drawable.ic_shield_heart_vector;
             iconColor = Color.parseColor("#EF4444"); // Red Cross
+            boxBgColor = Color.parseColor("#26EF4444"); // Translucent Red
         } else if (SafeHavenModel.CAT_PHARMACY.equals(category)) {
             iconRes = R.drawable.ic_safe_places_pin;
             iconColor = Color.parseColor("#10B981"); // Emerald
+            boxBgColor = Color.parseColor("#2610B981"); // Translucent Emerald
         } else if (SafeHavenModel.CAT_TRANSIT.equals(category)) {
             iconRes = R.drawable.ic_route_safety;
             iconColor = Color.parseColor("#8B5CF6"); // Purple
+            boxBgColor = Color.parseColor("#268B5CF6"); // Translucent Purple
         }
 
         holder.ivCategoryIcon.setImageResource(iconRes);
-        holder.ivCategoryIcon.setColorFilter(iconColor);
+        ImageViewCompat.setImageTintList(holder.ivCategoryIcon, ColorStateList.valueOf(iconColor));
+
+        GradientDrawable iconBoxDrawable = new GradientDrawable();
+        iconBoxDrawable.setShape(GradientDrawable.OVAL);
+        iconBoxDrawable.setColor(boxBgColor);
+        int strokePx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1.2f, context.getResources().getDisplayMetrics());
+        iconBoxDrawable.setStroke(strokePx, iconColor);
+        holder.flIconBox.setBackground(iconBoxDrawable);
 
         holder.ivVerifiedBadge.setVisibility(model.isVerified() ? View.VISIBLE : View.GONE);
 

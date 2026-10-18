@@ -74,4 +74,7 @@
     <!-- Companion Banner (Night) -->
     <color name="ai_banner_bg">#111624</color>
     <color name="ai_banner_stroke">#1E293B</color>
+
+    <!-- Siren Deterrent Button (Night) -->
+    <color name="siren_button_bg">#2D1217</color>
 </resources>

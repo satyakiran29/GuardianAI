@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.content.Context;
@@ -35,6 +36,7 @@ import com.google.gson.JsonObject;
 
 public class LocationReplayFragment extends Fragment {
 
+    private static final String TAG = "LocationReplay";
     private FragmentLocationReplayBinding binding;
     private String wardPhone = "";
     private String wardName = "Protected User";
@@ -95,7 +97,7 @@ public class LocationReplayFragment extends Fragment {
             "<body>\n" +
             "    <div id=\"map\"></div>\n" +
             "    <script>\n" +
-            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([%.5f, %.5f], 14);\n" +
+            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([__INIT_LAT__, __INIT_LNG__], 14);\n" +
             "        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);\n" +
             "\n" +
             "        let trail = [];\n" +
@@ -122,7 +124,7 @@ public class LocationReplayFragment extends Fragment {
             "            breadcrumbCircles = [];\n" +
             "\n" +
             "            if (!trail || trail.length === 0) {\n" +
-            "                window.initDefaultLocation(%.5f, %.5f, 'Protected User');\n" +
+            "                window.initDefaultLocation(__INIT_LAT__, __INIT_LNG__, 'Protected User');\n" +
             "                return;\n" +
             "            }\n" +
             "\n" +
@@ -235,6 +237,12 @@ public class LocationReplayFragment extends Fragment {
         binding.tvReplayTitle.setText(wardName);
         binding.tvReplaySubtitle.setText("24h Telemetry Replay • Movement Review");
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.layoutTopBar, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(v.getPaddingLeft(), statusBarHeight, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
+
         binding.btnBack.setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
 
         initWebView();
@@ -267,8 +275,14 @@ public class LocationReplayFragment extends Fragment {
             }
         });
 
-        String mapHtml = String.format(Locale.US, LEAFLET_HTML, wardLat, wardLng, wardLat, wardLng, wardLat, wardLng);
-        binding.webViewMap.loadDataWithBaseURL("https://guardianai.app", mapHtml, "text/html", "UTF-8", null);
+        try {
+            String mapHtml = LEAFLET_HTML
+                    .replace("__INIT_LAT__", String.format(Locale.US, "%.5f", wardLat))
+                    .replace("__INIT_LNG__", String.format(Locale.US, "%.5f", wardLng));
+            binding.webViewMap.loadDataWithBaseURL("https://guardianai.app", mapHtml, "text/html", "UTF-8", null);
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading replay map: " + e.getMessage(), e);
+        }
     }
 
     private void setupControls() {

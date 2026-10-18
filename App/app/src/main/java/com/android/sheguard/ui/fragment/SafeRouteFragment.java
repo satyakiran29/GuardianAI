@@ -148,7 +148,7 @@ public class SafeRouteFragment extends Fragment {
             "<body>\n" +
             "    <div id=\"map\"></div>\n" +
             "    <script>\n" +
-            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([%.5f, %.5f], 14);\n" +
+            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([__INIT_LAT__, __INIT_LNG__], 14);\n" +
             "        let tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);\n" +
             "\n" +
             "        let originMarker = null;\n" +
@@ -393,6 +393,21 @@ public class SafeRouteFragment extends Fragment {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
 
+        // Allow smooth map pan/zoom without NestedScrollView stealing touch events
+        binding.webViewMap.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case android.view.MotionEvent.ACTION_DOWN:
+                case android.view.MotionEvent.ACTION_MOVE:
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+                case android.view.MotionEvent.ACTION_UP:
+                case android.view.MotionEvent.ACTION_CANCEL:
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    break;
+            }
+            return false;
+        });
+
         binding.webViewMap.addJavascriptInterface(new SafeRouteJsInterface(), "AndroidBridge");
         binding.webViewMap.setWebViewClient(new WebViewClient() {
             @Override
@@ -421,10 +436,19 @@ public class SafeRouteFragment extends Fragment {
         });
 
         binding.pbMapLoading.setVisibility(View.VISIBLE);
-        String mapHtml = String.format(Locale.US, LEAFLET_ROUTE_HTML,
-                currentLatitude != 0.0 ? currentLatitude : 17.4482,
-                currentLongitude != 0.0 ? currentLongitude : 78.3914);
-        binding.webViewMap.loadDataWithBaseURL("https://guardianai.local", mapHtml, "text/html", "UTF-8", null);
+        try {
+            double startLat = currentLatitude != 0.0 ? currentLatitude : 17.4482;
+            double startLng = currentLongitude != 0.0 ? currentLongitude : 78.3914;
+            String mapHtml = LEAFLET_ROUTE_HTML
+                    .replace("__INIT_LAT__", String.format(Locale.US, "%.5f", startLat))
+                    .replace("__INIT_LNG__", String.format(Locale.US, "%.5f", startLng));
+            binding.webViewMap.loadDataWithBaseURL("https://guardianai.local", mapHtml, "text/html", "UTF-8", null);
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading route map webview: " + e.getMessage(), e);
+            if (binding != null) {
+                binding.pbMapLoading.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void setupListeners() {
@@ -905,7 +929,12 @@ public class SafeRouteFragment extends Fragment {
     public void onDestroyView() {
         stopLiveGpsTracking();
         if (binding != null) {
-            binding.webViewMap.destroy();
+            try {
+                binding.webViewMap.stopLoading();
+                binding.webViewMap.clearHistory();
+                binding.webViewMap.removeAllViews();
+                binding.webViewMap.destroy();
+            } catch (Exception ignored) {}
         }
         super.onDestroyView();
         binding = null;

@@ -164,7 +164,7 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
             "<body>\n" +
             "    <div id=\"map\"></div>\n" +
             "    <script>\n" +
-            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([%.5f, %.5f], 14);\n" +
+            "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([__INIT_LAT__, __INIT_LNG__], 14);\n" +
             "        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);\n" +
             "\n" +
             "        let userMarker = null;\n" +
@@ -259,13 +259,19 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.appBarExplore, (v, insets) -> {
+            int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(0, statusBarHeight, 0, 0);
+            return insets;
+        });
+
         setupRecyclerView();
         setupWebViewMap();
         setupClickListeners();
         setupCategoryChips();
         setupRadiusToggles();
 
-        if (LocationHelper.hasLocationPermission(requireContext())) {
+        if (getContext() != null && LocationHelper.hasLocationPermission(getContext())) {
             acquireCurrentLocation();
         } else {
             locationPermissionLauncher.launch(new String[]{
@@ -281,7 +287,7 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
         binding.rvSafeHavens.setAdapter(adapter);
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     private void setupWebViewMap() {
         WebSettings webSettings = binding.webViewRadar.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -289,6 +295,21 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
         webSettings.setLoadsImagesAutomatically(true);
         webSettings.setAllowFileAccess(false);
         webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
+        // Allow smooth map pan/zoom without NestedScrollView stealing touch events
+        binding.webViewRadar.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case android.view.MotionEvent.ACTION_DOWN:
+                case android.view.MotionEvent.ACTION_MOVE:
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+                case android.view.MotionEvent.ACTION_UP:
+                case android.view.MotionEvent.ACTION_CANCEL:
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    break;
+            }
+            return false;
+        });
 
         binding.webViewRadar.addJavascriptInterface(new Object() {
             @JavascriptInterface
@@ -312,8 +333,17 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
         });
 
         binding.pbRadarLoading.setVisibility(View.VISIBLE);
-        String formattedHtml = String.format(Locale.US, LEAFLET_RADAR_HTML, currentLatitude, currentLongitude);
-        binding.webViewRadar.loadDataWithBaseURL("https://guardianai.local", formattedHtml, "text/html", "UTF-8", null);
+        try {
+            String formattedHtml = LEAFLET_RADAR_HTML
+                    .replace("__INIT_LAT__", String.format(Locale.US, "%.5f", currentLatitude))
+                    .replace("__INIT_LNG__", String.format(Locale.US, "%.5f", currentLongitude));
+            binding.webViewRadar.loadDataWithBaseURL("https://guardianai.local", formattedHtml, "text/html", "UTF-8", null);
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading radar webview: " + e.getMessage(), e);
+            if (binding != null) {
+                binding.pbRadarLoading.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void setupClickListeners() {
@@ -369,7 +399,10 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
         } else {
             SosUtil.stopSiren();
             binding.btnEmergencyScreamer.setText("🔊 Siren Alarm");
-            binding.btnEmergencyScreamer.setBackgroundTintList(ColorStateList.valueOf(0xFFFEE2E2));
+            if (getContext() != null) {
+                int sirenBg = ContextCompat.getColor(getContext(), R.color.siren_button_bg);
+                binding.btnEmergencyScreamer.setBackgroundTintList(ColorStateList.valueOf(sirenBg));
+            }
             binding.btnEmergencyScreamer.setTextColor(0xFFEF4444);
             Snackbar.make(binding.getRoot(), "Siren stopped.", Snackbar.LENGTH_SHORT).show();
         }
@@ -405,11 +438,11 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
     private void highlightSelectedChip(TextView[] chips, int selectedIndex) {
         for (int i = 0; i < chips.length; i++) {
             if (i == selectedIndex) {
-                chips[i].setBackgroundResource(R.drawable.bg_pill_check_in);
+                chips[i].setBackgroundResource(R.drawable.bg_haven_chip_selected);
                 chips[i].setTextColor(0xFFFFFFFF);
             } else {
-                chips[i].setBackgroundResource(R.drawable.bg_scenario_card_normal);
-                chips[i].setTextColor(ContextCompat.getColor(requireContext(), R.color.textColorPrimary));
+                chips[i].setBackgroundResource(R.drawable.bg_haven_chip_unselected);
+                chips[i].setTextColor(ContextCompat.getColor(requireContext(), R.color.textColorSecondary));
             }
         }
     }
@@ -438,7 +471,9 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
     }
 
     private void acquireCurrentLocation() {
-        Location best = LocationHelper.getBestLastKnownLocation(requireContext());
+        if (!isAdded() || getContext() == null) return;
+        Context ctx = getContext();
+        Location best = LocationHelper.getBestLastKnownLocation(ctx);
         if (best != null) {
             currentLatitude = best.getLatitude();
             currentLongitude = best.getLongitude();
@@ -446,7 +481,7 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
             updateLocationUI();
         }
 
-        LocationHelper.requestSingleLocationUpdate(requireContext(), new LocationHelper.LocationResultListener() {
+        LocationHelper.requestSingleLocationUpdate(ctx, new LocationHelper.LocationResultListener() {
             @Override
             public void onLocationReceived(double latitude, double longitude, String addressName) {
                 if (!isAdded() || binding == null) return;
@@ -796,7 +831,12 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
             bundle.putDouble("dest_lat", model.getLatitude());
             bundle.putDouble("dest_lng", model.getLongitude());
             bundle.putString("dest_name", model.getName());
-            Navigation.findNavController(requireView()).navigate(R.id.action_exploreFragment_to_safeRouteFragment, bundle);
+            View currentView = getView();
+            if (currentView != null) {
+                Navigation.findNavController(currentView).navigate(R.id.action_exploreFragment_to_safeRouteFragment, bundle);
+            } else {
+                onDirectionsClicked(model);
+            }
         } catch (Exception e) {
             Log.e(TAG, "Navigation to safeRoute error: " + e.getMessage());
             onDirectionsClicked(model);
@@ -806,11 +846,18 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
     @Override
     public void onDestroyView() {
         if (isSirenActive) {
-            SosUtil.stopSiren();
+            try {
+                SosUtil.stopSiren();
+            } catch (Exception ignored) {}
             isSirenActive = false;
         }
         if (binding != null) {
-            binding.webViewRadar.destroy();
+            try {
+                binding.webViewRadar.stopLoading();
+                binding.webViewRadar.clearHistory();
+                binding.webViewRadar.removeAllViews();
+                binding.webViewRadar.destroy();
+            } catch (Exception ignored) {}
             binding = null;
         }
         super.onDestroyView();
