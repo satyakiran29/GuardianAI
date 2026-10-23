@@ -73,10 +73,6 @@ public class AppleGlassManager {
         Context context = rootView.getContext();
         if (context == null) return;
 
-        if (rootView.getId() == R.id.coordinatorLayout) {
-            rootView.setBackgroundColor(Color.TRANSPARENT);
-        }
-
         int glassCardBg = isNightMode
                 ? Color.argb(70, 30, 34, 53)      // Translucent dark acrylic
                 : Color.argb(242, 255, 255, 255); // Translucent frosted milk glass
