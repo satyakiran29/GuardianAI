@@ -6,10 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.sheguard.R;
@@ -31,15 +29,15 @@ public class HelplineFragment extends Fragment {
         binding = FragmentHelplineBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.header.toolbar);
-        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-            binding.header.collapsingToolbar.setTitle(getString(R.string.activity_helpline_title));
-            binding.header.collapsingToolbar.setSubtitle(getString(R.string.activity_helpline_desc));
-        }
+        binding.btnBack.setOnClickListener(v -> {
+            try {
+                Navigation.findNavController(v).navigateUp();
+            } catch (Exception e) {
+                requireActivity().onBackPressed();
+            }
+        });
 
+        helplines.clear();
         helplines.add(new HelplineModel(
                 getString(R.string.helpline_name1),
                 getString(R.string.helpline_desc1),
@@ -110,12 +108,19 @@ public class HelplineFragment extends Fragment {
                 getString(R.string.helpline_num12_2)
         ));
 
+        binding.tvHelplineCount.setText(String.valueOf(helplines.size()));
+
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new HelplineAdapter(requireContext(), helplines);
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setHasFixedSize(true);
-        binding.recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

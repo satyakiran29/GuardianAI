@@ -199,123 +199,90 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="104dp">
 
-                <!-- 1. HERO SECTION: "Stronger Together" + Hero Art + Location Pill -->
+                <!-- 1. HERO SECTION: Greeting + Location Pill -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:layout_marginTop="2dp">
 
-                    <!-- Left Typography & Location Pill -->
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/tv_home_greeting_title"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
-                        android:orientation="vertical">
+                        android:text="Welcome,"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-black"
+                        android:includeFontPadding="false" />
 
-                        <TextView
-                            android:id="@+id/tv_home_greeting_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Welcome,"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif-black"
-                            android:includeFontPadding="false" />
+                    <TextView
+                        android:id="@+id/tv_home_greeting_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Stay Safe"
+                        android:textColor="?attr/themeAccent"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:fontFamily="sans-serif-black"
+                        android:includeFontPadding="false" />
 
-                        <TextView
-                            android:id="@+id/tv_home_greeting_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Stay Safe"
-                            android:textColor="?attr/themeAccent"
-                            android:textSize="28sp"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif-black"
-                            android:includeFontPadding="false" />
+                    <TextView
+                        android:id="@+id/tv_home_status_subtext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="You're protected • Emergency standby"
+                        android:textColor="@color/textColorSecondary"
+                        android:textSize="13sp" />
 
-                        <TextView
-                            android:id="@+id/tv_home_status_subtext"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="You're protected • Emergency standby"
-                            android:textColor="@color/textColorSecondary"
-                            android:textSize="13sp" />
+                    <!-- Location Pill: Home • Low Risk Area > -->
+                    <LinearLayout
+                        android:id="@+id/card_crowd_safety"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_hero_location_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:clickable="true"
+                        android:focusable="true">
 
-                        <!-- Location Pill: Home • Low Risk Area > -->
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_location_on"
+                            app:tint="?attr/themeAccent"
+                            android:contentDescription="Location" />
+
                         <LinearLayout
-                            android:id="@+id/card_crowd_safety"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="14dp"
-                            android:background="@drawable/bg_hero_location_pill"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:paddingTop="6dp"
-                            android:paddingBottom="6dp"
-                            android:clickable="true"
-                            android:focusable="true">
+                            android:layout_marginStart="8dp"
+                            android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_location_on"
-                                app:tint="?attr/themeAccent"
-                                android:contentDescription="Location" />
-
-                            <LinearLayout
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:orientation="vertical">
+                                android:text="Current location"
+                                android:textColor="@color/textColorMuted"
+                                android:textSize="10sp" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Current location"
-                                    android:textColor="@color/textColorMuted"
-                                    android:textSize="10sp" />
-
-                                <TextView
-                                    android:id="@+id/tv_current_area_label"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Safe Area ›"
-                                    android:textColor="@color/textColorPrimary"
-                                    android:textSize="11.5sp"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/tv_current_area_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Safe Area ›"
+                                android:textColor="@color/textColorPrimary"
+                                android:textSize="11.5sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
-
-                    <!-- Right Hero Art Clean Circle -->
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="144dp"
-                        android:layout_weight="0.8"
-                        android:layout_marginStart="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center"
-                            app:cardCornerRadius="60dp"
-                            app:cardElevation="2dp"
-                            app:cardBackgroundColor="@color/surface_card_secondary">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/img_hero_woman_safe"
-                                android:contentDescription="Hero Safe Woman" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
                 </LinearLayout>
 
                 <!-- 2. EMERGENCY SOS MAIN CARD (Glowing Red/Pink Card + 3D Circular Button + 4 Inset Icons) -->

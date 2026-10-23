@@ -73,7 +73,7 @@ public class AppleGlassManager {
         Context context = rootView.getContext();
         if (context == null) return;
 
-        if (rootView.getId() != R.id.drawerLayout) {
+        if (rootView.getId() == R.id.coordinatorLayout) {
             rootView.setBackgroundColor(Color.TRANSPARENT);
         }
 

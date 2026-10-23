@@ -88,7 +88,8 @@ public class ThemeUtil {
             activity.getTheme().applyStyle(R.style.ThemeOverlay_PureBlack, true);
             activity.getWindow().getDecorView().setBackgroundColor(Color.BLACK);
         } else {
-            activity.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+            int surfaceBg = androidx.core.content.ContextCompat.getColor(activity, R.color.surface_background);
+            activity.getWindow().getDecorView().setBackgroundColor(surfaceBg);
         }
 
         WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(activity.getWindow(), activity.getWindow().getDecorView());

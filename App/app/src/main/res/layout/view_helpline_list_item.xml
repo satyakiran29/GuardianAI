@@ -1,105 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center_vertical"
-    android:minHeight="?android:listPreferredItemHeight"
-    android:paddingHorizontal="24dp"
-    android:paddingVertical="16dp">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_card_safety_dark"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/name_title"
-        style="@style/TextAppearance.Material3.BodyMedium"
-        android:layout_width="0dp"
+    <!-- Top Row: Icon + Name & Category + Status Badge -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/name"
-        android:textColor="?attr/colorPrimary"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_min="wrap" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/number_title"
-        style="@style/TextAppearance.Material3.BodyMedium"
-        android:layout_width="0dp"
+        <!-- Emergency Icon Avatar -->
+        <FrameLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_circle_info">
+
+            <ImageView
+                android:id="@+id/iv_helpline_icon"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_call"
+                app:tint="#34D399"
+                android:contentDescription="Helpline" />
+        </FrameLayout>
+
+        <!-- Name & Badges Column -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="National Emergency Number" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_monogram_badge"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:textColor="#38BDF8"
+                    android:textSize="10.5sp"
+                    android:textStyle="bold"
+                    tools:text="Specialized SOS" />
+
+                <TextView
+                    android:id="@+id/tv_status_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:textColor="#10B981"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    tools:text="🟢 24/7" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Helpline Number Display Box -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/phone"
-        android:textColor="?attr/colorPrimary"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/name_title"
-        app:layout_constraintTop_toBottomOf="@id/name"
-        app:layout_constraintTop_toTopOf="@id/number"
-        app:layout_constraintWidth_min="wrap" />
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_monogram_badge"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/details_title"
-        style="@style/TextAppearance.Material3.BodyMedium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/details"
-        android:textColor="?attr/colorPrimary"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@id/name_title"
-        app:layout_constraintTop_toBottomOf="@id/number"
-        app:layout_constraintTop_toTopOf="@id/details"
-        app:layout_constraintWidth_min="wrap" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📞"
+            android:textSize="14sp" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:barrierDirection="end"
-        app:barrierMargin="8dp"
-        app:constraint_referenced_ids="name_title,number_title,details_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:textSize="14.5sp"
+            android:textStyle="bold"
+            tools:text="112" />
+    </LinearLayout>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/name"
-        style="@style/TextAppearance.Material3.BodyMedium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:justificationMode="inter_word"
-        android:textColor="@color/text_color_secondary"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@id/barrier"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/number"
-        style="@style/TextAppearance.Material3.BodyMedium"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:justificationMode="inter_word"
-        android:textColor="@color/text_color_secondary"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toTopOf="@id/number_title" />
-
-    <com.google.android.material.textview.MaterialTextView
+    <!-- Details / Description Body -->
+    <TextView
         android:id="@+id/details"
-        style="@style/TextAppearance.Material3.BodyMedium"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:justificationMode="inter_word"
-        android:textColor="@color/text_color_secondary"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@+id/number"
-        app:layout_constraintTop_toBottomOf="@id/number" />
+        android:layout_marginTop="10dp"
+        android:textColor="#94A3B8"
+        android:textSize="13sp"
+        android:lineSpacingExtra="2dp"
+        tools:text="Single emergency helpline number for Police, Fire, and Ambulance dispatch across all regions." />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Action Buttons Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_call"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Call Helpline"
+            android:textSize="12.5sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_call"
+            app:iconSize="16dp"
+            app:iconGravity="textStart"
+            app:cornerRadius="10dp"
+            app:backgroundTint="#10B981" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Copy"
+            android:textSize="12.5sp"
+            android:textColor="#94A3B8"
+            app:icon="@drawable/ic_copy"
+            app:iconSize="16dp"
+            app:iconTint="#94A3B8"
+            app:iconGravity="textStart"
+            app:cornerRadius="10dp"
+            app:backgroundTint="#1F2026"
+            app:strokeColor="#2D303E"
+            app:strokeWidth="1dp" />
+    </LinearLayout>
+
+</LinearLayout>

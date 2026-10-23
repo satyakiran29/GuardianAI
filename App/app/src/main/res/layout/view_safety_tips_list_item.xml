@@ -1,34 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center_vertical"
-    android:minHeight="?android:listPreferredItemHeight"
-    android:orientation="horizontal"
-    android:paddingVertical="16dp">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_card_safety_dark"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <View
-        android:layout_width="8dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="18dp"
-        android:background="@drawable/container"
-        android:backgroundTint="?attr/colorPrimary" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tips"
-        style="@style/TextAppearance.Material3.BodyMedium"
-        android:layout_width="0dp"
+    <!-- Top Meta Row: Tip Number + Category Badge + Copy Action -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start|top"
-        android:layout_marginVertical="4dp"
-        android:layout_marginEnd="24dp"
-        android:layout_weight="1"
-        android:justificationMode="inter_word"
-        android:textColor="@color/text_color_secondary"
-        android:textSize="15sp" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Number Monogram -->
+        <FrameLayout
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/bg_circle_info">
+
+            <TextView
+                android:id="@+id/tv_tip_index"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="?attr/themeAccent"
+                android:textSize="12.5sp"
+                android:textStyle="bold"
+                tools:text="01" />
+        </FrameLayout>
+
+        <!-- Category Pill Badge -->
+        <TextView
+            android:id="@+id/tv_tip_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_monogram_badge"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:textColor="#38BDF8"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            tools:text="Awareness" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Copy Action Button -->
+        <ImageButton
+            android:id="@+id/btn_copy_tip"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_circle_info"
+            android:src="@drawable/ic_copy"
+            app:tint="#94A3B8"
+            android:contentDescription="Copy Tip" />
+    </LinearLayout>
+
+    <!-- Main Tip Advice Body -->
+    <TextView
+        android:id="@+id/tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="#F8FAFC"
+        android:textSize="14sp"
+        android:lineSpacingExtra="3dp"
+        tools:text="Be Alert! Scan the area as you walk. Be aware of your surroundings and walk with confidence." />
+
+    <!-- Subtle Verification / Tap Hint Footer -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:src="@drawable/ic_shield_check_vector"
+            app:tint="#64748B"
+            android:contentDescription="Verified" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Guardian Tip • Tap to copy"
+            android:textColor="#64748B"
+            android:textSize="11sp" />
+    </LinearLayout>
 
 </LinearLayout>
