@@ -44,10 +44,10 @@ public class AiAssistantFragment extends Fragment {
 
         binding.btnClearChat.setOnClickListener(v -> resetChat());
 
-        binding.chipQ1.setOnClickListener(v -> handleQuestion("🚨 I feel I'm being followed"));
-        binding.chipQ2.setOnClickListener(v -> handleQuestion("🚕 Safety tips for night cab"));
-        binding.chipQ3.setOnClickListener(v -> handleQuestion("🥋 Key self-defense moves"));
-        binding.chipQ4.setOnClickListener(v -> handleQuestion("⚖️ My legal rights in public"));
+        binding.chipQ1.setOnClickListener(v -> handleQuestion("I feel I am being followed"));
+        binding.chipQ2.setOnClickListener(v -> handleQuestion("Safety tips for night cab"));
+        binding.chipQ3.setOnClickListener(v -> handleQuestion("Key self-defense moves"));
+        binding.chipQ4.setOnClickListener(v -> handleQuestion("My legal rights in public"));
 
         binding.fabSendAi.setOnClickListener(v -> {
             String query = binding.etAiPrompt.getText() != null ? binding.etAiPrompt.getText().toString().trim() : "";
@@ -73,7 +73,7 @@ public class AiAssistantFragment extends Fragment {
         addUserBubble(query);
 
         // Add temporary loading indicator bubble
-        MaterialCardView loadingCard = addAiBubble("⚡ GuardianAI (Groq AI) is analyzing your safety situation...");
+        MaterialCardView loadingCard = addAiBubble("GuardianAI is analyzing your safety situation...");
 
         String lang = com.android.sheguard.util.LocaleUtil.getLanguage();
         String languageName = com.android.sheguard.util.LocaleUtil.getLanguageName(requireContext());
@@ -116,7 +116,7 @@ public class AiAssistantFragment extends Fragment {
         inner.setPadding(dpToPx(14), dpToPx(12), dpToPx(14), dpToPx(12));
 
         TextView tag = new TextView(requireContext());
-        tag.setText("👤 You");
+        tag.setText("You");
         tag.setTextColor(Color.parseColor("#E0E7FF"));
         tag.setTextSize(11f);
         tag.setGravity(Gravity.END);
@@ -159,7 +159,7 @@ public class AiAssistantFragment extends Fragment {
         headerRow.setPadding(0, 0, 0, dpToPx(6));
 
         TextView title = new TextView(requireContext());
-        title.setText("🧠 GuardianAI Intelligence");
+        title.setText("GuardianAI Intelligence");
         title.setTextColor(Color.parseColor("#A78BFA"));
         title.setTextSize(11.5f);
         headerRow.addView(title);
@@ -210,38 +210,38 @@ public class AiAssistantFragment extends Fragment {
     private String generateSafetyResponse(String query) {
         String lower = query.toLowerCase();
         if (lower.contains("follow") || lower.contains("chase") || lower.contains("behind")) {
-            return "🚨 **IMMEDIATE ACTION PLAN: BEING FOLLOWED**\n\n" +
-                    "1. **Do NOT head home** or into isolated lanes.\n" +
-                    "2. **Cross the street** to see if they follow your path. Make 4 right turns.\n" +
-                    "3. **Enter a crowded, well-lit store, restaurant, or bank ATM** immediately.\n" +
-                    "4. **Activate GuardianAI Safe Mode** or tap 1-Tap SOS to send your live GPS to your guardians.\n" +
-                    "5. **Call emergency helpline 109 / 112 / 999** while remaining in a public area.";
+            return "[IMMEDIATE ACTION PLAN: BEING FOLLOWED]\n\n" +
+                    "1. Do NOT head home or into deserted lanes.\n" +
+                    "2. Cross the street to confirm if you are followed. Turn 4 right corners.\n" +
+                    "3. Enter a crowded, well-lit pharmacy, restaurant, or 24/7 bank ATM immediately.\n" +
+                    "4. Activate GuardianAI Safe Mode or tap 1-Tap SOS to alert your trusted circle.\n" +
+                    "5. Call National Emergency Helpline 112 or Women Helpline 1091 while remaining in a public area.";
         } else if (lower.contains("cab") || lower.contains("taxi") || lower.contains("uber") || lower.contains("rapido")) {
-            return "🚕 **CAB & RIDE SAFETY CHECKLIST**\n\n" +
-                    "1. **Match number plates & driver photo** before getting in.\n" +
-                    "2. **Check the child-lock**: Ensure doors open from inside.\n" +
-                    "3. **Use GuardianAI Trip Monitoring**: Enter vehicle number and share live GPS telemetry with family.\n" +
-                    "4. **Pretend you are on a phone call** stating: *\"I'm in the cab with plate number [XYZ], reaching in 15 mins.\"*\n" +
-                    "5. Sit directly behind the driver's seat so they cannot reach back.";
+            return "[CAB & RIDE SAFETY CHECKLIST]\n\n" +
+                    "1. Verify vehicle number plate and driver photo before boarding.\n" +
+                    "2. Test inside door locks to ensure child-lock is disengaged.\n" +
+                    "3. Use GuardianAI Trip Monitoring to log vehicle details and share live telemetry.\n" +
+                    "4. Make an audible call stating: 'I am in vehicle [Number], arriving in 15 minutes.'\n" +
+                    "5. Sit directly behind the driver's seat to maintain tactical line-of-sight.";
         } else if (lower.contains("defense") || lower.contains("fight") || lower.contains("move") || lower.contains("protect")) {
-            return "🥋 **HIGH-IMPACT VULNERABLE TARGETS FOR DEFENSE**\n\n" +
-                    "• **Eyes**: Quick gouge / swipe.\n" +
-                    "• **Nose**: Upward open-palm strike to the base of the nose.\n" +
-                    "• **Throat / Windpipe**: Target with fingers or elbow.\n" +
-                    "• **Groin**: Strong knee strike upwards.\n" +
-                    "• **Shins / Foot Stomp**: Heavy heel stamp on opponent's toes.\n\n" +
-                    "💡 *Remember: Self-defense is strictly to create a 5-second window to sprint to safety!*";
+            return "[HIGH-IMPACT DEFENSE TARGETS]\n\n" +
+                    "• Eyes: Rapid gouge or palm swipe.\n" +
+                    "• Nose: Upward open-palm strike to the base of the nasal bone.\n" +
+                    "• Throat & Windpipe: Direct strike with knuckles or elbow.\n" +
+                    "• Groin: Explosive upward knee strike.\n" +
+                    "• Feet: Forceful heel stamp directly onto opponent's toes.\n\n" +
+                    "Key Principle: Self-defense creates an immediate 5-second escape window to sprint to safety.";
         } else if (lower.contains("right") || lower.contains("law") || lower.contains("police") || lower.contains("legal")) {
-            return "⚖️ **KEY SAFETY & LEGAL RIGHTS (PROTECTION ACTS)**\n\n" +
-                    "1. **Zero FIR**: You can register an FIR at ANY police station regardless of where the incident occurred.\n" +
-                    "2. **Right to Privacy**: Medical examination of survivors can only be conducted with consent.\n" +
-                    "3. **Emergency Police Response**: Dial **112 / 999 / 109** for instant dispatch.\n" +
-                    "4. **Free Legal Aid**: Victims are entitled to free state legal counsel.";
+            return "[KEY LEGAL RIGHTS & SAFETY ACTS]\n\n" +
+                    "1. Zero FIR: You can file an FIR at ANY police station across India, regardless of jurisdiction.\n" +
+                    "2. Right to Privacy: Medical examination requires explicit informed consent.\n" +
+                    "3. Emergency Police Response: Dial 112, 1091 (Women Helpline), or 181 (Domestic Abuse).\n" +
+                    "4. Free Legal Aid: Entitled to state legal defense representation under Legal Services Authorities Act.";
         } else {
-            return "🛡️ **GuardianAI Advice**:\n\n" +
-                    "• Stay in well-lit areas and trust your instincts.\n" +
-                    "• Keep your phone charged and enable **1-Tap SOS** and **Safe Mode**.\n" +
-                    "• If you feel an immediate threat, trigger the **Emergency Siren 🔊** to attract crowd attention immediately.";
+            return "[GUARDIAN AI SAFETY ADVICE]\n\n" +
+                    "• Stay in illuminated areas and trust your personal instincts.\n" +
+                    "• Keep phone battery charged and enable 1-Tap SOS and Safe Mode.\n" +
+                    "• If you sense imminent danger, activate Emergency Siren to draw instant public attention.";
         }
     }
 

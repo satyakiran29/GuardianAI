@@ -69,7 +69,7 @@
                 android:paddingEnd="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:text="🛡️ Verified"
+                android:text="Verified Guide"
                 android:textColor="#34D399"
                 android:textSize="11sp"
                 android:textStyle="bold" />

@@ -73,15 +73,28 @@
                     android:textStyle="bold"
                     tools:text="Specialized SOS" />
 
-                <TextView
-                    android:id="@+id/tv_status_badge"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:textColor="#10B981"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    tools:text="🟢 24/7" />
+                    android:layout_marginStart="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="7dp"
+                        android:layout_height="7dp"
+                        android:background="@drawable/ic_badge_online_green" />
+
+                    <TextView
+                        android:id="@+id/tv_status_badge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:textColor="#10B981"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        tools:text="24/7 Active" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -99,10 +112,12 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="📞"
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_call"
+            app:tint="#34D399"
+            android:contentDescription="Helpline Call" />
             android:textSize="14sp" />
 
         <TextView

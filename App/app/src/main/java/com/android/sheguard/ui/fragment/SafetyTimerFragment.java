@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,7 @@ import java.util.Locale;
 /**
  * Arrival & Safety Check-In (Dead Man's Switch).
  * Real-world human scenario presets: Cab Ride (15m), Walking (20m), Solo Run (35m),
- * Meeting (45m), Late Transit (60m), Custom Time (1m-180m).
+ * Meeting (45m), Late Transit (60m), Custom Time (5m-180m).
  * Displays active emergency contacts preview and optional trip note.
  * Auto-triggers SOS if user fails to check in before countdown expiry.
  */
@@ -89,10 +90,12 @@ public class SafetyTimerFragment extends Fragment {
         binding = FragmentSafetyTimerBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
-            int top = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
-            v.setPadding(0, top, 0, 0);
-            return insets;
+        binding.btnBack.setOnClickListener(v -> {
+            try {
+                Navigation.findNavController(v).navigateUp();
+            } catch (Exception e) {
+                requireActivity().onBackPressed();
+            }
         });
 
         loadTrustedCirclePreview();
@@ -144,14 +147,16 @@ public class SafetyTimerFragment extends Fragment {
         ArrayList<ContactModel> contacts = SosUtil.getStoredContacts(requireContext());
 
         if (contacts.isEmpty()) {
-            binding.ivCircleBadge.setText("⚠️");
+            binding.ivCircleBadge.setImageResource(R.drawable.ic_alert_triangle);
+            binding.ivCircleBadge.setImageTintList(ColorStateList.valueOf(0xFFF59E0B)); // Amber
             binding.tvCircleStatus.setText("No Emergency Contacts Saved");
-            binding.tvCircleStatus.setTextColor(0xFFF59E0B); // Amber
+            binding.tvCircleStatus.setTextColor(0xFFF59E0B);
             binding.tvCircleDetail.setText("Tap to add trusted contacts so GuardianAI knows who to alert.");
         } else {
-            binding.ivCircleBadge.setText("👥");
+            binding.ivCircleBadge.setImageResource(R.drawable.ic_my_circle_people);
+            binding.ivCircleBadge.setImageTintList(ColorStateList.valueOf(0xFF38BDF8)); // Sky blue
             binding.tvCircleStatus.setText("Alerts Will Notify " + contacts.size() + " Contact" + (contacts.size() > 1 ? "s" : ""));
-            binding.tvCircleStatus.setTextColor(0xFF38BDF8); // Calm sky blue
+            binding.tvCircleStatus.setTextColor(0xFF38BDF8);
 
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < contacts.size(); i++) {
@@ -306,7 +311,7 @@ public class SafetyTimerFragment extends Fragment {
 
         setRunningState();
         Snackbar.make(binding.getRoot(),
-                "🛡️ Safety Check-In armed for " + formatDurationShort(selectedMinutes) + " — tap 'I Am Safe' when you arrive.",
+                "Safety Check-In armed for " + formatDurationShort(selectedMinutes) + " — tap 'I Am Safe' when you arrive.",
                 Snackbar.LENGTH_LONG).show();
     }
 
@@ -366,7 +371,7 @@ public class SafetyTimerFragment extends Fragment {
         binding.btnToggleTimer.setText(getString(R.string.safety_timer_cancel_btn));
         binding.btnToggleTimer.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.surface_card_stroke));
         binding.btnCheckInSafe.setVisibility(View.VISIBLE);
-        binding.tvTimerStatus.setText("🟢 Check-In Guard Active — Tap below when you arrive safely");
+        binding.tvTimerStatus.setText("Check-In Guard Active — Tap below when you arrive safely");
         binding.tvTimerStatus.setTextColor(0xFF10B981);
         binding.sliderDuration.setEnabled(false);
         binding.etJourneyNote.setEnabled(false);
@@ -375,10 +380,10 @@ public class SafetyTimerFragment extends Fragment {
 
     private void setIdleState() {
         if (binding == null) return;
-        binding.btnToggleTimer.setText("🛡️ Start Safety Check-In");
+        binding.btnToggleTimer.setText("Start Safety Check-In");
         binding.btnToggleTimer.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryDark));
         binding.btnCheckInSafe.setVisibility(View.GONE);
-        binding.tvTimerStatus.setText("Ready · Select a preset or adjust duration below");
+        binding.tvTimerStatus.setText("Ready • Select a preset or adjust duration below");
         binding.tvTimerStatus.setTextColor(0xFF38BDF8);
         binding.sliderDuration.setEnabled(true);
         binding.etJourneyNote.setEnabled(true);
@@ -413,11 +418,11 @@ public class SafetyTimerFragment extends Fragment {
             // Escalation warning — less than 30s
             long secs = ms / 1000;
             binding.tvCountdownDigits.setTextColor(0xFFEF4444);
-            binding.tvTimerStatus.setText("⚠️ SOS dispatches in " + secs + "s — tap I Am Safe!");
+            binding.tvTimerStatus.setText("SOS dispatches in " + secs + "s — tap I Am Safe!");
             binding.tvTimerStatus.setTextColor(0xFFEF4444);
         } else {
             binding.tvCountdownDigits.setTextColor(0xFFFFFFFF);
-            binding.tvTimerStatus.setText("🟢 Check-In Guard Active — Tap below when you arrive safely");
+            binding.tvTimerStatus.setText("Check-In Guard Active — Tap below when you arrive safely");
             binding.tvTimerStatus.setTextColor(0xFF10B981);
         }
     }
@@ -426,11 +431,11 @@ public class SafetyTimerFragment extends Fragment {
         if (binding == null) return;
         if (getContext() != null) SosUtil.vibrateDevice(requireContext());
         Prefs.remove("dms_journey_note");
-        binding.tvTimerStatus.setText("✨ Glad you're safe! Check-in confirmed.");
+        binding.tvTimerStatus.setText("Glad you're safe! Check-in confirmed.");
         binding.tvTimerStatus.setTextColor(0xFF10B981);
         setIdleState();
         Snackbar.make(binding.getRoot(),
-                "✨ Checked in safely! Timer disarmed.",
+                "Checked in safely! Timer disarmed.",
                 Snackbar.LENGTH_LONG).show();
     }
 
@@ -438,7 +443,7 @@ public class SafetyTimerFragment extends Fragment {
         if (binding == null) return;
         binding.tvCountdownDigits.setText("00:00");
         binding.tvCountdownDigits.setTextColor(0xFFEF4444);
-        binding.tvTimerStatus.setText("🚨 EXPIRED — EMERGENCY SOS DISPATCHED TO CONTACTS");
+        binding.tvTimerStatus.setText("EXPIRED — EMERGENCY SOS DISPATCHED TO CONTACTS");
         binding.tvTimerStatus.setTextColor(0xFFEF4444);
         setIdleState();
     }

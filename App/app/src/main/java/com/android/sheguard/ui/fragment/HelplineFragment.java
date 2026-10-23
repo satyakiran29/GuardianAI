@@ -38,75 +38,18 @@ public class HelplineFragment extends Fragment {
         });
 
         helplines.clear();
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name1),
-                getString(R.string.helpline_desc1),
-                getString(R.string.helpline_num1)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name2),
-                getString(R.string.helpline_desc2),
-                getString(R.string.helpline_num2)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name3),
-                getString(R.string.helpline_desc3),
-                getString(R.string.helpline_num3)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name4),
-                getString(R.string.helpline_desc4),
-                getString(R.string.helpline_num4)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name5),
-                getString(R.string.helpline_desc5),
-                getString(R.string.helpline_num5_1),
-                getString(R.string.helpline_num5_2),
-                getString(R.string.helpline_num5_3),
-                getString(R.string.helpline_num5_4),
-                getString(R.string.helpline_num5_5),
-                getString(R.string.helpline_num5_6),
-                getString(R.string.helpline_num5_7)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name6),
-                getString(R.string.helpline_desc6),
-                getString(R.string.helpline_num6)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name7),
-                getString(R.string.helpline_desc7),
-                getString(R.string.helpline_num7_1),
-                getString(R.string.helpline_num7_2)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name8),
-                getString(R.string.helpline_desc8),
-                getString(R.string.helpline_num8)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name9),
-                getString(R.string.helpline_desc9),
-                getString(R.string.helpline_num9)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name10),
-                getString(R.string.helpline_desc10),
-                getString(R.string.helpline_num10_1),
-                getString(R.string.helpline_num10_2)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name11),
-                getString(R.string.helpline_desc11),
-                getString(R.string.helpline_num11)
-        ));
-        helplines.add(new HelplineModel(
-                getString(R.string.helpline_name12),
-                getString(R.string.helpline_desc12),
-                getString(R.string.helpline_num12_1),
-                getString(R.string.helpline_num12_2)
-        ));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name1), getString(R.string.helpline_desc1), getString(R.string.helpline_num1)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name2), getString(R.string.helpline_desc2), getString(R.string.helpline_num2)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name3), getString(R.string.helpline_desc3), getString(R.string.helpline_num3)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name4), getString(R.string.helpline_desc4), getString(R.string.helpline_num4)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name5), getString(R.string.helpline_desc5), getString(R.string.helpline_num5)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name6), getString(R.string.helpline_desc6), getString(R.string.helpline_num6)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name7), getString(R.string.helpline_desc7), getString(R.string.helpline_num7)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name8), getString(R.string.helpline_desc8), getString(R.string.helpline_num8)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name9), getString(R.string.helpline_desc9), getString(R.string.helpline_num9)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name10), getString(R.string.helpline_desc10), getString(R.string.helpline_num10)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name11), getString(R.string.helpline_desc11), getString(R.string.helpline_num11)));
+        helplines.add(new HelplineModel(getString(R.string.helpline_name12), getString(R.string.helpline_desc12), getString(R.string.helpline_num12)));
 
         binding.tvHelplineCount.setText(String.valueOf(helplines.size()));
 

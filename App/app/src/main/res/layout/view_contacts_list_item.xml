@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="★ Primary SOS Responder"
+            android:text="Primary SOS Responder"
             android:textColor="#F59E0B"
             android:textSize="11sp"
             android:textStyle="bold"

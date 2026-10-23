@@ -28,33 +28,33 @@ import java.util.regex.Pattern;
 public class HelplineAdapter extends RecyclerView.Adapter<HelplineAdapter.ViewHolder> {
 
     private static final String[] CATEGORIES = new String[]{
-            "Women Crisis & Safety",
             "National SOS & Police",
-            "Public Citizen Desk",
-            "Women Legal & Medical",
-            "Mental Health & Crisis",
-            "Psychosocial Support",
-            "Psychosocial Helpline",
-            "GBV / SRHR Helpdesk",
-            "Legal Aid & Shelter",
-            "SRHR & Legal Support",
-            "Primary Healthcare & SGBV",
-            "Crisis Case Management"
+            "Women Crisis & Safety",
+            "Women Domestic Distress",
+            "National Commission (NCW)",
+            "Police Control Desk",
+            "Emergency Medical & Ambulance",
+            "Fire & Disaster Rescue",
+            "National Cyber Crime",
+            "Childline 24/7 Protection",
+            "KIRAN Mental Health Support",
+            "RPF Railway Security",
+            "Highway Emergency Patrol"
     };
 
     private static final String[] STATUSES = new String[]{
-            "🟢 24/7 Available",
-            "🟢 24/7 Instant Dispatch",
-            "🟢 24/7 Toll Free",
-            "🟢 24/7 Multi-Agency",
-            "🟢 Emotional Support",
-            "🟢 24/7 Care",
-            "🕒 9AM - 5PM",
-            "🟢 Crisis Desk",
-            "🕒 9AM - 5PM",
-            "🟢 Active Support",
-            "🟢 24/7 Helpline",
-            "🟢 Regional Desks"
+            "24/7 Toll Free",
+            "24/7 Rapid Response",
+            "24/7 Distress Desk",
+            "24/7 Active Intervention",
+            "24/7 Immediate Dispatch",
+            "24/7 Emergency Ambulance",
+            "24/7 Immediate Dispatch",
+            "24/7 Citizen Portal",
+            "24/7 Child Protection",
+            "24/7 Psychological Care",
+            "24/7 Rail Madad",
+            "24/7 Highway Patrol"
     };
 
     private static final int[] ICON_COLORS = new int[]{
@@ -98,7 +98,7 @@ public class HelplineAdapter extends RecyclerView.Adapter<HelplineAdapter.ViewHo
         String category = position < CATEGORIES.length ? CATEGORIES[position] : "Emergency";
         holder.tvCategory.setText(category);
 
-        String status = position < STATUSES.length ? STATUSES[position] : "🟢 Active";
+        String status = position < STATUSES.length ? STATUSES[position] : "24/7 Active";
         holder.tvStatusBadge.setText(status);
 
         int iconColor = position < ICON_COLORS.length ? ICON_COLORS[position] : Color.parseColor("#10B981");

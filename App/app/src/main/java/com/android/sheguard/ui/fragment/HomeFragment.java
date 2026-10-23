@@ -329,7 +329,7 @@ public class HomeFragment extends Fragment {
                 binding.tvHomeGreetingTitle.setText(greeting);
             }
             if (binding.tvHomeGreetingName != null) {
-                binding.tvHomeGreetingName.setText(firstName + " 👋");
+                binding.tvHomeGreetingName.setText(firstName);
             }
             if (binding.tvHomeStatusSubtext != null) {
                 if ("guardian".equalsIgnoreCase(role)) {

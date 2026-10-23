@@ -1,19 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_contacts_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A0E1A"
-    android:clipChildren="false"
+    android:background="#0A0B0E"
+    android:orientation="vertical"
     android:fitsSystemWindows="true"
     tools:context=".ui.fragment.ContactsFragment">
 
+    <!-- Pinned Top Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/card_contacts_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#13151B"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_info"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#FFFFFF"
+            android:contentDescription="Back" />
+
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_circle_info">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_my_circle_people"
+                app:tint="?attr/themeAccent"
+                android:contentDescription="My Circle" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Safety Circle"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="Emergency Alert Network"
+                android:textColor="#94A3B8"
+                android:textSize="11.5sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_circle_count_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_monogram_badge"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="Active Network"
+            android:textColor="?attr/themeAccent"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,39 +105,48 @@
                 android:nestedScrollingEnabled="false"
                 android:clipToPadding="false" />
 
-            <!-- Reassuring Empty State (shown naturally below Active Safety Circle header when 0 contacts saved) -->
+            <!-- Clean Reassuring Empty State -->
             <LinearLayout
                 android:id="@+id/tv_empty_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="48dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingHorizontal="24dp"
-                android:paddingVertical="20dp"
+                android:paddingVertical="24dp"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🌸"
-                    android:textSize="32sp" />
+                <FrameLayout
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_circle_info">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_my_circle_people"
+                        app:tint="#94A3B8"
+                        android:contentDescription="Empty Circle" />
+                </FrameLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="14dp"
                     android:text="Your Safety Circle is Empty"
                     android:textColor="#FFFFFF"
-                    android:textSize="15sp"
+                    android:textSize="15.5sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="6dp"
                     android:gravity="center"
+                    android:lineSpacingExtra="2dp"
                     android:text="Choose from your phone contacts or add trusted family above so you are never alone in an emergency."
                     android:textColor="#94A3B8"
                     android:textSize="12.5sp" />
@@ -68,8 +155,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <include
-        android:id="@+id/header"
-        layout="@layout/view_header_expandable" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

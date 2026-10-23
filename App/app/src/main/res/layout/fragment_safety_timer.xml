@@ -1,32 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_safety_timer_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surface_background"
-    android:fillViewport="true">
+    android:background="#0A0B0E"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
+    <!-- Pinned Top Navigation Bar -->
     <LinearLayout
+        android:id="@+id/card_timer_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:background="#13151B"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp">
 
-        <!-- ══════════════════════════════════════════════════
-             1. Top Header Card (Reassuring, Dignified)
-             ══════════════════════════════════════════════════ -->
-        <com.google.android.material.card.MaterialCardView
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_info"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#FFFFFF"
+            android:contentDescription="Back" />
+
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_circle_info">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_safety_timer"
+                app:tint="#38BDF8"
+                android:contentDescription="Timer" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Safety Timer &amp; Check-In"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="Dead Man's Switch Safety Engine"
+                android:textColor="#94A3B8"
+                android:textSize="11.5sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_monogram_badge"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="Guard Engine"
+            android:textColor="#38BDF8"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_timer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:overScrollMode="never">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/surface_card"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/surface_card_stroke"
-            app:strokeWidth="1dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <!-- 1. Top Header Card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_safety_dark"
                 android:orientation="vertical"
                 android:padding="18dp">
 
@@ -37,10 +113,11 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
-                        android:src="@drawable/ic_safety_timer"
-                        app:tint="#38BDF8" />
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_shield_check_vector"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Shield" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -50,79 +127,73 @@
                         android:orientation="vertical">
 
                         <TextView
-                            style="@style/TextAppearance.Material3.TitleLarge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Arrival &amp; Safety Check-In"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="18sp"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16.5sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            style="@style/TextAppearance.Material3.BodySmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
                             android:text="Automatic SOS if you don't check in safe"
-                            android:textColor="@color/textColorSecondary" />
+                            android:textColor="#94A3B8"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
-                    <!-- Reassurance Shield badge -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#1A38BDF8"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="5dp"
-                        android:text="🛡️ Check-In Guard"
+                        android:background="@drawable/bg_monogram_badge"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:text="Check-In Guard"
                         android:textColor="#38BDF8"
                         android:textSize="11sp"
                         android:textStyle="bold" />
-
                 </LinearLayout>
 
                 <TextView
-                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:lineSpacingMultiplier="1.2"
-                    android:text="Set your expected trip time. If you don't confirm you arrived safely before time runs out, your trusted circle is alerted with your live GPS location."
-                    android:textColor="@color/textColorSecondary"
+                    android:layout_marginTop="12dp"
+                    android:lineSpacingExtra="3dp"
+                    android:text="Set your expected trip time. If you do not confirm arrival before time expires, your trusted safety circle is instantly alerted with your live GPS location."
+                    android:textColor="#94A3B8"
                     android:textSize="12.5sp" />
-
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- ══════════════════════════════════════════════════
-             2. Emergency Contacts Transparency Card
-             ══════════════════════════════════════════════════ -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_trusted_circle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/surface_card"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="1dp"
-            app:strokeColor="@color/surface_card_stroke"
-            app:strokeWidth="1dp">
-
+            <!-- 2. Emergency Contacts Transparency Card -->
             <LinearLayout
+                android:id="@+id/card_trusted_circle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_card_safety_dark"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="14dp">
 
-                <TextView
-                    android:id="@+id/iv_circle_badge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="👥"
-                    android:textSize="22sp" />
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_circle_info">
+
+                    <ImageView
+                        android:id="@+id/iv_circle_badge"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_my_circle_people"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Contacts" />
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -137,7 +208,7 @@
                         android:layout_height="wrap_content"
                         android:text="Emergency Contacts (Active)"
                         android:textColor="#38BDF8"
-                        android:textSize="13sp"
+                        android:textSize="13.5sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -148,7 +219,7 @@
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="Loading trusted circle..."
-                        android:textColor="@color/textColorSecondary"
+                        android:textColor="#94A3B8"
                         android:textSize="11.5sp" />
                 </LinearLayout>
 
@@ -160,432 +231,427 @@
                     android:textColor="#94A3B8"
                     android:textSize="12sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- ══════════════════════════════════════════════════
-             3. Human Journey Scenarios (Option 3)
-             ══════════════════════════════════════════════════ -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="8dp"
-            android:text="Journey &amp; Situation Presets"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <!-- Row 1: Cab / Auto & Walking Alone -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- Scenario 1: Cab / Auto (15m) -->
-            <LinearLayout
-                android:id="@+id/card_scenario_cab"
-                android:layout_width="0dp"
+            <!-- 3. Human Journey Scenarios -->
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_scenario_card_normal"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp"
+                android:text="Journey &amp; Situation Presets"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🚕"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Cab / Auto"
-                        android:textColor="@color/textColorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="15 min ride"
-                        android:textColor="#38BDF8"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Scenario 2: Walking Alone (20m) -->
-            <LinearLayout
-                android:id="@+id/card_scenario_walk"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_scenario_card_normal"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🚶‍♀️"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Walking Alone"
-                        android:textColor="@color/textColorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20 min walk"
-                        android:textColor="#38BDF8"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Row 2: Evening Run & Meeting Someone -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <!-- Scenario 3: Evening Run (35m) -->
-            <LinearLayout
-                android:id="@+id/card_scenario_run"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_scenario_card_selected"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🏃‍♀️"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Solo Run / Walk"
-                        android:textColor="@color/textColorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="35 min route"
-                        android:textColor="#38BDF8"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Scenario 4: Meeting Someone (45m) -->
-            <LinearLayout
-                android:id="@+id/card_scenario_meeting"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_scenario_card_normal"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🤝"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Meeting Someone"
-                        android:textColor="@color/textColorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="45 min window"
-                        android:textColor="#38BDF8"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Row 3: Late Transit & Custom Time -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <!-- Scenario 5: Late Transit (60m) -->
-            <LinearLayout
-                android:id="@+id/card_scenario_transit"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_scenario_card_normal"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🌙"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Late Transit"
-                        android:textColor="@color/textColorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="60 min trip"
-                        android:textColor="#38BDF8"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Scenario 6: Custom Window -->
-            <LinearLayout
-                android:id="@+id/card_scenario_custom"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_scenario_card_normal"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="⏱️"
-                    android:textSize="20sp" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Custom Time"
-                        android:textColor="@color/textColorPrimary"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Slide below"
-                        android:textColor="#94A3B8"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- ══════════════════════════════════════════════════
-             4. Optional Journey / Ride Note Field
-             ══════════════════════════════════════════════════ -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@color/surface_card"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="1dp"
-            app:strokeColor="@color/surface_card_stroke"
-            app:strokeWidth="1dp">
-
+            <!-- Row 1: Cab / Auto & Walking Alone -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="14dp">
+                android:orientation="horizontal">
 
-                <TextView
+                <!-- Scenario 1: Cab / Auto (15m) -->
+                <LinearLayout
+                    android:id="@+id/card_scenario_cab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_scenario_card_normal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_scenario_cab"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Cab" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cab / Auto"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="15 min ride"
+                            android:textColor="#38BDF8"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Scenario 2: Walking Alone (20m) -->
+                <LinearLayout
+                    android:id="@+id/card_scenario_walk"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_scenario_card_normal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_scenario_walk"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Walk" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Walking Alone"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20 min walk"
+                            android:textColor="#38BDF8"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Row 2: Solo Run & Meeting Someone -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <!-- Scenario 3: Solo Run (35m) -->
+                <LinearLayout
+                    android:id="@+id/card_scenario_run"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_scenario_card_selected"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_scenario_run"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Run" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Solo Run / Walk"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="35 min route"
+                            android:textColor="#38BDF8"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Scenario 4: Meeting Someone (45m) -->
+                <LinearLayout
+                    android:id="@+id/card_scenario_meeting"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_scenario_card_normal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_scenario_meeting"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Meeting" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Meeting Someone"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="45 min window"
+                            android:textColor="#38BDF8"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Row 3: Late Transit & Custom Time -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <!-- Scenario 5: Late Transit (60m) -->
+                <LinearLayout
+                    android:id="@+id/card_scenario_transit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_scenario_card_normal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_scenario_transit"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Transit" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Late Transit"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="60 min trip"
+                            android:textColor="#38BDF8"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Scenario 6: Custom Window -->
+                <LinearLayout
+                    android:id="@+id/card_scenario_custom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_scenario_card_normal"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/ic_scenario_custom"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Custom" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Custom Time"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Slide below"
+                            android:textColor="#94A3B8"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 4. Optional Journey Note Field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_card_safety_dark"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="📝 Journey &amp; Vehicle Note (Optional)"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="12.5sp"
-                    android:textStyle="bold" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_note_pencil"
+                        app:tint="#38BDF8"
+                        android:contentDescription="Note" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Journey &amp; Vehicle Note (Optional)"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/et_journey_note"
                     android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="e.g. Uber White Dzire AP 39 X 1234 to Hitech City"
                     android:imeOptions="actionDone"
                     android:inputType="textCapSentences|textShortMessage"
                     android:maxLines="1"
-                    android:paddingHorizontal="12dp"
-                    android:textColor="@color/textColorPrimary"
+                    android:paddingHorizontal="14dp"
+                    android:textColor="#FFFFFF"
                     android:textColorHint="#64748B"
-                    android:textSize="12.5sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:text="Included in the emergency SMS if you do not check in safe."
-                    android:textColor="@color/textColorSecondary"
+                    android:textColor="#94A3B8"
                     android:textSize="11sp" />
-
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- ══════════════════════════════════════════════════
-             5. Countdown Display & Fine-Tune Slider Card
-             ══════════════════════════════════════════════════ -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@color/surface_card"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="2dp"
-            app:strokeColor="@color/surface_card_stroke"
-            app:strokeWidth="1dp">
-
+            <!-- 5. Countdown Display & Fine-Tune Slider Card -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_card_safety_dark"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:padding="22dp">
 
                 <TextView
                     android:id="@+id/tv_timer_status"
-                    style="@style/TextAppearance.Material3.LabelLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ready · Select a preset or adjust duration below"
+                    android:text="Ready • Select a preset or adjust duration below"
                     android:textColor="#38BDF8"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
-                <!-- Digital Time Countdown Preview / Running -->
+                <!-- Digital Time Countdown Preview -->
                 <TextView
                     android:id="@+id/tv_countdown_digits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
-                    android:fontFamily="sans-serif-black"
-                    android:letterSpacing="0.05"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="4dp"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.06"
                     android:text="35:00"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="58sp" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="52sp"
+                    android:textStyle="bold" />
 
-                <!-- Selected duration label -->
                 <TextView
                     android:id="@+id/tv_selected_duration"
-                    style="@style/TextAppearance.Material3.LabelMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Estimated Arrival: 35 min"
-                    android:textColor="@color/textColorSecondary"
-                    android:textSize="12sp" />
+                    android:textColor="#94A3B8"
+                    android:textSize="13sp" />
 
-                <!-- Fine-Tune Duration Slider (1 min → 180 min) -->
+                <!-- Fine-Tune Duration Slider -->
                 <com.google.android.material.slider.Slider
                     android:id="@+id/slider_duration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:stepSize="1"
+                    android:stepSize="5"
                     android:value="35"
-                    android:valueFrom="1"
+                    android:valueFrom="5"
                     android:valueTo="180"
-                    app:labelBehavior="floating"
+                    app:haloColor="#3338BDF8"
                     app:thumbColor="#38BDF8"
                     app:thumbRadius="10dp"
                     app:trackColorActive="#38BDF8"
-                    app:trackColorInactive="#262D3D"
-                    app:trackHeight="4dp" />
+                    app:trackColorInactive="#262833"
+                    app:trackHeight="6dp" />
 
-                <!-- Range labels -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -595,95 +661,69 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="1 min"
-                        android:textColor="@color/textColorSecondary"
+                        android:text="5 min"
+                        android:textColor="#64748B"
                         android:textSize="11sp" />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="1 hr"
-                        android:textColor="@color/textColorSecondary"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:text="3 hr"
-                        android:textColor="@color/textColorSecondary"
+                        android:text="3 hours"
+                        android:textColor="#64748B"
                         android:textSize="11sp" />
                 </LinearLayout>
-
-                <!-- Start / Disarm Action Buttons -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
-
-                    <!-- Safe Check-In Button (Appears when active) -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_check_in_safe"
-                        style="@style/Widget.Material3.Button"
-                        android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="✅ I Am Safe (Check In)"
-                        android:textColor="#FFFFFF"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:backgroundTint="#10B981"
-                        app:cornerRadius="16dp" />
-
-                    <!-- Toggle / Start Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_toggle_timer"
-                        style="@style/Widget.Material3.Button"
-                        android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:text="🛡️ Start Safety Check-In"
-                        android:textColor="#FFFFFF"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        app:backgroundTint="#2563EB"
-                        app:cornerRadius="16dp" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- ══════════════════════════════════════════════════
-             6. Reassurance: How It Protects You
-             ══════════════════════════════════════════════════ -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="24dp"
-            app:cardBackgroundColor="@color/surface_card"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="1dp"
-            app:strokeColor="@color/surface_card_stroke"
-            app:strokeWidth="1dp">
-
+            <!-- 6. Action Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <!-- Check In Safe Button (Shown when running) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_check_in_safe"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="I Am Safe (Check In)"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15.5sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:backgroundTint="#10B981"
+                    app:cornerRadius="16dp"
+                    tools:visibility="visible" />
+
+                <!-- Arm / Cancel Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_toggle_timer"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Start Safety Check-In"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15.5sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="#0284C7"
+                    app:cornerRadius="16dp" />
+            </LinearLayout>
+
+            <!-- 7. How it works footer -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_card_safety_dark"
                 android:orientation="vertical"
                 android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🛡️ How Safety Check-In Protects You"
-                    android:textColor="@color/textColorPrimary"
+                    android:text="How Safety Check-In Protects You"
+                    android:textColor="#FFFFFF"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -691,14 +731,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:lineSpacingMultiplier="1.3"
-                    android:text="• Quiet in Background: You can lock your phone or switch apps; countdown continues reliably.\n• 30s Escalation Reminder: A distinct alert chime sounds at 30 seconds to remind you to check in.\n• Automatic Lifeline: If you don't tap 'I Am Safe', your contacts receive an instant emergency SMS with your live coordinates &amp; trip note."
-                    android:textColor="@color/textColorSecondary"
+                    android:lineSpacingExtra="3dp"
+                    android:text="1. Choose your journey scenario or adjust the duration slider.\n2. Tap 'Start Safety Check-In' before you begin your journey.\n3. A high-priority check-in reminder sounds when 2 minutes remain.\n4. If you don't check in safe, an automated emergency SOS with live GPS tracking is sent to your circle."
+                    android:textColor="#94A3B8"
                     android:textSize="12sp" />
-
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>

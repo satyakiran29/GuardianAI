@@ -69,7 +69,7 @@
                 android:paddingEnd="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:text="🟢 24/7 Active"
+                android:text="24/7 Active"
                 android:textColor="#34D399"
                 android:textSize="11sp"
                 android:textStyle="bold" />

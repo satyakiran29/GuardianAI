@@ -62,14 +62,28 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:text="🟢 Online • 24/7 Intelligence Engine"
-                android:textColor="#34D399"
-                android:textSize="11.5sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:src="@drawable/ic_badge_online_green"
+                    android:contentDescription="Online status" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="Online • 24/7 Intelligence Engine"
+                    android:textColor="#34D399"
+                    android:textSize="11.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <ImageButton
@@ -117,10 +131,18 @@
                     android:gravity="center_vertical"
                     android:layout_marginBottom="8dp">
 
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_shield_check_vector"
+                        app:tint="?attr/themeAccent"
+                        android:contentDescription="Shield" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🧠 GuardianAI Intelligence"
+                        android:layout_marginStart="6dp"
+                        android:text="GuardianAI Intelligence"
                         android:textColor="?attr/themeAccent"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -144,7 +166,7 @@
                     android:id="@+id/tv_greeting_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="👋 Hello! I am your GuardianAI Safety Intelligence Assistant.\n\nI provide immediate step-by-step guidance if you feel in danger, explain self-defense tactics, guide you on safe night transit, and clarify your legal rights. Tap any quick option below or ask me anything!"
+                    android:text="Hello! I am your GuardianAI Safety Intelligence Assistant.\n\nI provide immediate step-by-step guidance if you feel in danger, explain self-defense tactics, guide you on safe night transit, and clarify your legal rights. Tap any quick option below or ask me anything!"
                     android:textColor="#F8FAFC"
                     android:textSize="14.5sp"
                     android:lineSpacingExtra="3dp" />
@@ -183,11 +205,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_monogram_badge"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:text="🚨 I feel I'm being followed"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="I feel I am being followed"
                     android:textColor="#FFFFFF"
                     android:textSize="12.5sp"
                     android:clickable="true"
@@ -199,11 +221,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/bg_monogram_badge"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:text="🚕 Safety tips for night cab"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="Safety tips for night cab"
                     android:textColor="#FFFFFF"
                     android:textSize="12.5sp"
                     android:clickable="true"
@@ -215,11 +237,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/bg_monogram_badge"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:text="🥋 Key self-defense moves"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="Key self-defense moves"
                     android:textColor="#FFFFFF"
                     android:textSize="12.5sp"
                     android:clickable="true"
@@ -231,11 +253,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/bg_monogram_badge"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:text="⚖️ My legal rights in public"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="My legal rights in public"
                     android:textColor="#FFFFFF"
                     android:textSize="12.5sp"
                     android:clickable="true"

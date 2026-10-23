@@ -11,13 +11,14 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -45,6 +46,7 @@ public class ContactsFragment extends Fragment {
 
     public static ArrayList<ContactModel> contacts;
     public static View tvEmptyList;
+    public static TextView tvCountBadge;
     public static ContactsAdapter adapter;
     private FragmentContactsBinding binding;
 
@@ -59,6 +61,7 @@ public class ContactsFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     public static void removeContact(Context context, int idx) {
         View tvEmptyList = ((AppCompatActivity) context).findViewById(R.id.tv_empty_list);
+        TextView badge = ((AppCompatActivity) context).findViewById(R.id.tv_circle_count_badge);
         new MaterialAlertDialogBuilder(context, R.style.MaterialComponents_MaterialAlertDialog)
                 .setTitle("Remove Contact")
                 .setMessage(context.getString(R.string.remove_contact_confirmation))
@@ -75,7 +78,12 @@ public class ContactsFragment extends Fragment {
                     String jsonContacts = gson.toJson(contacts);
                     Prefs.putString(Constants.CONTACTS_LIST, jsonContacts);
 
-                    tvEmptyList.setVisibility(contacts.size() == 0 ? View.VISIBLE : View.GONE);
+                    if (tvEmptyList != null) {
+                        tvEmptyList.setVisibility(contacts.size() == 0 ? View.VISIBLE : View.GONE);
+                    }
+                    if (badge != null) {
+                        badge.setText(contacts.size() + " Active");
+                    }
                     Snackbar.make(((AppCompatActivity) context).findViewById(R.id.fragmentContainerView), context.getString(R.string.contact_removed_successfully), Snackbar.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(context.getString(R.string.no), (dialog, which) -> dialog.dismiss())
@@ -96,16 +104,16 @@ public class ContactsFragment extends Fragment {
         binding = FragmentContactsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.header.toolbar);
-        ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-            binding.header.collapsingToolbar.setTitle("Trusted Safety Circle");
-            binding.header.collapsingToolbar.setSubtitle("Emergency Alert Network");
-        }
+        binding.btnBack.setOnClickListener(v -> {
+            try {
+                Navigation.findNavController(v).navigateUp();
+            } catch (Exception e) {
+                requireActivity().onBackPressed();
+            }
+        });
 
-        tvEmptyList = view.findViewById(R.id.tv_empty_list);
+        tvEmptyList = binding.tvEmptyList;
+        tvCountBadge = binding.tvCircleCountBadge;
 
         contacts = new ArrayList<>();
         Gson gson = SheGuard.GSON;
@@ -127,11 +135,13 @@ public class ContactsFragment extends Fragment {
         }
 
         if (contacts.isEmpty() && Prefs.getBoolean(Constants.IS_DEMO_MODE, false)) {
-            contacts.add(new ContactModel("Mom", "+15552345678", "Family", true));
-            contacts.add(new ContactModel("Alex", "+15558765432", "Roommate", false));
-            contacts.add(new ContactModel("Campus Security", "+15559990000", "Security", false));
+            contacts.add(new ContactModel("Mom", "+91 98765 43210", "Family", true));
+            contacts.add(new ContactModel("Priya (Roommate)", "+91 98765 43211", "Roommate", false));
+            contacts.add(new ContactModel("Campus Security", "+91 98765 43212", "Security", false));
             Prefs.putString(Constants.CONTACTS_LIST, gson.toJson(contacts));
         }
+
+        binding.tvCircleCountBadge.setText(contacts.size() + " Active");
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new ContactsAdapter(requireContext(), contacts);
@@ -198,10 +208,17 @@ public class ContactsFragment extends Fragment {
                 Prefs.putString(Constants.CONTACTS_LIST, gson.toJson(contacts));
 
                 binding.tvEmptyList.setVisibility(contacts.isEmpty() ? View.VISIBLE : View.GONE);
+                binding.tvCircleCountBadge.setText(contacts.size() + " Active");
                 Snackbar.make(binding.getRoot(), "Added " + name + " to your Safety Circle", Snackbar.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             Snackbar.make(binding.getRoot(), "Error reading contact: " + e.getMessage(), Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
