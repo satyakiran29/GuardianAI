@@ -149,7 +149,20 @@ public class SafeRouteFragment extends Fragment {
             "    <div id=\"map\"></div>\n" +
             "    <script>\n" +
             "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([__INIT_LAT__, __INIT_LNG__], 14);\n" +
-            "        let tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);\n" +
+            "        let baseTileLayer = null;\n" +
+            "        let labelTileLayer = null;\n" +
+            "        function applyTileTheme(isNight) {\n" +
+            "            if (baseTileLayer) map.removeLayer(baseTileLayer);\n" +
+            "            if (labelTileLayer) map.removeLayer(labelTileLayer);\n" +
+            "            if (isNight) {\n" +
+            "                baseTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, maxNativeZoom: 16 }).addTo(map);\n" +
+            "                labelTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, maxNativeZoom: 16 }).addTo(map);\n" +
+            "            } else {\n" +
+            "                baseTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, maxNativeZoom: 19 }).addTo(map);\n" +
+            "                labelTileLayer = null;\n" +
+            "            }\n" +
+            "        }\n" +
+            "        applyTileTheme(true);\n" +
             "\n" +
             "        let originMarker = null;\n" +
             "        let destMarker = null;\n" +
@@ -292,11 +305,7 @@ public class SafeRouteFragment extends Fragment {
             "        };\n" +
             "\n" +
             "        window.toggleDayNight = function(isNight) {\n" +
-            "            map.removeLayer(tileLayer);\n" +
-            "            const url = isNight\n" +
-            "                ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'\n" +
-            "                : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';\n" +
-            "            tileLayer = L.tileLayer(url, { maxZoom: 19 }).addTo(map);\n" +
+            "            applyTileTheme(isNight);\n" +
             "        };\n" +
             "\n" +
             "        map.on('click', function(e) {\n" +

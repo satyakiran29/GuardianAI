@@ -63,24 +63,32 @@ function mountLiveMap() {
     preferCanvas: true // Use HTML5 Canvas for high-performance marker rendering
   }).setView([17.4065, 78.4772], 12);
 
-  // CartoDB Dark Matter with lazy tile loading & throttling
-  const cartoDark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  // Esri World Dark Gray (Free, zero API key, no watermark, production grade)
+  const esriDarkBase = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
-    subdomains: 'abcd',
-    updateWhenIdle: true,     // Only loads new tiles when user stops panning/zooming
-    updateWhenZooming: false,  // Saves network requests during zoom transitions
-    keepBuffer: 1,             // Reduces in-memory tile cache to keep memory lightweight
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-  });
-
-  // CartoDB Voyager
-  const cartoVoyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
-    subdomains: 'abcd',
+    maxNativeZoom: 16,
     updateWhenIdle: true,
     updateWhenZooming: false,
     keepBuffer: 1,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+  });
+  const esriDarkRef = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    maxNativeZoom: 16,
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 1
+  });
+  const darkRadarGroup = L.layerGroup([esriDarkBase, esriDarkRef]);
+
+  // Esri World Street Map (Free, production street basemap)
+  const esriStreets = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    maxNativeZoom: 19,
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 1,
+    attribution: 'Tiles &copy; Esri'
   });
 
   // OpenStreetMap Standard Street Layer
@@ -93,12 +101,12 @@ function mountLiveMap() {
   });
 
   // Add default dark layer
-  cartoDark.addTo(liveMap);
+  darkRadarGroup.addTo(liveMap);
 
   // Add layer controls for switching styles
   const baseMaps = {
-    "Dark Radar (Default)": cartoDark,
-    "Voyager Street Map": cartoVoyager,
+    "Dark Radar (Default)": darkRadarGroup,
+    "Street Map (Esri)": esriStreets,
     "OpenStreetMap": osmStandard
   };
   L.control.layers(baseMaps, null, { position: 'topright' }).addTo(liveMap);

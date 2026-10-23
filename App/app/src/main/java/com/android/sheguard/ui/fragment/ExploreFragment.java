@@ -165,7 +165,8 @@ public class ExploreFragment extends Fragment implements SafeHavenAdapter.OnSafe
             "    <div id=\"map\"></div>\n" +
             "    <script>\n" +
             "        let map = L.map('map', { zoomControl: false, attributionControl: false }).setView([__INIT_LAT__, __INIT_LNG__], 14);\n" +
-            "        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);\n" +
+            "        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, maxNativeZoom: 16 }).addTo(map);\n" +
+            "        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19, maxNativeZoom: 16 }).addTo(map);\n" +
             "\n" +
             "        let userMarker = null;\n" +
             "        let radarRadiusCircle = null;\n" +
