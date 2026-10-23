@@ -124,20 +124,13 @@ public class ContactsFragment extends Fragment {
                 List<ContactModel> loaded = gson.fromJson(jsonContacts, type);
                 if (loaded != null) {
                     for (ContactModel c : loaded) {
-                        if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone())) {
+                        if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone()) && !SmsHelper.isDemoContact(c)) {
                             contacts.add(c);
                         }
                     }
                 }
             } catch (Exception ignored) {}
-            // Save sanitized list without 112
-            Prefs.putString(Constants.CONTACTS_LIST, gson.toJson(contacts));
-        }
-
-        if (contacts.isEmpty() && Prefs.getBoolean(Constants.IS_DEMO_MODE, false)) {
-            contacts.add(new ContactModel("Mom", "+91 98765 43210", "Family", true));
-            contacts.add(new ContactModel("Priya (Roommate)", "+91 98765 43211", "Roommate", false));
-            contacts.add(new ContactModel("Campus Security", "+91 98765 43212", "Security", false));
+            // Save sanitized list without emergency helplines or demo contacts
             Prefs.putString(Constants.CONTACTS_LIST, gson.toJson(contacts));
         }
 

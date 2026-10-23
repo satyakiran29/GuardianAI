@@ -122,14 +122,7 @@ public class SosUtil {
     public static void sendWhatsAppWithLiveLocation(Context context) {
         vibrateDevice(context);
 
-        ArrayList<ContactModel> contacts = new ArrayList<>();
-        String jsonContacts = Prefs.getString(Constants.CONTACTS_LIST, "");
-        if (!jsonContacts.isEmpty()) {
-            Type type = new TypeToken<List<ContactModel>>() {}.getType();
-            try {
-                contacts.addAll(SheGuard.GSON.fromJson(jsonContacts, type));
-            } catch (Exception ignored) {}
-        }
+        ArrayList<ContactModel> contacts = getStoredContacts(context);
 
         if (!mLocation.isEmpty() && mLocation.contains("Lat:")) {
             sendWhatsAppLocation(context, contacts, mLocation);
@@ -185,14 +178,7 @@ public class SosUtil {
 
     public static void sendWhatsAppLocation(Context context, ArrayList<ContactModel> contacts, String locationUrl) {
         if (contacts == null || contacts.isEmpty()) {
-            contacts = new ArrayList<>();
-            String jsonContacts = Prefs.getString(Constants.CONTACTS_LIST, "");
-            if (!jsonContacts.isEmpty()) {
-                Type type = new TypeToken<List<ContactModel>>() {}.getType();
-                try {
-                    contacts.addAll(SheGuard.GSON.fromJson(jsonContacts, type));
-                } catch (Exception ignored) {}
-            }
+            contacts = getStoredContacts(context);
         }
 
         if (locationUrl == null || locationUrl.isEmpty() || !locationUrl.contains("Lat:")) {
@@ -318,8 +304,8 @@ public class SosUtil {
                 List<ContactModel> loaded = SheGuard.GSON.fromJson(jsonContacts, type);
                 if (loaded != null) {
                     for (ContactModel c : loaded) {
-                        // Exclude 112 or emergency helplines from stored personal SMS contacts
-                        if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone())) {
+                        // Exclude 112 or emergency helplines and demo contacts from stored personal SMS contacts
+                        if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone()) && !SmsHelper.isDemoContact(c)) {
                             contacts.add(c);
                         }
                     }
@@ -329,7 +315,7 @@ public class SosUtil {
 
         if (contacts.isEmpty() && ContactsFragment.contacts != null && !ContactsFragment.contacts.isEmpty()) {
             for (ContactModel c : ContactsFragment.contacts) {
-                if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone())) {
+                if (c != null && !SmsHelper.isEmergencyHelplineNumber(c.getPhone()) && !SmsHelper.isDemoContact(c)) {
                     contacts.add(c);
                 }
             }

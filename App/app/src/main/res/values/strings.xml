@@ -196,12 +196,6 @@
     <string name="demo_mode_badge">Demo Mode</string>
     <string name="demo_logged_in_toast">Welcome! Logged in as Demo User</string>
     <string name="or_divider">─── OR ───</string>
-    <string name="demo_contact_mom">Mom</string>
-    <string name="demo_contact_mom_phone">+91 98765 43210</string>
-    <string name="demo_contact_alex">Priya (Roommate)</string>
-    <string name="demo_contact_alex_phone">+91 98765 43211</string>
-    <string name="demo_contact_security">Campus Security</string>
-    <string name="demo_contact_security_phone">+91 98765 43212</string>
 
     <!-- Safe Mode & WhatsApp -->
     <string name="safe_mode">Safe Mode</string>

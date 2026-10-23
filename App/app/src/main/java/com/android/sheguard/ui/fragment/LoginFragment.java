@@ -92,15 +92,6 @@ public class LoginFragment extends Fragment {
             Prefs.putString(Constants.PREFS_USER_PHONE, Constants.DEMO_USER_PHONE);
             Prefs.putString("USER_ROLE", "user");
 
-            String existingContacts = Prefs.getString(Constants.CONTACTS_LIST, "");
-            if (existingContacts == null || existingContacts.isEmpty() || "[]".equals(existingContacts)) {
-                ArrayList<ContactModel> demoContacts = new ArrayList<>();
-                demoContacts.add(new ContactModel("Mom", "+15552345678"));
-                demoContacts.add(new ContactModel("Alex (Roommate)", "+15558765432"));
-                demoContacts.add(new ContactModel("Campus Security", "+15559990000"));
-                Prefs.putString(Constants.CONTACTS_LIST, SheGuard.GSON.toJson(demoContacts));
-            }
-
             if (getContext() != null) {
                 Toast.makeText(getContext(), R.string.demo_logged_in_toast, Toast.LENGTH_SHORT).show();
             }

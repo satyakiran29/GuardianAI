@@ -75,6 +75,22 @@ public final class SmsHelper {
     }
 
     /**
+     * Checks if a contact is a placeholder/demo contact that should not be displayed or messaged.
+     */
+    public static boolean isDemoContact(@Nullable ContactModel contact) {
+        if (contact == null) return false;
+        String name = contact.getName() != null ? contact.getName().trim() : "";
+        String phone = sanitizePhoneNumber(contact.getPhone());
+        return phone.equals("+15552345678") || phone.equals("+15558765432") || phone.equals("+15559990000")
+                || phone.equals("15552345678") || phone.equals("15558765432") || phone.equals("15559990000")
+                || phone.equals("+919876543210") || phone.equals("+919876543211") || phone.equals("+919876543212")
+                || phone.equals("919876543210") || phone.equals("919876543211") || phone.equals("919876543212")
+                || (name.equalsIgnoreCase("Mom") && phone.contains("9876543210"))
+                || (name.toLowerCase().contains("roommate") && phone.contains("9876543211"))
+                || (name.toLowerCase().contains("campus security") && phone.contains("9876543212"));
+    }
+
+    /**
      * Sanitizes phone number by stripping unsupported special characters.
      */
     @NonNull

@@ -79,14 +79,7 @@ public class BatteryMonitorReceiver extends BroadcastReceiver {
     }
 
     private void dispatchLowBatteryLocation(Context context, int batteryPct) {
-        ArrayList<ContactModel> contacts = new ArrayList<>();
-        Gson gson = SheGuard.GSON;
-        String jsonContacts = Prefs.getString(Constants.CONTACTS_LIST, "");
-
-        if (!jsonContacts.isEmpty()) {
-            Type type = new TypeToken<List<ContactModel>>() {}.getType();
-            contacts.addAll(gson.fromJson(jsonContacts, type));
-        }
+        ArrayList<ContactModel> contacts = SosUtil.getStoredContacts(context);
 
         if (contacts.isEmpty()) {
             Log.w(TAG, "No emergency contacts configured for low battery dispatch.");
