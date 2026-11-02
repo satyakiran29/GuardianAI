@@ -1045,8 +1045,8 @@ def landing_view(request):
 
     apk_version_name = "1.3.9"
     apk_version_code = 37
-    apk_size_mb = "20.1 MB"
-    apk_sha256 = "1d34eada3d09d1e3c3b4f866f25c437c45b6a9483b1c5368dc5da4cf54aef7c0"
+    apk_size_mb = "20.3 MB"
+    apk_sha256 = "051ede4cb2ee1eb74fe5741738bc845322dc439380571e100a108e8d6c575e4e"
     min_android_version = "Android 8.0+ (Oreo to Android 15)"
 
     total_protected = UserProfile.objects.filter(is_active=True).count()
@@ -1131,9 +1131,9 @@ def app_version_api(request):
         "versionCode": 37,
         "minSdkVersion": 26,
         "targetSdkVersion": 34,
-        "sizeBytes": 21113560,
-        "sizeFormatted": "20.1 MB",
-        "sha256": "1d34eada3d09d1e3c3b4f866f25c437c45b6a9483b1c5368dc5da4cf54aef7c0",
+        "sizeBytes": 21282373,
+        "sizeFormatted": "20.3 MB",
+        "sha256": "051ede4cb2ee1eb74fe5741738bc845322dc439380571e100a108e8d6c575e4e",
         "downloadUrl": request.build_absolute_uri('/download/apk/'),
         "fallbackGithubUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
         "changelog": [

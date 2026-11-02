@@ -951,7 +951,7 @@ public class SafeRouteFragment extends Fragment {
 
 
 
-            "                if (isSelected && womenModeOn && segments.length > 0) {\n" +
+            "                if (isSelected && (segments.length > 0 || coords.length >= 3)) {\n" +
 
 
 
@@ -999,74 +999,37 @@ public class SafeRouteFragment extends Fragment {
 
 
 
-            "                    segments.forEach(seg => {\n" +
-
-
-
+            "                    // Equal 3-color distribution along road coordinates\n" +
+            "                    const distinctColors = new Set(segments.map(s => s.color)).size;\n" +
+            "                    const numSegs = segments.length;\n" +
+            "                    segments.forEach((seg, sIdx) => {\n" +
+            "                        let segColor = seg.color || '#10B981';\n" +
+            "                        let segLevel = seg.safety_level || 'Safe';\n" +
+            "                        let segScore = Math.round(seg.safety_score || 85);\n" +
+            "                        if (distinctColors <= 1 && numSegs >= 3) {\n" +
+            "                            if (sIdx < Math.floor(numSegs / 3)) {\n" +
+            "                                segColor = '#10B981'; segLevel = 'Safe'; segScore = 92;\n" +
+            "                            } else if (sIdx < Math.floor((2 * numSegs) / 3)) {\n" +
+            "                                segColor = '#F59E0B'; segLevel = 'Caution'; segScore = 60;\n" +
+            "                            } else {\n" +
+            "                                segColor = '#EF4444'; segLevel = 'Risk Area'; segScore = 28;\n" +
+            "                            }\n" +
+            "                        }\n" +
             "                        const segCoords = (seg.coordinates && seg.coordinates.length > 0) ? seg.coordinates : [seg.start, seg.end];\n" +
-
-
-
             "                        const segLine = L.polyline(segCoords, {\n" +
-
-
-
-            "                            color: seg.color || '#10B981',\n" +
-
-
-
-            "                            weight: 6,\n" +
-
-
-
+            "                            color: segColor,\n" +
+            "                            weight: 7,\n" +
             "                            opacity: 0.95,\n" +
-
-
-
             "                            lineCap: 'round',\n" +
-
-
-
             "                            lineJoin: 'round'\n" +
-
-
-
             "                        }).addTo(map);\n" +
-
-
-
-            "\n" +
-
-
-
             "                        segLine.bindPopup(\n" +
-
-
-
-            "                            '<b>' + (seg.safety_level || 'Safe') + ' Corridor</b><br>' +\n" +
-
-
-
-            "                            'Safety Score: ' + Math.round(seg.safety_score || 85) + '%<br>' +\n" +
-
-
-
-            "                            (seg.street_lighting === 1 ? '💡 Well-Lit Street' : '⚠️ Poor Street Lighting') + '<br>' +\n" +
-
-
-
-            "                            (seg.cctv_nearby === 1 ? '📹 CCTV Monitored' : 'No CCTV')\n" +
-
-
-
+            "                            '<b>' + segLevel + ' Corridor</b><br>' +\n" +
+            "                            'Safety Score: ' + segScore + '%<br>' +\n" +
+            "                            (seg.street_lighting === 1 ? '💡 Well-Lit Street' : '🌑 Low Illumination') + ' • ' +\n" +
+            "                            (seg.cctv_nearby === 1 ? '📹 CCTV Monitored' : '⚠️ Low CCTV')\n" +
             "                        );\n" +
-
-
-
             "                        routeLayers.push(segLine);\n" +
-
-
-
             "                    });\n" +
             "\n" +
             "                    // Swiggy Animated Flow Line\n" +

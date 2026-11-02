@@ -10,7 +10,7 @@
     "Login Flow: Removed 1-click demo access cards for clean production authentication",
     "Web Command Desk: Restricted sensitive OTP and Email Management modules to SuperAdmin"
   ],
-  "releaseNotes": "v1.3.9: Profile Log Out integration, Settings header gap fix, login screen cleanup, and enhanced role-gated backend security.",
-  "sha256": "1d34eada3d09d1e3c3b4f866f25c437c45b6a9483b1c5368dc5da4cf54aef7c0",
-  "size": "20.1 MB"
+  "releaseNotes": "v1.3.9: Balanced 3-color safe route rendering (Safe, Caution, Risk Area equally distributed), dataset balance across all cities, Profile Log Out, and Settings header cleanup.",
+  "sha256": "051ede4cb2ee1eb74fe5741738bc845322dc439380571e100a108e8d6c575e4e",
+  "size": "20.3 MB"
 }

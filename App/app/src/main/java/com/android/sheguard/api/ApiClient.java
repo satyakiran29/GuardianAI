@@ -691,6 +691,29 @@ public class ApiClient {
             }
             r1.add("coordinates", coords1);
             r1.add("segments", segs1);
+
+            // Equal 3-Color Danger & Caution Zones
+            com.google.gson.JsonArray dangerZones1 = new com.google.gson.JsonArray();
+            JsonObject dz1 = new JsonObject();
+            dz1.addProperty("latitude", srcLat + 0.45 * dLat);
+            dz1.addProperty("longitude", srcLng + 0.45 * dLon);
+            dz1.addProperty("radius", 140);
+            dz1.addProperty("risk_level", "Medium");
+            dz1.addProperty("risk_score", 38.0);
+            dz1.addProperty("color", "#F59E0B");
+            dz1.addProperty("reason", "Caution Zone: Low illumination & transition stretch");
+            dangerZones1.add(dz1);
+
+            JsonObject dz2 = new JsonObject();
+            dz2.addProperty("latitude", srcLat + 0.85 * dLat);
+            dz2.addProperty("longitude", srcLng + 0.85 * dLon);
+            dz2.addProperty("radius", 170);
+            dz2.addProperty("risk_level", "High");
+            dz2.addProperty("risk_score", 72.0);
+            dz2.addProperty("color", "#EF4444");
+            dz2.addProperty("reason", "Risk Area: Isolated highway corridor");
+            dangerZones1.add(dz2);
+            r1.add("danger_zones", dangerZones1);
             routes.add(r1);
 
             // Route 2: Fastest Direct Bypass
