@@ -1043,10 +1043,10 @@ def landing_view(request):
     if current_uid:
         user_obj = UserProfile.objects.filter(id=current_uid, is_active=True).first()
 
-    apk_version_name = "1.3.9"
-    apk_version_code = 37
-    apk_size_mb = "20.3 MB"
-    apk_sha256 = "051ede4cb2ee1eb74fe5741738bc845322dc439380571e100a108e8d6c575e4e"
+    apk_version_name = "1.4.0"
+    apk_version_code = 38
+    apk_size_mb = "20.1 MB"
+    apk_sha256 = "e58e4149faaf507b824cda6d7aa3fb8022c33e76d19eaf6026f452d017b81e18"
     min_android_version = "Android 8.0+ (Oreo to Android 15)"
 
     total_protected = UserProfile.objects.filter(is_active=True).count()
@@ -1127,20 +1127,20 @@ def app_version_api(request):
     return JsonResponse({
         "status": "success",
         "appName": "GuardianAI",
-        "versionName": "1.3.9",
-        "versionCode": 37,
+        "versionName": "1.4.0",
+        "versionCode": 38,
         "minSdkVersion": 26,
         "targetSdkVersion": 34,
-        "sizeBytes": 21282373,
-        "sizeFormatted": "20.3 MB",
-        "sha256": "051ede4cb2ee1eb74fe5741738bc845322dc439380571e100a108e8d6c575e4e",
+        "sizeBytes": 21118559,
+        "sizeFormatted": "20.1 MB",
+        "sha256": "e58e4149faaf507b824cda6d7aa3fb8022c33e76d19eaf6026f452d017b81e18",
         "downloadUrl": request.build_absolute_uri('/download/apk/'),
         "fallbackGithubUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
         "changelog": [
-            "2-Step Verification (2FA): Account security switch in app and web settings requiring 6-digit email OTP verification",
-            "Email-Only OTP Verification: Direct OTP dispatch via Gmail SMTP with master bypass code support (123456 and 234456)",
-            "24-Hour Location Trail Replay: Playback timeline and forensic debrief with SHA-256 integrity verification",
-            "Realtime Telemetry & Radar: Material3 telemetry cards with battery tracking, live GPS coordinates, and ward isolations"
+            "Theme Harmonization: Quick Actions icons and accents dynamically adapt to selected theme (Emerald, Blue, Violet, Pink)",
+            "Toggle Switch Overhaul: Full-app Material 3 switch styling with crisp white thumb on active track and clean slate border when off",
+            "Notification & Permission Cleanup: Removed bottom permission snackbar from Home screen",
+            "Safe Routes: Balanced 3-color route rendering with equal distribution across cities"
         ]
     })
 
