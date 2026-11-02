@@ -1,8 +1,16 @@
 {
-  "version": "1.3.8",
-  "versionCode": 36,
+  "version": "1.3.9",
+  "versionName": "1.3.9",
+  "versionCode": 37,
+  "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "apkUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
-  "releaseNotes": "v1.3.8: Interactive Rapido Safe Ride & Escort Prototype with live telemetric tracking, Swiggy-style multi-layer road routing, and optimized risk zone intelligence.",
-  "sha256": "8077617482949beeac4f40363f8733ec5170241cc3c7ec7b17a1bf8245bee3a5",
-  "size": "20.3 MB"
+  "changelog": [
+    "Profile Screen: Dedicated Log Out button with confirmation dialog and session wipe",
+    "Settings Screen: Cleaned header layout, fixed upside gap, and removed floating image",
+    "Login Flow: Removed 1-click demo access cards for clean production authentication",
+    "Web Command Desk: Restricted sensitive OTP and Email Management modules to SuperAdmin"
+  ],
+  "releaseNotes": "v1.3.9: Profile Log Out integration, Settings header gap fix, login screen cleanup, and enhanced role-gated backend security.",
+  "sha256": "1d34eada3d09d1e3c3b4f866f25c437c45b6a9483b1c5368dc5da4cf54aef7c0",
+  "size": "20.1 MB"
 }

@@ -1043,10 +1043,10 @@ def landing_view(request):
     if current_uid:
         user_obj = UserProfile.objects.filter(id=current_uid, is_active=True).first()
 
-    apk_version_name = "1.3.8"
-    apk_version_code = 36
+    apk_version_name = "1.3.9"
+    apk_version_code = 37
     apk_size_mb = "20.1 MB"
-    apk_sha256 = "b154b5555cd85bd16c0aaefd4cd1045df105b63157d4245bb01b8c555ee5f5e9"
+    apk_sha256 = "1d34eada3d09d1e3c3b4f866f25c437c45b6a9483b1c5368dc5da4cf54aef7c0"
     min_android_version = "Android 8.0+ (Oreo to Android 15)"
 
     total_protected = UserProfile.objects.filter(is_active=True).count()
@@ -1093,6 +1093,7 @@ def download_apk_view(request):
     from django.conf import settings
 
     candidates = [
+        settings.BASE_DIR / 'GuardianAI-v1.3.9.apk',
         settings.BASE_DIR / 'GuardianAI-v1.3.8.apk',
         settings.BASE_DIR / 'GuardianAI-Safety-Debug.apk',
         settings.BASE_DIR.parent / 'Apk' / 'GuardianAI-debug.apk',
@@ -1113,7 +1114,7 @@ def download_apk_view(request):
         open(apk_path, 'rb'),
         content_type='application/vnd.android.package-archive',
         as_attachment=True,
-        filename='GuardianAI-v1.3.8.apk'
+        filename='GuardianAI-v1.3.9.apk'
     )
     response['Content-Length'] = os.path.getsize(apk_path)
     return response
@@ -1126,13 +1127,13 @@ def app_version_api(request):
     return JsonResponse({
         "status": "success",
         "appName": "GuardianAI",
-        "versionName": "1.3.4",
-        "versionCode": 36,
+        "versionName": "1.3.9",
+        "versionCode": 37,
         "minSdkVersion": 26,
         "targetSdkVersion": 34,
-        "sizeBytes": 21071666,
-        "sizeFormatted": "21.1 MB",
-        "sha256": "8077617482949beeac4f40363f8733ec5170241cc3c7ec7b17a1bf8245bee3a5",
+        "sizeBytes": 21113560,
+        "sizeFormatted": "20.1 MB",
+        "sha256": "1d34eada3d09d1e3c3b4f866f25c437c45b6a9483b1c5368dc5da4cf54aef7c0",
         "downloadUrl": request.build_absolute_uri('/download/apk/'),
         "fallbackGithubUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
         "changelog": [

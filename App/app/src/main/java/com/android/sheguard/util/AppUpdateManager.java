@@ -47,72 +47,108 @@ public class AppUpdateManager {
         if (activity == null || activity.isFinishing()) return;
 
         executor.execute(() -> {
-            HttpURLConnection connection = null;
-            try {
-                URL url = new URL(Constants.UPDATE_JSON_URL);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setConnectTimeout(15000);
-                connection.setReadTimeout(15000);
-                connection.connect();
+            String[] endpoints = new String[]{
+                    Constants.UPDATE_JSON_URL,
+                    "https://guardianai-backend-lkpp.onrender.com/api/app/version/"
+            };
 
-                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    InputStream in = connection.getInputStream();
-                    java.util.Scanner scanner = new java.util.Scanner(in).useDelimiter("\\A");
-                    String jsonStr = scanner.hasNext() ? scanner.next() : "";
-                    scanner.close();
+            JsonObject jsonObject = null;
+            int responseCode = 0;
 
-                    JsonObject jsonObject = JsonParser.parseString(jsonStr).getAsJsonObject();
-                    final int serverVersionCode = jsonObject.has("versionCode") ? jsonObject.get("versionCode").getAsInt() : 1;
-                    final String serverVersionName = jsonObject.has("versionName") ? jsonObject.get("versionName").getAsString() : "1.0.0";
-                    final String downloadUrl = jsonObject.has("downloadUrl") ? jsonObject.get("downloadUrl").getAsString() :
-                            (jsonObject.has("apkUrl") ? jsonObject.get("apkUrl").getAsString() : "");
+            for (String endpointUrl : endpoints) {
+                HttpURLConnection connection = null;
+                try {
+                    URL url = new URL(endpointUrl);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+                    connection.setConnectTimeout(12000);
+                    connection.setReadTimeout(12000);
+                    connection.setInstanceFollowRedirects(true);
+                    connection.connect();
 
-                    StringBuilder changelogBuilder = new StringBuilder();
-                    if (jsonObject.has("changelog")) {
-                        if (jsonObject.get("changelog").isJsonArray()) {
-                            JsonArray changelogArray = jsonObject.getAsJsonArray("changelog");
-                            for (JsonElement element : changelogArray) {
-                                changelogBuilder.append("• ").append(element.getAsString()).append("\n");
-                            }
-                        } else if (jsonObject.get("changelog").isJsonPrimitive()) {
-                            changelogBuilder.append(jsonObject.get("changelog").getAsString());
+                    responseCode = connection.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        InputStream in = connection.getInputStream();
+                        java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
+                        byte[] data = new byte[4096];
+                        int nRead;
+                        while ((nRead = in.read(data, 0, data.length)) != -1) {
+                            buffer.write(data, 0, nRead);
+                        }
+                        in.close();
+                        String jsonStr = new String(buffer.toByteArray(), java.nio.charset.StandardCharsets.UTF_8);
+
+                        jsonObject = JsonParser.parseString(jsonStr).getAsJsonObject();
+                        if (jsonObject != null) {
+                            break;
                         }
                     }
-                    final String changelog = changelogBuilder.toString().trim();
-
-                    int currentVersionCode = BuildConfig.VERSION_CODE;
-                    String currentVersionName = BuildConfig.VERSION_NAME;
-
-                    mainHandler.post(() -> {
-                        if (activity.isFinishing() || activity.isDestroyed()) return;
-
-                        if (serverVersionCode > currentVersionCode || isNewerVersion(serverVersionName, currentVersionName)) {
-                            showUpdateAvailableDialog(activity, serverVersionName, currentVersionName, downloadUrl, changelog);
-                        } else {
-                            if (showUpToDateToast) {
-                                Toast.makeText(activity, activity.getString(R.string.app_is_up_to_date, currentVersionName), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                } else {
-                    mainHandler.post(() -> {
-                        if (showUpToDateToast && !activity.isFinishing()) {
-                            Toast.makeText(activity, "Unable to check for updates (HTTP " + ")", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                } catch (Exception e) {
+                    Log.w(TAG, "Update endpoint " + endpointUrl + " check failed: " + e.getMessage());
+                } finally {
+                    if (connection != null) connection.disconnect();
                 }
-            } catch (Exception e) {
-                Log.e(TAG, "Error checking for updates: " + e.getMessage(), e);
+            }
+
+            if (jsonObject != null) {
+                final int serverVersionCode = jsonObject.has("versionCode") ? jsonObject.get("versionCode").getAsInt() : 1;
+                final String serverVersionName = jsonObject.has("versionName") ? jsonObject.get("versionName").getAsString() :
+                        (jsonObject.has("version") ? jsonObject.get("version").getAsString() : "1.0.0");
+
+                String rawDownloadUrl = jsonObject.has("downloadUrl") ? jsonObject.get("downloadUrl").getAsString() :
+                        (jsonObject.has("apkUrl") ? jsonObject.get("apkUrl").getAsString() : "");
+
+                if (rawDownloadUrl.startsWith("/")) {
+                    rawDownloadUrl = "https://guardianai-backend-lkpp.onrender.com" + rawDownloadUrl;
+                }
+                if (rawDownloadUrl.isEmpty()) {
+                    rawDownloadUrl = "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk";
+                }
+                final String downloadUrl = rawDownloadUrl;
+
+                StringBuilder changelogBuilder = new StringBuilder();
+                if (jsonObject.has("changelog")) {
+                    if (jsonObject.get("changelog").isJsonArray()) {
+                        JsonArray changelogArray = jsonObject.getAsJsonArray("changelog");
+                        for (JsonElement element : changelogArray) {
+                            changelogBuilder.append("• ").append(element.getAsString()).append((char) 10);
+                        }
+                    } else if (jsonObject.get("changelog").isJsonPrimitive()) {
+                        changelogBuilder.append(jsonObject.get("changelog").getAsString());
+                    }
+                } else if (jsonObject.has("releaseNotes")) {
+                    if (jsonObject.get("releaseNotes").isJsonArray()) {
+                        JsonArray releaseArray = jsonObject.getAsJsonArray("releaseNotes");
+                        for (JsonElement element : releaseArray) {
+                            changelogBuilder.append("• ").append(element.getAsString()).append((char) 10);
+                        }
+                    } else if (jsonObject.get("releaseNotes").isJsonPrimitive()) {
+                        changelogBuilder.append(jsonObject.get("releaseNotes").getAsString());
+                    }
+                }
+                final String changelog = changelogBuilder.toString().trim();
+
+                int currentVersionCode = BuildConfig.VERSION_CODE;
+                String currentVersionName = BuildConfig.VERSION_NAME;
+
                 mainHandler.post(() -> {
-                    if (showUpToDateToast && !activity.isFinishing()) {
-                        Toast.makeText(activity, "Unable to check for updates. Please check network.", Toast.LENGTH_SHORT).show();
+                    if (activity.isFinishing() || activity.isDestroyed()) return;
+
+                    if (serverVersionCode > currentVersionCode || isNewerVersion(serverVersionName, currentVersionName)) {
+                        showUpdateAvailableDialog(activity, serverVersionName, currentVersionName, downloadUrl, changelog);
+                    } else {
+                        if (showUpToDateToast) {
+                            Toast.makeText(activity, activity.getString(R.string.app_is_up_to_date, currentVersionName), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
+            } else {
+                final int finalCode = responseCode;
+                mainHandler.post(() -> {
+                    if (showUpToDateToast && !activity.isFinishing()) {
+                        Toast.makeText(activity, "Unable to reach update server" + (finalCode > 0 ? " (HTTP " + finalCode + ")" : ". Check connection."), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -181,10 +217,26 @@ public class AppUpdateManager {
             try {
                 URL url = new URL(downloadUrl);
                 connection = (HttpURLConnection) url.openConnection();
+                connection.setInstanceFollowRedirects(true);
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(30000);
                 connection.setReadTimeout(30000);
                 connection.connect();
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP || responseCode == 307 || responseCode == 308) {
+                    String redirectUrl = connection.getHeaderField("Location");
+                    if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                        connection.disconnect();
+                        url = new URL(redirectUrl);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setInstanceFollowRedirects(true);
+                        connection.setRequestMethod("GET");
+                        connection.setConnectTimeout(30000);
+                        connection.setReadTimeout(30000);
+                        connection.connect();
+                    }
+                }
 
                 if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                     throw new Exception("Server returned HTTP " + connection.getResponseCode() + " " + connection.getResponseMessage());
