@@ -45,6 +45,12 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+            int top = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
+            v.setPadding(0, top, 0, 0);
+            return insets;
+        });
+
         binding.btnSettingsBack.setOnClickListener(v -> {
             try {
                 androidx.navigation.Navigation.findNavController(view).navigateUp();
@@ -458,4 +464,4 @@ public class SettingsFragment extends Fragment {
                 .setNegativeButton(getString(R.string.btn_close), null)
                 .show();
     }
-}
+}

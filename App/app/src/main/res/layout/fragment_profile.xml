@@ -77,6 +77,24 @@
                 android:textSize="13sp"
                 android:textStyle="italic|bold" />
 
+            <!-- Quick Logout Action Icon -->
+            <FrameLayout
+                android:id="@+id/btn_top_logout"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_circle_back_btn"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_logout_2"
+                    app:tint="#F87171" />
+            </FrameLayout>
+
         </LinearLayout>
 
         <!-- ══════════════════════════════════════════════════
@@ -665,7 +683,69 @@
                     android:layout_height="1dp"
                     android:background="#1E2536" />
 
-                <!-- Row 4: Delete Account (Requested Feature) -->
+                <!-- Row 4: Log Out -->
+                <LinearLayout
+                    android:id="@+id/row_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp">
+
+                    <FrameLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_circle_logout">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_logout_2"
+                            app:tint="#F87171" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Log out"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Sign out of your account on this device"
+                            android:textColor="#94A3B8"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="#64748B" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#1E2536" />
+
+                <!-- Row 5: Delete Account (Requested Feature) -->
                 <LinearLayout
                     android:id="@+id/row_delete_account"
                     android:layout_width="match_parent"
@@ -725,6 +805,26 @@
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- Dedicated Action Button: Log Out -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
+            android:text="Log Out"
+            android:textAllCaps="false"
+            android:textColor="#F87171"
+            android:textSize="14.5sp"
+            android:textStyle="bold"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_logout_2"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="#F87171"
+            app:strokeColor="#4DF87171"
+            app:strokeWidth="1.2dp"
+            app:backgroundTint="#1A1825" />
 
         <!-- ══════════════════════════════════════════════════
              Bottom Reassurance Banner: "You are important"

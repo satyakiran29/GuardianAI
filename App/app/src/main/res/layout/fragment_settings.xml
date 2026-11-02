@@ -5,15 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/surface_background"
-    android:fitsSystemWindows="true"
     tools:context=".ui.fragment.SettingsFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:fitsSystemWindows="true"
         app:elevation="0dp">
 
         <include
@@ -21,49 +19,49 @@
             layout="@layout/view_header_expandable"
             android:visibility="gone" />
 
-        <!-- Top Header with Back Arrow, Title, and Hero Art with Glowing Script -->
-        <RelativeLayout
+        <!-- Top Header with Back Arrow and Title -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="12dp"
-            android:paddingBottom="4dp">
+            android:paddingBottom="10dp">
 
             <!-- Back Button -->
             <FrameLayout
                 android:id="@+id/btn_settings_back"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
+                android:background="@drawable/bg_circle_back_btn"
                 android:clickable="true"
                 android:focusable="true">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical|start"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/textColorPrimary"
+                    app:tint="#FFFFFF"
                     android:contentDescription="Back" />
             </FrameLayout>
 
-            <!-- Left Title & Subtitle -->
+            <!-- Title & Subtitle -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btn_settings_back"
-                android:layout_marginTop="12dp"
-                android:layout_toStartOf="@id/layout_header_art"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Settings"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="32sp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-black"
                     android:includeFontPadding="false" />
@@ -71,36 +69,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:text="Customize your safety experience"
-                    android:textColor="@color/textColorSecondary"
-                    android:textSize="13.5sp" />
+                    android:textColor="#94A3B8"
+                    android:textSize="12sp" />
             </LinearLayout>
 
-            <!-- Right Hero Art -->
-            <FrameLayout
-                android:id="@+id/layout_header_art"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    app:cardCornerRadius="36dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/surface_card_secondary">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/img_hero_woman_safe"
-                        android:contentDescription="Hero Safe Woman" />
-                </androidx.cardview.widget.CardView>
-            </FrameLayout>
-        </RelativeLayout>
+        </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView

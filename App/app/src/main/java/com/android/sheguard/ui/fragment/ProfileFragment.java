@@ -30,6 +30,7 @@ import com.android.sheguard.common.Constants;
 import com.android.sheguard.config.Prefs;
 import com.android.sheguard.databinding.FragmentProfileBinding;
 import com.android.sheguard.ui.activity.OnBoardingActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -127,6 +128,18 @@ public class ProfileFragment extends Fragment {
 
         binding.rowTwoFactor.setOnClickListener(v -> binding.switchTwoFactor.toggle());
 
+        // Log Out Actions (User Requested Feature)
+        View.OnClickListener logoutListener = v -> showLogoutConfirmationDialog();
+        if (binding.btnTopLogout != null) {
+            binding.btnTopLogout.setOnClickListener(logoutListener);
+        }
+        if (binding.rowLogout != null) {
+            binding.rowLogout.setOnClickListener(logoutListener);
+        }
+        if (binding.btnLogout != null) {
+            binding.btnLogout.setOnClickListener(logoutListener);
+        }
+
         // Delete Account (User Requested Feature)
         binding.rowDeleteAccount.setOnClickListener(v -> showDeleteAccountDialog());
 
@@ -163,6 +176,39 @@ public class ProfileFragment extends Fragment {
         if (binding != null && binding.tvTwoFactorStatus != null) {
             binding.tvTwoFactorStatus.setText(enabled ? "🟢 Enabled • Email OTP required at sign-in" : "⚪ Disabled • Password only");
             binding.tvTwoFactorStatus.setTextColor(enabled ? Color.parseColor("#34D399") : Color.parseColor("#94A3B8"));
+        }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Log Out Confirmation & Handler
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private void showLogoutConfirmationDialog() {
+        if (getContext() == null) return;
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Log Out")
+                .setMessage("Are you sure you want to log out of GuardianAI?")
+                .setPositiveButton("Log Out", (dialog, which) -> executeLogout())
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void executeLogout() {
+        if (getContext() == null) return;
+
+        Prefs.putBoolean(Constants.IS_DEMO_MODE, false);
+        Prefs.remove(Constants.PREFS_USER_NAME);
+        Prefs.remove(Constants.PREFS_USER_EMAIL);
+        Prefs.remove(Constants.PREFS_USER_PHONE);
+        Prefs.remove("USER_ROLE");
+
+        Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(requireContext(), OnBoardingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        if (getActivity() != null) {
+            getActivity().finishAffinity();
         }
     }
 
