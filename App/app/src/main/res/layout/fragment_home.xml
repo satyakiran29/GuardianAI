@@ -475,7 +475,7 @@
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:src="@drawable/ic_share_location_paperplane"
-                            app:tint="@color/colorPinkNeon"
+                            app:tint="?attr/themeAccent"
                             android:contentDescription="Share Location" />
 
                         <TextView
@@ -514,7 +514,7 @@
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:src="@drawable/ic_phone_call_emergency"
-                            app:tint="@color/colorPinkNeon"
+                            app:tint="?attr/themeAccent"
                             android:contentDescription="Call Emergency" />
 
                         <TextView
@@ -553,7 +553,7 @@
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:src="@drawable/ic_my_circle_people"
-                            app:tint="@color/colorPinkNeon"
+                            app:tint="?attr/themeAccent"
                             android:contentDescription="My Circle" />
 
                         <TextView
@@ -591,7 +591,7 @@
                             android:layout_width="26dp"
                             android:layout_height="26dp"
                             android:src="@drawable/ic_safe_places_pin"
-                            app:tint="@color/colorPinkNeon"
+                            app:tint="?attr/themeAccent"
                             android:contentDescription="Safe Places" />
 
                         <TextView
@@ -636,7 +636,7 @@
                             android:layout_height="26dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_shield_heart_vector"
-                            app:tint="@color/colorPinkNeon"
+                            app:tint="?attr/themeAccent"
                             android:contentDescription="Guardian Assistant" />
                     </FrameLayout>
 

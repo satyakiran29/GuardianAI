@@ -29,6 +29,7 @@
 
         <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Pink</item>
         <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Pink</item>
+        <item name="switchStyle">@style/Widget.SheGuard.Switch.Pink</item>
         <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Pink</item>
     </style>
 
@@ -44,6 +45,7 @@
         <item name="themeAccentSubtle">#26007AFF</item>
         <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Blue</item>
         <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Blue</item>
+        <item name="switchStyle">@style/Widget.SheGuard.Switch.Blue</item>
         <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Blue</item>
     </style>
 
@@ -56,6 +58,7 @@
         <item name="themeAccentSubtle">#268B5CF6</item>
         <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Violet</item>
         <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Violet</item>
+        <item name="switchStyle">@style/Widget.SheGuard.Switch.Violet</item>
         <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Violet</item>
     </style>
 
@@ -68,6 +71,7 @@
         <item name="themeAccentSubtle">#2610B981</item>
         <item name="radioButtonStyle">@style/Widget.SheGuard.RadioButton.Emerald</item>
         <item name="materialSwitchStyle">@style/Widget.SheGuard.Switch.Emerald</item>
+        <item name="switchStyle">@style/Widget.SheGuard.Switch.Emerald</item>
         <item name="checkboxStyle">@style/Widget.SheGuard.Checkbox.Emerald</item>
     </style>
 
@@ -106,16 +110,28 @@
 
     <!-- Component Styles: Material Switches -->
     <style name="Widget.SheGuard.Switch.Pink" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="thumbTint">@color/accent_pink</item>
+        <item name="thumbTint">@color/switch_thumb_selector</item>
+        <item name="trackTint">@color/switch_track_pink</item>
+        <item name="trackDecorationTint">@color/switch_track_stroke_pink</item>
+        <item name="thumbIcon">@null</item>
     </style>
     <style name="Widget.SheGuard.Switch.Blue" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="thumbTint">@color/accent_blue</item>
+        <item name="thumbTint">@color/switch_thumb_selector</item>
+        <item name="trackTint">@color/switch_track_blue</item>
+        <item name="trackDecorationTint">@color/switch_track_stroke_blue</item>
+        <item name="thumbIcon">@null</item>
     </style>
     <style name="Widget.SheGuard.Switch.Violet" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="thumbTint">@color/accent_violet</item>
+        <item name="thumbTint">@color/switch_thumb_selector</item>
+        <item name="trackTint">@color/switch_track_violet</item>
+        <item name="trackDecorationTint">@color/switch_track_stroke_violet</item>
+        <item name="thumbIcon">@null</item>
     </style>
     <style name="Widget.SheGuard.Switch.Emerald" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="thumbTint">@color/accent_emerald</item>
+        <item name="thumbTint">@color/switch_thumb_selector</item>
+        <item name="trackTint">@color/switch_track_emerald</item>
+        <item name="trackDecorationTint">@color/switch_track_stroke_emerald</item>
+        <item name="thumbIcon">@null</item>
     </style>
 
     <!-- Component Styles: Checkboxes -->

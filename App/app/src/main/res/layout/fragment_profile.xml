@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="0.95"
                 android:text="Stronger\nSafer\nYou ♡"
-                android:textColor="#FF70B5"
+                android:textColor="?attr/themeAccent"
                 android:textSize="13sp"
                 android:textStyle="italic|bold" />
 
@@ -193,7 +193,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Edit profile"
-                    android:textColor="#FF70B5"
+                    android:textColor="?attr/themeAccent"
                     android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -890,7 +890,7 @@
                     android:layout_marginStart="6dp"
                     android:lineSpacingMultiplier="0.95"
                     android:text="Stay Safe\nStay Strong ♡"
-                    android:textColor="#FF70B5"
+                    android:textColor="?attr/themeAccent"
                     android:textSize="12sp"
                     android:textStyle="italic|bold" />
 

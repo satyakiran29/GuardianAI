@@ -438,7 +438,7 @@
                             android:layout_gravity="center"
                             android:contentDescription="Shield"
                             android:src="@drawable/ic_shield_check_vector"
-                            app:tint="@color/colorPinkNeon" />
+                            app:tint="?attr/themeAccent" />
                     </FrameLayout>
 
                     <!-- Text Center -->

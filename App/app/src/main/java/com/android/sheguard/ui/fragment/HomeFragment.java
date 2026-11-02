@@ -398,11 +398,7 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        if (!allGranted && getContext() != null) {
-            Snackbar snackbar = Snackbar.make(binding.getRoot(), R.string.permission_must_be_granted, Snackbar.LENGTH_SHORT);
-            snackbar.setAction(R.string.grant, v -> requestAppPermissions());
-            snackbar.show();
-        } else if (allGranted && AppUtil.permissionsGranted(getActivity())) {
+        if (allGranted && AppUtil.permissionsGranted(getActivity())) {
             if (SosService.isRunning) {
                 updateButtonText();
             }

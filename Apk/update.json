@@ -11,6 +11,7 @@
     "Web Command Desk: Restricted sensitive OTP and Email Management modules to SuperAdmin"
   ],
   "releaseNotes": "v1.3.9: Balanced 3-color safe route rendering (Safe, Caution, Risk Area equally distributed), dataset balance across all cities, Profile Log Out, and Settings header cleanup.",
-  "sha256": "051ede4cb2ee1eb74fe5741738bc845322dc439380571e100a108e8d6c575e4e",
-  "size": "20.3 MB"
+  "sha256": "4d41aee214d9592776fa82d4ab1fb37e35bf3472fac5a230ef232481c6e4ec34",
+  "size": "21.9 MB",
+  "size_bytes": 22935646
 }
