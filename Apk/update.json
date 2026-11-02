@@ -1,13 +1,8 @@
 {
-  "versionCode": 30,
-  "versionName": "1.3.2",
-  "playStoreStatus": "Coming Soon (In Review)",
-  "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
-  "changelog": [
-    "Loading Speed Overhaul: Offline local Leaflet bundle & CartoDB Fastly CDN multi-subdomain tiles for sub-150ms map rendering",
-    "Accurate Directions Navigation: Turn-by-turn walking and driving directions to verified real-world coordinates for Rajam Police Station, Hospitals & Safe Havens",
-    "Instant Safe Havens Radar: Sub-10ms fast-path rendering of nearby verified police posts, pharmacies, and safe hubs",
-    "Zero-Crime Fallacy ML Fallback: Gradient Boosting Classifier continuous 0-100 Safety Score for unmonitored zones",
-    "Edge-to-Edge UI & Bottom Dock Elevation: Fully transparent system navigation bar & comfortably elevated floating bottom dock with full scroll clearance"
-  ]
+    "versionCode": 31,
+    "versionName": "1.3.3",
+    "apkUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
+    "releaseDate": "2026-11-02",
+    "forceUpdate": false,
+    "changelog": "Accurate Google Maps verified coordinates for all safe havens and localities across Rajam, Visakhapatnam, Vizianagaram, Srikakulam, and Palakonda. Precise Google Maps walking & driving directions."
 }

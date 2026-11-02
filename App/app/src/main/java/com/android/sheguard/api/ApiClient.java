@@ -754,20 +754,19 @@ public class ApiClient {
         try {
             JsonObject root = new JsonObject();
             com.google.gson.JsonArray list = new com.google.gson.JsonArray();
-
-            // Real Verified Regional Safe Havens (Rajam, Vizag, etc.)
+            // Real Verified Regional Safe Havens (Exact Google Maps Coordinates)
             Object[][] verifiedHavens = {
-                {"Rajam Police Station & Women Desk", "police", "POLICE", "08941-251233", 18.45084, 83.65482, "Police Station Rd, opp. MPE School near Segidi St, Rajam 532127", "Open 24/7 • Staffed Police Station"},
-                {"Rajam RTC Bus Complex Police Outpost", "police", "POLICE", "112", 18.45220, 83.65540, "RTC Bus Stand Concourse, Palakonda Rd, Rajam 532127", "Open 24/7 • Police Patrol"},
-                {"GMR Varalakshmi CARE Hospital & Trauma", "hospital", "HOSPITAL", "08941-251591", 18.46850, 83.66550, "GMR Nagar, Near GMRIT Campus, Rajam 532127", "Open 24/7 • 24-Hour Emergency & ICU"},
-                {"Community Health Centre (CHC) Govt Hospital", "hospital", "HOSPITAL", "108", 18.45600, 83.65900, "Hospital Road, Rajam 532127", "Open 24/7 • Casualty & Maternal Emergency"},
-                {"Apollo Pharmacy 24/7 (Rajam Main Road)", "pharmacy", "PHARMACY", "1860-500-0101", 18.45450, 83.65780, "Main Road, Near Old Bus Stand, Rajam 532127", "Open 24 Hours • Emergency Medicines"},
-                {"MedPlus 24-Hour Pharmacy Rajam", "pharmacy", "PHARMACY", "040-67006700", 18.45120, 83.65520, "Cheepurupalli Road, Opp. Police Station Lane, Rajam", "Open 24 Hours • First Aid & Supplies"},
-                {"GMRIT Women Vigilance Hub & Safe Refuge", "safe_haven", "SAFE_HAVEN", "08941-251592", 18.46680, 83.66220, "GMRIT Main Gate Security Hub & She-Lounge, Rajam", "Open 24/7 • CCTV & Security Escort"},
-                {"Pink She-Haven RTC Transit Hub", "safe_haven", "SAFE_HAVEN", "181", 18.45250, 83.65560, "RTC Complex Concourse, Palakonda Road, Rajam", "Open 24/7 • Women Rest Zone & SOS"},
-                {"Disha Women Police Station (MVP Colony)", "police", "POLICE", "1091", 17.74150, 83.33920, "Sector 2, MVP Colony, Visakhapatnam 530017", "Open 24/7 • All-Women Rapid Unit"},
-                {"Siripuram Police Assistance Post & SHE Team", "police", "POLICE", "0891-2565200", 17.72120, 83.31550, "Siripuram Junction, Dutt Island, Visakhapatnam 530003", "Open 24/7 • SHE Team Escort"},
-                {"King George Hospital (KGH) 24/7 Trauma", "hospital", "HOSPITAL", "0891-2564891", 17.70850, 83.30450, "Maharanipeta, Visakhapatnam 530002", "Open 24/7 • Level 1 Trauma & ICU"},
+                {"Rajam Police Station & Women Desk", "police", "POLICE", "08941-251233", 18.44899, 83.65532, "Police Station Rd, opp. MPE School near Segidi St, Rajam 532127", "Open 24/7 • Staffed Police Station"},
+                {"Rajam RTC Bus Complex Police Outpost", "police", "POLICE", "112", 18.45036, 83.65976, "APSRTC Bus Station Concourse, Main Road, Rajam 532127", "Open 24/7 • Police Patrol"},
+                {"GMR Varalakshmi CARE Hospital & Trauma", "hospital", "HOSPITAL", "08941-251591", 18.46150, 83.65830, "GMR Nagar, Near GMRIT Campus, Rajam 532127", "Open 24/7 • 24-Hour Emergency & ICU"},
+                {"Community Health Centre (CHC) Govt Hospital", "hospital", "HOSPITAL", "108", 18.44780, 83.66170, "Hospital Road, Rajam 532127", "Open 24/7 • Casualty & Maternal Emergency"},
+                {"Apollo Pharmacy 24/7 (Rajam Main Road)", "pharmacy", "PHARMACY", "1860-500-0101", 18.45100, 83.65950, "Main Road, Near Old Bus Stand, Rajam 532127", "Open 24 Hours • Emergency Medicines"},
+                {"MedPlus 24-Hour Pharmacy Rajam", "pharmacy", "PHARMACY", "040-67006700", 18.44950, 83.65600, "Cheepurupalli Road, Opp. Police Station Lane, Rajam", "Open 24 Hours • First Aid & Supplies"},
+                {"GMRIT Women Vigilance Hub & Safe Refuge", "safe_haven", "SAFE_HAVEN", "08941-251592", 18.46556, 83.65946, "GMRIT Main Gate Security Hub & She-Lounge, Rajam", "Open 24/7 • CCTV & Security Escort"},
+                {"Pink She-Haven RTC Transit Hub", "safe_haven", "SAFE_HAVEN", "181", 18.45040, 83.65980, "APSRTC Bus Station Concourse, Main Road, Rajam", "Open 24/7 • Women Rest Zone & SOS"},
+                {"Disha Women Police Station (MVP Colony)", "police", "POLICE", "1091", 17.74140, 83.33870, "Sector 2, MVP Colony, Visakhapatnam 530017", "Open 24/7 • All-Women Rapid Unit"},
+                {"Siripuram Police Assistance Post & SHE Team", "police", "POLICE", "0891-2565200", 17.71980, 83.31630, "Siripuram Junction, Dutt Island, Visakhapatnam 530003", "Open 24/7 • SHE Team Escort"},
+                {"King George Hospital (KGH) 24/7 Trauma", "hospital", "HOSPITAL", "0891-2564891", 17.70826, 83.30519, "Maharanipeta, Visakhapatnam 530002", "Open 24/7 • Level 1 Trauma & ICU"},
                 {"Apollo Pharmacy 24/7 Ram Nagar", "pharmacy", "PHARMACY", "1860-500-0101", 17.71980, 83.31150, "Ram Nagar Main Road, Waltair Uplands, Visakhapatnam", "Open 24 Hours • Emergency Medicines"}
             };
 

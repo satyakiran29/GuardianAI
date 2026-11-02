@@ -554,19 +554,19 @@ public class SafeRouteFragment extends Fragment {
             String name = "Nearest Police Station";
 
             if (currentLatitude >= 18.35 && currentLatitude <= 18.55 && currentLongitude >= 83.50 && currentLongitude <= 83.75) {
-                targetLat = 18.4508; targetLon = 83.6548;
+                targetLat = 18.44899; targetLon = 83.65532;
                 name = "Rajam Police Station (Cheepurupalli Rd)";
             } else if (currentLatitude >= 17.50 && currentLatitude <= 18.00 && currentLongitude >= 83.00 && currentLongitude <= 83.60) {
-                targetLat = 17.7415; targetLon = 83.3392;
+                targetLat = 17.74140; targetLon = 83.33870;
                 name = "Disha Women Police Station (Vizag)";
             } else if (currentLatitude >= 18.05 && currentLatitude <= 18.25 && currentLongitude >= 83.30 && currentLongitude <= 83.50) {
-                targetLat = 18.1210; targetLon = 83.3980;
+                targetLat = 18.11200; targetLon = 83.40950;
                 name = "Disha Women Police Station (Vizianagaram)";
             } else if (currentLatitude >= 18.25 && currentLatitude <= 18.38 && currentLongitude >= 83.80 && currentLongitude <= 83.98) {
-                targetLat = 18.2980; targetLon = 83.8950;
+                targetLat = 18.29850; targetLon = 83.89700;
                 name = "Disha Women Police Station (Srikakulam)";
             } else if (currentLatitude >= 18.55 && currentLatitude <= 18.68 && currentLongitude >= 83.70 && currentLongitude <= 83.85) {
-                targetLat = 18.6015; targetLon = 83.7550;
+                targetLat = 18.60060; targetLon = 83.75750;
                 name = "Palakonda Police Station & Women Desk";
             }
             binding.etDestination.setText(name);
@@ -584,19 +584,19 @@ public class SafeRouteFragment extends Fragment {
             String name = "Central Transit Hub";
 
             if (currentLatitude >= 18.35 && currentLatitude <= 18.55 && currentLongitude >= 83.50 && currentLongitude <= 83.75) {
-                targetLat = 18.4522; targetLon = 83.6554;
+                targetLat = 18.45036; targetLon = 83.65976;
                 name = "Rajam RTC Bus Complex Hub";
             } else if (currentLatitude >= 17.50 && currentLatitude <= 18.00 && currentLongitude >= 83.00 && currentLongitude <= 83.60) {
-                targetLat = 17.7275; targetLon = 83.3102;
+                targetLat = 17.72372; targetLon = 83.30722;
                 name = "Dwaraka RTC Transit Complex (Vizag)";
             } else if (currentLatitude >= 18.05 && currentLatitude <= 18.25 && currentLongitude >= 83.30 && currentLongitude <= 83.50) {
-                targetLat = 18.1135; targetLon = 83.4065;
+                targetLat = 18.11320; targetLon = 83.40450;
                 name = "Vizianagaram RTC Complex & Pink Lounge";
             } else if (currentLatitude >= 18.25 && currentLatitude <= 18.38 && currentLongitude >= 83.80 && currentLongitude <= 83.98) {
-                targetLat = 18.2970; targetLon = 83.8940;
+                targetLat = 18.29215; targetLon = 83.89650;
                 name = "Srikakulam RTC Bus Station Hub";
             } else if (currentLatitude >= 18.55 && currentLatitude <= 18.68 && currentLongitude >= 83.70 && currentLongitude <= 83.85) {
-                targetLat = 18.6015; targetLon = 83.7550;
+                targetLat = 18.60060; targetLon = 83.75750;
                 name = "Palakonda RTC Bus Stand Junction";
             }
             binding.etDestination.setText(name);
@@ -609,19 +609,19 @@ public class SafeRouteFragment extends Fragment {
             String name = "City Emergency Hospital";
 
             if (currentLatitude >= 18.35 && currentLatitude <= 18.55 && currentLongitude >= 83.50 && currentLongitude <= 83.75) {
-                targetLat = 18.4685; targetLon = 83.6655;
+                targetLat = 18.46150; targetLon = 83.65830;
                 name = "GMR Care Multi-Speciality Hospital (Rajam)";
             } else if (currentLatitude >= 17.50 && currentLatitude <= 18.00 && currentLongitude >= 83.00 && currentLongitude <= 83.60) {
-                targetLat = 17.7085; targetLon = 83.3050;
+                targetLat = 17.70826; targetLon = 83.30519;
                 name = "King George Hospital (KGH Trauma, Vizag)";
             } else if (currentLatitude >= 18.05 && currentLatitude <= 18.25 && currentLongitude >= 83.30 && currentLongitude <= 83.50) {
-                targetLat = 18.1200; targetLon = 83.4010;
+                targetLat = 18.10670; targetLon = 83.39560;
                 name = "Maharaja Govt General Hospital (Vizianagaram)";
             } else if (currentLatitude >= 18.25 && currentLatitude <= 18.38 && currentLongitude >= 83.80 && currentLongitude <= 83.98) {
-                targetLat = 18.2940; targetLon = 83.8930;
+                targetLat = 18.31430; targetLon = 83.88860;
                 name = "RIMS Govt General Hospital (Srikakulam)";
             } else if (currentLatitude >= 18.55 && currentLatitude <= 18.68 && currentLongitude >= 83.70 && currentLongitude <= 83.85) {
-                targetLat = 18.6025; targetLon = 83.7570;
+                targetLat = 18.60020; targetLon = 83.75680;
                 name = "Govt Area Hospital Palakonda (24/7 Trauma)";
             }
             binding.etDestination.setText(name);
