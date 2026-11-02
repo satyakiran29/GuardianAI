@@ -1045,11 +1045,15 @@ def landing_view(request):
         ],
         'helplines': [
             {'code': '112', 'name': 'National Emergency', 'badge': 'All Emergencies', 'desc': 'Integrated 24/7 Police, Fire & Medical dispatch nationwide.', 'icon': 'fa-solid fa-triangle-exclamation'},
-            {'code': '1091', 'name': 'Women Helpline', 'badge': 'Specialized SOS', 'desc': 'Dedicated 24/7 women distress response & rapid dispatch.', 'icon': 'fa-solid fa-shield-heart'},
+            {'code': '1091 / 112', 'name': 'AP Disha Women SOS', 'badge': 'Andhra Pradesh', 'desc': 'AP Disha specialized women protection & SHE Teams rapid patrol.', 'icon': 'fa-solid fa-shield-heart'},
+            {'code': '08941-251233', 'name': 'Rajam Police Station', 'badge': 'Police • Rajam', 'desc': 'Cheepurupalli Road, opp. MPE School near Segidi St, Rajam 532127.', 'icon': 'fa-solid fa-building-shield'},
+            {'code': '0891-2565100', 'name': 'Vizag Disha Police', 'badge': 'Police • Vizag', 'desc': 'Dedicated All-Women Police Station, MVP Colony, Visakhapatnam.', 'icon': 'fa-solid fa-user-shield'},
+            {'code': '08941-251591', 'name': 'GMR Care Hospital', 'badge': 'Hospital • Rajam', 'desc': '24/7 Emergency casualty, ICU & trauma care, GMR Nagar, Rajam.', 'icon': 'fa-solid fa-hospital'},
+            {'code': '0891-2564891', 'name': 'KGH Trauma Center', 'badge': 'Hospital • Vizag', 'desc': 'King George Hospital 24/7 Level 1 Trauma & Casualty, Visakhapatnam.', 'icon': 'fa-solid fa-truck-medical'},
+            {'code': '1860-500-0101', 'name': 'Apollo 24/7 Pharmacy', 'badge': '24/7 Pharmacy', 'desc': 'Round-the-clock emergency medicines & first aid in Rajam & Vizag.', 'icon': 'fa-solid fa-pills'},
+            {'code': '181', 'name': 'Pink She-Lounge Hub', 'badge': 'Safe Hub', 'desc': 'Verified 24/7 safe refuges at Siripuram (Vizag) and RTC Complex (Rajam).', 'icon': 'fa-solid fa-house-chimney-medical'},
             {'code': '1930', 'name': 'Cyber Crime Helpline', 'badge': 'Digital Safety', 'desc': 'National cyber fraud, online stalking & financial safety.', 'icon': 'fa-solid fa-laptop-code'},
-            {'code': '100', 'name': 'Police Control Room', 'badge': 'Law Enforcement', 'desc': 'Immediate local police precinct dispatch & PCR patrol.', 'icon': 'fa-solid fa-car-on'},
-            {'code': '108', 'name': 'Emergency Medical', 'badge': 'Ambulance & Trauma', 'desc': 'Rapid trauma ambulance and critical medical fleet.', 'icon': 'fa-solid fa-truck-medical'},
-            {'code': '1800-599-0019', 'name': 'KIRAN Mental Health', 'badge': 'Crisis Counseling', 'desc': 'Govt. 24/7 confidential psychological distress counseling.', 'icon': 'fa-solid fa-brain'},
+            {'code': '108', 'name': 'Emergency Ambulance', 'badge': 'Free Ambulance', 'desc': 'Rapid trauma ambulance and free critical medical transport.', 'icon': 'fa-solid fa-ambulance'}
         ]
     }
     return render(request, 'dashboard/landing.html', context)

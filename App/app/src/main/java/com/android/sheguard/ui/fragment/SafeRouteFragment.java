@@ -542,10 +542,30 @@ public class SafeRouteFragment extends Fragment {
             }
         });
 
-        // Quick Preset Destination Chips
+        // Quick Preset Destination Chips (Intelligently resolves to Rajam, Vizag, Vizianagaram, Srikakulam, Palakonda or Local GPS)
         binding.chipPresetPolice.setOnClickListener(v -> {
-            binding.etDestination.setText("Nearest Police Station");
-            resolveAndPlanRoute("Nearest Police Station", currentLatitude + 0.012, currentLongitude + 0.008);
+            double targetLat = currentLatitude + 0.012;
+            double targetLon = currentLongitude + 0.008;
+            String name = "Nearest Police Station";
+
+            if (currentLatitude >= 18.35 && currentLatitude <= 18.55 && currentLongitude >= 83.50 && currentLongitude <= 83.75) {
+                targetLat = 18.4508; targetLon = 83.6548;
+                name = "Rajam Police Station (Cheepurupalli Rd)";
+            } else if (currentLatitude >= 17.50 && currentLatitude <= 18.00 && currentLongitude >= 83.00 && currentLongitude <= 83.60) {
+                targetLat = 17.7415; targetLon = 83.3392;
+                name = "Disha Women Police Station (Vizag)";
+            } else if (currentLatitude >= 18.05 && currentLatitude <= 18.25 && currentLongitude >= 83.30 && currentLongitude <= 83.50) {
+                targetLat = 18.1210; targetLon = 83.3980;
+                name = "Disha Women Police Station (Vizianagaram)";
+            } else if (currentLatitude >= 18.25 && currentLatitude <= 18.38 && currentLongitude >= 83.80 && currentLongitude <= 83.98) {
+                targetLat = 18.2980; targetLon = 83.8950;
+                name = "Disha Women Police Station (Srikakulam)";
+            } else if (currentLatitude >= 18.55 && currentLatitude <= 18.68 && currentLongitude >= 83.70 && currentLongitude <= 83.85) {
+                targetLat = 18.6015; targetLon = 83.7550;
+                name = "Palakonda Police Station & Women Desk";
+            }
+            binding.etDestination.setText(name);
+            resolveAndPlanRoute(name, targetLat, targetLon);
         });
 
         binding.chipPresetHome.setOnClickListener(v -> {
@@ -554,16 +574,55 @@ public class SafeRouteFragment extends Fragment {
         });
 
         binding.chipPresetMetro.setOnClickListener(v -> {
-            binding.etDestination.setText("Central Metro Transit Hub");
-            resolveAndPlanRoute("Metro Station", currentLatitude + 0.022, currentLongitude - 0.014);
+            double targetLat = currentLatitude + 0.022;
+            double targetLon = currentLongitude - 0.014;
+            String name = "Central Transit Hub";
+
+            if (currentLatitude >= 18.35 && currentLatitude <= 18.55 && currentLongitude >= 83.50 && currentLongitude <= 83.75) {
+                targetLat = 18.4522; targetLon = 83.6554;
+                name = "Rajam RTC Bus Complex Hub";
+            } else if (currentLatitude >= 17.50 && currentLatitude <= 18.00 && currentLongitude >= 83.00 && currentLongitude <= 83.60) {
+                targetLat = 17.7275; targetLon = 83.3102;
+                name = "Dwaraka RTC Transit Complex (Vizag)";
+            } else if (currentLatitude >= 18.05 && currentLatitude <= 18.25 && currentLongitude >= 83.30 && currentLongitude <= 83.50) {
+                targetLat = 18.1135; targetLon = 83.4065;
+                name = "Vizianagaram RTC Complex & Pink Lounge";
+            } else if (currentLatitude >= 18.25 && currentLatitude <= 18.38 && currentLongitude >= 83.80 && currentLongitude <= 83.98) {
+                targetLat = 18.2970; targetLon = 83.8940;
+                name = "Srikakulam RTC Bus Station Hub";
+            } else if (currentLatitude >= 18.55 && currentLatitude <= 18.68 && currentLongitude >= 83.70 && currentLongitude <= 83.85) {
+                targetLat = 18.6015; targetLon = 83.7550;
+                name = "Palakonda RTC Bus Stand Junction";
+            }
+            binding.etDestination.setText(name);
+            resolveAndPlanRoute(name, targetLat, targetLon);
         });
 
         binding.chipPresetHospital.setOnClickListener(v -> {
-            binding.etDestination.setText("City Emergency Hospital");
-            resolveAndPlanRoute("Hospital", currentLatitude - 0.018, currentLongitude - 0.012);
+            double targetLat = currentLatitude - 0.018;
+            double targetLon = currentLongitude - 0.012;
+            String name = "City Emergency Hospital";
+
+            if (currentLatitude >= 18.35 && currentLatitude <= 18.55 && currentLongitude >= 83.50 && currentLongitude <= 83.75) {
+                targetLat = 18.4685; targetLon = 83.6655;
+                name = "GMR Care Multi-Speciality Hospital (Rajam)";
+            } else if (currentLatitude >= 17.50 && currentLatitude <= 18.00 && currentLongitude >= 83.00 && currentLongitude <= 83.60) {
+                targetLat = 17.7085; targetLon = 83.3050;
+                name = "King George Hospital (KGH Trauma, Vizag)";
+            } else if (currentLatitude >= 18.05 && currentLatitude <= 18.25 && currentLongitude >= 83.30 && currentLongitude <= 83.50) {
+                targetLat = 18.1200; targetLon = 83.4010;
+                name = "Maharaja Govt General Hospital (Vizianagaram)";
+            } else if (currentLatitude >= 18.25 && currentLatitude <= 18.38 && currentLongitude >= 83.80 && currentLongitude <= 83.98) {
+                targetLat = 18.2940; targetLon = 83.8930;
+                name = "RIMS Govt General Hospital (Srikakulam)";
+            } else if (currentLatitude >= 18.55 && currentLatitude <= 18.68 && currentLongitude >= 83.70 && currentLongitude <= 83.85) {
+                targetLat = 18.6025; targetLon = 83.7570;
+                name = "Govt Area Hospital Palakonda (24/7 Trauma)";
+            }
+            binding.etDestination.setText(name);
+            resolveAndPlanRoute(name, targetLat, targetLon);
         });
 
-        // Route Selection Tabs
         binding.btnSelectRoute1.setOnClickListener(v -> updateRouteSelection(0));
         binding.btnSelectRoute2.setOnClickListener(v -> updateRouteSelection(1));
 

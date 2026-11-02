@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         com.android.sheguard.util.ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
+        androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         com.android.sheguard.util.AppleGlassManager.applyGlassToMainActivity(this, com.android.sheguard.util.ThemeUtil.isNightMode(this));

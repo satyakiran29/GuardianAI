@@ -92,6 +92,12 @@ public class ThemeUtil {
             activity.getWindow().getDecorView().setBackgroundColor(surfaceBg);
         }
 
+        activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+        activity.getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            activity.getWindow().setNavigationBarContrastEnforced(false);
+        }
+
         WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(activity.getWindow(), activity.getWindow().getDecorView());
         if (insetsController != null) {
             insetsController.setAppearanceLightStatusBars(!isNightMode);

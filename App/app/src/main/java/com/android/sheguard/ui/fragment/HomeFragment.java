@@ -55,11 +55,35 @@ public class HomeFragment extends Fragment {
         } catch (Exception ignored) {}
         setUserNameOnTitle();
 
-        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(binding.appBarLayout, (v, insets) -> {
+        // Edge-to-edge window insets: lift dock above gesture bar and pad top app bar
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
             int statusBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars()).top;
-            v.setPadding(0, statusBarHeight, 0, 0);
+            int navBarHeight = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.navigationBars()).bottom;
+
+            if (binding.appBarLayout != null) {
+                binding.appBarLayout.setPadding(0, statusBarHeight, 0, 0);
+            }
+
+            int baseMargin = (int) (22 * getResources().getDisplayMetrics().density);
+            if (binding.bottomNavDock != null) {
+                androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams lp =
+                        (androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams) binding.bottomNavDock.getLayoutParams();
+                lp.bottomMargin = baseMargin + Math.max(navBarHeight, (int) (12 * getResources().getDisplayMetrics().density));
+                binding.bottomNavDock.setLayoutParams(lp);
+
+                if (binding.homeScrollView != null) {
+                    int dockHeight = (int) (66 * getResources().getDisplayMetrics().density);
+                    binding.homeScrollView.setPadding(
+                            binding.homeScrollView.getPaddingLeft(),
+                            binding.homeScrollView.getPaddingTop(),
+                            binding.homeScrollView.getPaddingRight(),
+                            dockHeight + lp.bottomMargin + (int) (36 * getResources().getDisplayMetrics().density)
+                    );
+                }
+            }
             return insets;
         });
+        androidx.core.view.ViewCompat.requestApplyInsets(view);
 
         NotificationManager notificationManager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationChannel channel1 = new NotificationChannel(getString(R.string.notification_channel_push), getString(R.string.notification_channel_push), NotificationManager.IMPORTANCE_HIGH);

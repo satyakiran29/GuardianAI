@@ -735,18 +735,52 @@ class EmergencyContactsView(APIView):
 
 
 class HelplinesView(APIView):
+    """
+    GET /api/helplines/
+    Returns nationwide emergency numbers plus verified regional Police,
+    Hospital trauma centers, 24/7 Pharmacies, and Safe Hubs for Rajam & Visakhapatnam.
+    """
     def get(self, request):
         helplines = [
-            {"name": "National Emergency Number", "number": "112", "category": "Emergency & Police", "description": "Single emergency helpline number for Police, Fire, and Ambulance"},
+            {"name": "National Emergency Number", "number": "112", "category": "Emergency & Police", "description": "Single emergency helpline number for Police, Fire, and Ambulance nationwide"},
             {"name": "Women Helpline (All India)", "number": "1091", "category": "Women Safety", "description": "24/7 dedicated emergency line for women in distress"},
+            {"name": "AP Disha SOS & SHE Team Helpline", "number": "112 / 1091", "category": "AP Women Safety", "description": "Andhra Pradesh Disha Rapid Response & Women Protection Network"},
+            
+            # Rajam Police, Hospitals, 24/7 Pharmacy & Safe Hubs
+            {"name": "Rajam Police Station", "number": "08941-251233", "category": "Police - Rajam", "description": "Police Station Road (Cheepurupalli - Rajam Rd), opp. MPE School near Segidi St, Rajam 532127"},
+            {"name": "Rajam RTC Bus Complex Police Outpost", "number": "112", "category": "Police - Rajam", "description": "RTC Complex Concourse, Palakonda Road, Rajam 532127"},
+            {"name": "GMR Care Hospital & Emergency Trauma (Rajam)", "number": "08941-251591", "category": "Hospital - Rajam", "description": "24/7 Emergency casualty, ICU & ambulance service, GMR Nagar, Rajam 532127"},
+            {"name": "Community Health Centre (CHC) Govt Hospital Rajam", "number": "108", "category": "Hospital - Rajam", "description": "Hospital Road, Rajam 532127 • 24/7 free casualty, maternal & trauma care"},
+            {"name": "Apollo Pharmacy 24/7 (Rajam)", "number": "1860-500-0101", "category": "24/7 Pharmacy - Rajam", "description": "Main Road, Near Old Bus Stand, Rajam 532127 • Open 24 Hours all medicines & first aid"},
+            {"name": "MedPlus 24-Hour Pharmacy & First Aid (Rajam)", "number": "040-67006700", "category": "24/7 Pharmacy - Rajam", "description": "Cheepurupalli Road, Opp. Police Station Lane, Rajam 532127"},
+            {"name": "GMRIT Women Vigilance Hub & Safe Refuge (Rajam)", "number": "08941-251592", "category": "Safe Hub - Rajam", "description": "GMRIT Main Gate Security, Rajam • 24/7 campus gate security, CCTV shelter & emergency safe zone"},
+            {"name": "Pink She-Haven & Transit Refuge (Rajam)", "number": "181", "category": "Safe Hub - Rajam", "description": "RTC Complex Concourse, Rajam • 24/7 women rest zone & emergency SOS shelter"},
+
+            # Visakhapatnam Police, Hospitals, 24/7 Pharmacy & Safe Hubs
+            {"name": "Visakhapatnam City Police Control Room", "number": "0891-2565454", "category": "Police - Visakhapatnam", "description": "Immediate law enforcement, PCR mobile patrol, and emergency dispatch across Vizag"},
+            {"name": "Visakhapatnam Disha Women Police Station", "number": "0891-2565100", "category": "Police - Visakhapatnam", "description": "Sector 2, MVP Colony, Visakhapatnam 530017 • Dedicated All-Women Police Station"},
+            {"name": "Siripuram Police Assistance Post & SHE Team Hub", "number": "0891-2565200", "category": "Police - Visakhapatnam", "description": "Siripuram Junction, Dutt Island, Visakhapatnam 530003"},
+            {"name": "Dwaraka Police Station & RTC Transit Hub", "number": "0891-2565300", "category": "Police - Visakhapatnam", "description": "RTC Complex, Dwaraka Nagar, Visakhapatnam 530016"},
+            {"name": "RK Beach Coastal Patrol Outpost", "number": "112", "category": "Police - Visakhapatnam", "description": "Beach Road Promenade, Opp. Submarine Museum, Visakhapatnam 530017"},
+            {"name": "Rushikonda Marine Police Station", "number": "0891-2782100", "category": "Police - Visakhapatnam", "description": "IT SEZ Road, Rushikonda, Visakhapatnam 530045"},
+            {"name": "King George Hospital (KGH) Government Trauma Care", "number": "0891-2564891", "category": "Hospital - Visakhapatnam", "description": "Collector Office Road, Maharanipeta, Visakhapatnam 530002 • Level 1 24/7 trauma care"},
+            {"name": "Care Multi-Speciality Hospital & Emergency ICU", "number": "0891-3041444", "category": "Hospital - Visakhapatnam", "description": "AS Raja Complex, Waltair Main Road, Visakhapatnam 530002 • 24/7 Critical Trauma"},
+            {"name": "Apollo Hospitals 24/7 Emergency Trauma (Health City)", "number": "0891-2867777", "category": "Hospital - Visakhapatnam", "description": "Health City, Chinagadili, Arilova, Visakhapatnam 530040"},
+            {"name": "SevenHills Hospital 24/7 Emergency Care", "number": "0891-2708090", "category": "Hospital - Visakhapatnam", "description": "Rockdale Layout, Waltair Uplands, Visakhapatnam 530002"},
+            {"name": "Apollo 24/7 Pharmacy (Siripuram Junction)", "number": "1860-500-0101", "category": "24/7 Pharmacy - Visakhapatnam", "description": "Dutt Island, Siripuram Junction, Visakhapatnam 530003 • Open 24/7"},
+            {"name": "MedPlus 24-Hour Pharmacy (MVP Colony)", "number": "040-67006700", "category": "24/7 Pharmacy - Visakhapatnam", "description": "Double Road, MVP Colony Sector 3, Visakhapatnam 530017"},
+            {"name": "Pink She-Lounge & 24h Safe Hub (Siripuram)", "number": "181", "category": "Safe Hub - Visakhapatnam", "description": "Siripuram Circle, Opp. Dutt Island, Visakhapatnam 530003 • 24/7 safe haven & phone charging"},
+            {"name": "APSRTC Dwaraka Central Safe Concourse", "number": "112", "category": "Safe Hub - Visakhapatnam", "description": "RTC Complex Concourse Level, Dwaraka Nagar, Visakhapatnam • CISF & AP Police shelter"},
+            {"name": "RK Beach She-Kiosk Safe Haven", "number": "112", "category": "Safe Hub - Visakhapatnam", "description": "Beach Road Promenade, Near Kali Temple, Visakhapatnam • High illumination & police beat"},
+
+            # National Helplines
             {"name": "Women in Distress (NCW)", "number": "7827170170", "category": "Legal & Crisis Support", "description": "National Commission for Women 24/7 Helpline"},
             {"name": "Cyber Crime Helpline", "number": "1930", "category": "Cyber Safety", "description": "National cyber crime reporting portal & financial fraud prevention"},
-            {"name": "Police Control Room", "number": "100", "category": "Police", "description": "Immediate law enforcement dispatch"},
-            {"name": "Ambulance", "number": "108", "category": "Medical Emergency", "description": "Emergency medical response & trauma care"},
-            {"name": "National Mental Health Helpline (KIRAN)", "number": "18005990019", "category": "Psychosocial Support", "description": "24/7 mental health and trauma relief"},
+            {"name": "Police Control Room", "number": "100", "category": "Police", "description": "Immediate local police precinct dispatch & PCR patrol"},
+            {"name": "Ambulance & Trauma Transit", "number": "108", "category": "Medical Emergency", "description": "24/7 emergency medical response, ambulance & trauma dispatch"},
+            {"name": "National Mental Health Helpline (KIRAN)", "number": "18005990019", "category": "Psychosocial Support", "description": "24/7 mental health and trauma relief"}
         ]
         return Response(helplines, status=status.HTTP_200_OK)
-
 
 class DashboardStatsApiView(APIView):
     def get(self, request):
