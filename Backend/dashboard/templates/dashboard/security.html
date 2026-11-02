@@ -110,25 +110,7 @@
       </div>
     </div>
 
-    <!-- Test 2FA Dispatch & Verification Section -->
-    <div style="padding: 20px; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 14px;">
-      <div style="font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 6px;">Test 2FA Email Dispatch</div>
-      <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
-        Trigger a live test passcode to verify your Gmail SMTP deliverability.
-      </div>
 
-      <div style="display: flex; gap: 12px; margin-bottom: 12px;">
-        <input type="text" id="test-otp-input" placeholder="Enter 6-digit code or 234456" maxlength="6" style="flex: 1; padding: 10px 14px; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; color: #fff; font-size: 0.95rem; letter-spacing: 2px; font-family: monospace;">
-        <button onclick="sendTestOtp()" id="btn-send-test-otp" class="btn btn-secondary" style="padding: 10px 18px; font-weight: 600;">
-          <span><i class="fa-solid fa-paper-plane"></i> Send Test Code</span>
-        </button>
-        <button onclick="verifyTestOtp()" id="btn-verify-test-otp" class="btn btn-primary" style="padding: 10px 18px; font-weight: 600;">
-          <span><i class="fa-solid fa-check"></i> Verify</span>
-        </button>
-      </div>
-
-      <div id="test-feedback" style="display: none; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 600;"></div>
-    </div>
 
   </div>
 </div>
@@ -210,77 +192,5 @@ function update2FAUI(enabled) {
   }
 }
 
-function sendTestOtp() {
-  const btn = document.getElementById('btn-send-test-otp');
-  const feedback = document.getElementById('test-feedback');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
-
-  fetch('/api/auth/send-otp/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: userEmail, purpose: '2fa_test' })
-  })
-  .then(r => r.json())
-  .then(data => {
-    btn.disabled = false;
-    btn.innerHTML = '<span><i class="fa-solid fa-paper-plane"></i> Send Test Code</span>';
-    feedback.style.display = 'block';
-    if (data.status === 'success') {
-      feedback.style.background = 'rgba(16, 185, 129, 0.15)';
-      feedback.style.color = '#34d399';
-      feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> Passcode dispatched to ${userEmail}! (Demo Code: ${data.otp || '123456'})`;
-      if (data.otp) {
-        document.getElementById('test-otp-input').value = data.otp;
-      }
-    } else {
-      feedback.style.background = 'rgba(239, 68, 68, 0.15)';
-      feedback.style.color = '#f87171';
-      feedback.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Failed to send passcode: ' + data.message;
-    }
-  })
-  .catch(err => {
-    btn.disabled = false;
-    btn.innerHTML = '<span><i class="fa-solid fa-paper-plane"></i> Send Test Code</span>';
-    feedback.style.display = 'block';
-    feedback.style.background = 'rgba(239, 68, 68, 0.15)';
-    feedback.style.color = '#f87171';
-    feedback.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Request failed: ' + err;
-  });
-}
-
-function verifyTestOtp() {
-  const code = document.getElementById('test-otp-input').value.trim();
-  const feedback = document.getElementById('test-feedback');
-  if (!code) {
-    alert("Please enter a 6-digit passcode to verify.");
-    return;
-  }
-
-  fetch('/api/auth/verify-otp/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: userEmail, otp_code: code })
-  })
-  .then(r => r.json())
-  .then(data => {
-    feedback.style.display = 'block';
-    if (data.status === 'success') {
-      feedback.style.background = 'rgba(16, 185, 129, 0.15)';
-      feedback.style.color = '#34d399';
-      feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> Verification Successful: ${data.message}`;
-    } else {
-      feedback.style.background = 'rgba(239, 68, 68, 0.15)';
-      feedback.style.color = '#f87171';
-      feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Verification Failed: ${data.message}`;
-    }
-  })
-  .catch(err => {
-    feedback.style.display = 'block';
-    feedback.style.background = 'rgba(239, 68, 68, 0.15)';
-    feedback.style.color = '#f87171';
-    feedback.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Request error: ' + err;
-  });
-}
 </script>
 {% endblock %}
