@@ -1,13 +1,13 @@
 {
-  "versionCode": 28,
-  "versionName": "1.3.0",
+  "versionCode": 29,
+  "versionName": "1.3.1",
   "playStoreStatus": "Coming Soon (In Review)",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "changelog": [
-    "Women Safety Route Prediction: AI spatial risk modeling, well-lit safe corridor scoring, and police proximity based on crime data",
-    "Interactive Dark Map Navigation: Real-time route polylines color-coded by safety (Safe, Caution, Risk) with Day/Night and Crime Hotspots toggles",
-    "2-Step Verification (2FA): Account security switch in app and web settings requiring 6-digit email OTP verification",
-    "Dual-Provider Real-Time GPS Tracking: High-accuracy live telemetry, pulsing location indicator, and satellite re-center on Safe Route map",
-    "24-Hour Location Trail Replay: Playback timeline and forensic debrief with SHA-256 integrity verification"
+    "Zero-Crime Fallacy ML Fallback: Gradient Boosting Classifier evaluates lighting, CCTV, and police proximity to compute continuous 0-100 Safety Scores for unmonitored zones",
+    "North Coastal AP Safety Radar: Integrated Police Stations, Hospitals, 24/7 Pharmacies, and Safe Hubs across Rajam, Visakhapatnam, Vizianagaram, Srikakulam, and Palakonda",
+    "Edge-to-Edge UI & Bottom Dock Elevation: Fully transparent system navigation bar and comfortably elevated floating bottom dock with full scroll clearance for Safety Suite",
+    "Interactive Dark Map Navigation: Real-time route polylines color-coded by safety (Safe, Moderate, Unsafe) with Hotspots Radar",
+    "Dual-Provider Real-Time GPS Tracking & 2-Step Verification (2FA): Account security with 6-digit email OTP verification"
   ]
 }
