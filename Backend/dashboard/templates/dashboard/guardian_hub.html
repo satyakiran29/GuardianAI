@@ -431,6 +431,19 @@
   border: 1px solid var(--border-color);
   border-bottom-left-radius: 4px;
 }
+.chat-bubble a {
+  color: #60a5fa;
+  text-decoration: underline;
+  word-break: break-all;
+}
+.chat-bubble-sent a {
+  color: #c4b5fd;
+}
+.map-link-btn:hover {
+  background: rgba(59, 130, 246, 0.35) !important;
+  border-color: #60a5fa !important;
+  color: #ffffff !important;
+}
 .speed-chip {
   background: rgba(30, 41, 59, 0.8);
   border: 1px solid var(--border-color);
@@ -517,7 +530,7 @@
         <div style="font-size: 0.7rem; opacity: 0.8; margin-bottom: 2px;">
           ${isMe ? 'You (Guardian)' : m.sender_name}
         </div>
-        <div>${sosBadge}${escapeHtml(m.message)}</div>
+        <div>${sosBadge}${formatChatMessage(m.message)}</div>
         <div style="font-size: 0.65rem; opacity: 0.7; text-align: right; margin-top: 4px;">
           ${m.time}
         </div>
@@ -564,6 +577,40 @@
     .catch(err => {
       console.error('Send error:', err);
     });
+  }
+
+  function formatChatMessage(rawText) {
+    if (!rawText) return '';
+    let escaped = escapeHtml(rawText);
+
+    // Replace newlines with <br>
+    escaped = escaped.replace(/\n/g, '<br>');
+
+    // Match URLs: http, https
+    const urlPattern = /(https?:\/\/[^\s<]+)/g;
+    let mapLinks = [];
+
+    escaped = escaped.replace(urlPattern, function(url) {
+      let cleanUrl = url.replace(/[.,;:)]+$/, '');
+      let trailing = url.substring(cleanUrl.length);
+
+      if (cleanUrl.includes('maps.google.') || cleanUrl.includes('google.com/maps') || cleanUrl.includes('maps.app.goo.gl')) {
+        mapLinks.push(cleanUrl);
+      }
+      return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: underline; font-weight: 600; word-break: break-all;">${cleanUrl}</a>${trailing}`;
+    });
+
+    if (mapLinks.length > 0) {
+      mapLinks.forEach(mUrl => {
+        escaped += `<div style="margin-top: 8px;">
+          <a href="${mUrl}" target="_blank" rel="noopener noreferrer" class="map-link-btn" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(96, 165, 250, 0.5); color: #93c5fd; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: all 0.2s ease;">
+            <i class="fa-solid fa-map-location-dot" style="color: #38bdf8; font-size: 0.9rem;"></i> Open Live GPS in Google Maps ↗
+          </a>
+        </div>`;
+      });
+    }
+
+    return escaped;
   }
 
   function escapeHtml(str) {
