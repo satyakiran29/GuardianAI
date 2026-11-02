@@ -1,17 +1,17 @@
 {
-  "versionCode": 33,
-  "versionName": "1.3.5",
+  "versionCode": 34,
+  "versionName": "1.3.6",
   "playStoreStatus": "Coming Soon (In Review)",
   "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "apkUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
   "releaseDate": "2026-11-02",
   "forceUpdate": false,
   "changelog": [
-    "AI-Based Risk Zone Prediction: Production ML engine evaluating Gradient Boosting, Random Forest, and Hist Gradient Boosting (97.2% Accuracy, F1 0.972)",
-    "Explainable AI (XAI): Real-time contributing factors for every geographical prediction (historical crime patterns, street illumination, police response radii)",
-    "Color-Coded Risk Circles & Heatmap: Interactive circles for High (Red 61-100), Medium (Yellow/Orange 31-60), and Low (Green 0-30) risk zones on Leaflet maps",
-    "Real Road Multi-Color Route Corridors: OSRM route segmentation dynamically colored by safety profiles with high-contrast outlines and danger zones",
-    "Continuous Real-Time GPS Tracking: Live continuous location tracking across SafeRoute, Explore radar, and Home telemetry pings",
-    "Verified Ground Truth Calibration: Ground-truth Google Maps coordinates and turn-by-turn directions across Rajam and Northern AP"
+    "AI-Based Risk Zone Prediction Engine: Gradient Boosting model calibrated on regional crime data (97.2% Accuracy, F1 0.972)",
+    "Explainable AI (XAI) Contributing Factors: Real-time dynamic explanations (crime history, street illumination, police booths) for all geographical predictions",
+    "Dynamic Safety Route Corridors: OSRM route segmentation dynamically colored by safety profiles with high-contrast outlines and danger zones",
+    "Color-Coded Risk Circles: Interactive circles for High (Red 61-100), Medium (Yellow 31-60), and Low (Green 0-30) risk zones on Leaflet maps",
+    "Continuous Real-Time GPS Tracking: Live location tracking across SafeRoute, Explore radar, and Home telemetry pings",
+    "Instant In-App Updater: Live direct APK download and update stream"
   ]
 }
