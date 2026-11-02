@@ -9,6 +9,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('guardian_api.urls')),
+    path('api/risk-zones/', include('risk_prediction.urls')),
+    path('api/risk-prediction/', include('risk_prediction.urls')),
     path('', include('dashboard.urls')),
 ]
 

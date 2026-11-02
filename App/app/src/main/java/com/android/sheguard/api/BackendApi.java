@@ -79,5 +79,33 @@ public interface BackendApi {
             @Query("lng") double lng,
             @Query("radius") double radius
     );
-}
 
+    // AI-Based Risk Zone Prediction Endpoints
+    @GET("risk-zones/")
+    Call<JsonObject> getRiskZones(
+            @Query("lat") double lat,
+            @Query("lng") double lng,
+            @Query("radius") double radius
+    );
+
+    @GET("risk-zones/nearby/")
+    Call<JsonObject> getNearbyRiskZones(
+            @Query("lat") double lat,
+            @Query("lng") double lng,
+            @Query("radius") double radius
+    );
+
+    @GET("risk-zones/predict/")
+    Call<JsonObject> predictLocationRisk(
+            @Query("lat") double lat,
+            @Query("lng") double lng,
+            @Query("time_of_day") String timeOfDay
+    );
+
+    @GET("risk-zones/heatmap/")
+    Call<JsonObject> getRiskHeatmap(
+            @Query("lat") double lat,
+            @Query("lng") double lng,
+            @Query("radius") double radius
+    );
+}

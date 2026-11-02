@@ -1,30 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_profile"
-        android:title="@string/activity_profile_title" />
-
-    <item
-        android:id="@+id/nav_safe_ride"
-        android:icon="@drawable/ic_ride_bike"
-        android:title="@string/nav_safe_ride" />
-
-
-    <item
-        android:id="@+id/nav_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/activity_settings_title" />
-
-    <item
-        android:id="@+id/nav_credits"
-        android:icon="@drawable/ic_about"
-        android:title="@string/activity_about_title" />
-
-    <item
-        android:id="@+id/nav_logout"
-        android:icon="@drawable/ic_logout_2"
-        android:title="@string/btn_log_out" />
-
-</menu>
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/activity_profile_title" />
+
+    <item
+        android:id="@+id/nav_safe_ride"
+        android:icon="@drawable/ic_ride_bike"
+        android:title="@string/nav_safe_ride" />
+
+    <item
+        android:id="@+id/nav_risk_zones"
+        android:icon="@drawable/ic_navigation"
+        android:title="AI Risk Zones &amp; Heatmap" />
+
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/activity_settings_title" />
+
+    <item
+        android:id="@+id/nav_credits"
+        android:icon="@drawable/ic_about"
+        android:title="@string/activity_about_title" />
+
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_logout_2"
+        android:title="@string/btn_log_out" />
+
+</menu>

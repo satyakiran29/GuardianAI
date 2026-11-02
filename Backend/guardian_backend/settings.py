@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Guardian AI Apps
     'guardian_api',
     'dashboard',
+    'risk_prediction',
 ]
 
 MIDDLEWARE = [

@@ -793,5 +793,79 @@ public class ApiClient {
             if (callback != null) callback.onResult(false, null, e.getMessage());
         }
     }
-}
 
+    // =========================================================================
+    // AI-Based Geographical Risk Prediction & Risk Zone Engine
+    // =========================================================================
+    public static void getRiskZones(double lat, double lng, double radiusKm, JsonCallback callback) {
+        getService().getRiskZones(lat, lng, radiusKm).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Risk zones fetched");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Server code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
+
+    public static void getNearbyRiskZones(double lat, double lng, double radiusKm, JsonCallback callback) {
+        getService().getNearbyRiskZones(lat, lng, radiusKm).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Nearby risk zones fetched");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Server code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
+
+    public static void predictLocationRisk(double lat, double lng, String timeOfDay, JsonCallback callback) {
+        getService().predictLocationRisk(lat, lng, timeOfDay).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Location risk evaluated");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Server code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
+
+    public static void getRiskHeatmap(double lat, double lng, double radiusKm, JsonCallback callback) {
+        getService().getRiskHeatmap(lat, lng, radiusKm).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (callback != null) callback.onResult(true, response.body(), "Heatmap data loaded");
+                } else {
+                    if (callback != null) callback.onResult(false, null, "Server code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                if (callback != null) callback.onResult(false, null, t.getMessage());
+            }
+        });
+    }
+}
