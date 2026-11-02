@@ -14,7 +14,8 @@
     <p>Real-time telemetry, SOS emergency dispatch, and AI protection network</p>
   </div>
 
-  <!-- Role View Switcher -->
+  <!-- Role View Switcher (SuperAdmin only) -->
+  {% if request.session.dashboard_user_role == 'superadmin' or logged_in_user.role == 'superadmin' %}
   <div class="role-switcher">
     <a href="?role_view=superadmin" class="role-tab {% if current_role_view == 'superadmin' %}active-superadmin{% endif %}">
       <span><i class="fa-solid fa-crown"></i></span> SuperAdmin
@@ -26,6 +27,7 @@
       <span><i class="fa-solid fa-user-shield"></i></span> User Portal
     </a>
   </div>
+  {% endif %}
 </div>
 
 <!-- Metrics Cards Grid -->
@@ -67,6 +69,7 @@
     </div>
   </div>
 
+  {% if request.session.dashboard_user_role == 'superadmin' or logged_in_user.role == 'superadmin' %}
   <div class="metric-card">
     <div class="metric-header">
       <span class="metric-title">OTP Authorizations</span>
@@ -77,6 +80,7 @@
       <span>Dispatched &amp; verified today</span>
     </div>
   </div>
+  {% endif %}
 </div>
 
 <!-- Split Section: Live Map & Live SOS Stream -->

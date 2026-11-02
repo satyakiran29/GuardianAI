@@ -60,6 +60,7 @@
             <span>SOS Incidents Log</span>
           </a>
         </li>
+        {% if request.session.dashboard_user_role == 'superadmin' or logged_in_user.role == 'superadmin' %}
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-otp' %}active{% endif %}">
           <a href="{% url 'dashboard-otp' %}">
             <span><i class="fa-solid fa-key"></i></span>
@@ -69,9 +70,10 @@
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-emails' %}active{% endif %}">
           <a href="{% url 'dashboard-emails' %}">
             <span><i class="fa-solid fa-envelope"></i></span>
-            <span>Email Management</span>
+            <span>Email &amp; Delivery Management System</span>
           </a>
         </li>
+        {% endif %}
         <li class="nav-item {% if request.resolver_match.url_name == 'dashboard-security' %}active{% endif %}">
           <a href="{% url 'dashboard-security' %}">
             <span><i class="fa-solid fa-lock"></i></span>

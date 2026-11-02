@@ -343,7 +343,12 @@ def toggle_2fa_action(request):
 
 @dashboard_login_required
 def index(request):
-    current_role_view = request.GET.get('role_view', request.dashboard_user.role if hasattr(request, 'dashboard_user') else 'superadmin')
+    current_user = getattr(request, 'dashboard_user', None)
+    user_role = getattr(current_user, 'role', None) or request.session.get('dashboard_user_role', 'superadmin')
+    if user_role != 'superadmin':
+        current_role_view = user_role
+    else:
+        current_role_view = request.GET.get('role_view', 'superadmin')
     
     user_counts = UserProfile.objects.aggregate(
         total=Count('id'),
@@ -720,6 +725,14 @@ def alerts_view(request):
 
 @dashboard_login_required
 def otp_view(request):
+    current_user = getattr(request, 'dashboard_user', None)
+    role = getattr(current_user, 'role', None) or request.session.get('dashboard_user_role')
+    if role != 'superadmin':
+        messages.error(request, "Access restricted: SuperAdmin privileges required for OTP & Auth System.")
+        if role == 'guardian':
+            return redirect('dashboard-guardian-hub')
+        return redirect('dashboard-index')
+
     if request.method == 'POST' and request.POST.get('action') == 'prune_expired':
         deleted_count, _ = OtpRecord.objects.filter(is_verified=False, expires_at__lt=timezone.now()).delete()
         messages.success(request, f"Pruned {deleted_count} expired unverified OTP record(s).")
@@ -748,6 +761,14 @@ def otp_view(request):
 
 @dashboard_login_required
 def email_management_view(request):
+    current_user = getattr(request, 'dashboard_user', None)
+    role = getattr(current_user, 'role', None) or request.session.get('dashboard_user_role')
+    if role != 'superadmin':
+        messages.error(request, "Access restricted: SuperAdmin privileges required for Email & Delivery Management System.")
+        if role == 'guardian':
+            return redirect('dashboard-guardian-hub')
+        return redirect('dashboard-index')
+
     if request.method == 'POST' and request.POST.get('action') == 'clear_logs':
         deleted_count, _ = EmailLog.objects.all().delete()
         messages.success(request, f"Cleared {deleted_count} email delivery audit log(s).")
@@ -784,6 +805,11 @@ def email_management_view(request):
 @csrf_exempt
 @dashboard_login_required
 def send_test_email_action(request):
+    current_user = getattr(request, 'dashboard_user', None)
+    role = getattr(current_user, 'role', None) or request.session.get('dashboard_user_role')
+    if role != 'superadmin':
+        return JsonResponse({'status': 'error', 'message': 'SuperAdmin privileges required.'}, status=403)
+
     if request.method == 'POST':
         try:
             body = json.loads(request.body) if request.body else request.POST
