@@ -169,6 +169,63 @@ PALAKONDA_LOCALITIES = [
     {"name": "Seethampeta Agency Junction Road", "lat": 18.60500, "lon": 83.76200, "type": "Highway", "base_pol_dist": 0.7, "lighting_prob": 0.50, "cctv_prob": 0.25},
 ]
 
+
+# =============================================================================
+# 6. CHEEPURUPALLI LOCALITIES (Google Maps Ground Truth, AP 535128)
+# =============================================================================
+CHEEPURUPALLI_LOCALITIES = [
+    # Cheepurupalli Railway Station: 18.31200 N, 83.57800 E
+    {"name": "Cheepurupalli Railway Station Outskirts", "lat": 18.31200, "lon": 83.57800, "type": "Transit", "base_pol_dist": 0.4, "lighting_prob": 0.65, "cctv_prob": 0.50},
+    # Cheepurupalli RTC Bus Stand: 18.31550 N, 83.58250 E
+    {"name": "Cheepurupalli RTC Complex & Bazaar", "lat": 18.31550, "lon": 83.58250, "type": "Commercial", "base_pol_dist": 0.2, "lighting_prob": 0.85, "cctv_prob": 0.70},
+    # Cheepurupalli Police Station: 18.31420 N, 83.58050 E
+    {"name": "Cheepurupalli Police Station Area", "lat": 18.31420, "lon": 83.58050, "type": "Transit", "base_pol_dist": 0.1, "lighting_prob": 0.90, "cctv_prob": 0.80},
+    # Cheepurupalli - Rajam Road Stretch (User Landmark): 18.36500 N, 83.64360 E
+    {"name": "Cheepurupalli-Rajam Road Highway Stretch", "lat": 18.36500, "lon": 83.64360, "type": "Highway", "base_pol_dist": 4.5, "lighting_prob": 0.30, "cctv_prob": 0.10},
+    # Railway Goods Yard Isolated Stretch: 18.30800 N, 83.57500 E
+    {"name": "Cheepurupalli Goods Yard Isolated Zone", "lat": 18.30800, "lon": 83.57500, "type": "Industrial", "base_pol_dist": 1.2, "lighting_prob": 0.25, "cctv_prob": 0.15},
+    # Garividi Industrial Corridor: 18.28500 N, 83.53500 E
+    {"name": "Garividi Shreeramnagar Industrial Corridor", "lat": 18.28500, "lon": 83.53500, "type": "Industrial", "base_pol_dist": 2.2, "lighting_prob": 0.45, "cctv_prob": 0.30},
+    # Cheepurupalli Govt Degree College: 18.32100 N, 83.58900 E
+    {"name": "Cheepurupalli Degree College Road", "lat": 18.32100, "lon": 83.58900, "type": "Campus", "base_pol_dist": 1.1, "lighting_prob": 0.60, "cctv_prob": 0.40},
+]
+
+# =============================================================================
+# 7. HIGHWAY CORRIDOR LOCALITIES (SH-38 / SH-22 Rajam-Cheepurupalli-Srikakulam)
+# =============================================================================
+HIGHWAY_CORRIDOR_LOCALITIES = [
+    # Rajam South Godown & Rice Mill Bypass: 18.43500 N, 83.65800 E
+    {"name": "Rajam South Highway Bypass", "lat": 18.43500, "lon": 83.65800, "type": "Highway", "base_pol_dist": 1.8, "lighting_prob": 0.50, "cctv_prob": 0.25},
+    # Kancharam Highway Junction: 18.41200 N, 83.65200 E
+    {"name": "Kancharam Highway Junction", "lat": 18.41200, "lon": 83.65200, "type": "Highway", "base_pol_dist": 3.8, "lighting_prob": 0.35, "cctv_prob": 0.10},
+    # Pogiri - Paturu Rural Highway Stretch: 18.39500 N, 83.64800 E
+    {"name": "Pogiri-Paturu Rural Highway Stretch", "lat": 18.39500, "lon": 83.64800, "type": "Highway", "base_pol_dist": 4.8, "lighting_prob": 0.25, "cctv_prob": 0.05},
+    # Ponugativari - Cheepurupalli Highway Bypass: 18.38500 N, 83.64700 E
+    {"name": "Ponugativari-Cheepurupalli Highway Bypass", "lat": 18.38500, "lon": 83.64700, "type": "Highway", "base_pol_dist": 4.2, "lighting_prob": 0.30, "cctv_prob": 0.10},
+    # Laveru Highway Link: 18.33500 N, 83.68200 E
+    {"name": "Laveru-Cheepurupalli Highway Link", "lat": 18.33500, "lon": 83.68200, "type": "Highway", "base_pol_dist": 5.2, "lighting_prob": 0.25, "cctv_prob": 0.05},
+    # Ranasthalam NH-16 Junction: 18.23500 N, 83.68500 E
+    {"name": "Ranasthalam NH-16 Highway Junction", "lat": 18.23500, "lon": 83.68500, "type": "Highway", "base_pol_dist": 1.5, "lighting_prob": 0.70, "cctv_prob": 0.50},
+    # Chilakapalem NH-16 Toll Plaza Outskirts: 18.25500 N, 83.79200 E
+    {"name": "Chilakapalem NH-16 Srikakulam Toll Plaza", "lat": 18.25500, "lon": 83.79200, "type": "Highway", "base_pol_dist": 2.1, "lighting_prob": 0.75, "cctv_prob": 0.60},
+]
+
+# =============================================================================
+# 8. BOBBILI LOCALITIES (Google Maps Ground Truth, AP 535558)
+# =============================================================================
+BOBBILI_LOCALITIES = [
+    # Bobbili Fort & Market Commercial Area: 18.56700 N, 83.36400 E
+    {"name": "Bobbili Fort & Market Commercial Area", "lat": 18.56700, "lon": 83.36400, "type": "Commercial", "base_pol_dist": 0.3, "lighting_prob": 0.85, "cctv_prob": 0.70},
+    # Bobbili RTC Complex & Railway Station: 18.57200 N, 83.36800 E
+    {"name": "Bobbili RTC Complex & Railway Station", "lat": 18.57200, "lon": 83.36800, "type": "Transit", "base_pol_dist": 0.4, "lighting_prob": 0.80, "cctv_prob": 0.65},
+    # Bobbili Growth Centre Industrial Zone: 18.58500 N, 83.38200 E
+    {"name": "Bobbili Growth Centre Industrial Area", "lat": 18.58500, "lon": 83.38200, "type": "Industrial", "base_pol_dist": 2.5, "lighting_prob": 0.40, "cctv_prob": 0.25},
+    # Bobbili Town Police Station: 18.56900 N, 83.36200 E
+    {"name": "Bobbili Town Police Station Area", "lat": 18.56900, "lon": 83.36200, "type": "Transit", "base_pol_dist": 0.1, "lighting_prob": 0.90, "cctv_prob": 0.80},
+    # Bobbili - Rajam Road Highway Outskirts: 18.51500 N, 83.52000 E
+    {"name": "Rajam-Bobbili Road Highway Outskirts", "lat": 18.51500, "lon": 83.52000, "type": "Highway", "base_pol_dist": 4.1, "lighting_prob": 0.30, "cctv_prob": 0.10},
+]
+
 TIMES_OF_DAY = ["Morning", "Afternoon", "Evening", "Night", "Late Night"]
 TIME_PROBS = [0.22, 0.20, 0.23, 0.20, 0.15]
 
@@ -185,7 +242,10 @@ def generate_dataset(num_samples_per_locality=45):
         [(loc, "Visakhapatnam") for loc in VIZAG_LOCALITIES] +
         [(loc, "Vizianagaram") for loc in VIZIANAGARAM_LOCALITIES] +
         [(loc, "Srikakulam") for loc in SRIKAKULAM_LOCALITIES] +
-        [(loc, "Palakonda") for loc in PALAKONDA_LOCALITIES]
+        [(loc, "Palakonda") for loc in PALAKONDA_LOCALITIES] +
+        [(loc, "Cheepurupalli") for loc in CHEEPURUPALLI_LOCALITIES] +
+        [(loc, "Highway Corridor") for loc in HIGHWAY_CORRIDOR_LOCALITIES] +
+        [(loc, "Bobbili") for loc in BOBBILI_LOCALITIES]
     )
 
     for loc, city in all_localities:
