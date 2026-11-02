@@ -111,34 +111,6 @@
       color: #fff;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
-
-    .demo-accounts {
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(148, 163, 184, 0.1);
-    }
-
-    .demo-btn {
-      width: 100%;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(148, 163, 184, 0.12);
-      border-radius: 10px;
-      color: #cbd5e1;
-      font-size: 0.82rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .demo-btn:hover {
-      background: rgba(139, 92, 246, 0.15);
-      border-color: #8b5cf6;
-      color: #fff;
-    }
   </style>
 </head>
 <body class="auth-page">
@@ -260,32 +232,9 @@
       </button>
     </form>
     {% endif %}
-
-    <!-- Quick 1-Click Role Accounts -->
-    <div class="demo-accounts">
-      <p style="font-size: 0.78rem; color: #94a3b8; margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">
-        <i class="fa-solid fa-bolt"></i> Instant Role Access (1-Click)
-      </p>
-
-      <button type="button" class="demo-btn" onclick="fillDemo('guardian@sheguard.app', 'guardian123')">
-        <span><i class="fa-solid fa-shield-halved" style="color: #34d399; margin-right: 6px;"></i> <strong>Guardian Unit</strong> (Rajesh Sharma)</span>
-        <span style="font-size: 0.72rem; color: #34d399; background: rgba(16,185,129,0.15); padding: 2px 8px; border-radius: 6px;">Guardian Hub</span>
-      </button>
-
-      <button type="button" class="demo-btn" onclick="fillDemo('admin@sheguard.app', 'admin123')">
-        <span><i class="fa-solid fa-crown" style="color: #c084fc; margin-right: 6px;"></i> <strong>SuperAdmin Desk</strong> (Commander)</span>
-        <span style="font-size: 0.72rem; color: #c084fc; background: rgba(139,92,246,0.15); padding: 2px 8px; border-radius: 6px;">SuperAdmin</span>
-      </button>
-    </div>
   </div>
 
   <script>
-    function fillDemo(email, pass) {
-      switchTab('pass');
-      document.getElementById('pass_identifier').value = email;
-      document.getElementById('pass_password').value = pass;
-      document.getElementById('form-pass').submit();
-    }
 
     function switchTab(mode) {
       if (mode === 'pass') {
