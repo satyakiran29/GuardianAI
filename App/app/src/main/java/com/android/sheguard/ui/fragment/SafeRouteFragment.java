@@ -90,8 +90,8 @@ public class SafeRouteFragment extends Fragment {
             "<html>\n" +
             "<head>\n" +
             "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />\n" +
-            "    <link rel=\"stylesheet\" href=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.css\" />\n" +
-            "    <script src=\"https://unpkg.com/leaflet@1.9.4/dist/leaflet.js\"></script>\n" +
+            "    <link rel=\"stylesheet\" href=\"file:///android_asset/leaflet/leaflet.css\" />\n" +
+            "    <script src=\"file:///android_asset/leaflet/leaflet.js\"></script>\n" +
             "    <style>\n" +
             "        html, body, #map { height: 100%; width: 100%; margin: 0; padding: 0; background: #07090E; font-family: sans-serif; }\n" +
             "        .origin-marker {\n" +
@@ -399,8 +399,13 @@ public class SafeRouteFragment extends Fragment {
         WebSettings settings = binding.webViewMap.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
+        settings.setDatabaseEnabled(true);
+        settings.setAllowFileAccess(true);
+        settings.setAllowContentAccess(true);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
+        binding.webViewMap.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         // Allow smooth map pan/zoom without NestedScrollView stealing touch events
         binding.webViewMap.setOnTouchListener((v, event) -> {
@@ -451,7 +456,7 @@ public class SafeRouteFragment extends Fragment {
             String mapHtml = LEAFLET_ROUTE_HTML
                     .replace("__INIT_LAT__", String.format(Locale.US, "%.5f", startLat))
                     .replace("__INIT_LNG__", String.format(Locale.US, "%.5f", startLng));
-            binding.webViewMap.loadDataWithBaseURL("https://guardianai.local", mapHtml, "text/html", "UTF-8", null);
+            binding.webViewMap.loadDataWithBaseURL("file:///android_asset/", mapHtml, "text/html", "UTF-8", null);
         } catch (Exception e) {
             Log.e(TAG, "Error loading route map webview: " + e.getMessage(), e);
             if (binding != null) {

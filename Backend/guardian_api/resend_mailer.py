@@ -41,7 +41,7 @@ def _send_via_google_webhook(webhook_url, to_email, subject, html_content):
         data=data_bytes,
         headers={
             "Content-Type": "application/json",
-            "User-Agent": "GuardianAI/1.3.1"
+            "User-Agent": "GuardianAI/1.3.2"
         },
         method="POST"
     )
