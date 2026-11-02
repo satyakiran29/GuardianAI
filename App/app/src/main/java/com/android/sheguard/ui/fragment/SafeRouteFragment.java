@@ -1068,6 +1068,26 @@ public class SafeRouteFragment extends Fragment {
 
 
             "                    });\n" +
+            "\n" +
+            "                    // Swiggy Animated Flow Line\n" +
+            "                    const flowLine = L.polyline(coords, {\n" +
+            "                        color: '#FFFFFF',\n" +
+            "                        weight: 2.5,\n" +
+            "                        opacity: 0.85,\n" +
+            "                        className: 'swiggy-flow-line'\n" +
+            "                    }).addTo(map);\n" +
+            "                    routeLayers.push(flowLine);\n" +
+            "\n" +
+            "                    // Swiggy Floating ETA Pill over Destination\n" +
+            "                    if (coords.length > 0) {\n" +
+            "                        const lastPt = coords[coords.length - 1];\n" +
+            "                        const distVal = route.distance_km ? (route.distance_km + ' km') : '';\n" +
+            "                        const durVal = route.duration_mins ? (route.duration_mins + ' mins') : '';\n" +
+            "                        const etaHtml = '<div class=\"swiggy-eta-pill\">⚡ ' + durVal + ' • ' + distVal + '</div>';\n" +
+            "                        const etaIcon = L.divIcon({ className: '', html: etaHtml, iconSize: [120, 26], iconAnchor: [60, 36] });\n" +
+            "                        const etaMarker = L.marker([lastPt[0], lastPt[1]], { icon: etaIcon, zIndexOffset: 2000 }).addTo(map);\n" +
+            "                        routeLayers.push(etaMarker);\n" +
+            "                    }\n" +
 
 
 

@@ -1,16 +1,8 @@
 {
-  "versionCode": 35,
-  "versionName": "1.3.7",
-  "playStoreStatus": "Coming Soon (In Review)",
-  "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
+  "version": "1.3.8",
+  "versionCode": 36,
   "apkUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
-  "releaseDate": "2026-11-02",
-  "forceUpdate": false,
-  "changelog": [
-    "Fixed Map Routing Path: Routes strictly follow real road and street geometry from OpenStreetMap (eliminated synthetic curve fallbacks)",
-    "Expanded 3,600-Record Regional Safety Dataset: Added comprehensive calibrated crime & environmental records for Cheepurupalli, Bobbili, Srikakulam, Vizianagaram, Palakonda, and Highway Corridors (SH-38 / SH-22)",
-    "Vivid Multi-Color Road Safety Corridors: High-contrast street segments colored by safety profile (Green Safe, Amber Caution, Red Risk Area) with danger zone circles",
-    "Client-Side Direct Satellite Routing: Instant direct OpenStreetMap highway routing on phone when backend server is waking up",
-    "AI Risk Zone Prediction: Production Hist Gradient Boosting classifier trained across all 8 regional sectors (97.8% Accuracy)"
-  ]
+  "releaseNotes": "v1.3.8: Interactive Rapido Safe Ride & Escort Prototype with live telemetric tracking, Swiggy-style multi-layer road routing, and optimized risk zone intelligence.",
+  "sha256": "8077617482949beeac4f40363f8733ec5170241cc3c7ec7b17a1bf8245bee3a5",
+  "size": "20.3 MB"
 }
