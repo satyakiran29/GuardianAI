@@ -1,8 +1,16 @@
 {
-    "versionCode": 31,
-    "versionName": "1.3.3",
-    "apkUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
-    "releaseDate": "2026-11-02",
-    "forceUpdate": false,
-    "changelog": "Accurate Google Maps verified coordinates for all safe havens and localities across Rajam, Visakhapatnam, Vizianagaram, Srikakulam, and Palakonda. Precise Google Maps walking & driving directions."
+  "versionCode": 32,
+  "versionName": "1.3.4",
+  "playStoreStatus": "Coming Soon (In Review)",
+  "downloadUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
+  "apkUrl": "https://raw.githubusercontent.com/satyakiran29/GuardianAI/main/Apk/GuardianAI-debug.apk",
+  "releaseDate": "2026-11-02",
+  "forceUpdate": false,
+  "changelog": [
+    "Google Maps Ground Truth Calibration: Exact verified coordinates for Rajam Police Station (18.44899, 83.65532), APSRTC Bus Complex (18.45036, 83.65976), GMRIT Campus (18.46556, 83.65946), GMR Care Hospital (18.46150, 83.65830), and CHC Hospital (18.44780, 83.66170)",
+    "Regional Accuracy Expansion: Exact Google Maps coordinates for all landmarks across Vizag, Vizianagaram, Srikakulam, and Palakonda",
+    "Accurate Directions Navigation: Turn-by-turn walking and driving directions leading directly to verified physical gates and entrances",
+    "Zero-Crime Fallacy Elimination: 2,745-record multi-city dataset training Gradient Boosting Classifier for continuous risk scoring",
+    "Offline Safe Havens Fast-Path: Instant sub-10ms local radar lookup with zero fake dummy points"
+  ]
 }

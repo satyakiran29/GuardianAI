@@ -65,13 +65,18 @@ public class AppUpdateManager {
                     JsonObject jsonObject = JsonParser.parseString(jsonStr).getAsJsonObject();
                     final int serverVersionCode = jsonObject.has("versionCode") ? jsonObject.get("versionCode").getAsInt() : 1;
                     final String serverVersionName = jsonObject.has("versionName") ? jsonObject.get("versionName").getAsString() : "1.0.0";
-                    final String downloadUrl = jsonObject.has("downloadUrl") ? jsonObject.get("downloadUrl").getAsString() : "";
+                    final String downloadUrl = jsonObject.has("downloadUrl") ? jsonObject.get("downloadUrl").getAsString() :
+                            (jsonObject.has("apkUrl") ? jsonObject.get("apkUrl").getAsString() : "");
 
                     StringBuilder changelogBuilder = new StringBuilder();
-                    if (jsonObject.has("changelog") && jsonObject.get("changelog").isJsonArray()) {
-                        JsonArray changelogArray = jsonObject.getAsJsonArray("changelog");
-                        for (JsonElement element : changelogArray) {
-                            changelogBuilder.append("• ").append(element.getAsString()).append("\n");
+                    if (jsonObject.has("changelog")) {
+                        if (jsonObject.get("changelog").isJsonArray()) {
+                            JsonArray changelogArray = jsonObject.getAsJsonArray("changelog");
+                            for (JsonElement element : changelogArray) {
+                                changelogBuilder.append("• ").append(element.getAsString()).append("\n");
+                            }
+                        } else if (jsonObject.get("changelog").isJsonPrimitive()) {
+                            changelogBuilder.append(jsonObject.get("changelog").getAsString());
                         }
                     }
                     final String changelog = changelogBuilder.toString().trim();
